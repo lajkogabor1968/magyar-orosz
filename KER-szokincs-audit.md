@@ -37,3 +37,11 @@ A teljes forrásadat nem módosult szerkezetileg, a betöltési sorrend változa
 
 ## Kiegészítő besorolási módszer (NYESZE)
 A szókincset a készségleírásokhoz rendeljük: A1: személyes alapadatok és alapvető mondatok; A2: rövid egyszerű üzenetek és gyakori hétköznapi cselekvések; B1: ismert témákon önálló beszámoló, indoklás és utazási helyzetek; B2: részletes érvelés, nézőpontok és előnyök–hátrányok mérlegelése. Ez nem kötelező szószám-szabvány.
+
+## A1–A2 munkaszakasz – 2026-11-18
+- Az A1-lista összesen 600 bejegyzés, változatlan.
+- Az A2-lista 1009-ről 1200 bejegyzésre bővült: 191 új, négymezős magyar–orosz szó és gyakorlati kifejezés.
+- Mind a 191 új elem egyedi címszót használ az A2 addigi címszavaihoz képest; az ellenőrzés nem garantálja az összes korábbi jelentésbeli duplikáció megszűnését.
+- Az A1–A2 alaplistában 22 további magyar példamondat és orosz mondatfordítás javult a jelenlegi munkaszakaszban.
+- A program betöltő- és főoldali számlálói ellenőrizve: A1 600, A2 1200, B1 273, B2 14, összesen 2087.
+- Fontos nyitott feladat: az eredeti teljes A1–A2 állomány mondatonkénti kézi nyelvi auditja és a legitim többjelentésű címszavak elkülönítése. A 1200 darab nem jelent hivatalos KER-megfelelőségi tanúsítást.
