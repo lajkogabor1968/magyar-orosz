@@ -45,3 +45,13 @@ A szókincset a készségleírásokhoz rendeljük: A1: személyes alapadatok és
 - Az A1–A2 alaplistában 22 további magyar példamondat és orosz mondatfordítás javult a jelenlegi munkaszakaszban.
 - A program betöltő- és főoldali számlálói ellenőrizve: A1 600, A2 1200, B1 273, B2 14, összesen 2087.
 - Fontos nyitott feladat: az eredeti teljes A1–A2 állomány mondatonkénti kézi nyelvi auditja és a legitim többjelentésű címszavak elkülönítése. A 1200 darab nem jelent hivatalos KER-megfelelőségi tanúsítást.
+
+## B1 fejlesztési kör – 2026-11-18
+- **158 új B1-es bejegyzés** került a kiegészítő szókincsfájlba; a B1 elemszáma **273-ról 431-re** nőtt.
+- Témák: érvelés és vélemény, nézőpontok összevetése, történetmesélés, személyes tapasztalat, tervek, együttműködés, konfliktusok, munkahely és tanulási folyamat.
+- Minden új bejegyzés négy mezőt tartalmaz: magyar címszó/kifejezés, orosz jelentés, természetes magyar példamondat és annak orosz fordítása.
+- Az új 158 magyar címszó sem egymást, sem a korábbi B1-es címszavak kisbetűs alakját nem ismétli.
+- Ellenőrzött technikai összesítés: A1 600, A2 1200, B1 431, B2 14, összesen 2245 bejegyzés.
+- A **B1 cél továbbra is 2000**, ezért még 1569 új, ellenőrzött bejegyzés szükséges; a szintet nem jelöljük teljesnek.
+- Forrás: Európa Tanács KER B1 globális szintleírás https://www.coe.int/en/web/common-european-framework-reference-languages/table-%201-cefr-3.3-common-reference-levels-global-scale (érthető közlés, ismerős helyzetek, tapasztalatok, tervek és indoklás).
+- Nyitott minőségellenőrzés: a korábbi sablonos B1 példamondatok és az orosz fordítások tételes felülvizsgálata.
