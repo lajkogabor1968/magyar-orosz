@@ -6,7 +6,7 @@ const entries=(lvl=level)=>((DATA[lvl]||[]).map((r,i)=>({id:lvl+':'+i,level:lvl,
 let current=entries();const marks=()=>saved.marks||{};const marked=e=>!!marks()[e.id];const save=()=>{try{localStorage.setItem(storeKey,JSON.stringify(saved))}catch{showNotice('A böngésző nem engedi menteni az eredményeket.')}};
 const showNotice=s=>{$('notice').textContent=s;};const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const pick=(a,n)=>shuffle(a).slice(0,n);const text=(el,t)=>{el.textContent=t};function el(tag,cls,content){const n=document.createElement(tag);if(cls)n.className=cls;if(content!==undefined)n.textContent=content;return n}
-function speech(s,lang){if(!('speechSynthesis'in window)){showNotice('A böngészőben nem érhető el a felolvasás.');return}TanuloTTS.cancel();const utter=new SpeechSynthesisUtterance(s);utter.lang=lang;utter.rate=.85;TanuloTTS.speak(utter)}
+function speech(s,lang){TanuloTTS.cancel();const utter=('SpeechSynthesisUtterance'in window)?new SpeechSynthesisUtterance(s):{text:s};utter.lang=lang;utter.rate=.85;TanuloTTS.speak(utter)}
 $('speechTest')?.addEventListener('click',()=>speech('Jó napot kívánok! A magyar kiejtés működik.','hu-HU'));
 function initAudioPilot(){
  const media=$('pilotAudio');if(!media)return;

@@ -1,5 +1,5 @@
 /* Shared speech playback for the Magyar–orosz Tanulóműhely.
-   Works with the device's speech engine; no audio is sent to a server. */
+   Prefer pre-generated Hungarian MP3 recordings, then device speech. */
 (() => {
   'use strict';
   if (window.TanuloTTS) return;
@@ -9,6 +9,7 @@
   let voices = [];
   let generation = 0;
   let active = null;
+  let activeAudio = null;
   let noticeTimer = null;
 
   function refreshVoices() {
@@ -73,17 +74,52 @@
   function cancel() {
     generation++;
     active = null;
+    if (activeAudio) {
+      activeAudio.pause();
+      activeAudio.removeAttribute('src');
+      activeAudio = null;
+    }
     if (available) {
       try { engine.cancel(); } catch { /* No active playback. */ }
     }
   }
 
   function speak(utterance) {
+    if (!utterance || !String(utterance.text || '').trim()) return false;
+    const lang = String(utterance.lang || 'hu-HU').toLowerCase();
+    const phrase = String(utterance.text).normalize('NFC').replace(/\s+/g, ' ').trim();
+    const recordings = window.TanuloAudioManifest || {};
+    const clip = lang.startsWith('hu') && recordings[phrase];
+    if (clip) {
+      cancel();
+      const token = generation;
+      const player = new Audio(clip);
+      activeAudio = player;
+      player.preload = 'auto';
+      player.playbackRate = Math.max(0.5, Math.min(2, Number(utterance.rate) || 1));
+      player.onplaying = event => {
+        if (token === generation && typeof utterance.onstart === 'function') utterance.onstart(event);
+      };
+      player.onended = event => {
+        if (token !== generation) return;
+        activeAudio = null;
+        if (typeof utterance.onend === 'function') utterance.onend(event);
+      };
+      player.onerror = event => {
+        if (token !== generation) return;
+        activeAudio = null;
+        message('A rögzített magyar hang nem töltődött be. Ellenőrizd a kapcsolatot, majd próbáld újra.');
+        if (typeof utterance.onerror === 'function') utterance.onerror(event);
+      };
+      player.play().catch(() => {
+        if (token === generation) message('A hang nem indul. Érintsd meg újra a hangszóró gombot.');
+      });
+      return true;
+    }
     if (!available) {
       message('Ez a böngésző nem támogatja a felolvasást. Nyisd meg az alkalmazást a telefon Chrome böngészőjében.');
       return false;
     }
-    if (!utterance || !String(utterance.text || '').trim()) return false;
     const parts = chunks(utterance.text);
     const token = generation;
     const originalEnd = utterance.onend;
