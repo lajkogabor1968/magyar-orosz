@@ -1,6 +1,7 @@
 # Magyar–orosz Tanulóműhely – KER-szókincs audit (2026-11-18)
 
 ## Külső szakmai támpontok
+- Nyelviskolák Szakmai Egyesülete (NYESZE), magyar nyelvű KER-szintleírás, hallás, olvasás, társalgás, folyamatos beszéd és írás: https://nyelviskola.hu/kozos-europai-referenciakeret-szintek
 - Európa Tanács: CEFR Companion Volume, 2020: https://www.coe.int/en/web/common-european-framework-reference-languages/cefr-companion-volume-and-its-language-versions
 - CEFR szintleírások: https://www.coe.int/en/web/common-european-framework-reference-languages/level-descriptions
 - Magyar mint idegen nyelv mérése és értékelése: https://btk.kre.hu/nyelveszet/images/mpt-wk_web_2019.pdf
@@ -33,3 +34,6 @@ Sablonosnak vagy pedagógiailag kevéssé hasznosnak jelölt példamondatok szá
 
 ## Publikálás
 A teljes forrásadat nem módosult szerkezetileg, a betöltési sorrend változatlan. A bejegyzéseket a data.js és ecl-vocab.js együtt biztosítja. A felülvizsgálat még nem teljes körű; az audit megállapításait nem szabad kész KER-minősítésként értelmezni.
+
+## Kiegészítő besorolási módszer (NYESZE)
+A szókincset a készségleírásokhoz rendeljük: A1: személyes alapadatok és alapvető mondatok; A2: rövid egyszerű üzenetek és gyakori hétköznapi cselekvések; B1: ismert témákon önálló beszámoló, indoklás és utazási helyzetek; B2: részletes érvelés, nézőpontok és előnyök–hátrányok mérlegelése. Ez nem kötelező szószám-szabvány.
