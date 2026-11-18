@@ -3,6 +3,26 @@
 <body>
 <header class="masthead"><div class="wrap headrow"><div class="logo"><span class="mark">HU<span>↔</span>RU</span><div><h1>Magyar–orosz Tanulóműhely</h1><p>Szókincs · beszéd · nyelvtan · A1–B2</p></div></div><div class="headline-stats"><span id="totalTag">2245 szócikk</span><span id="progressTag">0 megoldott feladat</span></div></div></header>
 <main class="wrap"><section class="welcome"><div><span class="eyebrow">Válaszd ki a szintedet</span><h2>Tanulj a saját tempódban!</h2><p>Egyetlen tanulófelületen gyakorolhatod a magyar szavakat, a mondatokat, a párbeszédeket, az olvasást, a hallás utáni szövegértést és a nyelvtant. A gyakorláshoz nem kell regisztráció.</p></div><div class="levels" role="group" aria-label="Nyelvi szint"><button class="level active" data-level="A1">A1 <small>600 szó</small></button><button class="level" data-level="A2">A2 <small>1200 szó</small></button><button class="level" data-level="B1">B1 <small>431 szó</small></button><button class="level" data-level="B2">B2 <small>14 szó</small></button></div></section>
+<section id="androidAudioPilot" class="panel" aria-labelledby="pilotTitle" style="border:2px solid #4c9b87;background:#f4fbf8;margin:18px 0">
+  <div class="toolbar"><div><h3 id="pilotTitle">🎧 Android-hangpróba – valódi MP3-fájllal</h3><p class="muted">Három rövid lépés · normál hang · lassú hang · szövegértés</p></div></div>
+  <p class="muted">Ez a próba <strong>nem használja a telefon beszédszintetizátorát</strong>. A többi 🔊 gomb egyelőre a korábbi hangkezelést használja.</p>
+  <h4 id="pilotStep" style="margin-bottom:5px">1/3 · Normál hang</h4>
+  <p id="pilotDesc">Nyomd meg a lejátszás gombot, és hallgasd meg a magyar mondatokat!</p>
+  <audio id="pilotAudio" src="audio/android-hangproba.mp3" controls preload="metadata" style="display:block;width:100%;max-width:580px;margin:12px 0">A böngésző nem támogatja az MP3-lejátszást.</audio>
+  <div class="controls" style="display:flex;gap:10px;flex-wrap:wrap">
+    <button id="pilotPrev" type="button" disabled>← Előző lépés</button>
+    <button id="pilotNext" type="button">Következő lépés →</button>
+  </div>
+  <div id="pilotQuiz" class="hidden" style="margin-top:16px">
+    <p><strong>Melyik szöveget hallottad?</strong></p>
+    <div class="controls" style="display:flex;gap:8px;flex-wrap:wrap">
+      <button type="button" data-pilot-answer="yes">Jó napot kívánok! A magyar kiejtés működik.</button>
+      <button type="button" data-pilot-answer="no">Jó estét kívánok! Ma magyarul tanulunk.</button>
+      <button type="button" data-pilot-answer="no">Viszontlátásra! Holnap találkozunk.</button>
+    </div>
+  </div>
+  <p id="pilotStatus" role="status" aria-live="polite" style="margin-top:12px">A hangfájl lejátszásához érintsd meg a ▶ gombot.</p>
+</section>
 <nav class="tabs" aria-label="Tanulási módok"><button class="tab active" data-view="list">☷ Szólista</button><button class="tab" data-view="cards">▣ Tanulókártyák</button><button class="tab" data-view="quiz">✓ Szóteszt</button><button class="tab" data-view="sentences">✎ Mondatok</button><button class="tab" data-view="communication">🎧 Szövegértés</button><button class="tab" data-view="contrast">📚 Magyar nyelvtan</button><button class="tab" data-view="steps">🎓 Tanulási leckék</button><button class="tab" data-view="review">★ Ismétlés</button></nav>
 <p id="moduleHint" class="muted" aria-live="polite">Minden tananyag ugyanebben az alkalmazásban érhető el.</p>
 <div id="notice" class="notice" role="status" aria-live="polite"></div>
