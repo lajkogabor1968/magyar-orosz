@@ -9,7 +9,43 @@ const pick=(a,n)=>shuffle(a).slice(0,n);
 const DAY_MS=86400000;
 function dueAt(type,e){return Number(((saved.reviewSchedule||{})[type]||{})[e.id])||0}
 function dueCount(type){const schedule=((saved.reviewSchedule||{})[type]||{});return current.filter(e=>Number(schedule[e.id])>0&&Number(schedule[e.id])<=Date.now()).length}
-function renderDailyPlan(){const root=$('dailyPlan');root.replaceChildren();const now=new Date(),start=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();const days=Array.from({length:8},()=>({quiz:0,sentences:0}));for(const type of ['quiz','sentences']){for(const e of current){const due=dueAt(type,e);if(!Number.isFinite(due)||due<=0)continue;const nextDay=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1).getTime();let bucket=due<nextDay?0:-1;if(bucket<0){for(let i=1;i<days.length;i++){const boundary=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i+1).getTime();if(due<boundary){bucket=i;break}}}if(bucket>=0)days[bucket][type]++}}for(let i=0;i<days.length;i++){const day=days[i],total=day.quiz+day.sentences;const row=el('div','daily-plan-row');const date=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i);const dateLabel=i===0?'Ma / Сегодня':i===1?'Holnap / Завтра':date.toLocaleDateString('hu-HU',{month:'short',day:'numeric'});row.append(el('strong','',dateLabel),el('span','',`${day.quiz} szó / слов · ${day.sentences} mondat / предложений`),el('small','',total?'Összesen / Всего: '+total:'Nincs ütemezett feladat / Нет заданий'));root.append(row)}}
+function renderDailyPlan(){
+  const root=$('dailyPlan');root.replaceChildren();
+  const now=new Date(),todayStart=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+  const days=Array.from({length:8},()=>({quiz:0,sentences:0}));
+  for(const type of ['quiz','sentences'])for(const e of current){
+    const due=dueAt(type,e);
+    if(!Number.isFinite(due)||due<=0)continue;
+    let bucket=due<new Date(now.getFullYear(),now.getMonth(),now.getDate()+1).getTime()?0:-1;
+    if(bucket<0)for(let i=1;i<days.length;i++){
+      if(due<new Date(now.getFullYear(),now.getMonth(),now.getDate()+i+1).getTime()){bucket=i;break}
+    }
+    if(bucket>=0)days[bucket][type]++;
+  }
+  const dueWords=dueCount('quiz'),dueSentences=dueCount('sentences'),dueTotal=dueWords+dueSentences;
+  const scheduled=Object.values(saved.reviewSchedule||{}).some(items=>items&&typeof items==='object'&&Object.keys(items).length);
+  $('dailyPlanStatus').textContent=dueTotal
+    ?`Most ${dueWords} szó és ${dueSentences} mondat vár ismétlésre. / Сейчас нужно повторить ${dueWords} слов и ${dueSentences} предложений.`
+    :scheduled?'Jelenleg minden esedékes ismétlés kész! / На данный момент все запланированные повторения выполнены!'
+      :'Még nincs ütemezett ismétlés. Kezdj egy szóteszttel! / Пока нет запланированных повторений. Начните с теста по словам!';
+  for(let i=0;i<days.length;i++){
+    const day=days[i],total=day.quiz+day.sentences,row=el('div','daily-plan-row');
+    const date=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i);
+    const dateLabel=i===0?'Ma / Сегодня':i===1?'Holnap / Завтра':date.toLocaleDateString('hu-HU',{month:'short',day:'numeric'});
+    row.append(el('strong','',dateLabel),el('span','',`${day.quiz} szó / слов · ${day.sentences} mondat / предложений`));
+    if(i===0){
+      const actions=el('div','daily-plan-actions');
+      const wordButton=el('button','secondary',`🔤 Szavak: ${dueWords} / Слова: ${dueWords}`);
+      wordButton.type='button';wordButton.disabled=!dueWords;wordButton.addEventListener('click',()=>startDueExercise('quiz'));
+      const sentenceButton=el('button','secondary',`✎ Mondatok: ${dueSentences} / Предложения: ${dueSentences}`);
+      sentenceButton.type='button';sentenceButton.disabled=!dueSentences;sentenceButton.addEventListener('click',()=>startDueExercise('sentences'));
+      actions.append(wordButton,sentenceButton);row.append(actions);
+      const later=Math.max(0,total-dueTotal);
+      row.append(el('small','',later?`Ma később várható még ${later} feladat. / Позже сегодня ещё ${later} заданий.`:'A gombok a jelenleg esedékes feladatokat indítják. / Кнопки запускают задания, срок которых уже наступил.'));
+    }else row.append(el('small','',total?'Összesen / Всего: '+total:'Nincs ütemezett feladat / Нет заданий'));
+    root.append(row);
+  }
+}
 function prioritizedPick(a,n,type){const errors=type==='sentences'?sentenceMistakes():mistakes(),mastery=(saved.mastery||{})[type]||{},now=Date.now();return a.map(e=>{const misses=Math.max(0,Number(errors[e.id])||0),successes=Math.max(0,Number(mastery[e.id])||0),due=dueAt(type,e);const weight=misses?Math.min(7,3+misses):due&&due<=now?3:due&&due>now?.06:successes>=2?.45:successes===1?.75:1;return {item:e,rank:-Math.log(Math.max(Number.EPSILON,Math.random()))/weight}}).sort((x,y)=>x.rank-y.rank).slice(0,n).map(x=>x.item)}const text=(el,t)=>{el.textContent=t};function el(tag,cls,content){const n=document.createElement(tag);if(cls)n.className=cls;if(content!==undefined)n.textContent=content;return n}
 function speech(s,lang){TanuloTTS.cancel();const utter=('SpeechSynthesisUtterance'in window)?new SpeechSynthesisUtterance(s):{text:s};utter.lang=lang;utter.rate=.85;TanuloTTS.speak(utter)}
 $('speechTest')?.addEventListener('click',()=>speech('Jó napot kívánok! A magyar kiejtés működik.','hu-HU'));
