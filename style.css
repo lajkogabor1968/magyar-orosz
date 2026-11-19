@@ -65,3 +65,15 @@
 /* Weekly learning recap uses activity rather than grading. */
 .weekly-focus{font-weight:600;line-height:1.5;margin:13px 0;color:#245b4e}
 #startWeeklyFocus{margin-bottom:12px;white-space:normal}
+
+/* Fourteen-day correctness trends, with empty days visibly distinct from 0%. */
+.accuracy-trend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.accuracy-trend-section{min-width:0;padding:12px;border:1px solid #d5e5dc;border-radius:11px}
+.accuracy-trend-section>strong{color:#215a4c}
+.accuracy-trend-bars{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:4px;margin:12px 0}
+.accuracy-day{display:flex;align-items:center;flex-direction:column;min-width:0;gap:5px}
+.accuracy-bar{height:78px;background:#e5ede9;border:1px dashed #b9cdc2;border-radius:5px;position:relative;width:100%;overflow:hidden}
+.accuracy-bar:has(.accuracy-fill){border-style:solid;background:#f4f8f5}
+.accuracy-fill{background:#31866c;position:absolute;bottom:0;left:0;right:0}
+.accuracy-day small{font-size:.65rem;color:#56786b}
+@media(max-width:810px){.accuracy-trend{grid-template-columns:1fr}}
