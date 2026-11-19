@@ -44,3 +44,11 @@
 .daily-plan-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
 .daily-plan-actions button{font-size:.84rem;flex:1 1 160px;white-space:normal}
 .daily-plan-actions button:disabled{opacity:.55;cursor:not-allowed}
+
+/* Daily practice log; separate new material and scheduled review. */
+.today-activity-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.today-activity-item{border:1px solid #d5e5dc;background:#f5faf7;border-radius:11px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.today-activity-item strong{font-size:.89rem;color:#20574b}
+.today-activity-item span{font-size:.81rem;color:#527268}
+.today-activity-item progress{width:100%;height:12px;accent-color:#287e6c}
+@media(max-width:810px){.today-activity-details{grid-template-columns:1fr}}
