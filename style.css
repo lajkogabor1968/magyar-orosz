@@ -61,3 +61,7 @@
 .weekly-activity-day span{color:#527268}
 .weekly-meter{display:block;width:100%;height:11px;accent-color:#287e6c}
 @media(max-width:810px){.weekly-activity{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Weekly learning recap uses activity rather than grading. */
+.weekly-focus{font-weight:600;line-height:1.5;margin:13px 0;color:#245b4e}
+#startWeeklyFocus{margin-bottom:12px;white-space:normal}
