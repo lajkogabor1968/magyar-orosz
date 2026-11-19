@@ -8,38 +8,6 @@ const showNotice=s=>{$('notice').textContent=s;};const shuffle=a=>{a=[...a];for(
 const pick=(a,n)=>shuffle(a).slice(0,n);const text=(el,t)=>{el.textContent=t};function el(tag,cls,content){const n=document.createElement(tag);if(cls)n.className=cls;if(content!==undefined)n.textContent=content;return n}
 function speech(s,lang){TanuloTTS.cancel();const utter=('SpeechSynthesisUtterance'in window)?new SpeechSynthesisUtterance(s):{text:s};utter.lang=lang;utter.rate=.85;TanuloTTS.speak(utter)}
 $('speechTest')?.addEventListener('click',()=>speech('Jó napot kívánok! A magyar kiejtés működik.','hu-HU'));
-function initAudioPilot(){
- const media=$('pilotAudio');if(!media)return;
- const steps=[
-  {title:'1/3 · Normál magyar hang',desc:'Hallgasd meg a magyar hangmintát normál tempóban!',src:'audio/android-hangproba.mp3'},
-  {title:'2/3 · Lassabb magyar hang',desc:'Ugyanezt hallhatod lassabban. A ▶ gombbal indítsd a lejátszást!',src:'audio/android-hangproba-lassu.mp3'},
-  {title:'3/3 · Hallás utáni szövegértés',desc:'Hallgasd meg újra, majd válaszd ki, melyik szöveget hallottad!',src:'audio/android-hangproba.mp3'}
- ];
- let step=0;
- const status=$('pilotStatus');
- function render(){
-  media.pause();
-  const item=steps[step];
-  if(media.getAttribute('src')!==item.src){media.src=item.src;media.load();}
-  $('pilotStep').textContent=item.title;
-  $('pilotDesc').textContent=item.desc;
-  $('pilotQuiz').classList.toggle('hidden',step!==2);
-  $('pilotPrev').disabled=step===0;
-  $('pilotNext').disabled=step===steps.length-1;
-  $('pilotNext').textContent=step===1?'Feladat →':'Következő lépés →';
-  status.textContent='A lejátszáshoz nyomd meg a ▶ gombot.';
- }
- $('pilotPrev').addEventListener('click',()=>{if(step>0){step--;render();}});
- $('pilotNext').addEventListener('click',()=>{if(step<steps.length-1){step++;render();}});
- media.addEventListener('loadedmetadata',()=>{status.textContent='Az MP3 betöltődött. A lejátszáshoz nyomd meg a ▶ gombot.';});
- media.addEventListener('playing',()=>{status.textContent='Az MP3 lejátszása elindult.';});
- media.addEventListener('ended',()=>{status.textContent='A hangminta véget ért. Lépj tovább, vagy játszd le újra!';});
- media.addEventListener('error',()=>{status.textContent='A hangfájl nem töltődött be. Ellenőrizd az internetkapcsolatot, majd frissítsd az oldalt.';});
- document.querySelectorAll('[data-pilot-answer]').forEach(b=>b.addEventListener('click',()=>{
-  status.textContent=b.dataset.pilotAnswer==='yes'?'✓ Helyes! Ezt hallottad.':'Próbáld újra! Hallgasd meg még egyszer a hangot.';
- }));
- render();
-}
 function stats(){const s=saved.stats||{correct:0,total:0};$('progressTag').textContent=`${s.total||0} megoldott feladat`;$('solvedCount').textContent=s.total||0;$('accuracy').textContent=s.total?Math.round(100*s.correct/s.total)+'%':'—';$('reviewCount').textContent=current.filter(marked).length}
 function record(ok){if(!saved.stats)saved.stats={correct:0,total:0};saved.stats.total++;if(ok)saved.stats.correct++;save();stats()}
 function setLevel(lvl){level=lvl;document.querySelectorAll('.module-shortcuts [data-levels]').forEach(a=>{a.hidden=!a.dataset.levels.split(' ').includes(lvl)});saved.level=lvl;save();current=entries();page=0;cardIndex=0;reviewOnly=false;query='';$('search').value='';$('starOnly').checked=false;document.querySelectorAll('.level').forEach(b=>b.classList.toggle('active',b.dataset.level===lvl));$('levelTitle').textContent=lvl;showNotice('');stats();renderList();initCards();initExercise('quiz');initExercise('sentences')}
@@ -55,6 +23,5 @@ function initExercise(type){const a=pool();session[type]={deck:pick(a,Math.min(1
 function renderExercise(type){const s=session[type],isSentence=type==='sentences',prefix=isSentence?'sentence':'quiz';if(!s)return;const n=s.deck.length;$(`${prefix}Counter`).textContent=`${Math.min(s.index+1,n)} / ${n}`;$(`${prefix}Score`).textContent=`${s.score} pont`;$(`${prefix}Bar`).style.width=(s.index/n*100)+'%';const options=$(`${prefix}Options`);options.replaceChildren();$(`${prefix}Feedback`).textContent='';$(`${prefix}Next`).classList.add('hidden');if(s.index>=n){$(`${prefix}Prompt`).textContent=`A teszt véget ért: ${s.score} / ${n} pont`;$(`${prefix}Counter`).textContent=`${n} / ${n}`;$(`${prefix}Bar`).style.width='100%';return}const e=s.deck[s.index];$(`${prefix}Prompt`).textContent=isSentence?e.huS:e.hu;const key=isSentence?'ruS':'ru';let distract=shuffle(current.filter(x=>x.id!==e.id&&x[key]!==e[key])).slice(0,3);const candidates=shuffle([e,...distract]);for(const item of candidates){const btn=el('button','',item[key]);options.append(btn);btn.addEventListener('click',()=>{if(s.answered)return;s.answered=true;const ok=item.id===e.id;if(ok)s.score++;record(ok);for(const b of options.children){b.disabled=true;if(b.textContent===e[key])b.classList.add('right');else if(b===btn)b.classList.add('wrong')}$(`${prefix}Score`).textContent=`${s.score} pont`;$(`${prefix}Feedback`).textContent=ok?'✓ Helyes válasz!':`A helyes megoldás: ${e[key]}`;$(`${prefix}Next`).classList.remove('hidden');$(`${prefix}Next`).textContent=s.index===n-1?'Eredmény megtekintése':'Következő →'})}}
 function advance(type){if(!session[type].answered)return;session[type].index++;session[type].answered=false;renderExercise(type)}
 document.querySelectorAll('[data-level]').forEach(b=>b.addEventListener('click',()=>setLevel(b.dataset.level)));document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));$('search').addEventListener('input',e=>{query=e.target.value.trim();page=0;renderList()});$('starOnly').addEventListener('change',()=>{page=0;renderList()});$('prevPage').addEventListener('click',()=>{page--;renderList()});$('nextPage').addEventListener('click',()=>{page++;renderList()});$('cardSentence').addEventListener('change',e=>{cardSentence=e.target.checked;cardFlip=false;renderCard()});$('flashcard').addEventListener('click',flip);$('flashcard').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip()}});$('cardFlip').addEventListener('click',flip);$('cardPrev').addEventListener('click',()=>cardMove(-1));$('cardNext').addEventListener('click',()=>cardMove(1));$('cardStar').addEventListener('click',()=>{const e=cardDeck()[cardIndex];if(e)toggleMark(e)});$('quizRestart').addEventListener('click',()=>initExercise('quiz'));$('sentenceRestart').addEventListener('click',()=>initExercise('sentences'));$('quizNext').addEventListener('click',()=>advance('quiz'));$('sentenceNext').addEventListener('click',()=>advance('sentences'));$('speakHungarian').addEventListener('click',()=>{const s=session.sentences;const e=s&&s.deck[s.index];if(e)speech(e.huS,'hu-HU')});$('cardSpeak').addEventListener('click',()=>{const e=cardDeck()[cardIndex];if(e)speech(cardSentence?e.huS:e.hu,'hu-HU')});$('reviewCards').addEventListener('click',()=>{if(!current.some(marked)){showNotice('Előbb jelölj meg legalább egy szót a szólistában.');return}reviewOnly=true;initCards();setView('cards')});$('reviewQuiz').addEventListener('click',()=>{if(!current.some(marked)){showNotice('Előbb jelölj meg legalább egy szót a szólistában.');return}reviewOnly=true;initExercise('quiz');setView('quiz')});$('resetStats').addEventListener('click',()=>{if(confirm('Töröljük a megoldott feladatok statisztikáját? A csillagozott szavak megmaradnak.')){saved.stats={correct:0,total:0};save();stats()}});
-initAudioPilot();
 $('totalTag').textContent=`${countAll} szócikk`;setLevel(level);setView('list');
 })();
