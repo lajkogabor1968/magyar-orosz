@@ -38,3 +38,9 @@
 .daily-plan-row span{font-size:.9rem}
 .daily-plan-row small{color:#5a7469;font-size:.8rem}
 @media(max-width:810px){#dailyPlan{grid-template-columns:1fr}.daily-plan{padding:16px}}
+
+/* Start today's scheduled repetitions directly from the daily plan. */
+.daily-plan-status{border-left:4px solid #32816b;background:#edf7f1;padding:10px 13px;margin:12px 0;border-radius:7px;font-weight:600;color:#20574b}
+.daily-plan-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.daily-plan-actions button{font-size:.84rem;flex:1 1 160px;white-space:normal}
+.daily-plan-actions button:disabled{opacity:.55;cursor:not-allowed}
