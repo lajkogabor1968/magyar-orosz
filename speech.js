@@ -84,12 +84,12 @@
     }
   }
 
-  function speak(utterance) {
+  function speak(utterance, skipRecording = false) {
     if (!utterance || !String(utterance.text || '').trim()) return false;
     const lang = String(utterance.lang || 'hu-HU').toLowerCase();
     const phrase = String(utterance.text).normalize('NFC').replace(/\s+/g, ' ').trim();
     const recordings = window.TanuloAudioManifest || {};
-    const clip = lang.startsWith('hu') && recordings[phrase];
+    const clip = !skipRecording && lang.startsWith('hu') && recordings[phrase];
     if (clip) {
       cancel();
       const token = generation;
@@ -105,15 +105,24 @@
         activeAudio = null;
         if (typeof utterance.onend === 'function') utterance.onend(event);
       };
-      player.onerror = event => {
-        if (token !== generation) return;
+      // A missing/broken MP3 must not stop a whole dialogue.
+      // Retry once using device speech without selecting the failed recording again.
+      function recordingFailed(event) {
+        if (token !== generation || activeAudio !== player) return;
+        player.onerror = null;
+        player.onended = null;
+        player.pause();
         activeAudio = null;
-        message('A rögzített magyar hang nem töltődött be. Ellenőrizd a kapcsolatot, majd próbáld újra.');
-        if (typeof utterance.onerror === 'function') utterance.onerror(event);
-      };
-      player.play().catch(() => {
-        if (token === generation) message('A hang nem indul. Érintsd meg újra a hangszóró gombot.');
-      });
+        if (available) {
+          message('Az MP3 nem játszható le. Próbálkozás a készülék magyar felolvasójával.');
+          speak(utterance, true);
+        } else {
+          message('Az MP3 nem játszható le, és ezen a készüléken nincs beszédszintézis.');
+          if (typeof utterance.onerror === 'function') utterance.onerror(event);
+        }
+      }
+      player.onerror = recordingFailed;
+      player.play().catch(recordingFailed);
       return true;
     }
     if (!available) {
