@@ -8,3 +8,13 @@
 .module-shortcuts a:hover,.module-shortcuts a:focus-visible{background:#d6ebe0;outline-offset:2px}
 .module-shortcuts a[hidden]{display:none!important}
 @media(max-width:810px){.module-shortcuts{margin:0 18px 14px}.module-shortcuts a{flex:1;justify-content:center}}
+
+/* Per-level learning progress: compact, readable, accessible native meters. */
+#levelProgress{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:10px}
+#levelProgress .level-performance{padding:18px;gap:10px;min-width:0}
+.level-performance strong{font-size:1rem;color:#174b43}
+.level-performance .performance-line{display:flex;flex-direction:row;justify-content:space-between;align-items:baseline;gap:10px;padding:0;background:transparent}
+.performance-line span{font-size:.87rem;color:#315c53}
+.performance-line small{white-space:nowrap;font-size:.82rem;color:#315c53}
+.level-performance progress{appearance:auto;display:block;width:100%;height:13px;accent-color:#287e6c}
+@media(max-width:810px){#levelProgress{grid-template-columns:1fr}}
