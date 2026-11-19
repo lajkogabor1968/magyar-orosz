@@ -11,7 +11,7 @@ function dueAt(type,e){return Number(((saved.reviewSchedule||{})[type]||{})[e.id
 function dueCount(type){const schedule=((saved.reviewSchedule||{})[type]||{});return current.filter(e=>Number(schedule[e.id])>0&&Number(schedule[e.id])<=Date.now()).length}
 function renderDailyPlan(){
   const root=$('dailyPlan');root.replaceChildren();
-  const now=new Date(),todayStart=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+  const now=new Date();
   const days=Array.from({length:8},()=>({quiz:0,sentences:0}));
   for(const type of ['quiz','sentences'])for(const e of current){
     const due=dueAt(type,e);
@@ -23,7 +23,7 @@ function renderDailyPlan(){
     if(bucket>=0)days[bucket][type]++;
   }
   const dueWords=dueCount('quiz'),dueSentences=dueCount('sentences'),dueTotal=dueWords+dueSentences;
-  const scheduled=Object.values(saved.reviewSchedule||{}).some(items=>items&&typeof items==='object'&&Object.keys(items).length);
+  const scheduled=['quiz','sentences'].some(type=>current.some(e=>dueAt(type,e)>0));
   $('dailyPlanStatus').textContent=dueTotal
     ?`Most ${dueWords} szó és ${dueSentences} mondat vár ismétlésre. / Сейчас нужно повторить ${dueWords} слов и ${dueSentences} предложений.`
     :scheduled?'Jelenleg minden esedékes ismétlés kész! / На данный момент все запланированные повторения выполнены!'
