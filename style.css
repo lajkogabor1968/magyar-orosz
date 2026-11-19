@@ -85,3 +85,15 @@
 #a1CardSummary{font-weight:650;color:#205749}
 #a1CardStatus{min-height:1.5em}
 @media(max-width:600px){.a1-card-trainer{padding:14px}.a1-card-trainer .actionrow button{flex-basis:100%}}
+
+/* A1 daily integrated journey: short, accessible stages. */
+.a1-daily-journey{padding:18px 22px}
+.a1-daily-journey .toolbar{padding:0 0 14px}
+.a1-journey-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.a1-journey-steps>div{display:flex;flex-direction:column;align-items:flex-start;gap:9px;background:#f3faf5;border:1px solid #cfe3d6;border-radius:13px;padding:15px;min-width:0}
+.a1-journey-steps strong{color:#245949}
+.a1-journey-steps p{flex:1}
+.a1-journey-steps button{width:100%;white-space:normal}
+.a1-daily-journey .daily-plan-status{margin:15px 0}
+.a1-daily-footnote{margin-top:10px}
+@media(max-width:700px){.a1-daily-journey{padding:14px}.a1-journey-steps{grid-template-columns:1fr}}
