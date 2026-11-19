@@ -97,3 +97,10 @@
 .a1-daily-journey .daily-plan-status{margin:15px 0}
 .a1-daily-footnote{margin-top:10px}
 @media(max-width:700px){.a1-daily-journey{padding:14px}.a1-journey-steps{grid-template-columns:1fr}}
+
+/* A1 daily results: readable bilingual feedback on mobile. */
+.a1-daily-summary{margin-top:14px;padding:16px;border-radius:13px;background:#f7faf7;border:1px solid #d3e5d9}
+.a1-daily-summary h4{margin:0 0 12px;font-size:1rem;color:#205749}
+.a1-daily-summary p{margin:9px 0;overflow-wrap:anywhere}
+.a1-daily-summary button{margin-top:9px;white-space:normal}
+@media(max-width:600px){.a1-daily-summary{padding:13px}.a1-daily-summary button{width:100%}}
