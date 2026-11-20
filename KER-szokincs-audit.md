@@ -55,3 +55,22 @@ A szókincset a készségleírásokhoz rendeljük: A1: személyes alapadatok és
 - A **B1 cél továbbra is 2000**, ezért még 1569 új, ellenőrzött bejegyzés szükséges; a szintet nem jelöljük teljesnek.
 - Forrás: Európa Tanács KER B1 globális szintleírás https://www.coe.int/en/web/common-european-framework-reference-languages/table-%201-cefr-3.3-common-reference-levels-global-scale (érthető közlés, ismerős helyzetek, tapasztalatok, tervek és indoklás).
 - Nyitott minőségellenőrzés: a korábbi sablonos B1 példamondatok és az orosz fordítások tételes felülvizsgálata.
+
+## A1 nyelvi ellenőrzés – 1. adag (2026-11-20)
+
+- **Átnézett tartomány:** az A1-es lista első 251 bejegyzése, azaz `A1:0`–`A1:250` (a tanulói azonosítók nullától indulnak).
+- **43 javított bejegyzés:** 38 esetben a magyar példamondatot és az orosz mondatfordítást együtt, 5 esetben csak az orosz fordítást pontosítottuk. A címszavakat, a szótári jelentéseket, az elemek sorrendjét és a négymezős adatszerkezetet nem módosítottuk.
+- **Cél:** a pusztán rámutató, tanulási szempontból kevésbé értékes mondatok (például „Ez a liter.”) lecserélése rövid, természetes, hétköznapi A1-es közlésekre; néhány szemantikai és megfogalmazási pontatlanság javítása.
+- **Javított azonosítók:** `A1:6`, `A1:46`, `A1:50`, `A1:53`, `A1:125`, `A1:135`–`A1:137`, `A1:155`, `A1:160`–`A1:161`, `A1:164`, `A1:168`, `A1:172`–`A1:173`, `A1:176`, `A1:181`–`A1:182`, `A1:184`, `A1:189`, `A1:194`, `A1:196`, `A1:202`–`A1:206`, `A1:208`, `A1:211`, `A1:216`, `A1:218`–`A1:220`, `A1:222`, `A1:224`, `A1:228`–`A1:231`, `A1:234`, `A1:242`, `A1:245`, `A1:250`.
+
+| Szócikk | Korábbi példamondat | Javított magyar mondat | Javított orosz fordítás |
+|---|---|---|---|
+| futball (`A1:125`) | Ez a futball. | Szeretem a futballt. | Я люблю футбол. |
+| haj (`A1:135`) | Ez a haj. | Hosszú a hajam. | У меня длинные волосы. |
+| karácsony (`A1:184`) | Ez a karácsony. | Karácsonykor együtt vagyunk. | На Рождество мы вместе. |
+| liter (`A1:230`) | Ez a liter. | Egy liter tejet kérek. | Мне литр молока, пожалуйста. |
+| metró (`A1:250`) | Ez a metró. | Metróval megyek. | Я еду на метро. |
+
+**Technikai ellenőrzés:** A1 = 600, A2 = 1200, B1 = 431, B2 = 14; összesen 2245 bejegyzés. A változások csak A1-példamondatokat és -fordításokat érintenek, más szintek és tanulói azonosítók nem változtak. Az előre rögzített magyar MP3-ok egyetlen meglévő mondatkulcsát sem érintette a módosítás; a manifestben szereplő összes fájl létezik.
+
+**Fontos korlát:** ez első körös, célzott nyelvi átnézés, **nem** teljes körű anyanyelvi lektorálás vagy hivatalos A1-minősítés. További feladat: `A1:251`–`A1:599` ellenőrzése, az első 251 bejegyzés második nyelvi ellenőrzése, majd orosz anyanyelvű próbatanulók bevonása.
