@@ -32,16 +32,16 @@ if (hash !== expectedHash) problems.push('Az A2 címszavak sorrendje vagy szöve
 // A következő előszűrő csak az egyértelmű, tanulásra alig használható sablonokat találja meg.
 // Az „Ez a táska az enyém.” jellegű valódi közléseket nem jelöljük sablonnak.
 const generic = /^(?:Ez (?:a|az|egy) [^\s,.!?;]+(?: [^\s,.!?;]+)?|Ő ezt mondja.*|Ezt mondom.*|A „.*” szó rövid)\.$/;
-const firstBatchBad = [];
+const reviewedBad = [];
 const remainingBad = [];
 data.A2.forEach((row, index) => {
   if (!generic.test(row[2])) return;
-  (index <= 240 ? firstBatchBad : remainingBad).push(index);
+  (index <= 360 ? reviewedBad : remainingBad).push(index);
 });
-if (firstBatchBad.length) problems.push(`Az első A2-adagban maradt ${firstBatchBad.length} sablon: ${firstBatchBad.join(', ')}`);
+if (reviewedBad.length) problems.push(`Az első három A2-adagban maradt ${reviewedBad.length} sablon: ${reviewedBad.join(', ')}`);
 
-console.log(`A2: ${data.A2.length} szócikk, első két ellenőrzött adag: 241`);
-console.log(`Egyértelmű sablonok az első két adagban: ${firstBatchBad.length}`);
+console.log(`A2: ${data.A2.length} szócikk, első három ellenőrzött adag: 361`);
+console.log(`Egyértelmű sablonok az első három adagban: ${reviewedBad.length}`);
 console.log(`Előszűréssel talált további sablonok: ${remainingBad.length} (még felülvizsgálandók)`);
 if (problems.length) {
   for (const problem of problems) console.error(`HIBA: ${problem}`);

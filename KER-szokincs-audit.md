@@ -170,3 +170,21 @@ Az A2-fejlesztés a felhasználó új döntése alapján megkezdődött. A szint
 | Képes tevékenység | A városban sok épületet fényképezek. | Я фотографирую много зданий в городе. |
 
 **Korlát:** a második adag sem teljes körű orosz anyanyelvi lektorálás. Külön próbatanulói ellenőrzést igényelnek a magyar igekötők, az orosz igeszemlélet, a nemjelölés és a hétköznapi orosz udvariassági formák. Következő: `A2:241`–`A2:360`.
+
+## A2 nyelvi és pedagógiai fejlesztés – 3. adag (2026-11-20)
+
+- **Tételesen átnézett új tartomány:** `A2:241`–`A2:360` (120 bejegyzés); **116 pontosított szócikk**, 4 változatlan, megfelelő példa. A mezőnkénti pontosításokat az `a2-audit-2026-11-20-part3.json` tartalmazza.
+- **Összes A2-lefedettség:** 361/1200 (30,1%), az első három adagban összesen **331 javított bejegyzés**. A további 839 bejegyzés nyelvi átnézése hátravan.
+- **Pedagógiai cél:** valós élethelyzetet bemutató rövid mondatok a család, közlekedés, vásárlás, egészségügy, munka és időpont-egyeztetés témaköréből; használhatatlan rámutató mondatok, szókimondó metapéldák és hibás elöljárószó-ragasztások helyett.
+- **Tudatos jelentéskülönbségek:** `földszint` a magyar épületben utcaszint, orosz megfogalmazásban rendszerint az első emeleti szint; `hanem` tagadás utáni szembeállítás; `hozzá` és `hozzátok` személyhez, illetve címzetthez irányulás; `húszezres` húszezer **forintos** bankjegy; `halászlé` sajátos magyar paprikás halleves, nem általában minden orosz *уха*.
+- **Stabilitás:** valamennyi címszó és sorrend változatlan; A1 600, A2 1200, B1 431, B2 14. A korábbi szintek, a párbeszédek feladatai, valamint a tanulói eredményekhez tartozó azonosítók és tárolási logika nem módosultak.
+
+| Kommunikációs helyzet | Javított magyar mondat | Orosz megfelelő |
+|---|---|---|
+| Ellentét kifejezése | Nem teát, hanem kávét kérek. | Мне не чай, а кофе, пожалуйста. |
+| Egészségügyi ügyintézés | Időpontot kérek a háziorvoshoz. | Я записываюсь на приём к семейному врачу. |
+| Időpont-egyeztetés | Van szabad időpont holnapra? | Есть свободное время для записи на завтра? |
+| Címzetthez irányulás | Este hozzátok megyünk vacsorára. | Вечером мы придём к вам на ужин. |
+| Pénzváltás | Tudna felváltani egy húszezrest? | Можете разменять купюру в двадцать тысяч форинтов? |
+
+**Automatikus kapu:** `node magyar-orosz/verify-a2.mjs` az első 361 szócikkben **0 egyértelmű, üres sablont** talált, és ellenőrizte a rekordokat, a szószámokat és a címszavak sorrendjét. A fennmaradó 839 bejegyzésben **397 további sablonjelölt** maradt, amelyek még nem teljes körűen ellenőrzöttek; az automatikus szűrés nem helyettesíti az anyanyelvi ellenőrzést. **Következő adag:** `A2:361`–`A2:480`.
