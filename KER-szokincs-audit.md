@@ -188,3 +188,21 @@ Az A2-fejlesztés a felhasználó új döntése alapján megkezdődött. A szint
 | Pénzváltás | Tudna felváltani egy húszezrest? | Можете разменять купюру в двадцать тысяч форинтов? |
 
 **Automatikus kapu:** `node magyar-orosz/verify-a2.mjs` az első 361 szócikkben **0 egyértelmű, üres sablont** talált, és ellenőrizte a rekordokat, a szószámokat és a címszavak sorrendjét. A fennmaradó 839 bejegyzésben **397 további sablonjelölt** maradt, amelyek még nem teljes körűen ellenőrzöttek; az automatikus szűrés nem helyettesíti az anyanyelvi ellenőrzést. **Következő adag:** `A2:361`–`A2:480`.
+
+## A2 nyelvi és pedagógiai fejlesztés – 4. adag (2026-11-20)
+
+- **Átnézett új tartomány:** `A2:361`–`A2:480`, 120 további szócikk. **111 célzott javítás** készült; 9 megfelelő tétel változatlan maradt. A módosult mezőket a `a2-audit-2026-11-20-part4.json` napló tartalmazza.
+- **Összes első körös A2-lefedettség:** 481/1200 (40,1%), **442 javított szócikk** az első négy adagban. Hátralévő tételesen átnézendő szókincs: 719 bejegyzés.
+- **Javítási szempont:** rövid, hihető kommunikációs helyzetek egészségügy, tanulás, családi élet, vásárlás, munka, utazás és szabadidő témában. A hiányos igemondatok és félrevezető fordítások helyét tartalmas magyar mondatok és nekik megfelelő orosz szövegek vették át.
+- **Külön kezelt jelentések:** az `ismerős` jelölhet személyt és ismerősnek ható dolgot; a `keres` lehet pénzt keresni vagy tárgyat keresni; a két `közben` tétel az egyidejű tevékenység két eltérő kifejezésmódját mutatja be. A `kaja` beszélt nyelvi stílusát és a `kedv` szó `van/nincs kedve` szerkezetét a szótári jelentésben is jeleztük.
+- **Eredeti adatok megőrzése:** a címszavak, sorrendjük, azonosítóik, valamint az A1 600 / A2 1200 / B1 431 / B2 14 elemszámok változatlanok. Az alkalmazás feladatait, felületét és tanulói eredménytárolását nem érintettük.
+
+| A2-es kommunikációs funkció | Magyar példamondat | Orosz megfelelő |
+|---|---|---|
+| Preferencia | Inkább gyalog megyek, mert szép az idő. | Я лучше пойду пешком, потому что погода хорошая. |
+| Vásárlás és csere | Ki lehet cserélni ezt a cipőt egy nagyobbra? | Можно обменять эту обувь на пару большего размера? |
+| Közlekedés | A busz tíz percet késik. | Автобус опаздывает на десять минут. |
+| Udvarias ügyintézés | Készpénzzel vagy kártyával fizet? | Вы платите наличными или картой? |
+| Egyidejű cselekvés | Anna tanul, Péter közben vacsorát készít. | Анна учится, а Петер тем временем готовит ужин. |
+
+**Automatikus minőségi kapu:** az első 481 bejegyzésben a szigorú sablon-ellenőrző **0 egyértelmű, semmitmondó mintát** jelzett; a még felülvizsgálandó 719 bejegyzésben **327 sablonjelölt** maradt. A gépi szűrés és a célzott szerkesztés nem pótolja a teljes orosz anyanyelvi lektorálást, a valódi tanulói tesztet és a hangos lejátszás ellenőrzését. **Következő adag:** `A2:481`–`A2:600`.

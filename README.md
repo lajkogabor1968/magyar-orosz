@@ -39,7 +39,7 @@ A szókincs részben az eredeti, felhasználó által megadott Excel-fájlból s
 
 Automatikus A1-adatellenőrzés a teljes repository gyökeréből: `node magyar-orosz/verify-a1.mjs`. Ez a szószámokat, a rekordok szerkezetét, a tanulói azonosítók állandóságát és a magyar MP3-hivatkozásokat vizsgálja. A tényleges nyelvi pontosságot és a telefonos hangélményt nem tudja tanúsítani.
 
-Az A2 nyelvi felülvizsgálata külön, kisebb adagokban folyik; az első 361 bejegyzés 2026-11-20-án került átnézésre. Az A2 szerkezeti és sablon-ellenőrzése: `node magyar-orosz/verify-a2.mjs`. Az 1200 bejegyzés **nem** jelent kész, orosz anyanyelvű lektorálással hitelesített szókincset.
+Az A2 nyelvi felülvizsgálata külön, kisebb adagokban folyik; az első 481 bejegyzés 2026-11-20-án került átnézésre. Az A2 szerkezeti és sablon-ellenőrzése: `node magyar-orosz/verify-a2.mjs`. Az 1200 bejegyzés **nem** jelent kész, orosz anyanyelvű lektorálással hitelesített szókincset.
 
 ## Magyar nyelvű felolvasás
 A szólistában a hangszóró a magyar szót, a beszéd ikon a magyar példamondatot olvassa fel. A mondatgyakorlás magyar mondatot és magyar hangot használ; a válaszlehetőségek orosz fordítások. A tanulókártyákon a „Magyar kiejtés” gomb mindig a magyar oldalt olvassa fel, még akkor is, ha az orosz fordítás látható. Az `audio/hu-manifest.js` jelenleg 57 magyar hangfájlra hivatkozik; a többi kifejezés a készülék beszédszintézisét igényelheti.
