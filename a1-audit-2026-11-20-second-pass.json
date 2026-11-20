@@ -1,0 +1,42 @@
+{
+  "range": [0, 599],
+  "note": "A1 második célzott ellenőrzés: természetes magyar közlések, pontos orosz megfelelő, nemjelölés és többjelentésű szavak. A hiányzó mezők nem változnak; a címszavakat, azonosítókat és sorrendet tilos átírni.",
+  "fixes": {
+    "13": {"ru": "Сегодня мне хочется спать."},
+    "33": {"hu": "Péter a barátom.", "ru": "Петер — мой друг."},
+    "41": {"hu": "Bocsánat, késtem.", "ru": "Извините за опоздание."},
+    "42": {"hu": "Anna ma boldog.", "ru": "Анна сегодня счастлива."},
+    "44": {"hu": "Ez a bor finom.", "ru": "Это вино вкусное."},
+    "62": {"hu": "Anna fáradt, de tanul.", "ru": "Анна устала, но учится."},
+    "76": {"hu": "Az egyetemen tanulok.", "ru": "Я учусь в университете."},
+    "78": {"ru": "Мне очень хочется есть."},
+    "105": {"hu": "Anna ma fáradt.", "ru": "Анна сегодня устала."},
+    "114": {"hu": "A fiatal orvos itt dolgozik.", "ru": "Молодой врач работает здесь."},
+    "119": {"hu": "Kártyával fizetek.", "ru": "Я плачу картой."},
+    "120": {"ru": "Дети играют в футбол после обеда."},
+    "124": {"hu": "Párizs Franciaországban van.", "ru": "Париж находится во Франции."},
+    "128": {"hu": "Hol van a fürdőszoba?", "ru": "Где ванная комната?"},
+    "133": {"hu": "Sok gyümölcsöt eszem.", "ru": "Я ем много фруктов."},
+    "138": {"hu": "Kérek egy hamburgert.", "ru": "Мне гамбургер, пожалуйста."},
+    "146": {"hu": "Anna azt mondja, hogy fáradt.", "ru": "Анна говорит, что устала."},
+    "147": {"hu": "Hogyan mész haza?", "ru": "Как ты добираешься домой?"},
+    "210": {"hu": "Ezt a könyvet olvasom.", "ru": "Я читаю эту книгу."},
+    "269": {"meaning": "брюки (в русском языке только мн. ч.)"},
+    "275": {"hu": "Ma szép nap van, és süt a nap.", "ru": "Сегодня хороший день, и светит солнце."},
+    "304": {"meaning": "он; она (венгерское местоимение без грамматического рода)"},
+    "339": {"hu": "Nyáron rövidnadrágot hordok.", "ru": "Летом я ношу шорты."},
+    "415": {"meaning": "родной брат или сестра (в венгерском не различаются по роду)", "hu": "A testvérem neve Anna.", "ru": "Мою сестру зовут Анна."},
+    "465": {"hu": "Péter biztos benne.", "ru": "Петер в этом уверен."},
+    "516": {"meaning": "первый этаж (по российской системе; в Венгрии уровень земли)"},
+    "568": {"meaning": "ходить на прогулку, в поход; ездить на экскурсию", "hu": "Hétvégén a hegyekben kirándulunk.", "ru": "В выходные мы гуляем в горах."},
+    "570": {"ru": "Добрый день!"}
+  },
+  "requires_native_review": [
+    {"id": 275, "reason": "nap: a 'day' és a 'sun' jelentés megkülönböztetésének tanulói tesztje"},
+    {"id": 340, "reason": "ruha: одежда és платье használatának élethelyzeti árnyalatai"},
+    {"id": 415, "reason": "testvér: magyar nemsemleges szó, oroszul külön брат/sестра"},
+    {"id": 478, "reason": "dinnye: görögdinnye/sárgadinnye különbség egyértelműsítése képpel"},
+    {"id": 516, "reason": "földszint: magyar/orosz emeletszámozás eltérése"},
+    {"id": 532, "reason": "helyjegy: országonként eltérő jegy- és helyfoglalási gyakorlat"}
+  ]
+}
