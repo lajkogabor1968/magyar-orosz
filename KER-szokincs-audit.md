@@ -99,3 +99,22 @@ A szókincset a készségleírásokhoz rendeljük: A1: személyes alapadatok és
 5. Minden módosítás után vizsgáljuk a négymezős adatokat, az elemszámokat, a szócikkazonosítókat és az előre felvett hangok kapcsolódó szövegkulcsait.
 
 **Állapot:** az első átnézés nem jelent végleges lektorálást. Az A1 anyagot még nem szabad bizonyítottan hibamentesnek minősíteni. Következő: `A1:351`–`A1:599` és a korábbi adagok második, szigorú ellenőrzése.
+
+## A1 nyelvi ellenőrzés – 3. adag (2026-11-20)
+
+- **Átnézett tartomány:** `A1:351`–`A1:599` (249 bejegyzés: 103 alaplistabeli és 146 kiegészítő).
+- **66 pontosított bejegyzés:** a túlságosan sablonos vagy félreérthető példamondatokat hétköznapi közlések váltották fel; egyes orosz fordítások és jelentések is pontosabbak lettek. A változtatások teljes mezőnkénti listája az `a1-audit-2026-11-20-batch3.json` fájlban található.
+- **Első körös lefedettség:** 600/600 (100%); ez **nem** egyenértékű a nyelvileg hibamentes, anyanyelvi vagy hivatalos KER szerinti lektorálással. Minden bejegyzés második ellenőrzése, a többjelentésű címszavak felülvizsgálata és orosz anyanyelvi kontroll továbbra is szükséges.
+- **Megőrzött adatok:** valamennyi címszó, szócikkazonosító és sorrend változatlan. Szintenkénti elemszámok: A1 600, A2 1200, B1 431, B2 14. Az A2–B2 tételek és a tanulói eredmények tárolási kódja nem módosult.
+
+| Szócikk | Pontosítás | Magyar példa | Orosz megfelelő |
+|---|---|---|---|
+| szemüveg (`A1:369`) | Hasznos hétköznapi kérdés | Hol a szemüvegem? | Где мои очки? |
+| tegnap (`A1:406`) | Nemtől független múlt idejű példa | Tegnap hideg volt. | Вчера было холодно. |
+| vagy (`A1:435`) | Az orosz nyelvben a jelen idejű létige rendszerint hiányzik | Te otthon vagy. | Ты дома. |
+| benne (`A1:461`) | A hivatkozott tárgy a mondatban is megjelenik | A táskában van a kulcs? – Igen, benne van. | Ключ в сумке? — Да, он в ней. |
+| közvetlen (`A1:576`) | A vonat itt átszállás nélkül közlekedik | Ez egy közvetlen vonat. | Это поезд без пересадок. |
+
+**Automatikus szerkezeti ellenőrzés:** mind a 66 szócikk pontosan a dokumentált mezőiben módosult; minden sor négy nem üres szöveges mezőből áll; az összes szint szószáma és címszósorrendje egyezik a kiinduló verzióéval. A magyar MP3-manifest 57 hivatkozása létező fájlra mutat. Az ellenőrzés két, már korábbról eltérő hangszövegkulcsot mutatott (`Ez egy amerikai ember.`, `Ez egy angol ember.`): ezek a jelenlegi A1-mondatoktól eltérnek, tehát ezen két mondat új felvétel nélkül a készülék beszédszintézisére szorulhat. Régi felvételt **nem** rendeltünk hibás szöveghez.
+
+**Következő minőségi kapu:** az A1 teljes második, szigorú nyelvi ellenőrzése, különösen az egyalakú többjelentésű szavak, a természetes A1-es mondatok, a magyar–orosz megfelelések, valamint a tényleges hangos lejátszás célzott tesztje. A2/B1/B2 bővítését addig nem kezdjük el.
