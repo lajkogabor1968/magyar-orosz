@@ -224,3 +224,21 @@ Az A2-fejlesztés a felhasználó új döntése alapján megkezdődött. A szint
 | Időbeli viszony | Még mindig dolgozom. | Я всё ещё работаю. |
 
 **Automatikus ellenőrzés:** `node magyar-orosz/verify-a2.mjs` az első 601 bejegyzésben **0 egyértelmű sablonhibát** talált; a maradék 599-ben **265 sablonjelölt** van. Ez a heurisztika nem a teljes nyelvi hibaszám. Orosz anyanyelvi kontroll, többjelentésű szavak második körös ellenőrzése és tanulói próbateszt továbbra is szükséges. **Következő adag:** `A2:601`–`A2:720`.
+
+## A2 nyelvi és pedagógiai fejlesztés – 6. adag (2026-11-20)
+
+- **Új tételesen átnézett tartomány:** `A2:601`–`A2:720` (120 bejegyzés), **118 javított szócikkel** és 2 változatlan, használható tétellel. A pontos mezőnkénti változásokat az `a2-audit-2026-11-20-part6.json` tartalmazza.
+- **Összesített első körös A2-lefedettség:** 721/1200 (**60,1%**). Hat adagban **668 bejegyzés** kapott célzott javítást. A következő 479 szócikk nyelvi felülvizsgálata még hátravan.
+- **Témák:** időjárás és szabadság, otthon és család, iskolai tevékenység, egészségügy, közlekedés, vásárlás, munkahely, turizmus és kulturális tárgyak.
+- **Jelentési és használati pontosítások:** `ne` tiltó felszólításban; `nyugodtan` biztató „ne félj kérdezni” értelemben; `ön` tiszteletteljes, hivatalos megszólításként (szemben az előző adag `maga` szóhasználati figyelmeztetésével); `néni` mint felnőtt vagy idősebb nő megszólítása; `ötezres` mint ötezer forintos címlet; `pálinka` mint erős, gyümölcsalapú szeszes ital. A két eredetileg is megfelelő bejegyzés (`óta`, `ragozás`) változatlan maradt.
+- **Adatbiztonság:** egyik címszó, szócikkindex vagy tárolt eredményazonosító sem változott. A1 600, A2 1200, B1 431, B2 14. A párbeszédes feladatok és a tanulói eredménytárolás kódja érintetlen maradt.
+
+| A2-es funkció | Magyar példamondat | Orosz fordítás |
+|---|---|---|
+| Időjárás | Ma napos az idő. | Сегодня солнечная погода. |
+| Udvarias bocsánatkérés | Ne haragudj a késésért! | Прости за опоздание! |
+| Bátorítás | Nyugodtan kérdezhetsz, ha nem érted. | Не стесняйся спрашивать, если не понимаешь. |
+| Szálláshely | Egy kis panzióban foglaltunk szobát. | Мы забронировали номер в небольшом пансионе. |
+| Helyismeret | Mikor indul a busz a repülőtérre? | Когда отправляется автобус в аэропорт? |
+
+**Minőségellenőrzés:** az automatikus `verify-a2.mjs` az első 721 bejegyzésben **0 egyértelműen semmitmondó sablont** mutat; a hátralévő 479-ben **175 sablonjelöltet** talál. Ez csak előszűrés, nem teljes anyanyelvi lektorálás. Kötelező későbbi kapu a többjelentésű elemek második, orosz anyanyelvű ellenőrzése, továbbá a feladatok és hangok tényleges tanulói kipróbálása. **Következő adag:** `A2:721`–`A2:840`.

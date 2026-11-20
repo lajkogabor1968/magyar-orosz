@@ -36,12 +36,12 @@ const reviewedBad = [];
 const remainingBad = [];
 data.A2.forEach((row, index) => {
   if (!generic.test(row[2])) return;
-  (index <= 600 ? reviewedBad : remainingBad).push(index);
+  (index <= 720 ? reviewedBad : remainingBad).push(index);
 });
-if (reviewedBad.length) problems.push(`Az első öt A2-adagban maradt ${reviewedBad.length} sablon: ${reviewedBad.join(', ')}`);
+if (reviewedBad.length) problems.push(`Az első hat A2-adagban maradt ${reviewedBad.length} sablon: ${reviewedBad.join(', ')}`);
 
-console.log(`A2: ${data.A2.length} szócikk, első öt ellenőrzött adag: 601`);
-console.log(`Egyértelmű sablonok az első öt adagban: ${reviewedBad.length}`);
+console.log(`A2: ${data.A2.length} szócikk, első hat ellenőrzött adag: 721`);
+console.log(`Egyértelmű sablonok az első hat adagban: ${reviewedBad.length}`);
 console.log(`Előszűréssel talált további sablonok: ${remainingBad.length} (még felülvizsgálandók)`);
 if (problems.length) {
   for (const problem of problems) console.error(`HIBA: ${problem}`);
