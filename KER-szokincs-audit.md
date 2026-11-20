@@ -206,3 +206,21 @@ Az A2-fejlesztés a felhasználó új döntése alapján megkezdődött. A szint
 | Egyidejű cselekvés | Anna tanul, Péter közben vacsorát készít. | Анна учится, а Петер тем временем готовит ужин. |
 
 **Automatikus minőségi kapu:** az első 481 bejegyzésben a szigorú sablon-ellenőrző **0 egyértelmű, semmitmondó mintát** jelzett; a még felülvizsgálandó 719 bejegyzésben **327 sablonjelölt** maradt. A gépi szűrés és a célzott szerkesztés nem pótolja a teljes orosz anyanyelvi lektorálást, a valódi tanulói tesztet és a hangos lejátszás ellenőrzését. **Következő adag:** `A2:481`–`A2:600`.
+
+## A2 nyelvi és pedagógiai fejlesztés – 5. adag (2026-11-20)
+
+- **Átnézett új tartomány:** `A2:481`–`A2:600` (120 bejegyzés), **108 célzott javítással** és 12 változatlanul hagyott, megfelelő tétellel. A módosult mezőket az `a2-audit-2026-11-20-part5.json` napló rögzíti.
+- **Összesített lefedettség:** 601/1200, azaz **50,1%** az első körös A2-felülvizsgálatban. Az első öt adagban **550 bejegyzés** kapott javítást; a hátralévő ellenőrizendő rész **599 szócikk**.
+- **Tartalmi cél:** valós szituációkat kifejező példák a lakhatás, utazás, közlekedés, vásárlás, egészség, tanulás, munkahely és szabadidő témakörökben. Az eredeti, használhatatlan „Ez a…” és „Szeretnék…” töredékek helyett tartalmas mondatokat, természetes orosz fordításokat adtunk.
+- **Külön kezelt jelentések:** `levél` = falevél vagy írott levél; `meg` = beszélt nyelvi kötőszó vagy befejezettséget jelölő igekötő; `még` = további mennyiség vagy továbbra is fennálló állapot; `más` = másik jellegű dolog vagy más valami. A `maga` udvariassági árnyalatát és a `miénk` birtokos névmási szerepét pontosítottuk. A kétszer szereplő `már` eltérő példamondatot kapott, a meglévő tanulói azonosítóinak megőrzésével.
+- **Stabilitás:** A1 600, A2 1200, B1 431, B2 14; minden címszó és index változatlan. A tanulói eredmények, a korábbi A2-párbeszédek és a felületkód érintetlenek.
+
+| Kommunikációs cél | Magyar példa | Orosz fordítás |
+|---|---|---|
+| Szállásfoglalás | Lefoglalok egy szobát két éjszakára. | Я бронирую номер на две ночи. |
+| Időpont tisztázása | Meddig vagy ma a munkahelyeden? | До скольких ты сегодня на работе? |
+| Sürgős segítség | Hívj mentőt, valaki rosszul van! | Вызови скорую, кому-то плохо! |
+| Mennyiségi kiegészítés | Még egy pohár vizet kérek. | Мне ещё один стакан воды, пожалуйста. |
+| Időbeli viszony | Még mindig dolgozom. | Я всё ещё работаю. |
+
+**Automatikus ellenőrzés:** `node magyar-orosz/verify-a2.mjs` az első 601 bejegyzésben **0 egyértelmű sablonhibát** talált; a maradék 599-ben **265 sablonjelölt** van. Ez a heurisztika nem a teljes nyelvi hibaszám. Orosz anyanyelvi kontroll, többjelentésű szavak második körös ellenőrzése és tanulói próbateszt továbbra is szükséges. **Következő adag:** `A2:601`–`A2:720`.
