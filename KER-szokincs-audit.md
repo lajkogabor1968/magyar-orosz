@@ -260,3 +260,21 @@ Az A2-fejlesztés a felhasználó új döntése alapján megkezdődött. A szint
 | Tiltás | Itt tilos dohányozni. | Здесь запрещено курить. |
 
 **Automatikus ellenőrzés:** az első 841 szócikkben a szigorú mintakereső **0 nyilvánvalóan üres sablonmondatot** talált; a további 359-ben **83 sablonjelölt** maradt. Ez nem jelent nyelvi hibamentességet; a címszavak második ellenőrzése, orosz anyanyelvi kontroll és valós tanulói teszt még hátravan. **Következő adag:** `A2:841`–`A2:960`.
+
+## A2 nyelvi és pedagógiai fejlesztés – 8. adag (2026-11-20)
+
+- **Új ellenőrzött tartomány:** `A2:841`–`A2:960` (120 bejegyzés); **111 pontosított szócikk**, kilenc használható tétel változatlan maradt. Az adatok két forrásban szerepelnek: `A2:841`–`A2:950` a `data.js`, `A2:951`–`A2:960` az `ecl-vocab.js` fájlban. A pontos változásokat az `a2-audit-2026-11-20-part8.json` tartalmazza.
+- **Összesített első körös A2-lefedettség:** **961/1200 (80,1%)**, az első nyolc adagban **899 módosított szócikk**. Hátra van `A2:961`–`A2:1199` (239 további, még tételesen nem ellenőrzött bejegyzés).
+- **Nyelvi fókusz:** hétköznapi kérdések és válaszok, szövegértéshez hasznos alanyok és határozók, család és munkavégzés, utazás, étkezés, egészségügy, többjelentésű szavak. A `világos` külön bejegyzései a „megérthető” és a „fényes” jelentést kapják; a `visszaad`, `visszajön`, `visszamegy` igekötős alakok eltérő iránya a példákban is megjelenik.
+- **Külön dokumentált címszójavítás:** `A2:912` `vegetariánus` → **`vegetáriánus`**. A helyes írásmódot a [magyar egészségügyi tájékoztató](https://egeszsegvonal.gov.hu/maradj-egeszseges/egeszseges-szokasok/taplalkozas/etrendek/vegetarianus-es-vegan-etrend.html) és szótári forrás is megerősíti. Ez a kör **egyetlen címszószintű változása**; a szócikk helye és azonosítója változatlan maradt. A `verify-a2.mjs` címszólenyomatát szándékosan frissítettük, a konkrét eltérést a változásnapló rögzíti.
+- **Változatlan adatok:** A1 600, A2 1200, B1 431, B2 14 bejegyzés. A párbeszédes tananyag, a programfelület és a tanulói eredménytárolás nem változott.
+
+| A2-es helyzet | Magyar mondat | Orosz fordítás |
+|---|---|---|
+| Szállás vagy utazás | Az utolsó busz tízkor indul. | Последний автобус отправляется в десять. |
+| Vélemény kifejezése | Anna elfoglalt, Péter viszont ráér. | Анна занята, а Петер, напротив, свободен. |
+| Udvarias kérés | Kérek egy üdítőt jég nélkül. | Мне прохладительный напиток без льда, пожалуйста. |
+| Tanulás | Anna egy rövid verset tanul. | Анна учит короткое стихотворение. |
+| Egyszerű tiltás | Ne zavarj, most tanulok! | Не мешай мне, я сейчас учусь! |
+
+**Automatikus minőségi kapu:** a `verify-a2.mjs` az első 961 ellenőrzött sorban **0 egyértelműen üres sablonmondatot** jelez. A fennmaradó 239 sorban is **0 találat** maradt ezzel a szigorú mintával; ez önmagában nem igazolja a szókincs helyességét vagy az A2-szint megfelelő pedagógiai besorolását. A maradék tételes ellenőrzése, valamennyi bejegyzés második nyelvi köre, orosz anyanyelvi lektorálás és próbatanulói teszt továbbra is szükséges. **Következő adag:** `A2:961`–`A2:1080`.

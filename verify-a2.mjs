@@ -25,8 +25,9 @@ data.A2.forEach((row, index) => {
 });
 
 // Az A2 szócikkindex is része a böngészőben tárolt tanulói eredményazonosítónak.
+// A2:912 egyetlen dokumentált címszó-helyesírási javítása: vegetariánus → vegetáriánus.
 const hash = crypto.createHash('sha256').update(JSON.stringify(data.A2.map(row => row[0]))).digest('hex');
-const expectedHash = '940fc0848b9b05364e5dbed1f78c8eadfa76c20e7d0b1e44f419cb38585a9a1e';
+const expectedHash = 'ed81a97158060fc0965cf2f0e547791d1d8d3d2a497ddb0de09d89b3ef1d71d6';
 if (hash !== expectedHash) problems.push('Az A2 címszavak sorrendje vagy szövege megváltozott.');
 
 // A következő előszűrő csak az egyértelmű, tanulásra alig használható sablonokat találja meg.
@@ -36,12 +37,12 @@ const reviewedBad = [];
 const remainingBad = [];
 data.A2.forEach((row, index) => {
   if (!generic.test(row[2])) return;
-  (index <= 840 ? reviewedBad : remainingBad).push(index);
+  (index <= 960 ? reviewedBad : remainingBad).push(index);
 });
-if (reviewedBad.length) problems.push(`Az első hét A2-adagban maradt ${reviewedBad.length} sablon: ${reviewedBad.join(', ')}`);
+if (reviewedBad.length) problems.push(`Az első nyolc A2-adagban maradt ${reviewedBad.length} sablon: ${reviewedBad.join(', ')}`);
 
-console.log(`A2: ${data.A2.length} szócikk, első hét ellenőrzött adag: 841`);
-console.log(`Egyértelmű sablonok az első hét adagban: ${reviewedBad.length}`);
+console.log(`A2: ${data.A2.length} szócikk, első nyolc ellenőrzött adag: 961`);
+console.log(`Egyértelmű sablonok az első nyolc adagban: ${reviewedBad.length}`);
 console.log(`Előszűréssel talált további sablonok: ${remainingBad.length} (még felülvizsgálandók)`);
 if (problems.length) {
   for (const problem of problems) console.error(`HIBA: ${problem}`);
