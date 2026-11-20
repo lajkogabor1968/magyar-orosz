@@ -130,3 +130,25 @@ A szókincset a készségleírásokhoz rendeljük: A1: személyes alapadatok és
 - **Hangállomány külön diagnosztika:** a manifestben hivatkozott mind az 57 MP3 fájl olvasható, a dekódolási/fejlécellenőrzés sikeres; a lejátszási hossz 0,65–2,53 másodperc. A mappában egy további, egyelőre nem hivatkozott `audio/hu/a1-005-w.mp3` fájl található. Hangos meghallgatásos ellenőrzés nélkül nem társítottuk hozzá automatikusan a feltételezett címszót.
 
 **Szakmai korlát:** a két belső ellenőrzési kör nem igazol 100%-os nyelvi hibamentességet. Az A1-et külső orosz anyanyelvű lektorálás és valódi próbatanulói teszt nélkül továbbra sem nevezzük véglegesnek. Csak ezek után következhet A2-szintű fejlesztés.
+
+## A2 nyelvi és pedagógiai fejlesztés – 1. adag (2026-11-20)
+
+Az A2-fejlesztés a felhasználó új döntése alapján megkezdődött. A szint kritériuma az Európa Tanács [A2-es globális szintleírása](https://www.coe.int/en/web/common-european-framework-reference-languages/table-1-%20cefr-3.3-common-reference-levels-global-scale): ismerős hétköznapi helyzetek és gyakori kifejezések megértése, egyszerű információcsere, saját környezet, család, vásárlás, helyismeret, munka és alapvető szükségletek rövid bemutatása. Az 1200 elem fejlesztési cél, nem KER által előírt szószám.
+
+- **Első átnézett tartomány:** `A2:0`–`A2:120` (121 bejegyzés az 1200-ból, 10,1%).
+- **110 pontosított szócikk** jelentése, magyar példamondata és/vagy orosz fordítása szerepel az `a2-audit-2026-11-20-part1.json` naplóban. A többi 11 ellenőrzött bejegyzés változatlan maradt.
+- **Kiinduló probléma:** 793/1200 A2-es példamondat jelöltként szerepelt egy szélesebb, sablonokat kereső előszűrőben (például „Ez a bevásárol.”, „Ő ezt mondja: »ahol«.”, „Ő divatosan dolgozik.”). Ezek közül nem mind szükségképpen hibás, de jelentős részük pedagógiailag értéktelen vagy hibás.
+- **Az első adag eredménye:** a szélesebb előszűrő szerint 99-ről 3-ra csökkent a mintamondat-találatok száma az első 121 bejegyzésben. A 3 fennmaradó találat valójában értelmes, összetett mondat; az előszűrő álpozitív eredménye.
+- **Szigorúbb technikai ellenőrzés:** `node magyar-orosz/verify-a2.mjs` a 600/1200/431/14 elemszámot, a négymezős adatokat, az A2-sorrendet, az első 121 szócikk egyértelmű semmitmondó sablonjait ellenőrzi. A szigorúbb mintákból az első adagban 0 maradt; **a további 1079 A2-es bejegyzésben még legalább 552 egyértelmű sablon** vár javításra. Ez nem az összes lehetséges nyelvi hiba száma.
+- **Megőrzés:** címszavak, azonosítók és sorrend változatlan; az A1/B1/B2 szókincs, a korábbi tanulói eredmények és a meglévő A2-es párbeszédek feladatai nem módosultak.
+
+| A2-szintű cél | Példamondat a javított anyagból | Orosz megfelelő |
+|---|---|---|
+| Lakáskeresés | Egy kis albérletet keresek a belvárosban. | Я ищу небольшую съёмную квартиру в центре города. |
+| Ügyintézés | Kérem, betűzze a nevét! | Пожалуйста, назовите своё имя по буквам! |
+| Közlekedés | A következő megállónál átszállunk a villamosra. | На следующей остановке мы пересядем на трамвай. |
+| Vásárlás | Tíz deka sajtot kérek. | Мне сто граммов сыра, пожалуйста. |
+
+**Kétséges vagy kontextusfüggő esetek:** `barack`/`baracklé` = őszibarack vagy sárgabarack; `asszony` családi/életkori árnyalat; `diákigazolvány` és `diákjegy` magyar ügyintézési megfelelései. Ezeket további anyanyelvi és tanulói tesztnek kell alávetni. Az A2-szintet jelenleg **nem szabad késznek vagy nyelvileg hitelesítettnek tekinteni**.
+
+**Következő adag:** `A2:121`–`A2:240`, utána további kisebb, azonosítókat megőrző körök; párhuzamosan a tíz A2-es párbeszéd kommunikációs céljának és értékelési logikájának tesztje.
