@@ -152,3 +152,21 @@ Az A2-fejlesztés a felhasználó új döntése alapján megkezdődött. A szint
 **Kétséges vagy kontextusfüggő esetek:** `barack`/`baracklé` = őszibarack vagy sárgabarack; `asszony` családi/életkori árnyalat; `diákigazolvány` és `diákjegy` magyar ügyintézési megfelelései. Ezeket további anyanyelvi és tanulói tesztnek kell alávetni. Az A2-szintet jelenleg **nem szabad késznek vagy nyelvileg hitelesítettnek tekinteni**.
 
 **Következő adag:** `A2:121`–`A2:240`, utána további kisebb, azonosítókat megőrző körök; párhuzamosan a tíz A2-es párbeszéd kommunikációs céljának és értékelési logikájának tesztje.
+
+## A2 nyelvi és pedagógiai fejlesztés – 2. adag (2026-11-20)
+
+- **Tételesen átnézett új tartomány:** `A2:121`–`A2:240` (120 bejegyzés); **105 pontosított szócikk**, 15 változatlanul hagyott, elfogadható tétel. A szó- és mondatszintű változtatásokat az `a2-audit-2026-11-20-part2.json` rögzíti.
+- **Összes A2-lefedettség:** 241/1200 (20,1%), az első két adagban 215 javított bejegyzés. A további 959 elem tételes nyelvi ellenőrzése még hátra van.
+- **Javított mintatípusok:** használhatatlan igemondatok („Szeretnék elindulni.” / hibás orosz példa), mesterséges metanyelvi közlések („Ezt mondom: »felébred«.”), és helytelen szójelentések (például az *erős* nemcsak „сильный”, hanem ételre „острый”).
+- **Tudatos jelentéskülönbségek:** az *egész* jelenthet „teljes”-t vagy „eléggé”-t; az *elég* jelenthet „meglehetősen”-t vagy „elegendő”-t; az *esik* jelenthet „leesik”-et vagy „esik az eső”-t. Ezek külön példamondatot kaptak. A *félóra* önálló főnévként („van egy szabad félórám”) egybeírt, a puszta „fél óra” időmérték különírt használatát később nyelvtani magyarázatban is tisztázni kell.
+- **Automatikus ellenőrzés:** az átdolgozott `verify-a2.mjs` az első 241 sorban 0 nyilvánvaló, önmagában semmitmondó sablont jelez. A további 959 bejegyzésben egy szigorúbb előszűrés **483 gyanús sablont** talál; ez nem a tényleges hibák teljes száma, és a korábbi, szélesebb szűrő 552 találatával nem hasonlítható közvetlenül össze.
+- **Stabilitás:** A1 600, A2 1200, B1 431, B2 14. Címszó, sorrend és tanulói azonosító nem változott. Más szint, az A2-párbeszédek feladatai és a helyi eredménytárolás nem módosultak.
+
+| Funkció | Magyar példa | Orosz megfelelő |
+|---|---|---|
+| Késés és következmény | Ha nem indulunk most, elkésünk. | Если мы не выйдем сейчас, мы опоздаем. |
+| Udvarias vásárlás | Felpróbálhatom ezt a kabátot? | Можно примерить это пальто? |
+| Időpont és indulás | A vonat öt perc múlva elindul. | Поезд отправится через пять минут. |
+| Képes tevékenység | A városban sok épületet fényképezek. | Я фотографирую много зданий в городе. |
+
+**Korlát:** a második adag sem teljes körű orosz anyanyelvi lektorálás. Külön próbatanulói ellenőrzést igényelnek a magyar igekötők, az orosz igeszemlélet, a nemjelölés és a hétköznapi orosz udvariassági formák. Következő: `A2:241`–`A2:360`.
