@@ -242,3 +242,21 @@ Az A2-fejlesztés a felhasználó új döntése alapján megkezdődött. A szint
 | Helyismeret | Mikor indul a busz a repülőtérre? | Когда отправляется автобус в аэропорт? |
 
 **Minőségellenőrzés:** az automatikus `verify-a2.mjs` az első 721 bejegyzésben **0 egyértelműen semmitmondó sablont** mutat; a hátralévő 479-ben **175 sablonjelöltet** talál. Ez csak előszűrés, nem teljes anyanyelvi lektorálás. Kötelező későbbi kapu a többjelentésű elemek második, orosz anyanyelvű ellenőrzése, továbbá a feladatok és hangok tényleges tanulói kipróbálása. **Következő adag:** `A2:721`–`A2:840`.
+
+## A2 nyelvi és pedagógiai fejlesztés – 7. adag (2026-11-20)
+
+- **Tételesen átnézett új tartomány:** `A2:721`–`A2:840` (120 szócikk). **Mind a 120 bejegyzésben** magyar példamondat, orosz fordítás és/vagy jelentésbeli javítás készült. A mezőnkénti változások az `a2-audit-2026-11-20-part7.json` fájlban követhetők.
+- **Összesített első körös lefedettség:** 841/1200, azaz **70,1%**. Az első hét adagban **788 javított bejegyzés** szerepel. Hátralévő 359 tétel: `A2:841`–`A2:1199`.
+- **Pedagógiai fókusz:** a teljesen értelmetlen sablonokat valós helyzetek váltották fel: bolt, étterem, utazás, iskola, munka, egészség, udvarias kérés, állampolgári és hétköznapi kommunikáció.
+- **Megkülönböztetett jelentések:** a `se`/`sem` tagadáshoz kapcsolódó szavak, `sehol` (hely) és `sehova` (irány); a rokonsági `sógor`/`sógornő` orosz megfelelései csak konkrét kapcsolat alapján pontosak, ezért a példák megnevezik a rokoni viszonyt; a `szimpatikus` nem feltétlenül „jóképű”, hanem személyes rokonszenvet kiváltó ember. A `szabad` és `szabadság`, a `szénsavas` és `szénsavmentes`, valamint a `szóval` és `szerint` használata is külön kontextust kapott.
+- **Megőrzött szerkezet:** az eredeti magyar címszavak, A2-sorrend és tanulói azonosítók változatlanok; A1 600, A2 1200, B1 431, B2 14. A korábbi tananyagok, párbeszédek, felület és tanulói eredmények nem módosultak.
+
+| A2-es kommunikációs cél | Magyar példa | Orosz megfelelő |
+|---|---|---|
+| Tagadó helyhatározó | Sehol sem találom a kulcsomat. | Я нигде не могу найти свой ключ. |
+| Udvarias vásárlás | Szénsavmentes vizet kérek. | Мне негазированную воду, пожалуйста. |
+| Következmény, siker | Végre sikerült megértenem a szabályt. | Наконец мне удалось понять правило. |
+| Tanulási helyzet | Anna magyar nyelvet tanít egy nyelviskolában. | Анна преподаёт венгерский язык в языковой школе. |
+| Tiltás | Itt tilos dohányozni. | Здесь запрещено курить. |
+
+**Automatikus ellenőrzés:** az első 841 szócikkben a szigorú mintakereső **0 nyilvánvalóan üres sablonmondatot** talált; a további 359-ben **83 sablonjelölt** maradt. Ez nem jelent nyelvi hibamentességet; a címszavak második ellenőrzése, orosz anyanyelvi kontroll és valós tanulói teszt még hátravan. **Következő adag:** `A2:841`–`A2:960`.
