@@ -74,3 +74,28 @@ A szókincset a készségleírásokhoz rendeljük: A1: személyes alapadatok és
 **Technikai ellenőrzés:** A1 = 600, A2 = 1200, B1 = 431, B2 = 14; összesen 2245 bejegyzés. A változások csak A1-példamondatokat és -fordításokat érintenek, más szintek és tanulói azonosítók nem változtak. Az előre rögzített magyar MP3-ok egyetlen meglévő mondatkulcsát sem érintette a módosítás; a manifestben szereplő összes fájl létezik.
 
 **Fontos korlát:** ez első körös, célzott nyelvi átnézés, **nem** teljes körű anyanyelvi lektorálás vagy hivatalos A1-minősítés. További feladat: `A1:251`–`A1:599` ellenőrzése, az első 251 bejegyzés második nyelvi ellenőrzése, majd orosz anyanyelvű próbatanulók bevonása.
+
+## A1 nyelvi ellenőrzés – 2. adag (2026-11-20)
+
+- **Átnézett tartomány:** `A1:251`–`A1:350` (100 további bejegyzés).
+- **38 javított bejegyzés:** 37 természetesebb, pontosan lefordított magyar példamondat és egy jelentésbeli pontosítás (`nincs(en)`: a „нет (в наличии)” túl szűk, helyette „нет; отсутствует”).
+- **Összesített első körös lefedettség:** 351/600 A1-es bejegyzés (58,5%); **hátralévő 249:** `A1:351`–`A1:599`.
+- **Tanulói azonosítók és szólista-sorrend:** változatlanok. A korábban felvett magyar MP3-mondatok közül egy sem veszítette el a hozzá tartozó szövegkulcsot.
+
+| Szócikk | Korábbi, kevéssé használható példa | Pontosabb magyar példa | Orosz fordítás |
+|---|---|---|---|
+| negyed (`A1:277`) | Ez a negyed. | Negyed óra múlva jövök. | Я приду через четверть часа. |
+| nem (`A1:279`) | Nem kérek kávét. | Nem iszom kávét. | Я не пью кофе. |
+| nadrág (`A1:269`) | Ez a nadrág. | Ez a nadrág kék. | Эти брюки синие. |
+| ruha (`A1:340`) | Ez a ruha. | Ez a ruha piros. | Это красное платье. |
+| segítség (`A1:346`) | Ez a segítség. | Segítségre van szükségem. | Мне нужна помощь. |
+
+### Kötelező minőségi ellenőrzőlista a következő adagokhoz
+
+1. A címszó jelentése és nyelvtani szerepe helyes; a többjelentésű szavak nincsenek félrevezetően összevonva.
+2. A magyar példamondat hétköznapi, természetes, az A1-en értelmezhető élethelyzetet mutatja; az adott címszót ténylegesen használja.
+3. Az orosz mondat ugyanazt jelenti, megfelelő eset- és igealakkal; a nemi, udvariassági és stiláris eltérések nem vezetnek hibás általánosításhoz.
+4. A kétséges megfeleltetéseket **nem** tekintjük ellenőrzöttnek: külön felülvizsgálatot és lehetőség szerint orosz anyanyelvi kontrollt igényelnek.
+5. Minden módosítás után vizsgáljuk a négymezős adatokat, az elemszámokat, a szócikkazonosítókat és az előre felvett hangok kapcsolódó szövegkulcsait.
+
+**Állapot:** az első átnézés nem jelent végleges lektorálást. Az A1 anyagot még nem szabad bizonyítottan hibamentesnek minősíteni. Következő: `A1:351`–`A1:599` és a korábbi adagok második, szigorú ellenőrzése.
