@@ -4,41 +4,38 @@ Statikus, telepítést nem igénylő, mobilon és számítógépen használható
 
 ## Tartalom
 
-- **A1:** 454 szócikk
-- **A2:** 951 szócikk
-- **B1:** 225 szócikk
+- **A1:** 600 szócikk
+- **A2:** 1200 szócikk
+- **B1:** 431 szócikk
 - **B2:** 14 szócikk
-- Összesen: **1644** szócikk.
-- Minden bejegyzés négy mezője a mellékelt Excel-fájlból származik: magyar szó, orosz jelentés, egyszerű magyar példamondat, orosz mondatfordítás.
+- Összesen: **2245** szócikk (a `data.js` alaplistája és az `ecl-vocab.js` kiegészítése együtt).
+- Minden bejegyzés négy mezőből áll: magyar szó/kifejezés, orosz jelentés, magyar példamondat, orosz mondatfordítás. Az eredeti listát időközben bővítettük és nyelvileg javítjuk.
 
 ## Gyakorlási módok
 
 1. Kereshető, lapozható négyoszlopos szólista, kedvencek és felolvasás.
 2. Magyar–orosz tanulókártyák, választhatóan szavakkal vagy mondatokkal.
-3. Feleletválasztós szóteszt, 10 kérdéses fordulók.
-4. Orosz mondat alapján magyar mondat kiválasztása, 10 kérdéses fordulók.
-5. Megjelölt szavak ismétlése, helyi pontszám és találati arány.
+3. Feleletválasztós szóteszt és magyar mondat orosz jelentésének kiválasztása, normál esetben legfeljebb 10 kérdéses fordulók.
+4. A1-es napi gyakorlás: öt szó, öt mondat és három önállóan megjelölt beszédgyakorlási mondat.
+5. Hibás vagy esedékes szavak és mondatok ismétlése, gyakorlási javaslatok, helyi pontszám és fejlődési visszajelzés.
 
-A böngésző a megjelölt szavakat és eredményeket helyben (`localStorage`) tárolja. Nincs bejelentkezés és nincs központi tanulói adatgyűjtés. A hangos felolvasás a böngésző beépített magyar/orosz beszédhangjától függ; nem minden eszköz biztosít mindkét nyelvet.
+A böngésző a megjelölt szavakat és eredményeket helyben (`localStorage`) tárolja. Nincs bejelentkezés és nincs központi tanulói adatgyűjtés. A magyar felolvasás az elérhető, előre elkészített MP3-hangot részesíti előnyben, egyébként a készülék beszédszintézisére támaszkodik; nem minden eszköz biztosít magyar hangot. A beszédgyakorlás önjelölés, **nem automatikus kiejtésminősítés**.
 
 ## Indítás
 
-A `index.html`, `style.css`, `app.js` és `data.js` legyen ugyanabban a mappában. Nyissa meg a `index.html` fájlt, vagy használjon egyszerű webszervert. Az adatokat az alkalmazás a mellékelt `data.js`-ből olvassa ki; internetkapcsolat nem szükséges.
+A teljes `magyar-orosz` mappát (az audiofájlokkal és a modulokkal együtt) kell kiszolgálni. A `index.html`-t egyszerű webszerverrel vagy a GitHub Pages-en lehet megnyitni.
 
-## GitHub Pages – új, különálló projekt
+## GitHub Pages – meglévő alkalmazás
 
-1. Nyissa meg a [GitHub új repository oldalát](https://github.com/new).
-2. Repository name: `magyar-orosz-tanulomuhely`; Visibility: **Public**; hozza létre a repositoryt.
-3. A repository `Add file → Upload files` menüpontjában töltse fel a mappában található **négy állományt**: `index.html`, `style.css`, `app.js`, `data.js` (a README opcionális). **A ZIP-et ne egyben töltse fel**, hanem bontsa ki előbb.
-4. Válassza a `Commit changes` lehetőséget.
-5. `Settings → Pages → Build and deployment → Deploy from a branch`, majd Branch: `main`, Folder: `/ (root)` és `Save`.
-6. Az oldal a Pages beállításainál jelzett címen érhető el, jellemzően: `https://lajkogabor1968.github.io/magyar-orosz-tanulomuhely/`.
+Az alkalmazás a `lajkogabor1968/abece-kaland` GitHub-repozitórium `magyar-orosz/` mappájában él. A meglévő nyilvános cím:
 
-**Megjegyzés:** ez a csomag nem lett automatikusan publikálva. A GitHub Pages link csak a létrehozott nyilvános repository és engedélyezett Pages után lesz élő.
+https://lajkogabor1968.github.io/abece-kaland/magyar-orosz/
+
+A fejlesztés **nem hoz létre külön alkalmazást vagy repositoryt**. A tanulói adatok az egyes böngészőkben maradnak.
 
 ## Tanári ellenőrzés
 
-A szókincs és a példamondatok **az eredeti, felhasználó által megadott Excel-fájlból** kerültek át, tartalmi átfogalmazás nélkül. Néhány forrásbeli példamondat nyelvileg mesterkélt vagy szemantikailag hibás lehet; tanulóknak történő közzététel előtt célszerű külön magyar–orosz nyelvi lektorálás.
+A szókincs részben az eredeti, felhasználó által megadott Excel-fájlból származik, de azóta bővült, és nyelvi ellenőrzés alatt áll. A javítások nyilvántartását a `KER-szokincs-audit.md` tartalmazza. A változtatások során a szócikkek sorrendjét meg kell őrizni, mert az eredmények helyi azonosítói a szintből és a sorszámból képződnek. Teljes körű, orosz anyanyelvű lektorálás még nem történt.
 
 ## Magyar nyelvű felolvasás
-A szólistában a hangszóró a magyar szót, a beszéd ikon a magyar példamondatot olvassa fel. A mondatgyakorlás magyar mondatot és magyar hangot használ; a válaszlehetőségek orosz fordítások. A tanulókártyákon a „Magyar kiejtés” gomb mindig a magyar oldalt olvassa fel, még akkor is, ha az orosz fordítás látható. A felolvasáshoz a készüléken elérhető magyar beszédhang szükséges.
+A szólistában a hangszóró a magyar szót, a beszéd ikon a magyar példamondatot olvassa fel. A mondatgyakorlás magyar mondatot és magyar hangot használ; a válaszlehetőségek orosz fordítások. A tanulókártyákon a „Magyar kiejtés” gomb mindig a magyar oldalt olvassa fel, még akkor is, ha az orosz fordítás látható. Az `audio/hu-manifest.js` jelenleg 57 magyar hangfájlra hivatkozik; a többi kifejezés a készülék beszédszintézisét igényelheti.
