@@ -21,6 +21,7 @@
   "Jó napot!": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=8e816d7d11eb4f9094e8a5bc330d2f92.wav",
   "Köszönöm.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=29b240e2de1e4c90a271d097c2d6e0ed.wav",
   "Jól vagyok.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=2b47ee6e4edd472fa58d3ffbb288924d.wav",
+  "Szia! Hogy vagy?": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=e51565e8c4384c0ba49e4c2c4c1054e2.wav",
   "Hogy vagy?": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=4badec60c45b4a2d84743a67cf626542.wav",
   "A nevem Anna.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=bb45119d49ba4801bc7115e08cdfb7ae.wav",
   "Én is jól vagyok.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=4a72716ec3104c179cdd5db89c724333.wav",
