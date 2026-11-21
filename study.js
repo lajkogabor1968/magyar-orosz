@@ -8,8 +8,8 @@
   const more = document.getElementById('studyMore');
   if (!hub || !back || !extra || !more) return;
   function mode(value) {
-    root.classList.remove('study-menu', 'study-active', 'study-daily', 'study-exam', 'study-online', 'study-coach');
-    for (const id of ['examView','onlineLessonView','coachView']) {
+    root.classList.remove('study-menu', 'study-active', 'study-daily', 'study-exam', 'study-online', 'study-coach', 'study-book');
+    for (const id of ['examView','onlineLessonView','coachView','integratedLessonView']) {
       const pane=document.getElementById(id);
       if(pane) pane.hidden=true;
     }
