@@ -278,3 +278,20 @@ Az A2-fejlesztés a felhasználó új döntése alapján megkezdődött. A szint
 | Egyszerű tiltás | Ne zavarj, most tanulok! | Не мешай мне, я сейчас учусь! |
 
 **Automatikus minőségi kapu:** a `verify-a2.mjs` az első 961 ellenőrzött sorban **0 egyértelműen üres sablonmondatot** jelez. A fennmaradó 239 sorban is **0 találat** maradt ezzel a szigorú mintával; ez önmagában nem igazolja a szókincs helyességét vagy az A2-szint megfelelő pedagógiai besorolását. A maradék tételes ellenőrzése, valamennyi bejegyzés második nyelvi köre, orosz anyanyelvi lektorálás és próbatanulói teszt továbbra is szükséges. **Következő adag:** `A2:961`–`A2:1080`.
+
+## A2 nyelvi és pedagógiai fejlesztés – 9. adag (2026-11-21)
+
+- **Újonnan tételesen átnézett tartomány:** `A2:961`–`A2:1080` (120 bejegyzés). **15 célzottan javított szócikk** mellett 105 eredetileg megfelelő tétel változatlan maradt. Ebben a szakaszban a példák többsége már természetes, hétköznapi helyzetet ábrázolt; nem igényelt átírást. A mezőnkénti változásokat az `a2-audit-2026-11-21-part9.json` rögzíti.
+- **Összesített első körös A2-lefedettség:** **1081/1200 (90,1%)**, az első kilenc adagban **914 javított bejegyzéssel**. Hátralévő első körös felülvizsgálat: `A2:1081`–`A2:1199`, **119 bejegyzés**.
+- **Pontosított fordítások:** a kéthavi kaució összege nem két hónapra történő előrefizetést jelent; a postai átvételi értesítő nem a már átvett csomagról szól; az időpont módosítása és az új időpont kérése elkülönül. A garanciális javítás, a hibás termék és a pénzvisszatérítés természetesebb, jelentésben pontosabb orosz kifejezést kapott.
+- **Magyar nyelvi javítás:** `A2:1071` helyes tárgyesete **„visszaigazolták a rendelésemet”** (az eredeti „rendelésem” helyett). A `számlát kér` tétel az üzleti számlát az egyszerű bolti blokktól elkülönítve szemlélteti.
+- **Megőrzött adatok:** minden magyar címszó, A2-sorszám és tanulói eredményazonosító, valamint az A1 600 / A2 1200 / B1 431 / B2 14 elemszám változatlan. A honlap feladatmechanikáját és a tanulói eredmények kezelését nem módosítottuk.
+
+| Helyzet | Magyar példa | Orosz megfelelő |
+|---|---|---|
+| Lakásbérlés | Kéthavi kauciót kell fizetni. | Нужно внести залог в размере двухмесячной арендной платы. |
+| Postai ügyintézés | Átvételi értesítőt kaptam. | Я получил почтовое извещение. |
+| Garanciális ügyintézés | A készüléket garanciális javításra adtam le. | Я сдал устройство в гарантийный ремонт. |
+| Online rendelés | E-mailben visszaigazolták a rendelésemet. | Мой заказ подтвердили по электронной почте. |
+
+**Automatikus ellenőrzés:** az első 1081 tételben a szűk sablonfelismerő **0 egyértelműen üres példamondatot** jelez; ez nem helyettesíti a nyelvi minőség tételes mérését. A felülvizsgált sorok százaléka a munkafolyamat előrehaladását, nem a fordítások bizonyított hibamentességét mutatja. A teljes A2 második ellenőrzése, orosz anyanyelvű kontroll és tanulói kipróbálás továbbra is szükséges. **Következő és egyben utolsó első körös adag:** `A2:1081`–`A2:1199`.
