@@ -3,21 +3,19 @@
 <body>
 <section id="landingScreen" class="landing-screen" lang="ru" aria-labelledby="landingTitle">
   <div class="landing-content">
-    <div class="landing-brand"><span class="landing-badge" aria-hidden="true">HU ↔ RU</span><span>Мастерская венгерского языка</span></div>
-    <p class="landing-kicker">Венгерский шаг за шагом · A1–B2</p>
-    <h1 id="landingTitle" tabindex="-1">Добро пожаловать!</h1>
-    <p class="landing-description">Изучайте венгерский язык в удобном темпе. Вас ждут понятные объяснения грамматики на русском языке, слова с примерами и озвучиванием, чтение и разнообразные упражнения с проверкой ответов. Начните с основ или выберите свой уровень.</p>
-    <div class="landing-topics" aria-label="Возможности программы">
-      <span>Грамматика с объяснениями</span>
-      <span>Слова и предложения</span>
-      <span>Чтение и аудирование</span>
-      <span>Практика и проверка знаний</span>
-    </div>
-    <div class="landing-actions">
-      <button id="landingStart" class="landing-primary" type="button">Начать обучение <span aria-hidden="true">→</span></button>
-      <a class="landing-secondary" href="nyelvtan.html?level=A1">Изучать грамматику</a>
-    </div>
-    <p class="landing-footnote">Без регистрации · Прогресс сохраняется в вашем браузере</p>
+    <p class="landing-brand"><span class="landing-badge" aria-hidden="true">HU ↔ RU</span> Венгерский язык</p>
+    <h1 id="landingTitle" tabindex="-1">Венгерский с нуля</h1>
+    <p class="landing-description">Учитесь говорить, понимать и читать по-венгерски. Объяснения — на русском языке.</p>
+    <fieldset class="landing-levels"><legend>Выберите уровень</legend>
+      <div class="landing-level-grid" role="radiogroup" aria-label="Уровень обучения">
+        <label><input type="radio" name="landingLevel" value="A1" checked><span><strong>A1</strong><small>С нуля</small></span></label>
+        <label><input type="radio" name="landingLevel" value="A2"><span><strong>A2</strong><small>Базовый</small></span></label>
+        <label><input type="radio" name="landingLevel" value="B1"><span><strong>B1</strong><small>Средний</small></span></label>
+        <label><input type="radio" name="landingLevel" value="B2"><span><strong>B2</strong><small>Продвинутый</small></span></label>
+      </div>
+    </fieldset>
+    <div class="landing-actions"><button id="landingStart" class="landing-primary" type="button">Начать обучение →</button></div>
+    <p class="landing-footnote">Без регистрации · Ваш прогресс сохраняется</p>
   </div>
 </section>
 <header class="masthead"><div class="wrap headrow"><div class="logo"><span class="mark" aria-label="Венгерский и русский языки">HU<span>↔</span>RU</span><div><h1>Венгерский с нуля</h1><p>Учебная мастерская венгерского языка · уровни A1–B2</p></div></div><div class="headline-stats" aria-label="Прогресс обучения"><span id="totalTag">Словарь</span><span id="progressTag">0 выполненных заданий</span></div></div></header>
