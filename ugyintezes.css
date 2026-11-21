@@ -1,0 +1,29 @@
+.ru-translation {
+  padding: 8px 0 0 12px;
+  margin: 8px 0 0;
+  border-left: 3px solid #7fa6ca;
+  color: #244b66;
+  line-height: 1.55;
+}
+
+.vocabulary-help {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: #f1f7fc;
+  border: 1px solid #c9ddea;
+  border-radius: 12px;
+}
+
+.vocabulary-help summary {
+  color: #184f6a;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.vocabulary-help p {
+  margin: 9px 0 0;
+}
+
+#talk .small {
+  color: #365f6a;
+}

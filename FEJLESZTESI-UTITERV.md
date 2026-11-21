@@ -22,6 +22,7 @@
 
 - **Magyar nyelv orosz anyanyelvűeknek:** célzott, kétnyelvű magyarázatok és magyar–orosz nyelvtani összevetések.
 - **Életszerű magyarországi helyzetek:** hivatal, lakásbérlés, orvos, munkavállalás, tömegközlekedés, iskola, kulturális tudnivalók.
+- **Első ügyintézési mintacsomag (A2, 2026-11-21):** NAV-adóazonosító jel, OIF-tartózkodási kérdések és NEAK/TAJ. A három lecke magyar–orosz támaszt, feladatokat és hatósági hivatkozásokat ad; a folytatás prioritásai: kormányablak, lakcímbejelentés, háziorvos és időpontfoglalás, munkaszerződés, bankszámlanyitás. Minden jogi természetű állítás újraellenőrzendő kiadáskor.
 - **Tanári magyarázat a hibáknál:** a jó válaszon túl a tévedés oka, rövid szabály és újragyakorlás.
 - **Rugalmas tanulás:** rövid, ismétlésre épülő gyakorlás és hosszabb, valódi szövegértést fejlesztő leckék; nem pusztán pontszerzés.
 - **Átlátható szintjelzés:** az A1/A2/B1/B2 megnevezés mindig ténylegesen ellenőrzött tudáshoz és tananyaghoz kapcsolódjon, ne egy címkéhez.

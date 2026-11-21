@@ -21,6 +21,18 @@ Statikus, telepítést nem igénylő, mobilon és számítógépen használható
 
 A böngésző a megjelölt szavakat és eredményeket helyben (`localStorage`) tárolja. Nincs bejelentkezés és nincs központi tanulói adatgyűjtés. A magyar felolvasás az elérhető, előre elkészített MP3-hangot részesíti előnyben, egyébként a készülék beszédszintézisére támaszkodik; nem minden eszköz biztosít magyar hangot. A beszédgyakorlás önjelölés, **nem automatikus kiejtésminősítés**.
 
+### A2 – Ügyintézés Magyarországon
+
+A [gyakorlati párbeszédmodulban](ecl.html?lesson=18) három új, orosz anyanyelvű magyarországi munkavállalóknak készült A2-es helyzet található:
+
+1. **Adóazonosító jel (NAV):** nyomtatványról, iratokról és segítségről kérdezni.
+2. **Tartózkodási ügy (OIF):** érvényességi időt, ügytípust és hivatalos információt tisztázni.
+3. **TAJ és egészségbiztosítás (NEAK):** munkáltatónál érdeklődni és az ellátási jogosultság ellenőrzéséről kérdezni.
+
+Mindhárom lecke magyar párbeszédet, kapcsolható orosz mondatfordításokat, nyitható kétnyelvű szószedetet, három szövegértési és egy nyelvtani feladatot, hallott szövegértést, szóbeli feladatot, két nyelven megfogalmazott óvatossági megjegyzést és hivatalos forráslinkeket tartalmaz. A hivatali szabályok változhatnak, és az egyes külföldi állampolgárok helyzete eltérő lehet: **a tananyag nyelvgyakorlás, nem személyre szabott jogi vagy társadalombiztosítási tanácsadás**. A korábbi 17 lecke és a tanulói pontszámok érintetlenek.
+
+Automatikus ellenőrzés: `node magyar-orosz/verify-ugyintezes.mjs`. A magyar–orosz fordításokat a nyilvános kiadás előtt orosz anyanyelvű lektorral is érdemes átnézetni.
+
 A feleletválasztós tesztben azonos magyar címszóhoz vagy példamondathoz tartozó másik helyes orosz fordítást a program már nem kínál fel hibás válaszként. Ez nem pótolja a szemantikailag egyenértékű, de eltérően megfogalmazott fordítások nyelvi ellenőrzését. Automatikus regressziós teszt: `node magyar-orosz/verify-quiz-options.mjs`.
 
 ## Indítás
