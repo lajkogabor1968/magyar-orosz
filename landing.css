@@ -131,3 +131,31 @@ html.study-active main.wrap > .notice:empty {display:none;}
 .study-extra button{background:#fff;border:1px solid #dce8e2;color:#255e54;padding:11px 14px;border-radius:12px;}
 .study-back {display:block;margin:0 0 18px;padding:10px 12px;background:#fff;border:1px solid #dae7e0;border-radius:10px;color:#215b53;}
 @media(max-width:600px){.study-hub{margin:14px auto 20px}.study-hub-options{grid-template-columns:1fr;gap:9px}.study-hub-options button{min-height:85px;padding:17px 20px}.study-hub-options strong{font-size:18px}}
+
+/* Level examination: a single question at a time, in Russian. */
+html.study-exam .welcome, html.study-exam .tabs, html.study-exam .headline-stats,
+html.study-exam #moduleHint, html.study-exam footer.foot, html.study-exam #studyHub,
+html.study-exam #a1DailyJourney, html.study-exam main.wrap > .panel,
+html.study-exam main.wrap > .module-panel {display:none!important}
+html.study-exam .masthead{padding:13px 0}
+html.study-exam .masthead .logo p{display:none}
+html.study-exam main.wrap{padding-top:20px}
+html.study-exam #examView{display:block!important}
+#examView[hidden], #examFeedback[hidden], #examRetry[hidden], #examSubmit[hidden] {display:none!important}
+.exam-view{max-width:780px;margin:10px auto 45px;background:white;border:1px solid #e0e9e3;border-radius:18px;padding:clamp(20px,4vw,36px)}
+.exam-view h2{font-size:clamp(24px,4vw,32px)}
+#examProgress{font-weight:700;color:#226b5d;margin:24px 0 12px}
+#examQuestion{line-height:1.5;font-size:clamp(20px,3vw,25px);margin-bottom:20px}
+.exam-options{display:grid;gap:10px}
+.exam-option{border:1px solid #d4e1d9;background:#fafcfb;color:#234d45;text-align:left;padding:14px 17px;border-radius:12px;min-height:52px;overflow-wrap:anywhere}
+.exam-option[aria-pressed="true"]{background:#e5f3ec;border:2px solid #166d5f}
+.exam-actions{margin:20px 0;display:flex;gap:10px}
+.exam-actions button,.exam-feedback button{padding:12px 18px;background:#195b50;color:white;border:0;border-radius:10px}
+.exam-feedback{margin-top:22px;border-top:1px solid #e4ebe6;padding-top:20px;line-height:1.6}
+.exam-feedback ol{padding-left:23px}
+.exam-feedback li{margin-bottom:18px}
+.exam-feedback li p{margin:6px 0}
+.exam-disclaimer{margin-top:25px}
+.study-exam-button{background:#e5f4ed;border:1px solid #b9dacc;color:#145e50;border-radius:12px;padding:13px 20px;font-weight:700;margin-top:23px;min-height:48px}
+.level-locked span{opacity:.5;cursor:not-allowed}
+.level-locked span:after{content:" 🔒";font-size:12px}
