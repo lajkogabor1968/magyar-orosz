@@ -6,6 +6,16 @@
   const storeKey = 'hu-ru-grammar-v1'; // A korábbi eredmények tárolókulcsa változatlan.
   const params = new URLSearchParams(window.location.search);
   const initialLevel = levels.includes(params.get('level')) ? params.get('level') : 'A1';
+  const requestedTopic = params.get('topic');
+  const originLevel = ['A1','A2'].includes(params.get('returnLevel')) ? params.get('returnLevel') : null;
+  const originLesson = /^\d+$/.test(params.get('returnLesson') || '') ? Number(params.get('returnLesson')) : null;
+  if(params.get('from')==='workbook' && originLevel && originLesson !== null && originLesson < 100) {
+    const returnLink = node('a','← Вернуться к уроку');
+    returnLink.href = 'index.html?open=app&workbook=1&level='+encodeURIComponent(originLevel)+'&lesson='+originLesson;
+    returnLink.style.cssText='display:inline-block;margin:10px 0;padding:10px 13px;background:#e4f4eb;border-radius:9px;color:#145d58;font-weight:700;text-decoration:none';
+    const main = document.querySelector('main');
+    main?.insertBefore(returnLink, main.firstChild);
+  }
   let level = initialLevel;
   let topicIndex = 0;
   let selections = {};
@@ -379,4 +389,9 @@
     render();
   };
   setLevel(initialLevel);
+  if(requestedTopic){
+    const exactIndex = topics().findIndex(t => t.title === requestedTopic);
+    if(exactIndex >= 0){topicIndex=exactIndex;render()}
+    else $('result').textContent='Выбранная тема не найдена. Выберите подходящую тему в списке.';
+  }
 })();
