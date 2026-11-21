@@ -96,3 +96,38 @@ html.landing-mode footer.foot { display: none !important; }
 .landing-level-grid input:focus-visible + span { outline: 3px solid #78ada3; outline-offset: 3px; }
 .landing-actions .landing-primary { min-width: 260px; }
 @media(max-width:540px) { .landing-level-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .landing-brand { margin-bottom: 25px; } .landing-description { margin-bottom: 28px; } }
+
+/* Focused study screen: choose one activity, display only that activity. */
+html:is(.study-menu,.study-active,.study-daily) .welcome,
+html:is(.study-menu,.study-active,.study-daily) .tabs,
+html:is(.study-menu,.study-active,.study-daily) .headline-stats,
+html:is(.study-menu,.study-active,.study-daily) #moduleHint,
+html:is(.study-menu,.study-active,.study-daily) footer.foot { display:none!important; }
+html:is(.study-menu,.study-active,.study-daily) .masthead {padding:13px 0;}
+html:is(.study-menu,.study-active,.study-daily) .masthead .logo .mark{width:52px;height:46px;font-size:12px;}
+html:is(.study-menu,.study-active,.study-daily) .masthead .logo p{display:none;}
+html:is(.study-menu,.study-active,.study-daily) main.wrap {padding-top:20px;}
+html.study-menu main.wrap > :is(.panel,.module-panel):not(#studyHub),
+html.study-menu main.wrap > .notice {display:none!important;}
+html.study-active main.wrap > #a1DailyJourney,
+html.study-active main.wrap > #studyHub {display:none!important;}
+html.study-daily main.wrap > #studyHub {display:none!important;}
+html.study-daily main.wrap > .panel:not(#a1DailyJourney) {display:none!important;}
+html.study-daily main.wrap > .module-panel {display:none!important;}
+html.study-daily #a1DailyJourney {display:block!important;}
+html.study-active main.wrap > .notice:empty {display:none;}
+#studyHub[hidden],#studyBack[hidden],#studyExtra[hidden] {display:none!important;}
+.study-hub {max-width:880px;margin:36px auto 30px;text-align:center;}
+.study-hub-heading h2{font-size:clamp(26px,4vw,36px);margin:6px 0 8px;}
+.study-hub-heading p{color:#678079;margin:8px 0 28px;}
+.study-hub-kicker{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.study-hub-options {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.study-hub-options button {display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:9px;background:white;border:1px solid #dce8e2;border-radius:17px;padding:25px;min-height:116px;color:#194b48;}
+.study-hub-options button:hover,.study-extra button:hover {border-color:#377d70;background:#f2faf6;}
+.study-hub-options strong {font-size:20px;}
+.study-hub-options span {color:#6a827a;font-size:14px;}
+.study-more {background:transparent;border:0;color:#246c62;margin:23px auto;padding:10px 16px;}
+.study-extra{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin:0 auto 20px;}
+.study-extra button{background:#fff;border:1px solid #dce8e2;color:#255e54;padding:11px 14px;border-radius:12px;}
+.study-back {display:block;margin:0 0 18px;padding:10px 12px;background:#fff;border:1px solid #dae7e0;border-radius:10px;color:#215b53;}
+@media(max-width:600px){.study-hub{margin:14px auto 20px}.study-hub-options{grid-template-columns:1fr;gap:9px}.study-hub-options button{min-height:85px;padding:17px 20px}.study-hub-options strong{font-size:18px}}
