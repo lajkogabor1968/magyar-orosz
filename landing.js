@@ -5,6 +5,9 @@
   const start = document.getElementById('landingStart');
   if (!screen || !start) throw new Error('Nem található a nyitóképernyő.');
   const showApp = () => {
+    const chosen = screen.querySelector('input[name="landingLevel"]:checked')?.value || 'A1';
+    const levelButton = document.querySelector('.welcome .level[data-level="' + chosen + '"]');
+    levelButton?.click();
     screen.hidden = true;
     document.documentElement.classList.remove('landing-mode');
     window.scrollTo({top: 0, behavior: 'instant'});
@@ -17,10 +20,13 @@
     document.getElementById('landingTitle')?.focus();
   };
   start.addEventListener('click', showApp);
+  const currentLevel = document.querySelector('.welcome .level.active')?.dataset.level;
+  const initialChoice = screen.querySelector('input[name="landingLevel"][value="' + currentLevel + '"]');
+  if (initialChoice) initialChoice.checked = true;
   const home = document.createElement('button');
   home.type = 'button';
   home.className = 'secondary landing-back';
-  home.textContent = '⌂ Главная / Kezdőlap';
+  home.textContent = '⌂ Главная';
   home.setAttribute('aria-label', 'Вернуться на главную страницу');
   home.addEventListener('click', showLanding);
   document.querySelector('.masthead .headrow')?.append(home);
