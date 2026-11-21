@@ -554,8 +554,33 @@ $('integratedNextLesson').onclick=()=>confirmLessonChange(Math.min(courses[level
 $('integratedAllWords').onclick=()=>{root.classList.remove('study-book');view.hidden=true;document.querySelector('.tab[data-view="list"]')?.click();root.classList.add('study-active')};
 const accentBox=$('integratedAccentKeys');for(const letter of 'áéíóöőúüű'){const b=el('button',letter);b.type='button';b.onclick=()=>{const input=$('integratedWritingInput');const start=input.selectionStart??input.value.length,end=input.selectionEnd??start;input.value=input.value.slice(0,start)+letter+input.value.slice(end);input.focus();input.setSelectionRange(start+1,start+1)};accentBox.append(b)}
 back.addEventListener('click',()=>{view.hidden=true;root.classList.remove('study-book')});
+/* Non-destructive review deep links: ?review=1&level=A1&lesson=1&section=dialogue
+   Unlike the older workbook=1 route, this does NOT overwrite saved lesson progress. */
+const reviewParams=new URLSearchParams(location.search);
+if(reviewParams.get('review')==='1'){
+  const requestedLevel=reviewParams.get('level');
+  const lessonRaw=reviewParams.get('lesson');
+  const requestedLesson=lessonRaw===null?NaN:Number(lessonRaw);
+  const sectionName=reviewParams.get('section')||'words';
+  const reviewSteps={words:0,grammar:1,dialogue:2,writing:3,composition:4,exercise:5};
+  if(['A1','A2'].includes(requestedLevel)&&
+     Number.isInteger(requestedLesson)&&
+     requestedLesson>=0&&requestedLesson<courses[requestedLevel].length&&
+     Object.prototype.hasOwnProperty.call(reviewSteps,sectionName)){
+    document.querySelector('.welcome .level[data-level="'+requestedLevel+'"]')?.click();
+    level=requestedLevel;
+    lessonIndex=requestedLesson;
+    step=reviewSteps[sectionName];
+    root.classList.remove('study-menu','study-active','study-coach','study-online','study-exam','study-daily');
+    root.classList.add('study-book');
+    hub.hidden=true;view.hidden=false;back.hidden=false;
+    render();
+    const part=$(steps[step]);
+    requestAnimationFrame(()=>part?.scrollIntoView({block:'start'}));
+  }
+}
 const returnParams=new URLSearchParams(location.search);
-if(returnParams.get('workbook')==='1'){
+if(returnParams.get('workbook')==='1'&&reviewParams.get('review')!=='1'){
  const requestedLevel=returnParams.get('level');
  const requestedLesson=Number(returnParams.get('lesson'));
  if(['A1','A2'].includes(requestedLevel)&&Number.isInteger(requestedLesson)){
