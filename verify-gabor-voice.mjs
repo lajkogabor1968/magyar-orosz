@@ -9,7 +9,12 @@ import { fileURLToPath } from 'node:url';
 const root = path.dirname(fileURLToPath(import.meta.url));
 
 function createSandbox(page, search) {
-  const calls = { device: 0, files: [] };
+  const calls = { device: 0, files: [], events: {} };
+  const links = ['a1.html', 'a2.html'].map(value => ({
+    value,
+    getAttribute() { return this.value; },
+    setAttribute(name, next) { if (name === 'href') this.value = next; }
+  }));
   const engine = {
     paused: false,
     speaking: false,
@@ -29,20 +34,21 @@ function createSandbox(page, search) {
     location: { pathname: `/magyar-orosz/${page}.html`, search },
     speechSynthesis: engine,
     SpeechSynthesisUtterance: Utterance,
-    addEventListener: () => {},
+    addEventListener: (name, handler) => { calls.events[name] = handler; },
     TanuloAudioManifest: { 'Szia!': 'audio/hu/a1-001-s.mp3' },
     TanuloDialogueAudioManifest: { 'a1:0:0': 'audio/dialogues/a1/other.mp3' }
   };
   const ctx = vm.createContext({
     window, Audio, SpeechSynthesisUtterance: Utterance, URLSearchParams,
-    document: { body: null }, setTimeout: () => 1, clearTimeout: () => {}
+    document: { body: null, querySelectorAll: () => links },
+    setTimeout: () => 1, clearTimeout: () => {}
   });
   for (const file of ['audio/dialogue-manifest.js', 'speech.js']) {
     vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), ctx, { filename: file });
   }
   const utterance = { text: 'Szia!', lang: 'hu-HU', rate: 1,
     recordingKey: `${page}:0:0`, speaker: 'Anna' };
-  return { calls, window, utterance };
+  return { calls, window, utterance, links };
 }
 
 for (const page of ['a1', 'a2']) {
@@ -55,8 +61,11 @@ for (const page of ['a1', 'a2']) {
     assert.match(html, /function audioTest\(\)\s*\{\s*stop\(\);\s*if\(window\.TanuloOnlyGaborVoice\)/,
       'A régi, közvetlen MP3-hangtesztet is tiltani kell a kizárólagos Gábor-módban.');
   }
-  const { calls, window, utterance } = createSandbox(page, '?voice=gabor');
+  const { calls, window, utterance, links } = createSandbox(page, '?voice=gabor');
   assert.equal(window.TanuloOnlyGaborVoice, true);
+  calls.events.DOMContentLoaded();
+  assert.deepEqual(links.map(link => link.value), ['a1.html?voice=gabor', 'a2.html?voice=gabor'],
+    `${page}: szintváltáskor se kapcsoljon vissza másik hangra`);
   assert.equal(window.TanuloTTS.speak(utterance), false, `${page}: nincs jóváhagyott hang`);
   assert.equal(calls.device, 0, `${page}: TTS-átváltás tilos`);
   assert.deepEqual(calls.files, [], `${page}: régi/idegen felvétel lejátszása tilos`);

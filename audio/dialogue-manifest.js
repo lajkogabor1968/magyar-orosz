@@ -15,3 +15,11 @@ window.TanuloApprovedGaborManifest = Object.create(null);
 window.TanuloOnlyGaborVoice =
   /\/(a1|a2)\.html$/.test(window.location.pathname) &&
   new URLSearchParams(window.location.search).get('voice') === 'gabor';
+if (window.TanuloOnlyGaborVoice) {
+  // Keep the same safe preview when switching between the A1 and A2 pages.
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('a[href="a1.html"], a[href="a2.html"]').forEach(link => {
+      link.setAttribute('href', link.getAttribute('href') + '?voice=gabor');
+    });
+  });
+}
