@@ -129,6 +129,9 @@ window.TanuloSpokenDialogue = (() => {
     for(const id of ['prev','next','nextLessonBottom'])document.getElementById(id)?.addEventListener('click',()=>setTimeout(reset,0));
     window.addEventListener('pagehide',stopSpeech);
     reset();
+    if (window.location.hash === '#spokenDialogue') {
+      window.requestAnimationFrame?.(() => panel.scrollIntoView({block:'start'}));
+    }
   }
   return {mount};
 })();
