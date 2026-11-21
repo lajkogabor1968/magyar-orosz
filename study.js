@@ -8,7 +8,9 @@
   const more = document.getElementById('studyMore');
   if (!hub || !back || !extra || !more) return;
   function mode(value) {
-    root.classList.remove('study-menu', 'study-active', 'study-daily');
+    root.classList.remove('study-menu', 'study-active', 'study-daily', 'study-exam');
+    const exam = document.getElementById('examView');
+    if (exam) exam.hidden = true;
     root.classList.add(value);
     back.hidden = value === 'study-menu';
     hub.hidden = value !== 'study-menu';
