@@ -177,3 +177,26 @@ html.study-online .masthead .logo p{display:none}
 .online-lesson-view form input,.online-lesson-view form textarea{width:100%;max-width:100%;border:1px solid #b9cdc3;border-radius:10px;padding:12px;font:inherit}
 .online-lesson-view form button{padding:13px;border-radius:10px;border:0;background:#2f6960;color:white}
 .online-lesson-view form button:disabled{opacity:.55;cursor:not-allowed}
+
+/* A1–A2: one clear activity at a time; daily tutor stays off the welcome screen. */
+.coach-start{display:flex;width:min(100%,520px);margin:0 auto 22px;align-items:center;flex-direction:column;gap:7px;border:1px solid #c4e0d2;background:#eaf6ed;color:#185d4f;padding:16px 20px;border-radius:15px}
+.coach-start strong{font-size:18px}
+.coach-start span{color:#517b6c;font-size:13px}
+#coachView[hidden]{display:none!important}
+html.study-coach .welcome,html.study-coach .tabs,html.study-coach .headline-stats,
+html.study-coach #moduleHint,html.study-coach footer.foot,html.study-coach #studyHub,
+html.study-coach #a1DailyJourney,html.study-coach main.wrap>.panel,
+html.study-coach main.wrap>.module-panel{display:none!important}
+html.study-coach #coachView{display:block!important}
+html.study-coach .masthead{padding:13px 0}
+html.study-coach .masthead .logo p{display:none}
+.coach-view{max-width:780px;margin:5px auto 35px;padding:clamp(18px,4vw,30px);border:1px solid #dce9e0;border-radius:18px;background:white}
+.coach-view h2{font-size:clamp(24px,4vw,32px)}
+.coach-steps{display:grid;gap:12px;margin:23px 0}
+.coach-step{border:1px solid #dae7df;background:#fafcfb;border-radius:13px;padding:17px}
+.coach-step-heading{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.coach-step-heading small{color:#5b7669;white-space:nowrap}
+.coach-step p{font-size:14px;color:#54716a;margin:9px 0 15px}
+.coach-step-actions{display:flex;gap:9px;flex-wrap:wrap}
+.coach-step-actions button{border:1px solid #1f6658;background:#1f6658;color:white;border-radius:9px;padding:10px 14px;min-height:44px}
+.coach-step-actions button.secondary{background:white;color:#205d50;border-color:#c9ddd2}
