@@ -200,3 +200,39 @@ html.study-coach .masthead .logo p{display:none}
 .coach-step-actions{display:flex;gap:9px;flex-wrap:wrap}
 .coach-step-actions button{border:1px solid #1f6658;background:#1f6658;color:white;border-radius:9px;padding:10px 14px;min-height:44px}
 .coach-step-actions button.secondary{background:white;color:#205d50;border-color:#c9ddd2}
+
+/* Guided textbook / workbook: one clearly explained step visible at a time. */
+#integratedLessonView[hidden]{display:none!important}
+html.study-book .welcome,html.study-book .tabs,html.study-book .headline-stats,
+html.study-book #moduleHint,html.study-book footer.foot,html.study-book #studyHub,
+html.study-book #a1DailyJourney,html.study-book main.wrap>.panel,
+html.study-book main.wrap>.module-panel{display:none!important}
+html.study-book #integratedLessonView{display:block!important}
+html.study-book .masthead{padding:13px 0}
+.integrated-lesson-view{max-width:830px;margin:10px auto 45px;padding:clamp(16px,4vw,32px);background:#fff;border:1px solid #d5e7db;border-radius:18px;line-height:1.6}
+.lesson-topline,.lesson-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lesson-topline{color:#286656;font-weight:700;font-size:13px;justify-content:space-between}
+.lesson-select{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:18px 0}
+.lesson-select select{max-width:100%;padding:10px;border:1px solid #b6d6c4;border-radius:9px}
+.lesson-sections{margin:12px 0}
+.lesson-sections a{font-weight:600;color:#1a6756}
+.lesson-part{border:1px solid #e2ebe5;background:#fbfdfb;border-radius:12px;padding:clamp(12px,3vw,22px);margin:15px 0}
+.lesson-part[hidden],.lesson-alphabet[hidden],.lesson-flashcard[hidden]{display:none!important}
+.lesson-part button,.lesson-primary,.lesson-end button{border:1px solid #1d6555;border-radius:9px;padding:11px 14px;min-height:42px;background:#edf7f0;color:#175947;cursor:pointer}
+.lesson-primary{background:#185e50!important;color:#fff!important;margin:15px 0;font-weight:700;width:100%;font-size:16px}
+.lesson-part button:disabled{opacity:.55;cursor:not-allowed}
+.integrated-word,.integrated-dialogue-line{display:flex;align-items:center;gap:8px;border-bottom:1px solid #e5eee9;padding:12px 0}
+.integrated-word>div{display:grid;gap:3px;flex:1;min-width:0}
+.integrated-word small{color:#4f7063}
+.integrated-word button,.integrated-dialogue-line button{flex-shrink:0}
+.integrated-dialogue-line span{flex:1}
+.lesson-flashcard{border:1px solid #bddccc;border-radius:12px;padding:17px;margin-top:14px}
+.lesson-flashcard strong{font-size:21px}
+#integratedWritingInput,#integratedCompositionText{display:block;width:100%;font:inherit;padding:12px;border:1px solid #aacbbb;border-radius:9px;margin:9px 0 12px}
+.lesson-alphabet{margin:14px 0;border:1px solid #c7ddce;border-radius:12px;padding:12px}
+.alphabet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(95px,1fr));gap:7px}
+.alphabet-letter{display:grid;gap:2px;min-height:68px;background:white;border:1px solid #c9e0d1;border-radius:9px;padding:7px}
+.alphabet-letter strong{font-size:21px}
+.alphabet-letter small{font-size:10px;line-height:1.2}
+.integrated-answer{display:block;width:100%;text-align:left;margin:7px 0}
+#integratedWritingFeedback,#integratedAnswerFeedback,#integratedCompositionFeedback{font-weight:600;margin-top:15px}
