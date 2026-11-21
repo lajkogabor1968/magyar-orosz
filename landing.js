@@ -30,7 +30,7 @@
   home.setAttribute('aria-label', 'Вернуться на главную страницу');
   home.addEventListener('click', showLanding);
   document.querySelector('.masthead .headrow')?.append(home);
-  if (location.hash === '#tanulas' || new URLSearchParams(location.search).get('open') === 'app') {
+  if (location.hash === '#tanulas' || new URLSearchParams(location.search).get('open') === 'app' || new URLSearchParams(location.search).get('review') === '1') {
     showApp();
   }
 })();
