@@ -21,6 +21,10 @@ Statikus, telepítést nem igénylő, mobilon és számítógépen használható
 
 A böngésző a megjelölt szavakat és eredményeket helyben (`localStorage`) tárolja. Nincs bejelentkezés és nincs központi tanulói adatgyűjtés. A magyar felolvasás az elérhető, előre elkészített MP3-hangot részesíti előnyben, egyébként a készülék beszédszintézisére támaszkodik; nem minden eszköz biztosít magyar hangot. A beszédgyakorlás önjelölés, **nem automatikus kiejtésminősítés**.
 
+### A1–A2 – Kiegészítő videós gyakorlás
+
+Az A1-es és A2-es menüből külső hivatkozással elérhető az [Ilona Bulik-féle YouTube-csatorna](https://www.youtube.com/@ilonabulik955), amely magyar nyelvű tanulóvideókat is tartalmaz, orosz nyelvű közönség számára. A videók külső tartalmak, nem részei a saját feladatbanknak; szintjüket egyenként még nem minősítettük, a tanuló a számára megfelelő részt választhatja. A link új lapon nyílik meg. Videót nem másolunk, nem tárolunk és nem használunk fel sajátként.
+
 ### A2 – Önálló olvasott szövegértés
 
 Az [A2-es olvasásmodul](a2-olvasas.html) négy teljesen saját készítésű, rövid, hétköznapi történettel bővíti a tananyagot: reggeli szokások, munkába járás, bevásárlás és szomszédi kapcsolatok. A korábban kapott tankönyvi kép kizárólag a **feladattípusok mintája** volt; a történetek és a megoldókulcsok nem annak másolatai vagy átírásai.
