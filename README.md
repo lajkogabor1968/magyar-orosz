@@ -21,9 +21,9 @@ Statikus, telepítést nem igénylő, mobilon és számítógépen használható
 
 A böngésző a megjelölt szavakat és eredményeket helyben (`localStorage`) tárolja. Nincs bejelentkezés és nincs központi tanulói adatgyűjtés. A magyar felolvasás az elérhető, előre elkészített MP3-hangot részesíti előnyben, egyébként a készülék beszédszintézisére támaszkodik; nem minden eszköz biztosít magyar hangot. A beszédgyakorlás önjelölés, **nem automatikus kiejtésminősítés**.
 
-### A2 – Ügyintézés Magyarországon
+### B1 – Ügyintézés Magyarországon (B2-es folytatással)
 
-A [gyakorlati párbeszédmodulban](ecl.html?lesson=18) hat, orosz anyanyelvű magyarországi munkavállalóknak készült A2-es helyzet található:
+A [gyakorlati párbeszédmodulban](ecl.html?lesson=18) kilenc, orosz anyanyelvű magyarországi munkavállalóknak készült **B1-es** helyzet található. **Az A2-es tananyagból a részletes ügyintézést kivettük; a B2-es szintű, összetettebb feladatok később készülnek el.** A leckék egyszerűbb, beszédközpontú B1-es belépőhelyzetek:
 
 1. **Adóazonosító jel (NAV):** nyomtatványról, iratokról és segítségről kérdezni.
 2. **Tartózkodási ügy (OIF):** érvényességi időt, ügytípust és hivatalos információt tisztázni.
@@ -31,8 +31,11 @@ A [gyakorlati párbeszédmodulban](ecl.html?lesson=18) hat, orosz anyanyelvű ma
 4. **Kormányablak:** időpontfoglalás, 1818-as ügyfélvonal, hivatal- és ügytípuskeresés.
 5. **Szálláshely-változás (OIF):** költözés után elektronikus bejelentés és igazolás. Ez nem azonos minden külföldi személy lakcímkártya-ügyintézésével.
 6. **Háziorvos:** telefonos időpontkérés, tünetek elmondása és szükséges iratok.
+7. **Munkaszerződés:** alapbér, munkakör, próbaidő, a szerződés átolvasása.
+8. **Bérjegyzék:** bruttó és nettó bér, levonások, túlóra, eltérések tisztázása.
+9. **Bankszámlanyitás:** szükséges okmányok, azonosítás, számlacsomagok és díjak.
 
-Mind a hat lecke magyar párbeszédet, kapcsolható orosz mondatfordításokat, nyitható kétnyelvű szószedetet, három szövegértési és egy nyelvtani feladatot, hallott szövegértést, szóbeli feladatot, két nyelven megfogalmazott óvatossági megjegyzést és hivatalos forráslinkeket tartalmaz. A hivatali szabályok változhatnak, és az egyes külföldi állampolgárok helyzete eltérő lehet: **a tananyag nyelvgyakorlás, nem személyre szabott jogi vagy társadalombiztosítási tanácsadás**. A korábbi 17 ECL-lecke, az első 3 ügyintézési lecke és a tanulói pontszámok érintetlenek.
+Mind a kilenc lecke magyar párbeszédet, kapcsolható orosz mondatfordításokat, nyitható kétnyelvű szószedetet, három szövegértési és egy nyelvtani feladatot, hallott szövegértést, szóbeli feladatot, két nyelven megfogalmazott óvatossági megjegyzést és hivatalos forráslinkeket tartalmaz. A hivatali szabályok változhatnak, és az egyes külföldi állampolgárok helyzete eltérő lehet: **a tananyag nyelvgyakorlás, nem személyre szabott jogi, pénzügyi vagy társadalombiztosítási tanácsadás**. A korábbi 17 ECL-lecke és a tanulói pontszámok érintetlenek. A korábbi hat ügyintézési lecke azonosítója és tartalma is megmaradt, csak a szintbesorolása változott B1-re.
 
 Automatikus ellenőrzés: `node magyar-orosz/verify-ugyintezes.mjs`. A magyar–orosz fordításokat a nyilvános kiadás előtt orosz anyanyelvű lektorral is érdemes átnézetni.
 

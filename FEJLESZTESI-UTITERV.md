@@ -22,7 +22,7 @@
 
 - **Magyar nyelv orosz anyanyelvűeknek:** célzott, kétnyelvű magyarázatok és magyar–orosz nyelvtani összevetések.
 - **Életszerű magyarországi helyzetek:** hivatal, lakásbérlés, orvos, munkavállalás, tömegközlekedés, iskola, kulturális tudnivalók.
-- **Ügyintézési mintacsomag (A2, 2026-11-21):** hat ellenőrzött szerkezetű lecke: NAV-adóazonosító jel, OIF-tartózkodási kérdések, NEAK/TAJ, kormányablakos időpontfoglalás, OIF-szálláshely-változás, háziorvosi időpontkérés. Magyar–orosz támasz, feladatok és hivatalos hivatkozások. A folytatás prioritásai: munkaszerződés és bérpapír, bankszámlanyitás, albérlet, közüzemi ügyek. Minden jogi természetű állítás újraellenőrzendő kiadáskor.
+- **Ügyintézési mintacsomag (B1, 2026-11-21):** a felhasználó pedagógiai döntése alapján a részletes ügyintézés a B1-es tananyag része; B2-es, összetettebb párbeszédekkel később bővül. Kilenc ellenőrzött szerkezetű lecke: NAV-adóazonosító jel, OIF-tartózkodási kérdések, NEAK/TAJ, kormányablakos időpontfoglalás, OIF-szálláshely-változás, háziorvosi időpontkérés, munkaszerződés, bérjegyzék, bankszámlanyitás. **A2-ben legfeljebb egyszerű információ- és segítségkérést tanítunk**, külön hivatali eljárások nélkül. A folytatás prioritásai: albérlet, közüzemi ügyek, munkaügyi problémák; minden jogi és pénzügyi állítást újraellenőrzünk kiadáskor.
 - **Tanári magyarázat a hibáknál:** a jó válaszon túl a tévedés oka, rövid szabály és újragyakorlás.
 - **Rugalmas tanulás:** rövid, ismétlésre épülő gyakorlás és hosszabb, valódi szövegértést fejlesztő leckék; nem pusztán pontszerzés.
 - **Átlátható szintjelzés:** az A1/A2/B1/B2 megnevezés mindig ténylegesen ellenőrzött tudáshoz és tananyaghoz kapcsolódjon, ne egy címkéhez.

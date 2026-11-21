@@ -74,6 +74,14 @@ function check(){if(!lesson||checked)return;const qs=mode==='grammar'?[lesson.gr
 function reveal(){if(!lesson)return;renderLines($('transcript'),true);show('reveal',false)}
 $('level').addEventListener('change',e=>changeLevel(e.target.value));$('lesson').addEventListener('change',e=>chooseLesson(e.target.value));document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{stop();mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('selected',x===b));render()}));$('check').addEventListener('click',check);$('reveal').addEventListener('click',reveal);$('speak').addEventListener('click',speak);$('stop').addEventListener('click',stop);$('slow').addEventListener('click',()=>{slow=!slow;$('slow').textContent=`🐢 Lassú felolvasás: ${slow?'be':'ki'}`});window.addEventListener('pagehide',stop);$('level').value='A2';changeLevel('A2');
 const deepLinkId=Number(new URLSearchParams(window.location.search).get('lesson'));
-const deepLinkLesson=compatible('A2').find(item=>item.id===deepLinkId);
-if(deepLinkLesson){$('lesson').value=String(deepLinkId);chooseLesson(deepLinkId)}
+const deepLinkLesson=all.find(item=>item.id===deepLinkId);
+if(deepLinkLesson){
+  const targetLevel=deepLinkLesson.level==='A2–B1'?'A2':deepLinkLesson.level;
+  if(['A1','A2','B1','B2'].includes(targetLevel)&&compatible(targetLevel).includes(deepLinkLesson)){
+    $('level').value=targetLevel;
+    changeLevel(targetLevel);
+    $('lesson').value=String(deepLinkId);
+    chooseLesson(deepLinkId);
+  }
+}
 })();
