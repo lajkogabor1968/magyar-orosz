@@ -1,5 +1,6 @@
 // Futtatás: node magyar-orosz/verify-ugyintezes.mjs
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 
@@ -13,9 +14,11 @@ assert.equal(context.window.ECL_DIALOGUES.length, 17, 'A meglévő ECL-tananyag 
 
 runInNewContext(read('ugyintezes-data.js'), context);
 const all = context.window.ECL_DIALOGUES;
-assert.equal(all.length, 20, 'Az új leckék száma három.');
+assert.equal(all.length, 23, 'Az ügyintézési leckék száma hat.');
 assert.equal(JSON.stringify(all.slice(0, 17)), originals, 'A régi leckék változatlanok.');
-assert.deepEqual(Array.from(all.slice(17), (lesson) => lesson.id), [18, 19, 20]);
+assert.deepEqual(Array.from(all.slice(17), (lesson) => lesson.id), [18, 19, 20, 21, 22, 23]);
+const earlierLessonsHash = createHash('sha256').update(JSON.stringify(all.slice(17, 20))).digest('hex');
+assert.equal(earlierLessonsHash, '72f8e8a677d424a13ce2d1c27ebed5ca44e49f3862c5ddcacde78661634d093e', 'Az előző három ügyintézési lecke változatlan.');
 assert.equal(new Set(all.map((lesson) => lesson.id)).size, all.length, 'Nincs ismétlődő leckeazonosító.');
 
 for (const lesson of all.slice(17)) {
@@ -48,18 +51,22 @@ for (const lesson of all.slice(17)) {
   for (const source of lesson.sources) {
     const url = new URL(source.url);
     assert.equal(url.protocol, 'https:');
-    assert.ok(['nav.gov.hu', 'www.oif.gov.hu', 'oif.gov.hu', 'neak.gov.hu', 'www.neak.gov.hu'].includes(url.hostname));
+    assert.ok(['nav.gov.hu', 'www.oif.gov.hu', 'oif.gov.hu', 'neak.gov.hu', 'www.neak.gov.hu', 'kormanyhivatalok.hu', 'www.magyarorszag.hu', 'egeszsegvonal.gov.hu'].includes(url.hostname));
   }
 }
 
 runInNewContext(read('ugyintezes-data.js'), context);
-assert.equal(all.length, 20, 'A tananyag kétszeri betöltése nem hoz létre duplikátumot.');
+assert.equal(all.length, 23, 'A tananyag kétszeri betöltése nem hoz létre duplikátumot.');
 
 const page = read('ecl.html');
 assert.match(page, /<script src="ecl-data\.js"><\/script><script src="ugyintezes-data\.js"><\/script><script src="ecl\.js"><\/script>/);
+assert.match(page, /23 témakör/);
 assert.match(read('index.html'), /href="ecl\.html\?lesson=18"/);
+assert.match(read('index.html'), /href="ecl\.html\?lesson=21"/);
 assert.match(read('ecl.js'), /hu-ru-ecl-progress/, 'A tanulói előzményeket ugyanaz a kulcs őrzi.');
 assert.match(read('ecl.js'), /renderLines\(tr,true\)/, 'Az orosz segítség bekapcsolható.');
 
-console.log('✓ Ügyintézési leckék: 3 A2-es párbeszéd, 34 megszólalás, 24 szószedetelem, 12 feladat.');
-console.log('✓ Régi 17 lecke és eredménykulcs változatlan, két nyelv, források, mélylink ellenőrizve.');
+const admin = all.slice(17);
+const count = (key) => admin.reduce((total, item) => total + item[key].length, 0);
+console.log(`✓ Ügyintézési leckék: ${admin.length} A2-es párbeszéd, ${count('lines')} megszólalás, ${count('glossary')} szószedetelem, ${count('questions') + admin.length} feladat.`);
+console.log('✓ Régi 17 lecke, az első 3 ügyintézési lecke és az eredménykulcs változatlan; két nyelv, források, mélylink ellenőrizve.');
