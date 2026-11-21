@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#17464b">
+  <title>A2 – Olvasott szövegértés · Magyar–orosz Tanulóműhely</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#19383d;background:#f2f6f4;line-height:1.55}
+    *{box-sizing:border-box}body{margin:0}header{background:#17464b;color:#fff;padding:22px max(16px,calc((100vw - 1040px)/2))}
+    header a{color:#def6e8}h1{font-size:clamp(1.6rem,4vw,2.3rem);margin:10px 0 3px}h2{font-size:1.25rem;margin:0 0 13px}h3{font-size:1.08rem;margin:0 0 12px}
+    header p{max-width:780px;margin:8px 0}main{max-width:1040px;margin:auto;padding:18px}
+    .panel{background:white;border:1px solid #d5e5de;border-radius:17px;padding:22px;margin-bottom:16px;box-shadow:0 3px 16px #183e3d10}
+    .row{display:flex;align-items:center;gap:11px;flex-wrap:wrap}.row .spacer{flex:1}.muted{color:#526a68}.small{font-size:.92rem}.kicker{font-weight:750;color:#176c5f;font-size:.86rem;letter-spacing:.035em}
+    button,select,textarea{font:inherit;border:1px solid #a9c7bc;border-radius:10px;padding:10px 13px;color:#174e49;background:#fff}
+    button{cursor:pointer;font-weight:650}button:hover:not(:disabled){background:#e8f5ee}button:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid #e3a13d;outline-offset:2px}
+    button.primary{background:#176b62;color:white;border-color:#176b62}button.primary:hover:not(:disabled){background:#11564f}button:disabled{opacity:.65;cursor:not-allowed}
+    select{max-width:100%;min-width:220px;flex:1}p{margin:9px 0}article p{line-height:1.85;margin:0 0 15px;font-size:1.05rem}article p:last-child{margin-bottom:0}
+    .glossary{margin-top:15px;border:1px solid #d4e7dd;border-radius:10px;padding:12px 15px;background:#f5fbf7}
+    summary{cursor:pointer;font-weight:700}.glossary-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 16px;margin-top:12px}
+    .word{border-bottom:1px solid #dce9e2;padding:4px 0}.word strong{color:#124f48}.ru{color:#526a68}
+    .exercise{border:1px solid #d8e8df;border-radius:12px;padding:15px;margin:12px 0;min-width:0}
+    .exercise legend{font-weight:700;line-height:1.45;max-width:100%;padding:0 5px}
+    .choices{display:flex;gap:8px;flex-wrap:wrap}.choice{display:flex;gap:9px;align-items:flex-start;padding:11px 13px;border:1px solid #cfded5;border-radius:9px;cursor:pointer;background:#fff;flex:1;min-width:115px}
+    .choice:has(input:checked){background:#eef8f1;border-color:#247468}.choice input{accent-color:#176b62;margin-top:5px}
+    .choice.correct{border-color:#35814d;background:#e6f5e9}.choice.wrong{border-color:#b65b4e;background:#fbece9}
+    .answer-feedback{margin:11px 0 0;font-size:.94rem;border-radius:8px;padding:9px 12px;background:#eff5f1;color:#264e40}
+    .answer-feedback strong{display:block}.answer-feedback.wrong{background:#fff0ed;color:#77372e}
+    .instructions{margin:0 0 15px;color:#566e68}.result{border-radius:10px;background:#e7f6eb;color:#145e3b;padding:13px 16px;font-weight:750}
+    .notice{color:#935124;background:#fff3df;border:1px solid #f0d2a1;padding:10px 13px;border-radius:9px}
+    textarea{display:block;width:100%;min-height:95px;margin:10px 0;resize:vertical}.model{background:#eef6fa;border-left:4px solid #49809b;padding:12px;margin:12px 0}
+    .hidden{display:none!important}footer{max-width:1040px;margin:0 auto;color:#657a71;font-size:.9rem;padding:5px 18px 30px}
+    @media(max-width:650px){main{padding:10px}.panel{padding:16px}.glossary-list{grid-template-columns:1fr}.choice{min-width:100%}select{min-width:0;width:100%}}
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html">← Magyar–orosz Tanulóműhely</a> · <a href="a2.html">A2 párbeszédek</a>
+    <h1>A2 – Olvasott szövegértés</h1>
+    <p>4 eredeti, hétköznapi történet · 24 igaz–hamis állítás · 12 feleletválasztós kérdés · 4 mondatkiegészítés · önálló válaszok</p>
+    <p lang="ru">Четыре оригинальных текста уровня A2. Прочитайте текст и выполните задания. После проверки вы увидите правильные ответы и объяснения.</p>
+  </header>
+  <main>
+    <section class="panel" aria-labelledby="choose-heading">
+      <h2 id="choose-heading">Válassz szöveget!</h2>
+      <div class="row">
+        <label for="lesson">Történet:</label>
+        <select id="lesson"></select>
+        <button id="previous" type="button">← Előző</button>
+        <button id="next" type="button">Következő →</button>
+      </div>
+      <p class="muted small" id="progress" aria-live="polite"></p>
+    </section>
+    <section class="panel" aria-labelledby="reading-title">
+      <span id="topic" class="kicker"></span>
+      <h2 id="reading-title"></h2>
+      <p class="instructions">1. Olvasd el figyelmesen a szöveget! / <span lang="ru">Внимательно прочитайте текст.</span></p>
+      <article id="reading" aria-label="Magyar olvasmány"></article>
+      <details class="glossary">
+        <summary>Magyar–orosz szószedet / <span lang="ru">Словарь</span></summary>
+        <div id="glossary" class="glossary-list"></div>
+      </details>
+    </section>
+    <section class="panel" aria-labelledby="tf-heading">
+      <h2 id="tf-heading">2. Igaz vagy hamis?</h2>
+      <p class="instructions">A szöveg alapján dönts! / <span lang="ru">Верно или неверно по тексту?</span></p>
+      <div id="true-false"></div>
+    </section>
+    <section class="panel" aria-labelledby="mc-heading">
+      <h2 id="mc-heading">3. Válaszd ki a helyes választ!</h2>
+      <p class="instructions">Minden kérdésre egy helyes válasz van. / <span lang="ru">Один правильный ответ на каждый вопрос.</span></p>
+      <div id="multiple-choice"></div>
+    </section>
+    <section class="panel" aria-labelledby="gap-heading">
+      <h2 id="gap-heading">4. Egészítsd ki a mondatot!</h2>
+      <div id="fill"></div>
+    </section>
+    <section class="panel" aria-labelledby="open-heading">
+      <h2 id="open-heading">5. Válaszolj saját mondattal!</h2>
+      <p id="open-question"></p>
+      <textarea id="open-answer" aria-label="Saját válasz magyarul" placeholder="Írj egy-két magyar mondatot!"></textarea>
+      <p class="muted small">Ez a válasz nem része az automatikus pontozásnak. Ellenőrzés után mintaválaszt kapsz. / <span lang="ru">Этот ответ не оценивается автоматически.</span></p>
+      <div id="model" class="model hidden"></div>
+    </section>
+    <section class="panel">
+      <div class="row">
+        <button id="check" class="primary" type="button">Válaszok ellenőrzése / Проверить</button>
+        <button id="retry" type="button">Újrapróbálom / Ещё раз</button>
+        <span class="spacer"></span>
+        <button id="next-bottom" type="button">Következő történet →</button>
+      </div>
+      <p id="result" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+  <footer>A Magyar–orosz Tanulóműhely A2-es olvasásmodulja. Az eredmények csak ezen az eszközön, a böngészőben tárolódnak. A szövegek és feladatok önállóan készültek; nem hivatalos nyelvvizsgafeladatok.</footer>
+  <script src="a2-olvasas-data.js"></script>
+  <script src="a2-olvasas.js"></script>
+</body>
+</html>

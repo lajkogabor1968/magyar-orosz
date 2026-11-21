@@ -21,6 +21,15 @@ Statikus, telepítést nem igénylő, mobilon és számítógépen használható
 
 A böngésző a megjelölt szavakat és eredményeket helyben (`localStorage`) tárolja. Nincs bejelentkezés és nincs központi tanulói adatgyűjtés. A magyar felolvasás az elérhető, előre elkészített MP3-hangot részesíti előnyben, egyébként a készülék beszédszintézisére támaszkodik; nem minden eszköz biztosít magyar hangot. A beszédgyakorlás önjelölés, **nem automatikus kiejtésminősítés**.
 
+### A2 – Önálló olvasott szövegértés
+
+Az [A2-es olvasásmodul](a2-olvasas.html) négy teljesen saját készítésű, rövid, hétköznapi történettel bővíti a tananyagot: reggeli szokások, munkába járás, bevásárlás és szomszédi kapcsolatok. A korábban kapott tankönyvi kép kizárólag a **feladattípusok mintája** volt; a történetek és a megoldókulcsok nem annak másolatai vagy átírásai.
+
+Minden olvasmányhoz 6 igaz–hamis állítás, 3 feleletválasztós kérdés, 1 mondatkiegészítés, magyar–orosz szószedet és 1 rövid szabad válasz tartozik. A 40 automatikusan ellenőrizhető kérdésnél a javítás visszakereshető bizonyító mondatot mutat; az önálló mondatalkotás nem kap gépi pontszámot, helyette mintaválasz látható. Az elért legjobb pontszámokat külön, új `hu-ru-a2-reading-v1` böngészős kulcs alatt tároljuk, a meglévő eredményekhez nem nyúlunk.
+
+Automatikus szerkezeti teszt: `node magyar-orosz/verify-a2-olvasas.mjs`. A szövegeket továbbra is ajánlott tanári és orosz anyanyelvű lektorral ellenőrizni tanulói kiadás előtt.
+
+
 ### B1 – Ügyintézés Magyarországon (B2-es folytatással)
 
 A [gyakorlati párbeszédmodulban](ecl.html?lesson=18) kilenc, orosz anyanyelvű magyarországi munkavállalóknak készült **B1-es** helyzet található. **Az A2-es tananyagból a részletes ügyintézést kivettük; a B2-es szintű, összetettebb feladatok később készülnek el.** A leckék egyszerűbb, beszédközpontú B1-es belépőhelyzetek:
