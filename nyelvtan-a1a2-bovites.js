@@ -303,6 +303,31 @@
     létige.questions[0] = choose('Én most otthon ___.',
       ['vagy', 'van', 'vagyok'], 2, 'Én → vagyok. A létige helyet is kifejezhet: otthon vagyok.');
   }
+  // Краткие объяснения по-русски для самостоятельной работы.
+  // Исходные венгерские пояснения и ключи сохраняются.
+  const russianNotes = {
+    'Szótő és toldalék: hogyan épül fel egy szó?': 'Основа слова передаёт основное значение. Суффиксы выражают число, падеж или лицо. Соединительная гласная не всегда является частью суффикса.',
+    'Igeragozás I. – én, te, ő, mi, ti, ők': 'Форма глагола зависит от лица и числа подлежащего: én, te, ő, mi, ti, ők. Обращайте внимание на личное окончание.',
+    'Igeragozás II. – magánhangzó-harmónia': 'Личное окончание согласуется с гласными основы. Сравните: tanulok, beszélek, ülök.',
+    'Többes szám és a névelők': 'Множественное число существительных образуется с показателем -k. Указательный артикль a/az зависит от начального звука следующего слова.',
+    'Tagadás és főnévi igenév: nem, -ni': 'Отрицание nem пишется отдельно перед глаголом; отрицательная форма van — nincs. Инфинитив обычно имеет окончание -ni.',
+    'Az -ik végű igék: lakik, dolgozik': 'Глаголы на -ik имеют особую форму 3-го лица единственного числа. Сравните: lakik, lakom, laksz, lakunk.',
+    'Határozott igeragozás – teljes jelen idejű sor': 'При определённом прямом дополнении используется определённое спряжение: olvasom, olvasod, olvassa, olvassuk, olvassátok, olvassák.',
+    'Melyik ragozás? Egy könyvet vagy a könyvet?': 'С неопределённым дополнением обычно используется неопределённое спряжение; с определённым — определённое. Сравните: olvasok egy könyvet / olvasom a könyvet.',
+    'Múlt idő: -t/-tt és személyragok': 'Прошедшее время обозначается -t/-tt и личным окончанием. Форма зависит от лица: tanultam, tanultál, tanult, tanultunk.',
+    'Felszólító mód I. – kérés és utasítás': 'Повелительное наклонение выражает просьбу или распоряжение; личное окончание зависит от лица и числа.',
+    'Felszólító mód II. – határozott tárggyal': 'При определённом дополнении в повелительном наклонении используется соответствующая определённая форма: írd, írjuk, írjátok.',
+    'Felszólító mód III. – hangváltozások és helyesírás': 'При образовании повелительного наклонения возможны изменения согласных: olvas → olvass, néz → nézz, fut → fuss.',
+    'Felszólító mód IV. – ne és az igekötő': 'Для запрета используется ne. В обычном повелительном предложении отделяемая приставка часто стоит после глагола: ne írd meg.',
+    'Jel vagy rag? – múlt idő, mód, személy': 'Различайте показатели времени (-t/-tt), наклонения (-j) и личные окончания. Показатель множественного числа существительных — -k.'
+  };
+  for (const topic of extra) {
+    const note = russianNotes[topic.title];
+    if (!note) throw new Error('Нет русского пояснения: ' + topic.title);
+    for (const question of topic.questions) {
+      if (!question.whyRu) question.whyRu = note;
+    }
+  }
   window.GRAMMAR_TOPICS.push(...extra);
   window.GRAMMAR_EXTENSION_INFO = Object.freeze({
     topics: extra.length,
