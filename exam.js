@@ -86,6 +86,63 @@
   function currentLevel() {
     return document.querySelector('.welcome .level.active')?.dataset.level || 'A1';
   }
+  function feedback(questions, answers, percent) {
+    const types = [
+      {kind:'word', name:'Понимание венгерских слов', action:'Повторите значения слов: слушайте произношение и подбирайте русский перевод.', view:'list'},
+      {kind:'reverse', name:'Воспроизведение венгерских слов', action:'Повторите венгерские слова по русскому переводу; произносите их вслух и проверяйте написание.', view:'cards'},
+      {kind:'sentence', name:'Понимание венгерских предложений', action:'Читайте короткие венгерские предложения, находите знакомые конструкции и проверяйте перевод.', view:'sentences'}
+    ];
+    const byType = types.map(type => {
+      const ids = questions.map((q,i)=>q.kind===type.kind?i:-1).filter(i=>i>=0);
+      const right=ids.filter(i=>answers[i]===questions[i].answer).length;
+      const incorrect=ids.filter(i=>answers[i]!==questions[i].answer);
+      return {...type, right, total:ids.length, incorrect, percent:ids.length?Math.round(100*right/ids.length):0};
+    });
+    const priorities=[...byType].filter(x=>x.incorrect.length).sort((a,b)=>a.percent-b.percent);
+    const good=byType.filter(x=>x.percent>=90).map(x=>x.name);
+    let intro;
+    if(percent>=90) intro='Отличная работа! Вы уверенно справились с заданиями этого уровня. Переход на следующий уровень открыт. Продолжайте повторять знакомые слова и конструкции.';
+    else if(percent>=75) intro='Хороший результат! Вы уже многое знаете. Для перехода на следующий уровень нужно укрепить несколько навыков и набрать не менее 90%.';
+    else if(percent>=50) intro='У вас уже есть основа. Пока некоторые задания вызывают затруднения; это нормально на этапе обучения. Повторите указанные ниже темы и попробуйте снова.';
+    else intro='Сейчас полезнее сосредоточиться на основах: закрепить знакомые слова и короткие предложения, затем вернуться к экзамену. Продвигайтесь небольшими шагами.';
+    const tasks=priorities.slice(0,2).map(x=>({
+      label:x.name+' — '+x.right+'/'+x.total+' ('+x.percent+'%)',
+      description:x.action,
+      view:x.view
+    }));
+    if(!tasks.length) tasks.push({label:'Закрепление изученного',description:'Повторите лексику и предложения перед переходом к следующему уровню.',view:'review'});
+    return {intro,good,tasks,byType};
+  }
+  function showFeedback(result) {
+    const container=$('examFeedback');
+    if(!container)return;
+    container.replaceChildren();
+    const heading=document.createElement('h3'); heading.textContent='Ваши результаты и план занятий';
+    const intro=document.createElement('p'); intro.textContent=result.intro;
+    container.append(heading,intro);
+    if(result.good.length) {
+      const strong=document.createElement('p');
+      strong.textContent='Сильные стороны: '+result.good.join('; ')+'.';
+      container.append(strong);
+    }
+    const title=document.createElement('h4');title.textContent='Что делать дальше';
+    container.append(title);
+    const list=document.createElement('ol');
+    result.tasks.forEach(task => {
+      const li=document.createElement('li');
+      const label=document.createElement('strong');label.textContent=task.label;
+      const description=document.createElement('p');description.textContent=task.description;
+      const button=document.createElement('button');
+      button.type='button';button.textContent='Перейти к практике →';
+      button.addEventListener('click',()=>{
+        document.getElementById('studyBack')?.click();
+        document.querySelector('[data-hub-view="'+task.view+'"]')?.click();
+      });
+      li.append(label,description,button);list.append(li);
+    });
+    container.append(list);
+    container.hidden=false;
+  }
   function render() {
     if (!run) return;
     const item = run.questions[run.index];
@@ -97,6 +154,7 @@
       state.history=state.history.slice(-60);
       if(passed) state.passed[run.level]=true;
       save(); updateLocks();
+      showFeedback(feedback(run.questions,run.answers,percent));
       questionEl.textContent = '';
       optionsEl.replaceChildren();
       progress.textContent = 'Экзамен завершён';
@@ -136,6 +194,7 @@
       questionEl.textContent='';optionsEl.replaceChildren();submit.hidden=true;retry.hidden=true;return;
     }
     run={level,questions,index:0,answers:[],selected:null};
+    const feedbackBox=$('examFeedback'); if(feedbackBox){feedbackBox.hidden=true;feedbackBox.replaceChildren();}
     retry.hidden=true;submit.hidden=false;render();
   }
   submit?.addEventListener('click',()=>{
