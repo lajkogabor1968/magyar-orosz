@@ -1,4 +1,4 @@
-/* Уровневые экзамены: стабильный ключ, случайная выборка, порог 90%.
+/* Уровневые экзамены: стабильный ключ, случайная выборка, рекомендуемый ориентир 90%.
    Оценка словарного запаса и понимания предложений; не сертификат CEFR. */
 (() => {
   'use strict';
@@ -24,10 +24,8 @@
     for (let i = a.length-1; i > 0; i--) { const j=random(i+1); [a[i],a[j]]=[a[j],a[i]]; }
     return a;
   };
-  const canAccess = level => {
-    const i = LEVELS.indexOf(level);
-    return i <= 0 || LEVELS.slice(0,i).every(previous => state.passed[previous] === true);
-  };
+  // A szintek szabadon választhatók; a 90% csak pedagógiai ajánlás.
+  const canAccess = level => LEVELS.includes(level);
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (_) {} };
   const root = $('examView');
   const status = $('examStatus');
@@ -65,18 +63,13 @@
   }
   function updateLocks() {
     document.querySelectorAll('input[name="landingLevel"]').forEach(input => {
-      const allowed = canAccess(input.value);
-      input.disabled = !allowed;
-      input.closest('label')?.classList.toggle('level-locked',!allowed);
-      input.closest('label')?.setAttribute('title',allowed?'':'Откроется после экзамена предыдущего уровня (90%).');
+      input.disabled = false;
+      input.closest('label')?.classList.remove('level-locked');
+      input.closest('label')?.removeAttribute('title');
     });
-    if (!canAccess(document.querySelector('input[name="landingLevel"]:checked')?.value)) {
-      const first = document.querySelector('input[name="landingLevel"][value="A1"]');
-      if (first) first.checked = true;
-    }
     document.querySelectorAll('.welcome .level[data-level]').forEach(button => {
-      const allowed = canAccess(button.dataset.level);
-      button.disabled = !allowed; button.title = allowed?'':'Сначала сдайте экзамен предыдущего уровня на 90%.';
+      button.disabled = false;
+      button.removeAttribute('title');
     });
     if (open) {
       const level = currentLevel();
@@ -102,7 +95,7 @@
     const good=byType.filter(x=>x.percent>=90).map(x=>x.name);
     let intro;
     if(percent>=90) intro='Отличная работа! Вы уверенно справились с заданиями этого уровня. Переход на следующий уровень открыт. Продолжайте повторять знакомые слова и конструкции.';
-    else if(percent>=75) intro='Хороший результат! Вы уже многое знаете. Для перехода на следующий уровень нужно укрепить несколько навыков и набрать не менее 90%.';
+    else if(percent>=75) intro='Хороший результат! Вы уже многое знаете. Перед переходом рекомендуем укрепить несколько навыков и достичь 90%.';
     else if(percent>=50) intro='У вас уже есть основа. Пока некоторые задания вызывают затруднения; это нормально на этапе обучения. Повторите указанные ниже темы и попробуйте снова.';
     else intro='Сейчас полезнее сосредоточиться на основах: закрепить знакомые слова и короткие предложения, затем вернуться к экзамену. Продвигайтесь небольшими шагами.';
     const tasks=priorities.slice(0,2).map(x=>({
@@ -160,10 +153,10 @@
       progress.textContent = 'Экзамен завершён';
       submit.hidden=true; retry.hidden=false;
       status.textContent = correct + ' из ' + run.questions.length + ' · ' + percent + '%. ' +
-        (passed?'Экзамен сдан! Следующий уровень открыт.':'Для перехода нужно не менее 90%. Повторите материал и попробуйте снова.');
+        (passed?'Отличный результат! Можно уверенно переходить к следующему уровню.':'Рекомендуем набрать не менее 90% перед переходом. Вы можете продолжить обучение или повторить материал.');
       if(passed && run.level!=='B2') {
         const next=LEVELS[LEVELS.indexOf(run.level)+1];
-        status.textContent += ' Доступен уровень ' + next + '.';
+        status.textContent += ' Рекомендуемый следующий уровень: ' + next + '.';
       }
       return;
     }
