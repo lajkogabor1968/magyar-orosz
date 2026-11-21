@@ -14,19 +14,23 @@ const originalTopics = [...context.window.GRAMMAR_TOPICS];
 runInNewContext(readFileSync(join(base, 'nyelvtan-a1a2-bovites.js'), 'utf8'), context);
 const extendedTopics = [...context.window.GRAMMAR_TOPICS];
 runInNewContext(readFileSync(join(base, 'nyelvtan-a2-melyites.js'), 'utf8'), context);
+runInNewContext(readFileSync(join(base, 'nyelvtan-a2-tovabb.js'), 'utf8'), context);
 runInNewContext(readFileSync(join(base, 'nyelvtan-tankonyv.js'), 'utf8'), context);
 const topics = context.window.GRAMMAR_TOPICS;
 const info = context.window.GRAMMAR_EXTENSION_INFO;
 const deepening = context.window.GRAMMAR_A2_DEEPENING_INFO;
+const continuation = context.window.GRAMMAR_A2_CONTINUATION_INFO;
 const textbook = context.window.GRAMMAR_TEXTBOOK_INFO;
 
 assert.equal(originalTopics.length, 16, 'A korábbi 16 témakör megmaradt.');
-assert.equal(topics.length, originalTopics.length + info.topics + deepening.topics);
+assert.equal(topics.length, originalTopics.length + info.topics + deepening.topics + continuation.topics);
 assert.ok(info.topics >= 12, 'Legalább 12 új nyelvtani lecke szükséges.');
 assert.ok(info.questions >= 95, 'Legalább 95 új feladat szükséges.');
 assert.equal(deepening.topics, 3, 'Három új A2-es fejezet szükséges.');
 assert.equal(deepening.questions, 34, 'A három fejezetben összesen 34 feladatnak kell lennie.');
-assert.equal(textbook.chapters, 25, 'Minden A1–A2 fejezetnek legyen tankönyvi oldala.');
+assert.equal(continuation.topics, 3, 'Három folytatólagos A2-es fejezet szükséges.');
+assert.equal(continuation.questions, 36, 'Mindhárom új A2-es fejezethez 12 feladat kell.');
+assert.equal(textbook.chapters, 28, 'Minden A1–A2 fejezetnek legyen tankönyvi oldala.');
 assert.equal(topics.find(t => t.level === 'A1' && t.title.includes('létige'))
   ?.questions[0].options[2], 'vagyok', 'A létige-lecke nyitófeladata a létigét kérdezze.');
 
@@ -99,19 +103,42 @@ assert.ok(verbatim.includes('shuffleOptions(q.options)'),
   'A feladatmotor keverje a feleletválasztós lehetőségek sorrendjét.');
 assert.ok(verbatim.includes('renderLesson(t.lesson)'),
   'A motor jelenítse meg a tankönyvi oldalakat.');
+assert.ok(page.includes('nyelvtan-a2-tovabb.js'),
+  'Az A2-es folytatás töltődjön be a tankönyv és a motor előtt.');
+const continuationScript = page.indexOf('src="nyelvtan-a2-tovabb.js');
+assert.ok(continuationScript > page.indexOf('src="nyelvtan-a2-melyites.js') &&
+  continuationScript < page.indexOf('src="nyelvtan-tankonyv.js'),
+  'A folytatás a korábbi A2-fejezetek után, a tankönyv előtt töltődjön be.');
 const scriptReferences = ['nyelvtan-a1a2-bovites.js', 'nyelvtan-a2-melyites.js',
   'nyelvtan-tankonyv.js', 'nyelvtan-motor.js'].map(s => page.indexOf(`src="${s}`));
 assert.ok(scriptReferences.every(v => v !== -1) &&
   scriptReferences.every((v, i) => i === 0 || v > scriptReferences[i - 1]),
   'A tankönyv és az új leckék az értékelőmotor előtt töltődjenek be.');
 assert.equal(counts.A1.topics, 9);
-assert.equal(counts.A2.topics, 16);
-assert.equal(counts.A2.questions, 126);
+assert.equal(counts.A2.topics, 19);
+assert.equal(counts.A2.questions, 162);
 const unusual = topics.find(t => t.title === 'Rendhagyó felszólítás – egyél vagy edd?');
 assert.ok(unusual.questions.some(q => q.accept?.includes('Egyed')),
   'Az egyed hosszabb alakot is el kell fogadni.');
 
+const future = topics.find(t => t.title === 'Jövő idő – fog + főnévi igenév');
+const necessity = topics.find(t => t.title === 'Kell és a személyragos főnévi igenév');
+const possession = topics.find(t => t.title === 'Birtokos személyjelek – könyvem, könyved, könyve');
+assert.ok(future && necessity && possession, 'Az új A2-es tanító fejezetek hiányoznak.');
+assert.deepEqual(Array.from(future.table.rows[0]), ['én', 'tanulni fogok', 'olvasni fogom'],
+  'A jövő idejű két ragozást külön kell tanítani.');
+assert.deepEqual(Array.from(future.table.rows[5]), ['ők / Önök', 'tanulni fognak', 'olvasni fogják']);
+assert.deepEqual(Array.from(necessity.table.rows[2]), ['neki / Önnek', 'tanulnia', 'beszélnie']);
+assert.deepEqual(Array.from(necessity.table.rows[5]), ['nekik / Önöknek', 'tanulniuk', 'beszélniük']);
+assert.deepEqual(Array.from(possession.table.rows[2]), ['ő / Ön', 'könyve', 'háza']);
+assert.deepEqual(Array.from(possession.table.rows[5]), ['ők', 'könyvük', 'házuk']);
+for (const topic of [future, necessity, possession]) {
+  assert.equal(topic.questions.length, 12);
+  assert.equal(topic.questions.filter(q => q.type === 'input').length, 4);
+  assert.ok(topic.questions.every(q => q.whyRu?.trim()), 'A2-es javításhoz orosz indoklás kell.');
+}
+
 console.log(JSON.stringify({oldTopics: originalTopics.length, addedTopics: info.topics,
-  newQuestions: info.questions + deepening.questions, textbookChapters: textbook.chapters,
+  newQuestions: info.questions + deepening.questions + continuation.questions, textbookChapters: textbook.chapters,
   totalTopics: topics.length,
   totalQuestions: topics.reduce((n, t) => n + t.questions.length, 0), levels: counts}, null, 2));

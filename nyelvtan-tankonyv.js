@@ -19,7 +19,7 @@
       ['A magánhangzó hosszúsága megváltoztathatja a szó jelentését.',
         'Долгота гласного может изменить значение слова.', 'kor – kór', 'возраст – болезнь'],
       ['Az ékezet a betű része. Olvasáskor és íráskor is figyelj rá. A szóhangsúly rendszerint az első szótagon van.',
-        'Знак долготы — часть буквы. Ударение обычно на первом слоге.', 'tűz – tüz', 'tűz — правильное написание «огонь»; tüz — ошибка']
+        'Знак долготы — часть буквы. Ударение обычно на первом слоге.', 'tűz (helyes) – tüz (hibás)', 'tűz — правильное написание «огонь»; tüz — орфографическая ошибка']
     ], ['Melyik szó jelenti azt, hogy „болезнь”: kor vagy kór?', 'kór',
       'A hosszú ó miatt más szó és más jelentés keletkezik.',
       'Долгая ó меняет значение: kór означает «болезнь».'],
@@ -343,6 +343,54 @@
       'Мы + определённый объект + прошедшее время → írtuk.'],
     ['A „te olvastál” és a „te olvastad” nem ugyanarra a tárgyra utal.',
       'Не путай olvastál (неопределённое) и olvastad (определённое).']);
+
+  // A2 – a könyv jövőidő-, személyragos főnévi igenév- és birtokos
+  // táblázatainak rendszerét ellenőriztük; az itt következő magyarázatok,
+  // példák és mintafeladatok önállóan szerkesztett tananyagok.
+  teach('Jövő idő – fog + főnévi igenév',
+    'Jövő időben is biztosan ki tudod választani az ige alakját és a megfelelő ragozást.',
+    'Ты научишься выражать будущее и выбирать спряжение глагола fog.', [
+      ['A holnap vagy a jövő héten szó mellett jelen idővel is utalhatunk jövőre.',
+        'Слово holnap или jövő héten позволяет использовать настоящее время для будущего.', 'Holnap dolgozom.', 'Завтра я буду работать.'],
+      ['A fog segédige a személy szerint változik. A főnévi igenév nem ragozódik: tanulni fogok, tanulni fogsz. Határozott tárggyal: olvasni fogom.',
+        'Изменяется fog, инфинитив остаётся неизменным. При определённом объекте: fogom/fogod/fogja и т. д.', 'Olvasni fogok egy könyvet. Olvasni fogom a könyvet.', 'Я буду читать какую-то книгу. Я буду читать эту книгу.'],
+      ['A létige jövő idejében külön alakot tanulunk: leszek, leszel, lesz.',
+        'У глагола lenni особая будущая форма: leszek, leszel, lesz.', 'Holnap otthon leszek.', 'Завтра я буду дома.']
+    ], ['Egészítsd ki! „Ti holnap ___ a könyvet.” (olvas; fog)', 'olvasni fogjátok',
+      'A könyvet határozott tárgy, a ti személyhez a fogjátok tartozik.',
+      'Определённый объект a könyvet требует формы fogjátok для ti.'],
+    ['A „tanulni fogok” és a „fogok tanulni” is helyes lehet; a „tanulok fog” hibás. A főige főnévi igenévben áll.',
+      'Возможны tanulni fogok и fogok tanulni; неверно tanulok fog. Основной глагол — в инфинитиве.']);
+
+  teach('Kell és a személyragos főnévi igenév',
+    'Megérted a különbséget az általános „várni kell” és a személyes „várnom kell” között.',
+    'Ты научишься различать «нужно ждать» вообще и «мне нужно ждать».', [
+      ['Az általános szükségességhez egyszerű főnévi igenevet használunk.',
+        'Если речь не о конкретном человеке, используем обычный инфинитив.', 'Itt várni kell.', 'Здесь нужно ждать.'],
+      ['A nekem, neked és a többi személy mellett a főnévi igenév személyragot kap. A kell nem változik.',
+        'Если указано лицо, окончание получает инфинитив, а kell не меняется.', 'Nekem tanulnom kell. Neked tanulnod kell.', 'Мне нужно учиться. Тебе нужно учиться.'],
+      ['A névmás elhagyható: a tanulnunk végéből már tudjuk, hogy „nekünk”.',
+        'Местоимение необязательно: окончание -nunk уже указывает на «нам».', 'Holnap tanulnunk kell.', 'Завтра нам нужно учиться.']
+    ], ['Egészítsd ki! „Nektek ___ kell.” (beszél)', 'beszélnetek',
+      'A nektek (ti) személyhez a -netek alak kapcsolódik: beszélnetek.',
+      'Для nektek (вам, мн. ч.) нужна форма beszélnetek.'],
+    ['A tanulni kell az általános alapszerkezet, a tanulnom kell pedig egyértelműen megmutatja: nekem kell tanulnom.',
+      'Tanulni kell выражает общую необходимость, а личная форма tanulnom kell явно указывает на «мне».']);
+
+  teach('Birtokos személyjelek – könyvem, könyved, könyve',
+    'Egy birtokolt dolgot mind a hat személyhez hozzá tudsz rendelni.',
+    'Ты научишься обозначать принадлежность одного предмета шести лицам.', [
+      ['A birtokolt főnév kap személyjelet, nem a birtokos névmás. Először a könyv tövét figyeld.',
+        'Притяжательное окончание получает существительное, не местоимение.', 'a könyvem – a könyved – a könyve', 'моя книга – твоя книга – его/её книга'],
+      ['Többes számú birtokosnál más alak kell: könyvünk, könyvetek, könyvük. Itt továbbra is egy könyvről beszélünk.',
+        'При нескольких владельцах меняется окончание. Речь всё ещё об одной книге.', 'a könyvünk – a könyvetek – a könyvük', 'наша книга – ваша книга – их книга'],
+      ['Az én, te, ő névmás elhagyható; a személyjel akkor is megmarad.',
+        'Местоимение можно опустить, но притяжательное окончание сохраняется.', 'Ez a könyvem. Hol van a könyved?', 'Это моя книга. Где твоя книга?']
+    ], ['Hogyan mondod? „A mi ___.” (könyv)', 'könyvünk',
+      'A mi többes szám első személy, ezért a könyvünk alakot használjuk.',
+      'Для mi (мы) нужна форма könyvünk.'],
+    ['Az „az ő könyve” egy, az „az ő könyvük” több birtokosra utal. Az ő névmás mindkettőben változatlan.',
+      'Az ő könyve — его/её книга; az ő könyvük — их книга. Местоимение ő не меняется.']);
 
   // Az eredetileg csak rövid szabályt és tesztet tartalmazó nyolc A1–A2
   // leckéhez saját ragozási/szóalaktani táblázatot is szerkesztünk.

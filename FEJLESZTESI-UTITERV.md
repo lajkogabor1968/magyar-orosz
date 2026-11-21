@@ -38,7 +38,7 @@
 
 - **Ingyenes rész:** valóban használható A1-es alaptanulás, néhány párbeszéd és próbagyakorlás.
 - **Lehetséges prémium:** teljes ellenőrzött A2 és későbbi B1 tanfolyam, rendszerezett tanulási út, offline csomagok, bővített gyakorlás és a fejlődés követése – csak akkor ígérve, ha az adott funkció működik.
-- **Árazás:** előbb 20–30 tényleges célcsoportbeli tanuló visszajelzése és fizetési hajlandóságának mérése; az előfizetési ár későbbi döntés. A bevétel nem garantált és nem teljesen passzív: fenntartás, lektorálás, ügyfélszolgálat és rendszerfrissítés folyamatos feladat.
+- **Elfogadott prémium árazás:** **2 900 Ft/hó vagy 29 000 Ft/év**. Az ingyenes változat válogatott A1-es leckéket és gyakorlófeladatokat tartalmazna. Ezek a későbbi fizetős termék tervezett árai; az oldalon még nincs fizetés vagy előfizetés-ellenőrzés. A bevétel nem garantált és nem teljesen passzív: fenntartás, lektorálás, ügyfélszolgálat és rendszerfrissítés folyamatos feladat.
 - **Pénzügyi terv:** a bruttó árbevételből külön kell levonni az aktuális Play-szolgáltatási és fizetési díjakat, az adózást, a hangok/lektorálás és az infrastruktúra költségét. A díjak régiónként és programonként eltérhetnek; nincs rögzített, minden esetre alkalmazható jutalék.
 
 ## 6. Mit jelent a következő kész mérföldkő?
