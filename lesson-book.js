@@ -78,7 +78,7 @@ if(step===4)return compositionChecked;
 if(step===5)return testCompleted;
 return true
 }
-function moveNext(){if(!canAdvance()){note(['Сначала откройте перевод как минимум пяти разных слов на карточках.','Прочитайте правило и выберите правильный ответ.','Прослушайте диалог и повторите хотя бы одну реплику вслух.','Сначала правильно напишите не менее трёх слов.','Сначала напишите мини-сочинение и проверьте его структуру.','Сначала ответьте на все вопросы итоговой проверки.'][step]);return}if(step<5){step++;save();stageView()}else{const old=read(KEY);const finished=old.completed||{};finished[lessonKey()]={score:testCorrect,max:Math.min(10,rows().length),errors:quizMisses.map(v=>v.hu),date:new Date().toISOString()};old.completed=finished;try{localStorage.setItem(KEY,JSON.stringify(old));persistQuiz(true)}catch(_){note('Не удалось сохранить результат. Скопируйте его перед выходом.');return}if(lessonIndex+1<courses[level].length){lessonIndex++;step=0;save();render();note('✓ Предыдущий урок завершён. Начинаем следующий.')}else{step=0;save();render();note(Object.keys(courses[level]).every(i=>finished[level+':'+i])?'✓ Все подготовленные уроки этого уровня завершены.':'✓ Урок завершён. В списке уроков выберите следующий без отметки ✓.')}}}
+function moveNext(){if(!canAdvance()){note(['Сначала откройте перевод как минимум пяти разных слов на карточках.','Прочитайте правило и выберите правильный ответ.','Прослушайте диалог и повторите хотя бы одну реплику вслух.','Сначала правильно напишите не менее трёх слов.','Сначала напишите мини-сочинение и проверьте его структуру.','Сначала ответьте на все вопросы итоговой проверки.'][step]);return}if(step<5){step++;save();stageView()}else{const old=read(KEY);const finished=old.completed||{};finished[lessonKey()]={score:testCorrect,max:Math.min(10,rows().length),errors:quizMisses.map(v=>v.hu),date:new Date().toISOString()};old.completed=finished;try{localStorage.setItem(KEY,JSON.stringify(old));persistQuiz(true)}catch(_){note('Не удалось сохранить результат. Скопируйте его перед выходом.');return}if(lessonIndex+1<courses[level].length){const nextIndex=lessonIndex+1;confirmLessonChange(nextIndex);if(lessonIndex===nextIndex)note('✓ Урок завершён. Вы перешли к следующему.');else note('✓ Урок завершён. Выберите повторение или продолжение обучения.')}else{step=0;save();render();note(Object.keys(courses[level]).every(i=>finished[level+':'+i])?'✓ Все подготовленные уроки этого уровня завершены.':'✓ Урок завершён. В списке уроков выберите следующий без отметки ✓.')}}}
 
 function read(key){try{return JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(_){return {}}}
 function save(){const s=read(KEY);s[level]={lessonIndex,step};if(level==='A1')s.migratedFirstUnit20261121=true;try{localStorage.setItem(KEY,JSON.stringify(s))}catch(_){}}
@@ -268,9 +268,9 @@ $('integratedCardSpeak').onclick=()=>say(rows()[cardIndex%rows().length].hu);
 const grammarLinks={
  'A1:0':'A magyar magánhangzók',
  'A1:1':'A létige: vagyok, vagy, van',
- 'A1:2':'Birtoklás: van könyvem, nincs autóm',
+ 'A1:2':'Szótő és toldalék: hogyan épül fel egy szó?',
  'A1:3':'Magánhangzó-harmónia: -ban/-ben',
- 'A1:4':'Tárgyrag: -t',
+ 'A1:4':'Szótő és toldalék: hogyan épül fel egy szó?',
  'A1:5':'Határozatlan igeragozás – jelen idő',
  'A1:6':'Ki cselekszik? Alany, ige és tárgy',
  'A1:7':'Magánhangzó-harmónia: -ban/-ben',
@@ -280,7 +280,7 @@ const grammarLinks={
 };
 $('integratedGrammarMore').onclick=()=>{
  const topic=grammarLinks[lessonKey()];
- const grammarLevel=['A1:4','A2:0'].includes(lessonKey())?'A1':level;
+ const grammarLevel=lessonKey()==='A2:0'?'A1':level;
  const params=new URLSearchParams({level:grammarLevel,from:'workbook',returnLevel:level,returnLesson:String(lessonIndex)});
  if(topic)params.set('topic',topic);
  location.href='nyelvtan.html?'+params.toString();
