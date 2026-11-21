@@ -343,7 +343,7 @@
       // A1–A2: a tanuló a visszajelzést magyar nyelvtudás nélkül is értse.
       const explanation = q.whyRu || (['A1','A2'].includes(level) ? t.rule : q.why);
       feedback.textContent =
-        `${correct ? '✓ Верно. ' : '✗ Попробуйте ещё раз. '}${q.type === 'input' ? 'Правильные варианты' : 'Правильный ответ'}: ${correctAnswer}. ${explanation || ''}`;
+        `${correct ? '✓ Верно. ' : '✗ Пока неверно. '}${q.type === 'input' ? 'Правильные варианты' : 'Правильный ответ'}: ${correctAnswer}. ${explanation || ''}`;
       feedback.lang = 'ru';
     });
     const percent = Math.round(score / t.questions.length * 100);
