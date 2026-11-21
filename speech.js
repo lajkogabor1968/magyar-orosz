@@ -93,9 +93,21 @@
     const dialogueRecordings = window.TanuloDialogueAudioManifest || {};
     // Each speaker can have a distinct recording even for identical wording.
     const recordingKey = String(utterance.recordingKey || '');
-    const clip = !skipRecording && lang.startsWith('hu')
+    const gaborOnly = Boolean(window.TanuloOnlyGaborVoice) && lang.startsWith('hu');
+    const gaborRecordings = window.TanuloApprovedGaborManifest || {};
+    const gaborSource = recordingKey ? gaborRecordings[recordingKey] : gaborRecordings[phrase];
+    // A strict preview never silently switches to a generic or another person's voice.
+    // Only approved local exports, never raw voice samples or remote demo URLs.
+    const approvedGaborClip = typeof gaborSource === 'string' &&
+      /^audio\/gabor\/(a1|a2)\/[a-z0-9][a-z0-9._-]*\.(mp3|wav|ogg)$/i.test(gaborSource)
+      ? gaborSource : null;
+    const clip = gaborOnly ? approvedGaborClip : (!skipRecording && lang.startsWith('hu')
       ? (recordingKey ? dialogueRecordings[recordingKey] : recordings[phrase])
-      : null;
+      : null);
+    if (gaborOnly && !clip) {
+      message('Запись голосом Габора ещё не готова. Другие голоса не используются. / Ehhez még nincs jóváhagyott Gábor-felvétel. Más hangot nem használunk.');
+      return false;
+    }
     if (clip) {
       cancel();
       const token = generation;
@@ -123,6 +135,11 @@
         player.onended = null;
         player.pause();
         activeAudio = null;
+        if (gaborOnly) {
+          message('Запись Габора недоступна. Другой голос не включается. / A jóváhagyott Gábor-felvétel nem érhető el. Nem váltunk másik hangra.');
+          if (typeof utterance.onerror === 'function') utterance.onerror(event);
+          return;
+        }
         if ((window.TanuloVoicePilotKeys || []).includes(phrase)) {
           message('Запись Габора не загрузилась. Голос устройства отключён для теста. / Gábor hangmintája nem érhető el. Tesztmódban nem váltunk át a készülék másik hangjára.');
           if (typeof utterance.onerror === 'function') utterance.onerror(event);

@@ -21,6 +21,14 @@ Statikus, telepítést nem igénylő, mobilon és számítógépen használható
 
 A böngésző a megjelölt szavakat és eredményeket helyben (`localStorage`) tárolja. Nincs bejelentkezés és nincs központi tanulói adatgyűjtés. A magyar felolvasás az elérhető, előre elkészített MP3-hangot részesíti előnyben, egyébként a készülék beszédszintézisére támaszkodik; nem minden eszköz biztosít magyar hangot. A beszédgyakorlás önjelölés, **nem automatikus kiejtésminősítés**.
 
+### A1–A2: kizárólag Gábor hangja – elkülönített próbamód
+
+Az `a1.html?voice=gabor` és `a2.html?voice=gabor` címeken elérhető egy tesztmód, amely **csak Gábor külön jóváhagyott, helyben tárolt hangfájljait** engedi lejátszani. Más személy hangja, a régi A1-es MP3-ak, a külső próbahang-URL-ek és a készülék beszédszintézise ebben a módban nem használható. Hiányzó vagy hibás felvételnél egyértelmű, kétnyelvű üzenet jelenik meg, nem indul el idegen hang. A szereplők neve szövegesen látszódhat, de a felolvasott mondatnak nem része.
+
+Az engedélyezett hangok jegyzéke (`audio/dialogue-manifest.js` → `TanuloApprovedGaborManifest`) jelenleg szándékosan **üres**: még nincs olyan Gábor-hangból készült felvétel, amelynek eredetét és tartalmát ellenőriztük, és amelynek közzétételét jóváhagyták. Később kizárólag az `audio/gabor/a1/` és `audio/gabor/a2/` alatti jóváhagyott, generált MP3/WAV/OGG kerülhet a jegyzékbe. Az eredeti hangmintát nem tesszük a nyilvános GitHub-repozitóriumba. A jelenleg használt normál felolvasás és minden korábbi tanulói eredmény változatlan marad, amíg a saját hangok elkészülnek.
+
+Hangbiztonsági szerkezeti ellenőrzés: `node magyar-orosz/verify-gabor-voice.mjs`. A hangminőség és a tényleges Android-lejátszás később külön, valódi hangfájlokkal ellenőrizendő.
+
 ### A1–A2 – Bővített nyelvtani tananyag
 
 Az [orosz magyarázatú nyelvtani modul](nyelvtan.html) jelenleg összesen **36 témakört és 259 feladatot** tartalmaz; ebből **A1: 9 témakör, 57 feladat**, **A2: 19 témakör, 162 feladat**. Az előző, 33 témakörös változathoz három új A2-es fejezet és 36 saját készítésű gyakorlat került. A B1–B2 tananyag nem változott.

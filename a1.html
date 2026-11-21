@@ -22,7 +22,9 @@ function playLine(n,autoplay=false){
  utter.onend=()=>{if(t!==token)return;if(autoplay&&n+1<L.length)playLine(n+1,true);else set("audioStatus",n+1===L.length?"Vége a párbeszédnek. / Конец диалога.":"Mondat kész. Következő mondat: nyomd meg a gombot. / Реплика закончилась. Нажмите «Следующая реплика».")};
  utter.onerror=()=>{if(t===token)set("audioStatus","A hang megszakadt. Próbáld a következő mondat gombot vagy Chrome-ban a magyar hang beállításait. / Звук прервался. Попробуйте следующую реплику или проверьте венгерский голос в Chrome.")};
  set("audioStatus","Mondat / Реплика: "+(n+1)+"/"+L.length);
- if(!TanuloTTS.speak(utter))set("audioStatus","Nincs elérhető hang ehhez a mondathoz. Androidon ellenőrizd a magyar beszédhangot. / Нет доступного голоса. Проверьте настройки венгерского голоса.")
+ if(!TanuloTTS.speak(utter))set("audioStatus",window.TanuloOnlyGaborVoice
+  ? "Ehhez a mondathoz még nincs jóváhagyott Gábor-hang. Más hangot nem használunk. / Запись голосом Габора пока недоступна. Другие голоса отключены."
+  : "Nincs elérhető hang ehhez a mondathoz. Androidon ellenőrizd a magyar beszédhangot. / Нет доступного голоса. Проверьте настройки венгерского голоса.")
 }
 function speak(){audioLine=0;playLine(0,true)}
 function nextLine(){playLine(Math.min(audioLine+1,LESSONS[idx].lines.length-1),false)}
@@ -33,10 +35,18 @@ function audioCoverage(){
  LESSONS.forEach((lesson,lessonIndex)=>lesson.lines.forEach((line,lineIndex)=>{
   total++;if(manifest["a1:"+lessonIndex+":"+lineIndex])available++;
  }));
- set("a1AudioCoverage","A1 párbeszédek: "+available+"/"+total+" szereplőhöz rendelt hangfelvétel. A többi mondat a készülék magyar beszédhangját igényli. / A1: "+available+"/"+total+" реплик с голосами персонажей. Остальные требуют венгерский голос устройства.")
+ if(window.TanuloOnlyGaborVoice){
+  available=LESSONS.reduce((count,lesson,lessonIndex)=>count+lesson.lines.filter((_,lineIndex)=>
+   Boolean((window.TanuloApprovedGaborManifest||{})["a1:"+lessonIndex+":"+lineIndex])).length,0);
+  set("a1AudioCoverage","Gábor-hangpróba / Пробный голос Габора: "+available+"/"+total+" jóváhagyott mondat. Más hang nem szólal meg. / Другие голоса не используются.");
+ }else set("a1AudioCoverage","A1 párbeszédek: "+available+"/"+total+" szereplőhöz rendelt hangfelvétel. A többi mondat a készülék magyar beszédhangját igényli. / A1: "+available+"/"+total+" реплик с голосами персонажей. Остальные требуют венгерский голос устройства.")
 }
 function audioTest(){
  stop();
+ if(window.TanuloOnlyGaborVoice){
+  set("audioStatus","A régi hangpróba ebben a módban ki van kapcsolva. Csak jóváhagyott Gábor-felvétel szólhat. / Старый аудиотест отключён. Разрешён только подтверждённый голос Габора.");
+  return;
+ }
  const source=(window.TanuloAudioManifest||{})["A ház nagy."];
  if(!source){set("audioStatus","A felvétel nem szerepel a hangjegyzékben. / Тестовая запись не найдена.");return}
  const t=token;
