@@ -8,7 +8,11 @@
   const more = document.getElementById('studyMore');
   if (!hub || !back || !extra || !more) return;
   function mode(value) {
-    root.classList.remove('study-menu', 'study-active', 'study-daily', 'study-exam');
+    root.classList.remove('study-menu', 'study-active', 'study-daily', 'study-exam', 'study-online', 'study-coach');
+    for (const id of ['examView','onlineLessonView','coachView']) {
+      const pane=document.getElementById(id);
+      if(pane) pane.hidden=true;
+    }
     const exam = document.getElementById('examView');
     if (exam) exam.hidden = true;
     root.classList.add(value);
