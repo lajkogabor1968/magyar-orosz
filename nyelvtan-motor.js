@@ -47,7 +47,7 @@
   const prerequisitesEl = node('div', '', 'grammar-prerequisites');
   titleRu.after(prerequisitesEl);
   const topicLabel = document.querySelector('label[for="topic"]');
-  if (topicLabel) topicLabel.textContent = 'Nyelvtani témakör / Грамматическая тема:';
+  if (topicLabel) topicLabel.textContent = 'Грамматическая тема:';
   const huRule = node('div', '', 'rule-hu');
   huRule.id = 'huRule';
   huRule.lang = 'hu';
@@ -65,32 +65,32 @@
     'muted practice-intro-ru');
   practiceIntroRu.lang = 'ru';
   practicePanel.querySelector('p.muted')?.after(practiceIntroRu);
-  $('restart').textContent = '↺ Újrapróbálom / Повторить';
-  $('next').textContent = 'Következő témakör → / Следующая тема';
+  $('restart').textContent = '↺ Попробовать снова';
+  $('next').textContent = 'Следующая тема →';
   const introPanel = $('title').closest('section');
   introPanel.id = 'nyelvtan-magyarazat';
   const lessonPanel = node('section', undefined, 'panel textbook-panel');
   lessonPanel.id = 'nyelvtan-tankonyv';
-  const lessonHeader = node('h2', '📖 Tankönyv · Учебник');
+  const lessonHeader = node('h2', '📖 Объяснение и примеры');
   const lessonGoal = node('div', '', 'textbook-goal');
   const lessonSteps = node('div', '', 'textbook-steps');
   const lessonWorked = node('div', '', 'textbook-worked');
   const lessonPitfall = node('div', '', 'textbook-pitfall');
-  const lessonGo = node('button', 'Megtanultam, jöhet a gyakorlás → / Перейти к заданиям', 'primary lesson-go');
+  const lessonGo = node('button', 'Перейти к заданиям →', 'primary lesson-go');
   lessonGo.type = 'button';
   lessonGo.onclick = () => practicePanel.scrollIntoView({behavior: 'smooth', block: 'start'});
   lessonPanel.append(lessonHeader, lessonGoal, lessonSteps, lessonWorked, lessonPitfall, lessonGo);
   practicePanel.before(lessonPanel);
-  const lessonBack = node('button', '↑ Vissza a tankönyvhöz / Вернуться к учебнику', 'lesson-back');
+  const lessonBack = node('button', '↑ Вернуться к объяснению', 'lesson-back');
   lessonBack.type = 'button';
   lessonBack.onclick = () => lessonPanel.scrollIntoView({behavior: 'smooth', block: 'start'});
   practicePanel.append(lessonBack);
   const quickNav = node('nav', undefined, 'lesson-quick-nav');
   quickNav.setAttribute('aria-label', 'Tananyag és gyakorlás / Учебник и задания');
-  const lessonNavButton = node('button', '📖 Tankönyv / Учебник', 'lesson-nav-study');
+  const lessonNavButton = node('button', '📖 Объяснение', 'lesson-nav-study');
   lessonNavButton.type = 'button';
   lessonNavButton.onclick = () => lessonPanel.scrollIntoView({behavior: 'smooth', block: 'start'});
-  const practiceNavButton = node('button', '✍️ Gyakorlás / Упражнения', 'lesson-nav-practice');
+  const practiceNavButton = node('button', '✍️ Упражнения', 'lesson-nav-practice');
   practiceNavButton.type = 'button';
   practiceNavButton.onclick = () => practicePanel.scrollIntoView({behavior: 'smooth', block: 'start'});
   quickNav.append(lessonNavButton, practiceNavButton);
@@ -137,7 +137,7 @@
 
   function speak(text) {
     if (!('speechSynthesis' in window)) {
-      $('result').textContent = 'A felolvasást ez a böngésző nem támogatja.';
+      $('result').textContent = 'Этот браузер не поддерживает озвучивание.';
       return;
     }
     if (window.TanuloTTS?.cancel) window.TanuloTTS.cancel();
