@@ -17,7 +17,7 @@ page.on('pageerror', err => errors.push(err.message));
 try {
   await page.goto(`file://${file}?level=A2`);
   await page.locator('#topic option').first().waitFor();
-  assert.match(await page.locator('#count').textContent(), /13 nyelvtani témakör · 92 feladat/);
+  assert.match(await page.locator('#count').textContent(), /16 nyelvtani témakör · 126 feladat/);
   const select = page.locator('#topic');
   const target = await select.locator('option').evaluateAll(opts =>
     opts.find(el => el.textContent.includes('Felszólító mód I.'))?.value);
@@ -27,6 +27,9 @@ try {
   assert.equal(await page.locator('.conjugation-table tbody tr').count(), 6,
     'A felszólító mód hat személyű táblázata látható.');
   assert.equal(await page.locator('.grammar-input').count(), 3);
+  assert.equal(await page.locator('#nyelvtan-tankonyv .lesson-step').count(), 2,
+    'A felszólító módhoz két tankönyvi magyarázó lépés tartozzon.');
+  assert.match(await page.locator('.textbook-worked').textContent(), /várjon/);
 
   await page.screenshot({path: '/tmp/tanulomuhely-a2-nyelvtan-desktop.png', fullPage: true});
   const currentQuestions = await page.evaluate(() => {
@@ -54,15 +57,34 @@ try {
 
   await page.reload();
   assert.match(await page.locator('#progress').textContent(), /1 befejezett témakör/);
+  await select.selectOption('15');
+  assert.match(await page.locator('#title').textContent(), /Múlt idő – határozott/);
+  assert.equal(await page.locator('.lesson-step').count(), 3);
+  assert.equal(await page.locator('.conjugation-table tbody tr').count(), 6);
+  const newQuestions = await page.evaluate(() => window.GRAMMAR_TOPICS.filter(t => t.level === 'A2')[15].questions);
+  for (const [i, q] of newQuestions.entries()) {
+    const row = page.locator('#questions .question').nth(i);
+    if (q.type === 'input') await row.locator('input').fill(q.accept[0]);
+    else await row.getByRole('button', {name: q.options[q.answer], exact: true}).click();
+  }
+  await page.locator('#check').click();
+  assert.match(await page.locator('#result').textContent(), /12 \/ 12 pont · 100%/);
+  assert.equal(await page.locator('.feedback-ru').count(), 12);
   await page.locator('#levels [data-level="A1"]').click();
   assert.match(await page.locator('#count').textContent(), /9 nyelvtani témakör · 57 feladat/);
+  assert.equal(await page.locator('.conjugation-table').count(), 1,
+    'Az A1-es alaptémákhoz is tartozzon táblázat.');
+
+  await page.locator('#levels [data-level="B1"]').click();
+  assert.ok(await page.locator('#nyelvtan-tankonyv').evaluate(el => el.classList.contains('hidden')),
+    'A még nem kidolgozott B1-es tankönyvi oldalt nem szabad üresen mutatni.');
 
   await page.setViewportSize({width: 390, height: 844});
   await page.locator('#levels [data-level="A2"]').click();
   await select.selectOption(target);
   await page.screenshot({path: '/tmp/tanulomuhely-a2-nyelvtan-mobile.png', fullPage: true});
   assert.equal(errors.length, 0, `Böngészőhibák: ${errors.join('; ')}`);
-  console.log('Böngészős teszt rendben: A1/A2 témakörök, táblázat, beírás, javítás, eredménymegőrzés, mobilnézet.');
+  console.log('Böngészős teszt rendben: A1/A2 tankönyv, táblázatok, 223 feladat, orosz javítás, eredménymegőrzés, mobilnézet.');
 } finally {
   await browser.close();
 }

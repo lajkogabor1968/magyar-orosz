@@ -52,8 +52,46 @@
 .grammar-input:focus-visible {outline: 3px solid #d6a851; outline-offset: 2px;}
 .grammar-input.right {background: #e5f5ec; border-color: #4c9877; color: #174e34;}
 .grammar-input.wrong {background: #ffeee8; border-color: #c67d70; color: #913e30;}
+.textbook-panel {
+  border-color: #b4d1bb;
+  background: linear-gradient(145deg, #fff 0%, #f8fcf8 100%);
+}
+.textbook-panel > h2 {font-size: 1.5rem; margin: 2px 0 16px; color: #1e5341;}
+.textbook-goal {
+  background: #eaf5ee;
+  border-radius: 12px;
+  padding: 12px 16px;
+  border-left: 4px solid #3c9071;
+  margin-bottom: 15px;
+}
+.lesson-step {
+  border: 1px solid #d1e3dc;
+  border-radius: 12px;
+  padding: 15px 17px;
+  margin: 13px 0;
+  background: #fff;
+}
+.lesson-step h3 {margin: 0 0 10px; color: #215b52; font-size: 1.08rem;}
+.textbook-panel p {line-height: 1.65; margin: 7px 0;}
+.lesson-ru {color: #4b5e68;}
+.lesson-step-example {margin-top: 13px; background: #f2f8f5; padding: 10px 12px; border-radius: 8px;}
+.lesson-step-example .lesson-hu {font-weight: 700; color: #235e54;}
+.textbook-worked {
+  background: #f0f4ff;
+  border-left: 4px solid #6483b8;
+  padding: 13px 17px;
+  border-radius: 10px;
+  margin: 15px 0;
+}
+.textbook-worked h3, .textbook-pitfall h3 {margin: 3px 0 9px; font-size: 1.05rem;}
+.textbook-worked > strong {display: inline-block; padding: 6px 10px; border-radius: 7px; background: #dcebf9; color: #1b4367; font-size: 1.1rem;}
+.textbook-pitfall {padding: 12px 16px; border: 1px solid #efdaab; border-radius: 10px; background: #fff9e9; margin: 15px 0;}
+.lesson-go, .lesson-back {margin-top: 9px; max-width: 100%; white-space: normal; text-align: left;}
+.feedback-ru {display: block; margin-top: 6px; color: #53617a;}
 @media (max-width: 600px) {
   .conjugation-table {font-size: .86rem;}
   .conjugation-table th, .conjugation-table td {padding: 9px;}
   .grammar-input {font-size: 1rem;}
+  .lesson-step {padding: 12px;}
+  .textbook-panel > h2 {font-size: 1.3rem;}
 }

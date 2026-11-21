@@ -49,6 +49,64 @@
   tables.id = 'conjugation';
   $('examples').before(tables);
 
+  // A tankönyvi magyarázat külön, olvasásra optimalizált egységben jelenik
+  // meg. A feladatok továbbra is ugyanazon az oldalon és azonos pontkulccsal élnek.
+  const practicePanel = $('questions').closest('section');
+  practicePanel.id = 'nyelvtan-gyakorlas';
+  const introPanel = $('title').closest('section');
+  introPanel.id = 'nyelvtan-magyarazat';
+  const lessonPanel = node('section', undefined, 'panel textbook-panel');
+  lessonPanel.id = 'nyelvtan-tankonyv';
+  const lessonHeader = node('h2', '📖 Tankönyv · Учебник');
+  const lessonGoal = node('div', '', 'textbook-goal');
+  const lessonSteps = node('div', '', 'textbook-steps');
+  const lessonWorked = node('div', '', 'textbook-worked');
+  const lessonPitfall = node('div', '', 'textbook-pitfall');
+  const lessonGo = node('button', 'Megtanultam, jöhet a gyakorlás → / Перейти к заданиям', 'primary lesson-go');
+  lessonGo.type = 'button';
+  lessonGo.onclick = () => practicePanel.scrollIntoView({behavior: 'smooth', block: 'start'});
+  lessonPanel.append(lessonHeader, lessonGoal, lessonSteps, lessonWorked, lessonPitfall, lessonGo);
+  practicePanel.before(lessonPanel);
+  const lessonBack = node('button', '↑ Vissza a tankönyvhöz / Вернуться к учебнику', 'lesson-back');
+  lessonBack.type = 'button';
+  lessonBack.onclick = () => lessonPanel.scrollIntoView({behavior: 'smooth', block: 'start'});
+  practicePanel.append(lessonBack);
+
+  function addBilingual(parent, hu, ru, className) {
+    const container = node('div', undefined, className);
+    const hungarian = node('p', hu, 'lesson-hu');
+    const russian = node('p', ru, 'lesson-ru');
+    hungarian.lang = 'hu';
+    russian.lang = 'ru';
+    container.append(hungarian, russian);
+    parent.append(container);
+    return container;
+  }
+
+  function renderLesson(lesson) {
+    lessonPanel.classList.toggle('hidden', !lesson);
+    lessonBack.classList.toggle('hidden', !lesson);
+    lessonGoal.replaceChildren();
+    lessonSteps.replaceChildren();
+    lessonWorked.replaceChildren();
+    lessonPitfall.replaceChildren();
+    if (!lesson) return;
+    addBilingual(lessonGoal, lesson.goalHu, lesson.goalRu, 'lesson-goal-text');
+    lesson.steps.forEach((step, i) => {
+      const block = node('article', undefined, 'lesson-step');
+      block.append(node('h3', `${i + 1}. lépés · Шаг ${i + 1}`));
+      addBilingual(block, step.hu, step.ru, 'lesson-step-description');
+      addBilingual(block, step.exampleHu, step.exampleRu, 'lesson-step-example');
+      lessonSteps.append(block);
+    });
+    lessonWorked.append(node('h3', 'Kidolgozott mintafeladat · Разобранный пример'));
+    lessonWorked.append(node('p', lesson.worked.question));
+    lessonWorked.append(node('strong', lesson.worked.answer));
+    addBilingual(lessonWorked, lesson.worked.whyHu, lesson.worked.whyRu, 'lesson-reason');
+    lessonPitfall.append(node('h3', 'Erre figyelj! · Обрати внимание!'));
+    addBilingual(lessonPitfall, lesson.pitfall.hu, lesson.pitfall.ru, 'lesson-warning');
+  }
+
   function speak(text) {
     if (!('speechSynthesis' in window)) {
       $('result').textContent = 'A felolvasást ez a böngésző nem támogatja.';
@@ -109,6 +167,7 @@
     huRule.textContent = t.ruleHu || '';
     huRule.classList.toggle('hidden', !t.ruleHu);
     renderTable(t.table);
+    renderLesson(t.lesson);
     $('check').disabled = false;
     $('result').textContent = '';
 
@@ -227,8 +286,14 @@
         });
         correctAnswer = q.options[q.answer];
       }
-      group.querySelector('.feedback').textContent =
+      const feedback = group.querySelector('.feedback');
+      feedback.textContent =
         `${correct ? '✓ Helyes. ' : '✗ Javítás. '}${q.type === 'input' ? 'Elfogadott alakok' : 'Helyes válasz'}: ${correctAnswer}. ${q.why}`;
+      if (q.whyRu) {
+        const russian = node('span', ` ${q.whyRu}`, 'feedback-ru');
+        russian.lang = 'ru';
+        feedback.append(russian);
+      }
     });
     const percent = Math.round(score / t.questions.length * 100);
     $('result').textContent = `${score} / ${t.questions.length} pont · ${percent}%. ` +
