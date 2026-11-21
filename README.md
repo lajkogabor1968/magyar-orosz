@@ -21,6 +21,8 @@ Statikus, telepítést nem igénylő, mobilon és számítógépen használható
 
 A böngésző a megjelölt szavakat és eredményeket helyben (`localStorage`) tárolja. Nincs bejelentkezés és nincs központi tanulói adatgyűjtés. A magyar felolvasás az elérhető, előre elkészített MP3-hangot részesíti előnyben, egyébként a készülék beszédszintézisére támaszkodik; nem minden eszköz biztosít magyar hangot. A beszédgyakorlás önjelölés, **nem automatikus kiejtésminősítés**.
 
+A feleletválasztós tesztben azonos magyar címszóhoz vagy példamondathoz tartozó másik helyes orosz fordítást a program már nem kínál fel hibás válaszként. Ez nem pótolja a szemantikailag egyenértékű, de eltérően megfogalmazott fordítások nyelvi ellenőrzését. Automatikus regressziós teszt: `node magyar-orosz/verify-quiz-options.mjs`.
+
 ## Indítás
 
 A teljes `magyar-orosz` mappát (az audiofájlokkal és a modulokkal együtt) kell kiszolgálni. A `index.html`-t egyszerű webszerverrel vagy a GitHub Pages-en lehet megnyitni.
@@ -32,6 +34,8 @@ Az alkalmazás a `lajkogabor1968/abece-kaland` GitHub-repozitórium `magyar-oros
 https://lajkogabor1968.github.io/abece-kaland/magyar-orosz/
 
 A fejlesztés **nem hoz létre külön alkalmazást vagy repositoryt**. A tanulói adatok az egyes böngészőkben maradnak.
+
+Az Android/Play Áruház és a fenntartható bevétel felé vezető, külön minőségi kapukat tartalmazó terv: [`FEJLESZTESI-UTITERV.md`](FEJLESZTESI-UTITERV.md). **Jelenleg még nincs telepíthető Android-alkalmazás vagy fizetési funkció.**
 
 ## Tanári ellenőrzés
 
