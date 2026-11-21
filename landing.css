@@ -236,3 +236,12 @@ html.study-book .masthead{padding:13px 0}
 .alphabet-letter small{font-size:10px;line-height:1.2}
 .integrated-answer{display:block;width:100%;text-align:left;margin:7px 0}
 #integratedWritingFeedback,#integratedAnswerFeedback,#integratedCompositionFeedback{font-weight:600;margin-top:15px}
+
+/* Visible, accessible route progress and immediately replayable quiz corrections. */
+#integratedRouteBar{display:block;width:100%;height:12px;margin:10px 0 18px;accent-color:#236a54}
+.lesson-error-summary{border-top:1px solid #d7e8df;padding-top:14px;margin-top:16px}
+.lesson-error-summary[hidden]{display:none!important}
+.lesson-error-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #e4ebe7;padding:9px 0}
+.lesson-error-row button{flex-shrink:0}
+.lesson-step-status{color:#2b604f;line-height:1.55;margin:10px 0 14px}
+@media (max-width:550px){.lesson-error-row{align-items:flex-start}.lesson-error-row button{max-width:42%;font-size:12px}}
