@@ -59,7 +59,18 @@ function save(){const s=read(KEY);s[level]={lessonIndex,step};try{localStorage.s
 function say(text){try{const u=new SpeechSynthesisUtterance(text);u.lang='hu-HU';u.rate=.85;if(window.TanuloTTS?.speak)window.TanuloTTS.speak(u);else{speechSynthesis.cancel();speechSynthesis.speak(u)}}catch(_){}}
 function el(tag,txt,cl){const node=document.createElement(tag);if(txt!==undefined)node.textContent=txt;if(cl)node.className=cl;return node}
 function lesson(){return courses[level][lessonIndex]}
-function rows(){const l=lesson(),base=window.MAGYAR_OROSZ_DATA?.[level]||[],result=[];for(const word of l.words){const row=base.find(r=>r[0].toLocaleLowerCase('hu-HU')===word.toLocaleLowerCase('hu-HU')) || (level==='A2'?window.MAGYAR_OROSZ_DATA?.A1?.find(r=>r[0].toLocaleLowerCase('hu-HU')===word.toLocaleLowerCase('hu-HU')):null);if(row)result.push({hu:row[0],ru:row[1],example:row[2],translation:row[3]})}for(const [hu,ru,example,translation] of l.extra||[])result.push({hu,ru,example,translation});return result}
+function rows(){const l=lesson(),base=window.MAGYAR_OROSZ_DATA?.[level]||[],result=[];for(const word of l.words){const row=base.find(r=>r[0].toLocaleLowerCase('hu-HU')===word.toLocaleLowerCase('hu-HU')) || (level==='A2'?window.MAGYAR_OROSZ_DATA?.A1?.find(r=>r[0].toLocaleLowerCase('hu-HU')===word.toLocaleLowerCase('hu-HU')):null);if(row){const beginnerExamples={
+ 'telefon':['Ez egy telefon.','Это телефон.'],
+ 'metró':['Metró.','Метро.'],
+ 'taxi':['Ez egy taxi.','Это такси.'],
+ 'rádió':['Ez egy rádió.','Это радио.'],
+ 'internet':['Internet.','Интернет.'],
+ 'bank':['Ez egy bank.','Это банк.'],
+ 'pizza':['Ez egy pizza.','Это пицца.'],
+ 'banán':['Ez egy banán.','Это банан.'],
+ 'film':['Ez egy film.','Это фильм.'],
+ 'park':['Ez egy park.','Это парк.']
+};const simple=level==='A1'&&lessonIndex===0?beginnerExamples[word]:null;result.push({hu:row[0],ru:row[1],example:simple?.[0]||row[2],translation:simple?.[1]||row[3]})}}for(const [hu,ru,example,translation] of l.extra||[])result.push({hu,ru,example,translation});return result}
 function renderAlphabet(){document.getElementById('alphabetLesson')?.remove();if(level!=='A1'||lessonIndex!==0)return;const section=el('section',undefined,'lesson-alphabet');section.id='alphabetLesson';section.append(el('h3','Венгерский алфавит — 44 буквы'),el('p','Прослушайте каждую букву. Русские подсказки приблизительны: точный венгерский звук лучше слушать.'));const grid=el('div',undefined,'alphabet-grid');for(const [letter,hint]of alphabet){const button=el('button',undefined,'alphabet-letter');button.type='button';button.append(el('strong',letter),el('small',hint));button.onclick=()=>say(letter);grid.append(button)}section.append(grid,el('p','Особенно важно: o–ó, ö–ő, u–ú, ü–ű. Долгота гласных меняет произношение.'));$('integratedWords').before(section)}
 function renderWords(){const box=$('integratedWords');box.replaceChildren();const w=rows();$('integratedWordCount').textContent='Изучите '+w.length+' слов и выражений. Начинаем со знакомых русскоговорящим международных слов. Слушайте и смотрите на отличия в написании.';for(const v of w){const row=el('div',undefined,'integrated-word');const text=el('div');const hu=el('strong',v.hu);hu.lang='hu';text.append(hu,el('span',v.ru),el('small',v.example+' — '+v.translation));const audio=el('button','🔊');audio.type='button';audio.onclick=()=>say(v.hu);audio.setAttribute('aria-label','Прослушать слово');const phrase=el('button','🗣');phrase.type='button';phrase.onclick=()=>say(v.example);phrase.setAttribute('aria-label','Прослушать пример');row.append(text,audio,phrase);box.append(row)}renderAlphabet()}
 function card(){const w=rows(),v=w[cardIndex%w.length];if(!v)return;$('integratedCardPosition').textContent=(cardIndex+1)+' / '+w.length;$('integratedCardHungarian').textContent=v.hu;$('integratedCardRussian').textContent=v.ru;$('integratedCardRussian').hidden=true;$('integratedCardFlip').textContent='Показать перевод'}
