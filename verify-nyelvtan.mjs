@@ -16,11 +16,13 @@ const extendedTopics = [...context.window.GRAMMAR_TOPICS];
 runInNewContext(readFileSync(join(base, 'nyelvtan-a2-melyites.js'), 'utf8'), context);
 runInNewContext(readFileSync(join(base, 'nyelvtan-a2-tovabb.js'), 'utf8'), context);
 runInNewContext(readFileSync(join(base, 'nyelvtan-tankonyv.js'), 'utf8'), context);
+runInNewContext(readFileSync(join(base, 'nyelvtan-utasitasok.js'), 'utf8'), context);
 const topics = context.window.GRAMMAR_TOPICS;
 const info = context.window.GRAMMAR_EXTENSION_INFO;
 const deepening = context.window.GRAMMAR_A2_DEEPENING_INFO;
 const continuation = context.window.GRAMMAR_A2_CONTINUATION_INFO;
 const textbook = context.window.GRAMMAR_TEXTBOOK_INFO;
+const russianInstructions = context.window.GRAMMAR_RUSSIAN_INSTRUCTIONS_INFO;
 
 assert.equal(originalTopics.length, 16, 'A korábbi 16 témakör megmaradt.');
 assert.equal(topics.length, originalTopics.length + info.topics + deepening.topics + continuation.topics);
@@ -31,6 +33,10 @@ assert.equal(deepening.questions, 34, 'A három fejezetben összesen 34 feladatn
 assert.equal(continuation.topics, 3, 'Három folytatólagos A2-es fejezet szükséges.');
 assert.equal(continuation.questions, 36, 'Mindhárom új A2-es fejezethez 12 feladat kell.');
 assert.equal(textbook.chapters, 28, 'Minden A1–A2 fejezetnek legyen tankönyvi oldala.');
+assert.equal(russianInstructions.topics, 36, 'A1-től B2-ig minden nyelvtani fejezethez kell orosz utasítás.');
+assert.equal(russianInstructions.questions, 259, 'Minden nyelvtani kérdésnél legyen orosz feladatutasítás.');
+assert.equal(russianInstructions.fallbackTopics.length, 0,
+  'Jelenleg minden A1–B2 témakörhöz egyedi orosz feladatutasítás szükséges.');
 assert.equal(topics.find(t => t.level === 'A1' && t.title.includes('létige'))
   ?.questions[0].options[2], 'vagyok', 'A létige-lecke nyitófeladata a létigét kérdezze.');
 
@@ -69,6 +75,8 @@ for (const [topicId, topic] of topics.entries()) {
     }
   }
   for (const [i, question] of topic.questions.entries()) {
+    assert.ok(question.instructionRu?.trim(), 'A gyakorlási utasításnak oroszul is meg kell jelennie.');
+    assert.match(question.instructionRu, /[А-Яа-яЁё]/u, 'Valódi cirill betűs utasítás szükséges.');
     assert.ok(question.q?.trim(), `${topic.title}: ${i + 1}. kérdés üres.`);
     assert.ok(question.why?.trim(), `${topic.title}: ${i + 1}. magyarázat üres.`);
     if (topicId >= extendedTopics.length) assert.ok(question.whyRu?.trim(),
@@ -103,8 +111,15 @@ assert.ok(verbatim.includes('shuffleOptions(q.options)'),
   'A feladatmotor keverje a feleletválasztós lehetőségek sorrendjét.');
 assert.ok(verbatim.includes('renderLesson(t.lesson)'),
   'A motor jelenítse meg a tankönyvi oldalakat.');
+assert.ok(verbatim.includes('q.instructionRu'),
+  'A gyakorló mutassa az orosz nyelvű utasítást minden feladat alatt.');
 assert.ok(page.includes('nyelvtan-a2-tovabb.js'),
   'Az A2-es folytatás töltődjön be a tankönyv és a motor előtt.');
+assert.ok(page.indexOf('src="nyelvtan-utasitasok.js') >
+  page.indexOf('src="nyelvtan-tankonyv.js') &&
+  page.indexOf('src="nyelvtan-utasitasok.js') <
+  page.indexOf('src="nyelvtan-motor.js'),
+  'Az orosz utasítások az értékelőmotor előtt töltődjenek be.');
 const continuationScript = page.indexOf('src="nyelvtan-a2-tovabb.js');
 assert.ok(continuationScript > page.indexOf('src="nyelvtan-a2-melyites.js') &&
   continuationScript < page.indexOf('src="nyelvtan-tankonyv.js'),
@@ -124,6 +139,12 @@ assert.ok(unusual.questions.some(q => q.accept?.includes('Egyed')),
 const future = topics.find(t => t.title === 'Jövő idő – fog + főnévi igenév');
 const necessity = topics.find(t => t.title === 'Kell és a személyragos főnévi igenév');
 const possession = topics.find(t => t.title === 'Birtokos személyjelek – könyvem, könyved, könyve');
+const b1 = topics.find(t => t.level === 'B1' && t.title === 'Vonatkozó mellékmondatok');
+const b2 = topics.find(t => t.level === 'B2' && t.title === 'Szórend: fókusz és hangsúly');
+assert.match(b1.questions[0].instructionRu, /относительное/u,
+  'A B1-es vonatkozó mellékmondat kapjon saját orosz utasítást.');
+assert.match(b2.questions[0].instructionRu, /порядок слов/u,
+  'A B2-es szórendi feladat kapjon saját orosz utasítást.');
 assert.ok(future && necessity && possession, 'Az új A2-es tanító fejezetek hiányoznak.');
 assert.deepEqual(Array.from(future.table.rows[0]), ['én', 'tanulni fogok', 'olvasni fogom'],
   'A jövő idejű két ragozást külön kell tanítani.');
@@ -140,5 +161,6 @@ for (const topic of [future, necessity, possession]) {
 
 console.log(JSON.stringify({oldTopics: originalTopics.length, addedTopics: info.topics,
   newQuestions: info.questions + deepening.questions + continuation.questions, textbookChapters: textbook.chapters,
+  russianPracticeInstructions: russianInstructions.questions,
   totalTopics: topics.length,
   totalQuestions: topics.reduce((n, t) => n + t.questions.length, 0), levels: counts}, null, 2));

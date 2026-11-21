@@ -53,6 +53,13 @@
   // meg. A feladatok továbbra is ugyanazon az oldalon és azonos pontkulccsal élnek.
   const practicePanel = $('questions').closest('section');
   practicePanel.id = 'nyelvtan-gyakorlas';
+  const practiceIntroRu = node('p',
+    'Прочитайте венгерское задание. Под каждым вопросом по-русски указано, что нужно сделать: выбрать вариант или вписать ответ. При проверке учитываются также долгие гласные.',
+    'muted practice-intro-ru');
+  practiceIntroRu.lang = 'ru';
+  practicePanel.querySelector('p.muted')?.after(practiceIntroRu);
+  $('restart').textContent = '↺ Újrapróbálom / Повторить';
+  $('next').textContent = 'Következő témakör → / Следующая тема';
   const introPanel = $('title').closest('section');
   introPanel.id = 'nyelvtan-magyarazat';
   const lessonPanel = node('section', undefined, 'panel textbook-panel');
@@ -201,6 +208,9 @@
     t.questions.forEach((q, i) => {
       const group = node('div', undefined, 'question');
       group.append(node('h3', `${i + 1}. ${q.q}`));
+      const instructionRu = node('p', q.instructionRu, 'question-instruction-ru');
+      instructionRu.lang = 'ru';
+      group.append(instructionRu);
       if (q.type === 'input') {
         const inp = node('input');
         inp.type = 'text';

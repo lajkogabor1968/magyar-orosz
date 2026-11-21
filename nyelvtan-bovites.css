@@ -91,6 +91,16 @@
 .textbook-pitfall {padding: 12px 16px; border: 1px solid #efdaab; border-radius: 10px; background: #fff9e9; margin: 15px 0;}
 .lesson-go, .lesson-back {margin-top: 9px; max-width: 100%; white-space: normal; text-align: left;}
 .feedback-ru {display: block; margin-top: 6px; color: #53617a;}
+.question-instruction-ru {
+  margin: -2px 0 12px;
+  padding: 9px 12px;
+  color: #405d78;
+  background: #eef4fb;
+  border-left: 3px solid #7c9bb9;
+  border-radius: 7px;
+  line-height: 1.5;
+  font-size: .94rem;
+}
 @media (max-width: 600px) {
   .conjugation-table {font-size: .86rem;}
   .conjugation-table th, .conjugation-table td {padding: 9px;}
