@@ -21,6 +21,18 @@ Statikus, telepítést nem igénylő, mobilon és számítógépen használható
 
 A böngésző a megjelölt szavakat és eredményeket helyben (`localStorage`) tárolja. Nincs bejelentkezés és nincs központi tanulói adatgyűjtés. A magyar felolvasás az elérhető, előre elkészített MP3-hangot részesíti előnyben, egyébként a készülék beszédszintézisére támaszkodik; nem minden eszköz biztosít magyar hangot. A beszédgyakorlás önjelölés, **nem automatikus kiejtésminősítés**.
 
+### A1–A2 – Bővített nyelvtani tananyag
+
+Az [orosz magyarázatú nyelvtani modul](nyelvtan.html) jelenleg összesen **30 témakört és 189 feladatot** tartalmaz; ebből **A1: 9 témakör, 57 feladat**, **A2: 13 témakör, 92 feladat**. A most hozzáadott 14 témakör 109 új, önálló feladatból áll. A B1–B2 tananyag nem változott.
+
+- **A1:** szótő és toldalék, jelen idejű határozatlan igeragozás mind a hat személyben, mély/magas hangrendű igei személyragok, névelők és többes szám, tagadás és főnévi igenév.
+- **A2:** -ik végű igék, teljes jelen idejű határozott ragozás, határozott és határozatlan tárgy megkülönböztetése, múlt idejű személyragok, valamint a **felszólító mód** (személyek, határozott tárgy, hangváltozások, tiltás és igekötő).
+- Az új témák magyar összefoglalót, orosz nyelvű magyarázatot, kétnyelvű példákat, ragozási táblázatot és vegyes **feleletválasztós/beírásos** ellenőrzést kapnak. Az ékezetek számítanak. A korábbi nyelvtani pontszámok helyi tárolókulcsa megmaradt; az eredmények továbbra is a böngészőben tárolódnak.
+
+Szakmai kiindulópont: **Magyar nyelv 5.**, Oktatási Hivatal, 2026, különösen a hangrend, toldalékolás, szóelemek, igei személyragok, idő- és módjelek, valamint a felszólítás helyesírása (60–62., 98–101., 120–128. oldal). A tankönyv kommunikációs fejezeteit nem használtuk; a magyarázatok, mondatok és feladatok **nem a tankönyvi szövegek másolatai**. Az A2-es felszólító alakokat és orosz magyarázatokat anyanyelvű lektorral is ellenőriztetni kell nyilvános tanulói kiadás előtt.
+
+Szerkezeti ellenőrzés: `node magyar-orosz/verify-nyelvtan.mjs`. A tanulói nézet böngészős ellenőrzéséhez: `node magyar-orosz/verify-nyelvtan-browser.mjs` (Playwright és futtatható Chromium szükséges). A korábbi kontrasztív modul és saját pontszámai a külön [korábbi nyelvtani oldalon](kontrasztiv-nyelvtan.html) továbbra is elérhetők.
+
 ### A1–A2 – Kiegészítő videós gyakorlás
 
 Az A1-es és A2-es menüből külső hivatkozással elérhető az [Ilona Bulik-féle YouTube-csatorna](https://www.youtube.com/@ilonabulik955), amely magyar nyelvű tanulóvideókat is tartalmaz, orosz nyelvű közönség számára. A videók külső tartalmak, nem részei a saját feladatbanknak; szintjüket egyenként még nem minősítettük, a tanuló a számára megfelelő részt választhatja. A link új lapon nyílik meg. Videót nem másolunk, nem tárolunk és nem használunk fel sajátként.

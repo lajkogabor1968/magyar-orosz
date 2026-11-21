@@ -1,0 +1,249 @@
+(() => {
+  'use strict';
+  const topicsAll = window.GRAMMAR_TOPICS;
+  const levels = ['A1', 'A2', 'B1', 'B2'];
+  const $ = id => document.getElementById(id);
+  const storeKey = 'hu-ru-grammar-v1'; // A korábbi eredmények tárolókulcsa változatlan.
+  const params = new URLSearchParams(window.location.search);
+  const initialLevel = levels.includes(params.get('level')) ? params.get('level') : 'A1';
+  let level = initialLevel;
+  let topicIndex = 0;
+  let selections = {};
+  let checked = false;
+  let progress = {};
+  try { progress = JSON.parse(localStorage.getItem(storeKey) || '{}') || {}; } catch (_) {}
+
+  const topics = () => topicsAll.filter(t => t.level === level);
+  const node = (tag, value, className) => {
+    const el = document.createElement(tag);
+    if (value !== undefined) el.textContent = value;
+    if (className) el.className = className;
+    return el;
+  };
+  const normalize = s => String(s ?? '')
+    .trim().toLocaleLowerCase('hu-HU')
+    .replace(/[.!?]+$/u, '')
+    .replace(/\s+/gu, ' ')
+    .trim();
+
+  // A régi oldal adatainak és a kiegészített fejezeteknek közös megjelenítője.
+  const ruleEl = $('rule');
+  const huRule = node('div', '', 'rule-hu');
+  huRule.id = 'huRule';
+  huRule.lang = 'hu';
+  ruleEl.before(huRule);
+  const tables = node('div', '', 'conjugation-wrap');
+  tables.id = 'conjugation';
+  $('examples').before(tables);
+
+  function speak(text) {
+    if (!('speechSynthesis' in window)) {
+      $('result').textContent = 'A felolvasást ez a böngésző nem támogatja.';
+      return;
+    }
+    if (window.TanuloTTS?.cancel) window.TanuloTTS.cancel();
+    else window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'hu-HU';
+    utterance.rate = .85;
+    const hungarianVoice = window.speechSynthesis.getVoices()
+      .find(v => v.lang.toLowerCase().startsWith('hu'));
+    if (hungarianVoice) utterance.voice = hungarianVoice;
+    if (window.TanuloTTS?.speak) window.TanuloTTS.speak(utterance);
+    else window.speechSynthesis.speak(utterance);
+  }
+
+  function updateProgress() {
+    const values = Object.values(progress).filter(v =>
+      typeof v.score === 'number' && typeof v.max === 'number');
+    const points = values.reduce((sum, v) => sum + v.score, 0);
+    const max = values.reduce((sum, v) => sum + v.max, 0);
+    $('progress').textContent = `${values.length} befejezett témakör · ${points} / ${max} legjobb pont`;
+  }
+
+  function renderTable(tableData) {
+    tables.replaceChildren();
+    if (!tableData) return;
+    const heading = node('h3', 'Ragozási és nyelvtani táblázat / Таблица форм');
+    const outer = node('div', '', 'conjugation-scroll');
+    const table = node('table', '', 'conjugation-table');
+    const caption = node('caption', 'Tanuld meg a mintát, majd oldd meg a feladatokat!');
+    const thead = node('thead');
+    const tr = node('tr');
+    tableData.heads.forEach(v => tr.append(node('th', v)));
+    thead.append(tr);
+    const tbody = node('tbody');
+    tableData.rows.forEach(cells => {
+      const row = node('tr');
+      cells.forEach(v => row.append(node('td', v)));
+      tbody.append(row);
+    });
+    table.append(caption, thead, tbody);
+    outer.append(table);
+    tables.append(heading, outer);
+  }
+
+  function render() {
+    checked = false;
+    selections = {};
+    const t = topics()[topicIndex];
+    $('topic').value = String(topicIndex);
+    $('count').textContent = `${level} · ${topics().length} nyelvtani témakör · ${topics().reduce((n, item) => n + item.questions.length, 0)} feladat`;
+    $('tag').textContent = level;
+    $('title').textContent = t.title;
+    $('rule').textContent = t.rule;
+    huRule.textContent = t.ruleHu || '';
+    huRule.classList.toggle('hidden', !t.ruleHu);
+    renderTable(t.table);
+    $('check').disabled = false;
+    $('result').textContent = '';
+
+    $('examples').replaceChildren();
+    t.examples.forEach(([hu, ru]) => {
+      const ex = node('div', undefined, 'example');
+      ex.append(node('strong', hu), node('span', ru));
+      const audioButton = node('button', '🔊');
+      audioButton.type = 'button';
+      audioButton.setAttribute('aria-label', `${hu} – magyar felolvasás`);
+      audioButton.onclick = () => speak(hu);
+      ex.append(document.createTextNode(' '), audioButton);
+      $('examples').append(ex);
+    });
+
+    $('questions').replaceChildren();
+    t.questions.forEach((q, i) => {
+      const group = node('div', undefined, 'question');
+      group.append(node('h3', `${i + 1}. ${q.q}`));
+      if (q.type === 'input') {
+        const inp = node('input');
+        inp.type = 'text';
+        inp.className = 'grammar-input';
+        inp.autocomplete = 'off';
+        inp.spellcheck = false;
+        inp.placeholder = 'Írd be az alakot! / Впишите форму';
+        inp.setAttribute('aria-label', `A(z) ${i + 1}. feladat megoldása`);
+        inp.addEventListener('input', () => { selections[i] = inp.value; });
+        inp.addEventListener('keydown', e => {
+          if (e.key === 'Enter' && !checked) {
+            e.preventDefault();
+            const next = $('questions').querySelectorAll('.grammar-input');
+            const index = [...next].indexOf(inp);
+            if (index < next.length - 1) next[index + 1].focus();
+            else $('check').focus();
+          }
+        });
+        group.append(inp);
+      } else {
+        const options = node('div', undefined, 'options');
+        q.options.forEach((answer, j) => {
+          const button = node('button', answer);
+          button.type = 'button';
+          button.setAttribute('aria-pressed', 'false');
+          button.onclick = () => {
+            if (checked) return;
+            selections[i] = j;
+            [...options.children].forEach((other, k) => {
+              other.classList.toggle('chosen', k === j);
+              other.setAttribute('aria-pressed', String(k === j));
+            });
+          };
+          options.append(button);
+        });
+        group.append(options);
+      }
+      const feedback = node('p', '', 'feedback');
+      feedback.setAttribute('aria-live', 'polite');
+      group.append(feedback);
+      $('questions').append(group);
+    });
+    updateProgress();
+  }
+
+  function setLevel(newLevel) {
+    level = newLevel;
+    document.querySelectorAll('[data-level]').forEach(button =>
+      button.classList.toggle('active', button.dataset.level === newLevel));
+    const selector = $('topic');
+    selector.replaceChildren();
+    topics().forEach((t, i) => {
+      const opt = node('option', `${i + 1}. ${t.title}`);
+      opt.value = String(i);
+      selector.append(opt);
+    });
+    topicIndex = 0;
+    render();
+  }
+
+  function grade() {
+    if (checked) return;
+    const t = topics()[topicIndex];
+    const missing = t.questions.findIndex((q, i) =>
+      q.type === 'input' ? !String(selections[i] ?? '').trim() : !Number.isInteger(selections[i]));
+    if (missing !== -1) {
+      $('result').textContent = `Még nincs meg minden válasz: a(z) ${missing + 1}. feladatot is oldd meg! / Заполните все ответы.`;
+      const row = $('questions').children[missing];
+      (row.querySelector('input') || row.querySelector('button'))?.focus();
+      return;
+    }
+    checked = true;
+    let score = 0;
+    [...$('questions').children].forEach((group, i) => {
+      const q = t.questions[i];
+      const correct = q.type === 'input'
+        ? q.accept.some(a => normalize(a) === normalize(selections[i]))
+        : selections[i] === q.answer;
+      if (correct) score += 1;
+      let correctAnswer;
+      if (q.type === 'input') {
+        const inp = group.querySelector('input');
+        inp.disabled = true;
+        inp.classList.toggle('right', correct);
+        inp.classList.toggle('wrong', !correct);
+        correctAnswer = q.accept[0];
+      } else {
+        const buttons = [...group.querySelectorAll('.options button')];
+        buttons.forEach((button, j) => {
+          button.disabled = true;
+          button.classList.remove('chosen');
+          if (j === q.answer) button.classList.add('right');
+          else if (j === selections[i]) button.classList.add('wrong');
+        });
+        correctAnswer = q.options[q.answer];
+      }
+      group.querySelector('.feedback').textContent =
+        `${correct ? '✓ Helyes. ' : '✗ Javítás. '}Helyes válasz: ${correctAnswer}. ${q.why}`;
+    });
+    const percent = Math.round(score / t.questions.length * 100);
+    $('result').textContent = `${score} / ${t.questions.length} pont · ${percent}%. ` +
+      (score === t.questions.length
+        ? 'Kiváló! / Отлично!'
+        : 'Olvasd el a magyarázatokat, majd próbáld újra! / Повторите объяснения и попробуйте снова.');
+    $('check').disabled = true;
+    const key = `${level}:${topicIndex}`;
+    // Csak a legjobb eredményt tároljuk, a korábbi pontok nem vesznek el.
+    if (!progress[key] || score > progress[key].score) {
+      progress[key] = {score, max: t.questions.length};
+      try { localStorage.setItem(storeKey, JSON.stringify(progress)); } catch (_) {}
+    }
+    updateProgress();
+  }
+
+  levels.forEach(value => {
+    const btn = node('button', value);
+    btn.type = 'button';
+    btn.dataset.level = value;
+    btn.onclick = () => setLevel(value);
+    $('levels').append(btn);
+  });
+  $('topic').onchange = e => {
+    topicIndex = Number(e.target.value);
+    render();
+  };
+  $('check').onclick = grade;
+  $('restart').onclick = render;
+  $('next').onclick = () => {
+    topicIndex = (topicIndex + 1) % topics().length;
+    render();
+  };
+  setLevel(initialLevel);
+})();

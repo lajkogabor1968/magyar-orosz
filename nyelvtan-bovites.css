@@ -1,0 +1,59 @@
+.rule-hu {
+  margin-bottom: 12px;
+  padding: 12px 15px;
+  background: #edf9f2;
+  border-left: 4px solid #358b63;
+  border-radius: 9px;
+  line-height: 1.6;
+}
+.conjugation-wrap h3 {font-size: 1.05rem; margin: 20px 0 8px;}
+.conjugation-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid #cbded9;
+  border-radius: 10px;
+}
+.conjugation-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-size: .95rem;
+  min-width: 470px;
+}
+.conjugation-table caption {
+  text-align: left;
+  padding: 10px 12px;
+  color: #52716b;
+  background: #f7faf8;
+}
+.conjugation-table th {
+  text-align: left;
+  padding: 11px 13px;
+  color: white;
+  background: #1d615a;
+  font-weight: 700;
+}
+.conjugation-table td {
+  padding: 9px 13px;
+  border-top: 1px solid #deebe5;
+  line-height: 1.45;
+}
+.conjugation-table tr:nth-child(even) td {background: #f1f7f3;}
+.conjugation-table td:first-child {font-weight: 700;}
+.grammar-input {
+  display: block;
+  width: min(100%, 460px);
+  padding: 12px 13px;
+  border: 2px solid #b0d4ca;
+  border-radius: 9px;
+  background: #fff;
+  font: inherit;
+}
+.grammar-input:focus-visible {outline: 3px solid #d6a851; outline-offset: 2px;}
+.grammar-input.right {background: #e5f5ec; border-color: #4c9877; color: #174e34;}
+.grammar-input.wrong {background: #ffeee8; border-color: #c67d70; color: #913e30;}
+@media (max-width: 600px) {
+  .conjugation-table {font-size: .86rem;}
+  .conjugation-table th, .conjugation-table td {padding: 9px;}
+  .grammar-input {font-size: 1rem;}
+}
