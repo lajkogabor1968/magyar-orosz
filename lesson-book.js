@@ -265,7 +265,26 @@ $('integratedFlashcardOpen').onclick=()=>{cardIndex=0;card();$('integratedFlashc
 $('integratedCardFlip').onclick=()=>{const node=$('integratedCardRussian');node.hidden=!node.hidden;if(!node.hidden){flippedWords.add(cardIndex);saveCheckpoint();if(step===0&&canAdvance())stepButton.disabled=false;note('Проверено слов: '+flippedWords.size+' / '+Math.min(5,rows().length)+'.')} $('integratedCardFlip').textContent=node.hidden?'Показать перевод':'Скрыть перевод'};
 $('integratedCardNext').onclick=()=>{cardIndex=(cardIndex+1)%rows().length;card()};
 $('integratedCardSpeak').onclick=()=>say(rows()[cardIndex%rows().length].hu);
-$('integratedGrammarMore').onclick=()=>location.href='nyelvtan.html?level='+level;
+const grammarLinks={
+ 'A1:0':'A magyar magánhangzók',
+ 'A1:1':'A létige: vagyok, vagy, van',
+ 'A1:2':'Birtoklás: van könyvem, nincs autóm',
+ 'A1:3':'Magánhangzó-harmónia: -ban/-ben',
+ 'A1:4':'Tárgyrag: -t',
+ 'A1:5':'Határozatlan igeragozás – jelen idő',
+ 'A1:6':'Ki cselekszik? Alany, ige és tárgy',
+ 'A1:7':'Magánhangzó-harmónia: -ban/-ben',
+ 'A2:0':'Határozatlan igeragozás – jelen idő',
+ 'A2:1':'Hová? Hol? Honnan?',
+ 'A2:2':'A múlt idő alapjai'
+};
+$('integratedGrammarMore').onclick=()=>{
+ const topic=grammarLinks[lessonKey()];
+ const grammarLevel=['A1:4','A2:0'].includes(lessonKey())?'A1':level;
+ const params=new URLSearchParams({level:grammarLevel,from:'workbook',returnLevel:level,returnLesson:String(lessonIndex)});
+ if(topic)params.set('topic',topic);
+ location.href='nyelvtan.html?'+params.toString();
+};
 /* A nyelvtani állomás teljesítését a példára épülő helyes válasz igazolja. */
 const dialogueLines=()=>lesson().dialogue;
 $('integratedDialogueRepeat').onclick=()=>{dialoguePractised=true;saveCheckpoint();stepButton.disabled=false;$('integratedDialogueFeedback').textContent='Повторение отмечено по вашей самооценке. Произношение автоматически не проверялось.';};
@@ -299,4 +318,16 @@ $('integratedNextLesson').onclick=()=>confirmLessonChange(Math.min(courses[level
 $('integratedAllWords').onclick=()=>{root.classList.remove('study-book');view.hidden=true;document.querySelector('.tab[data-view="list"]')?.click();root.classList.add('study-active')};
 const accentBox=$('integratedAccentKeys');for(const letter of 'áéíóöőúüű'){const b=el('button',letter);b.type='button';b.onclick=()=>{const input=$('integratedWritingInput');const start=input.selectionStart??input.value.length,end=input.selectionEnd??start;input.value=input.value.slice(0,start)+letter+input.value.slice(end);input.focus();input.setSelectionRange(start+1,start+1)};accentBox.append(b)}
 back.addEventListener('click',()=>{view.hidden=true;root.classList.remove('study-book')});
+const returnParams=new URLSearchParams(location.search);
+if(returnParams.get('workbook')==='1'){
+ const requestedLevel=returnParams.get('level');
+ const requestedLesson=Number(returnParams.get('lesson'));
+ if(['A1','A2'].includes(requestedLevel)&&Number.isInteger(requestedLesson)){
+  document.querySelector('.welcome .level[data-level="'+requestedLevel+'"]')?.click();
+  level=requestedLevel;
+  const stored=read(KEY);stored[requestedLevel]={lessonIndex:requestedLesson,step:1};
+  try{localStorage.setItem(KEY,JSON.stringify(stored))}catch(_){}
+  open('resume');
+ }
+}
 })();
