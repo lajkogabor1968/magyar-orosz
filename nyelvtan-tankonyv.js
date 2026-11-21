@@ -132,7 +132,7 @@
     'Ты научишься распознавать прямое дополнение и использовать винительный падеж.', [
       ['Kérdezd meg: kit? mit? A válasz gyakran -t tárgyragot kap.',
         'Задай вопросы «кого? что?». Дополнение обычно имеет окончание -t.', 'Olvasok egy könyvet.', 'Я читаю книгу.'],
-      ['A tárgyrag előtt kötőhangzó is állhat; a szóvégi a/е sokszor á/é lesz.',
+      ['A tárgyrag előtt kötőhangzó is állhat; a szóvégi a/e sokszor á/é lesz.',
         'Перед -t бывает соединительная гласная; конечная a часто становится á.', 'könyv → könyvet; alma → almát', 'книга → книгу; яблоко → яблоко (вин. п.)']
     ], ['Melyik alak kerül ide? „Látok egy ___.” (kutya)', 'kutyát',
       'A kutya szó végén az a á-ra változik, majd -t kapcsolódik hozzá.',

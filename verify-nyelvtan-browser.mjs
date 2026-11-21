@@ -29,6 +29,8 @@ try {
   assert.equal(await page.locator('.grammar-input').count(), 3);
   assert.equal(await page.locator('#nyelvtan-tankonyv .lesson-step').count(), 2,
     'A felszólító módhoz két tankönyvi magyarázó lépés tartozzon.');
+  assert.equal(await page.locator('.lesson-quick-nav button').count(), 2,
+    'A tankönyv és a gyakorlás külön navigációs gombot kapjon.');
   assert.match(await page.locator('.textbook-worked').textContent(), /várjon/);
 
   await page.screenshot({path: '/tmp/tanulomuhely-a2-nyelvtan-desktop.png', fullPage: true});

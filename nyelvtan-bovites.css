@@ -56,6 +56,9 @@
   border-color: #b4d1bb;
   background: linear-gradient(145deg, #fff 0%, #f8fcf8 100%);
 }
+.lesson-quick-nav {display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap;}
+.lesson-quick-nav button {flex: 1 1 180px; font-weight: 700; border-color: #9ac7b3; background: #eff8f1;}
+.lesson-quick-nav button:focus-visible {outline: 3px solid #d6a851;}
 .textbook-panel > h2 {font-size: 1.5rem; margin: 2px 0 16px; color: #1e5341;}
 .textbook-goal {
   background: #eaf5ee;

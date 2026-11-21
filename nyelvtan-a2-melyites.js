@@ -15,7 +15,7 @@
         ['Nyisd ki az ajtót!', 'Открой дверь!'],
         ['Ne nyisd ki az ajtót!', 'Не открывай дверь!']
       ],
-      table: {heads: ['Ige', 'Semleges állítás', 'Tagadás', 'Felszólítás'], rows: [
+      table: {heads: ['Ige / Глагол', 'Semleges állítás / Утверждение', 'Tagadás / Отрицание', 'Felszólítás / Повелит.'], rows: [
         ['megír', 'Megírom a levelet.', 'Nem írom meg a levelet.', 'Írd meg a levelet!'],
         ['kinyit', 'Kinyitom az ajtót.', 'Nem nyitom ki az ajtót.', 'Nyisd ki az ajtót!'],
         ['elmegy', 'Elmegyek.', 'Nem megyek el.', 'Menj el!']
@@ -43,7 +43,7 @@
         ['Igyál egy pohár vizet!', 'Выпей стакан воды!'],
         ['Idd meg a vizet!', 'Выпей эту воду!']
       ],
-      table: {heads: ['Ige', 'Te + határozatlan tárgy', 'Te + határozott tárgy', 'Ön + határozatlan', 'Ön + határozott'], rows: [
+      table: {heads: ['Ige / Глагол', 'Te: határozatlan / Неопр.', 'Te: határozott / Опр.', 'Ön: határozatlan / Неопр.', 'Ön: határozott / Опр.'], rows: [
         ['eszik', 'egyél', 'edd', 'egyen', 'egye'],
         ['iszik', 'igyál', 'idd', 'igyon', 'igya'],
         ['tesz', 'tegyél', 'tedd', 'tegyen', 'tegye'],
@@ -74,7 +74,7 @@
         ['Mi írtunk egy levelet.', 'Мы написали письмо.'],
         ['Mi írtuk a levelet.', 'Мы писали это письмо.']
       ],
-      table: {heads: ['Személy', 'egy könyvet – határozatlan', 'a könyvet – határozott'], rows: [
+      table: {heads: ['Személy / Лицо', 'egy könyvet / Неопр.', 'a könyvet / Опр.'], rows: [
         ['én', 'olvastam', 'olvastam'], ['te', 'olvastál', 'olvastad'],
         ['ő', 'olvasott', 'olvasta'], ['mi', 'olvastunk', 'olvastuk'],
         ['ti', 'olvastatok', 'olvastátok'], ['ők', 'olvastak', 'olvasták']

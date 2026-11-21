@@ -71,6 +71,19 @@
   lessonBack.type = 'button';
   lessonBack.onclick = () => lessonPanel.scrollIntoView({behavior: 'smooth', block: 'start'});
   practicePanel.append(lessonBack);
+  const quickNav = node('nav', undefined, 'lesson-quick-nav');
+  quickNav.setAttribute('aria-label', 'Tananyag és gyakorlás / Учебник и задания');
+  const lessonNavButton = node('button', '📖 Tankönyv / Учебник', 'lesson-nav-study');
+  lessonNavButton.type = 'button';
+  lessonNavButton.onclick = () => lessonPanel.scrollIntoView({behavior: 'smooth', block: 'start'});
+  const practiceNavButton = node('button', '✍️ Gyakorlás / Упражнения', 'lesson-nav-practice');
+  practiceNavButton.type = 'button';
+  practiceNavButton.onclick = () => practicePanel.scrollIntoView({behavior: 'smooth', block: 'start'});
+  quickNav.append(lessonNavButton, practiceNavButton);
+  $('progress').after(quickNav);
+  const sourceFooter = document.querySelector('.footer');
+  if (sourceFooter) sourceFooter.append(document.createTextNode(
+    ' A tankönyvi bemutatás mintája: Kolpakova–Dolovai–Nagy: Венгерская грамматика в таблицах и схемах (КАРО, 2021). A magyarázatok, táblázatok és feladatok saját szerkesztésűek.'));
 
   function addBilingual(parent, hu, ru, className) {
     const container = node('div', undefined, className);
@@ -86,6 +99,7 @@
   function renderLesson(lesson) {
     lessonPanel.classList.toggle('hidden', !lesson);
     lessonBack.classList.toggle('hidden', !lesson);
+    lessonNavButton.classList.toggle('hidden', !lesson);
     lessonGoal.replaceChildren();
     lessonSteps.replaceChildren();
     lessonWorked.replaceChildren();
