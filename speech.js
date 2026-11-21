@@ -99,7 +99,11 @@
       player.preload = 'auto';
       player.playbackRate = Math.max(0.5, Math.min(2, Number(utterance.rate) || 1));
       player.onplaying = event => {
-        if (token === generation && typeof utterance.onstart === 'function') utterance.onstart(event);
+        if (token !== generation) return;
+        if ((window.TanuloVoicePilotKeys || []).includes(phrase)) {
+          message('Тестовая запись голоса Габора воспроизводится: ' + phrase + ' / Gábor hangpróba szól: ' + phrase);
+        }
+        if (typeof utterance.onstart === 'function') utterance.onstart(event);
       };
       player.onended = event => {
         if (token !== generation) return;
@@ -114,6 +118,11 @@
         player.onended = null;
         player.pause();
         activeAudio = null;
+        if ((window.TanuloVoicePilotKeys || []).includes(phrase)) {
+          message('Запись Габора не загрузилась. Голос устройства отключён для теста. / Gábor hangmintája nem érhető el. Tesztmódban nem váltunk át a készülék másik hangjára.');
+          if (typeof utterance.onerror === 'function') utterance.onerror(event);
+          return;
+        }
         if (available) {
           message('Не удалось воспроизвести запись. Пробуем венгерский голос устройства. / Az MP3 nem játszható le. Próbálkozás a készülék magyar felolvasójával.');
           speak(utterance, true);
