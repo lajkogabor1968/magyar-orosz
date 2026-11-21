@@ -90,7 +90,12 @@
     const lang = String(utterance.lang || 'hu-HU').toLowerCase();
     const phrase = String(utterance.text).normalize('NFC').replace(/\s+/g, ' ').trim();
     const recordings = window.TanuloAudioManifest || {};
-    const clip = !skipRecording && lang.startsWith('hu') && recordings[phrase];
+    const dialogueRecordings = window.TanuloDialogueAudioManifest || {};
+    // Each speaker can have a distinct recording even for identical wording.
+    const recordingKey = String(utterance.recordingKey || '');
+    const clip = !skipRecording && lang.startsWith('hu')
+      ? (recordingKey ? dialogueRecordings[recordingKey] : recordings[phrase])
+      : null;
     if (clip) {
       cancel();
       const token = generation;

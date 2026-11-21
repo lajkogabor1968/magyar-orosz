@@ -52,11 +52,14 @@ window.TanuloSpokenDialogue = (() => {
       for(const id of ['voiceListen','voiceMic','voiceHint','voiceSend']) $(id).disabled=true;
       status(!Recognition?'Распознавание речи недоступно в этом браузере. Можно отвечать письменно или повторять вслух.':'');
     }
-    function speak(text,done){
+    function speak(text,done,speaker,lineIndex){
       stopSpeech();const id=token;
       if(!window.TanuloTTS){status('Воспроизведение недоступно. Прочитайте реплику.');return}
       const utter=window.SpeechSynthesisUtterance?new SpeechSynthesisUtterance(text):{text};
-      utter.lang='hu-HU';utter.rate=.85;
+      utter.lang='hu-HU';utter.rate=1;
+      if(speaker)utter.speaker=speaker;
+      const level=(window.location.pathname.match(/\/(a1|a2|b1|b2)\.html$/i)||[])[1];
+      if(level&&Number.isInteger(lineIndex))utter.recordingKey=level.toLowerCase()+':'+Number(getIndex())+':'+lineIndex;
       utter.onend=()=>{if(id===token && done)done()};
       utter.onerror=()=>{if(id===token)status('Звук недоступен. Реплика показана на экране.')};
       window.TanuloTTS.speak(utter);
@@ -85,7 +88,7 @@ window.TanuloSpokenDialogue = (() => {
       $('voiceHint').disabled=!yours;
       $('voiceTyped').value='';
       progress();
-      if(!yours){status('Прослушайте реплику собеседника. Если звук не работает, нажмите «Продолжить».');speak(line,()=>{if(session){session.ready=false;session.index++;proceed()}})}
+      if(!yours){status('Прослушайте реплику собеседника. Если звук не работает, нажмите «Продолжить».');speak(line,()=>{if(session){session.ready=false;session.index++;proceed()}},speaker,session.index)}
       else status(Recognition?'Нажмите на микрофон и произнесите ответ.':'Произнесите ответ вслух, затем введите текст для проверки.');
     }
     function send(text){
@@ -105,8 +108,8 @@ window.TanuloSpokenDialogue = (() => {
     $('voiceListen').addEventListener('click',()=>{
       if(!session)return;
       const [speaker,line]=session.lines[session.index]||[];
-      if(speaker===session.role)speak(line);
-      else speak(line,()=>{if(session){session.index++;proceed()}});
+      if(speaker===session.role)speak(line,null,speaker,session.index);
+      else speak(line,()=>{if(session){session.index++;proceed()}},speaker,session.index);
     });
     $('voiceHint').addEventListener('click',()=>{
       if(!session)return;
