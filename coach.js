@@ -10,10 +10,11 @@
   function read(key,fallback){try{const x=JSON.parse(localStorage.getItem(key)||'null');return x&&typeof x==='object'?x:fallback}catch(_){return fallback}}
   function level(){return document.querySelector('.welcome .level.active')?.dataset.level||'A1'}
   function today(){const now=new Date();return now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')}
-  function openSection(view){
+  function openSection(view,actionId){
     panel.hidden=true;root.classList.remove('study-coach');
     const tab=document.querySelector('.tab[data-view="'+view+'"]');
     tab?.click();root.classList.add('study-active');back.hidden=false;
+    if(actionId)document.getElementById(actionId)?.click();
     window.scrollTo(0,0);
   }
   function getSummary(lvl){
@@ -38,12 +39,12 @@
     steps.replaceChildren();
     const tasks=[];
     if(summary.dueWords||summary.dueSentences){
-      tasks.push({title:'Повторение',time:'4 минуты',description:'Сегодня нужно повторить: '+summary.dueWords+' слов и '+summary.dueSentences+' предложений.',target:'review'});
+      tasks.push({title:'Повторение',time:'4 минуты',description:'Сегодня нужно повторить: '+summary.dueWords+' слов и '+summary.dueSentences+' предложений.',target:'review',action:summary.dueWords?'reviewDueWords':'reviewDueSentences'});
     }else if(summary.mistakes||summary.sentenceMistakes){
-      tasks.push({title:'Работа над ошибками',time:'4 минуты',description:'Вернитесь к трудным словам и предложениям.',target:'review'});
+      tasks.push({title:'Работа над ошибками',time:'4 минуты',description:'Вернитесь к трудным словам и предложениям.',target:'review',action:summary.mistakes?'reviewMistakes':'reviewSentenceMistakes'});
     }else tasks.push({title:'Короткое повторение',time:'4 минуты',description:'Повторите слова по карточкам.',target:'cards'});
     tasks.push({title:'Изучение нового',time:'5 минут',description:'Прочитайте правило или урок, затем разберите примеры.',target:'contrast'});
-    tasks.push({title:'Практика',time:'3 минуты',description:'Закрепите новые слова и предложения.',target:'quiz'});
+    tasks.push({title:'Практика',time:'3 минуты',description:'Закрепите новые слова и предложения.',target:'quiz',action:'startNewWords'});
     tasks.push({title:'Разговор по-венгерски',time:'3 минуты',description:'Послушайте собеседника и ответьте вслух. Если микрофон недоступен, используйте письменный ответ.',target:'speaking'});
     tasks.forEach((task,i)=>{
       const item=document.createElement('section');item.className='coach-step';
@@ -56,7 +57,7 @@
       const go=document.createElement('button');go.type='button';go.textContent='Начать →';
       go.addEventListener('click',()=>{
         if(task.target==='speaking')location.href=(lvl==='A2'?'a2.html':'a1.html')+'#spokenDialogue';
-        else openSection(task.target);
+        else openSection(task.target,task.action);
       });
       const done=document.createElement('button');done.type='button';done.className='secondary';
       const mark=completed.includes(i);
