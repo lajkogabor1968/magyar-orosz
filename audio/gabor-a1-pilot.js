@@ -16,7 +16,8 @@
   "pizza": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=3b8079d7194242e4b301adcbfb242ab1.wav",
   "banán": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=9b48c5a376c2410883ee60c9da427ab2.wav",
   "film": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=d5b8e92223014649aea66fe5a6c04bc0.wav",
-  "park": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=9f37284e665e4617931eee910438bc81.wav"
+  "park": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=9f37284e665e4617931eee910438bc81.wav",
+  "Kérsz egy teát?": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=1ff33c5387954c27b0cca2bc704bdb3a.wav"
 };
   window.TanuloVoicePilotKeys = Object.keys(clips);
   window.TanuloVoicePilotReview = [];
