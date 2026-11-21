@@ -1,8 +1,6 @@
 (() => {
   'use strict';
   const topicsAll = window.GRAMMAR_TOPICS;
-  const titleRu = window.GRAMMAR_TOPIC_TITLES_RU || {};
-  const displayTitle = t => titleRu[t.title] ? `${t.title} / ${titleRu[t.title]}` : t.title;
   const levels = ['A1', 'A2', 'B1', 'B2'];
   const $ = id => document.getElementById(id);
   const storeKey = 'hu-ru-grammar-v1'; // A korábbi eredmények tárolókulcsa változatlan.
@@ -43,6 +41,13 @@
 
   // A régi oldal adatainak és a kiegészített fejezeteknek közös megjelenítője.
   const ruleEl = $('rule');
+  const titleRu = node('p', '', 'grammar-topic-title-ru');
+  titleRu.lang = 'ru';
+  $('title').after(titleRu);
+  const prerequisitesEl = node('div', '', 'grammar-prerequisites');
+  titleRu.after(prerequisitesEl);
+  const topicLabel = document.querySelector('label[for="topic"]');
+  if (topicLabel) topicLabel.textContent = 'Nyelvtani témakör / Грамматическая тема:';
   const huRule = node('div', '', 'rule-hu');
   huRule.id = 'huRule';
   huRule.lang = 'hu';
@@ -183,9 +188,31 @@
     optionOrders = {};
     const t = topics()[topicIndex];
     $('topic').value = String(topicIndex);
-    $('count').textContent = `${level} · ${topics().length} nyelvtani témakör · ${topics().reduce((n, item) => n + item.questions.length, 0)} feladat`;
+    $('count').textContent = `${level} · ${topics().length} témakör / тем · ${topics().reduce((n, item) => n + item.questions.length, 0)} feladat / заданий`;
     $('tag').textContent = level;
-    $('title').textContent = displayTitle(t);
+    $('title').textContent = t.title;
+    titleRu.textContent = t.titleRu;
+    prerequisitesEl.replaceChildren();
+    prerequisitesEl.classList.toggle('hidden', !t.prerequisites?.length);
+    if (t.prerequisites?.length) {
+      prerequisitesEl.append(node('strong', 'Korábban tanultad / Перед этой темой повторите:'));
+      const links = node('div', '', 'grammar-prerequisites-links');
+      t.prerequisites.forEach(related => {
+        const button = node('button', related.level + ' · ' + related.title + ' / ' + related.titleRu);
+        button.type = 'button';
+        button.className = 'secondary';
+        button.onclick = () => {
+          setLevel(related.level);
+          const target = topics().findIndex(item => item.title === related.title);
+          if (target < 0) return;
+          topicIndex = target;
+          render();
+          $('nyelvtan-magyarazat').scrollIntoView({behavior: 'smooth', block: 'start'});
+        };
+        links.append(button);
+      });
+      prerequisitesEl.append(links);
+    }
     $('rule').textContent = t.rule;
     huRule.textContent = t.ruleHu || '';
     huRule.classList.toggle('hidden', !t.ruleHu);
@@ -267,7 +294,7 @@
     const selector = $('topic');
     selector.replaceChildren();
     topics().forEach((t, i) => {
-      const opt = node('option', `${i + 1}. ${displayTitle(t)}`);
+      const opt = node('option', `${i + 1}. ${t.title} / ${t.titleRu}`);
       opt.value = String(i);
       selector.append(opt);
     });

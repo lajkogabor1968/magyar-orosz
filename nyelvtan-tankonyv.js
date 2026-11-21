@@ -370,7 +370,10 @@
       ['A nekem, neked és a többi személy mellett a főnévi igenév személyragot kap. A kell nem változik.',
         'Если указано лицо, окончание получает инфинитив, а kell не меняется.', 'Nekem tanulnom kell. Neked tanulnod kell.', 'Мне нужно учиться. Тебе нужно учиться.'],
       ['A névmás elhagyható: a tanulnunk végéből már tudjuk, hogy „nekünk”.',
-        'Местоимение необязательно: окончание -nunk уже указывает на «нам».', 'Holnap tanulnunk kell.', 'Завтра нам нужно учиться.']
+        'Местоимение необязательно: окончание -nunk уже указывает на «нам».', 'Holnap tanulnunk kell.', 'Завтра нам нужно учиться.'],
+      ['A nekem, neked, neki alakok a kinek? kérdéshez kapcsolódnak: kinek kell tanulnia? A részletes -nak/-nek ragokat egy külön A2-es leckében gyakorolhatod.',
+        'Nekem, neked, neki отвечают на вопрос kinek? — «кому?». Образование -nak/-nek подробно изучается в отдельном уроке A2.',
+        'Nekem dolgoznom kell. Neked pihenned kell.', 'Мне нужно работать. Тебе нужно отдыхать.']
     ], ['Egészítsd ki! „Nektek ___ kell.” (beszél)', 'beszélnetek',
       'A nektek (ti) személyhez a -netek alak kapcsolódik: beszélnetek.',
       'Для nektek (вам, мн. ч.) нужна форма beszélnetek.'],
@@ -391,6 +394,70 @@
       'Для mi (мы) нужна форма könyvünk.'],
     ['Az „az ő könyve” egy, az „az ő könyvük” több birtokosra utal. Az ő névmás mindkettőben változatlan.',
       'Az ő könyve — его/её книга; az ő könyvük — их книга. Местоимение ő не меняется.']);
+
+  // A1–A2 összekötő fejezetek: a korábbi témák tanulási előfeltételeit
+  // szemléltető, saját szerkesztésű példamondatokkal tesszük érthetővé.
+  teach('Ki cselekszik? Alany, ige és tárgy',
+    'Képes leszel elkülöníteni a mondat cselekvőjét, igéjét és tárgyát.',
+    'Ты научишься находить подлежащее, глагол и прямое дополнение.', [
+      ['Előbb a cselekvőt keresd: ki csinál valamit? Ő az alany.',
+        'Сначала найди того, кто действует. Это подлежащее.', 'Péter olvas. → Ki? Péter.', 'Петер читает. Кто? Péter.'],
+      ['Ezután keresd az igét: mit csinál a cselekvő?',
+        'Затем найди глагол: что делает человек?', 'Péter olvas. → Mit csinál? Olvas.', 'Что делает Петер? Читает.'],
+      ['Végül a tárgyat keresd: mit vagy kit érint a cselekvés? Nem minden mondatban szerepel tárgy.',
+        'Наконец найди дополнение: что или кого затрагивает действие? Оно есть не всегда.', 'Péter könyvet olvas. → Mit? Könyvet.', 'Петер читает книгу. Что? Книгу.']
+    ], ['„Éva teát iszik.” Melyik a tárgy?', 'teát',
+      'Mit iszik Éva? Teát. A kit? mit? kérdés a tárgyat mutatja.',
+      'Что пьёт Ева? Teát. Вопрос mit? указывает на прямое дополнение.'],
+    ['Az alany (aki cselekszik) nem azonos a tárggyal (amit a cselekvés érint). Az A2-es tárgyrag-leckében tanulod a -t képzését.',
+      'Не путай подлежащее (кто действует) и дополнение (на что направлено действие). Окончание -t подробно изучим на A2.']);
+
+  teach('Birtoklás: van könyvem, nincs autóm',
+    'El tudod mondani, hogy valakinek van-e valamije, vagy nincs.',
+    'Ты сможешь сказать, есть ли у кого-то вещь или её нет.', [
+      ['Először ismételd át a birtokos személyjeleket: könyvem, könyved, könyve. A szóvégi jel a birtokost mutatja.',
+        'Вспомни притяжательные окончания: они указывают на владельца.', 'könyvem – könyved – könyve', 'моя книга – твоя книга – его/её книга'],
+      ['Ha van valamink, a van szót használjuk. A névmás nem kötelező.',
+        'Для наличия используется van. Местоимение владельца можно опустить.', 'Van egy könyvem. = Nekem van egy könyvem.', 'У меня есть книга.'],
+      ['Ha nincs valamink, nincs áll a van helyén. A többes személyeknek is saját birtokos jelük van.',
+        'Для отсутствия употребляется nincs. Притяжательное окончание сохраняется.', 'Nekünk nincs időnk.', 'У нас нет времени.']
+    ], ['Egészítsd ki! „Neked ___ egy biciklid.”', 'van',
+      'A birtoklást a van fejezi ki, a biciklid jelöli a birtokost.',
+      'Наличие выражает van, а biciklid указывает на владельца.'],
+    ['A „nem van” helyett egyes számban nincs áll. A „Van egy könyvem” nem „Vagyok egy könyvem”.',
+      'Для отрицания говори nincs, не «nem van». «У меня есть книга» — Van egy könyvem.']);
+
+  teach('Részes eset: -nak/-nek – kinek?',
+    'Megtanulod, hogyan mondjuk: valakinek adok, írok, segítek.',
+    'Ты научишься выражать, кому дают, пишут или помогают.', [
+      ['A kinek? kérdésre gyakran -nak/-nek raggal felelünk. A rag a főnévhez kapcsolódik.',
+        'На вопрос kinek? (кому?) часто отвечаем формой с -nak/-nek.', 'Adok egy könyvet a tanárnak.', 'Я даю книгу учителю.'],
+      ['A hangrend segít: barátnak, de gyereknek. Figyeld a szóvégi a/e hosszabbodását is.',
+        'Гармония гласных определяет вариант. Конечные a/e удлиняются.', 'anyának – Emesének', 'маме — Эмеше (формы дательного падежа)'],
+      ['A névmási alakok önálló sorozatot alkotnak: nekem, neked, neki, nekünk, nektek, nekik. Ezeket a kell szerkezetnél is látod.',
+        'Личные формы запоминай отдельно. Они встречаются и с kell.', 'Segítek neked. Nekem indulnom kell.', 'Я помогаю тебе. Мне нужно уходить.']
+    ], ['Mi a „gyerek” részes esetű alakja?', 'gyereknek',
+      'A gyerek magas hangrendű, ezért -nek járul hozzá.',
+      'После слова gyerek используется -nek: gyereknek.'],
+    ['Ne keverd a tárgyat a címzettel: könyvet (mit?) adok a gyereknek (kinek?).',
+      'Не путай прямое дополнение и адресата: könyvet (что?) — gyereknek (кому?).']);
+
+  teach('Helyragok II.: -ra/-re, -on/-en/-ön, -ról/-ről',
+    'Három kérdéshez három helyragcsaládot tudsz rendelni.',
+    'Ты научишься различать «куда?», «где?» и «откуда?» для поверхности.', [
+      ['Hová? A felület irányába mozgást jelöl: az asztalra, a székre.',
+        'Куда? Направление на поверхность: -ra/-re.', 'A könyvet az asztalra teszem.', 'Я кладу книгу на стол.'],
+      ['Hol? Valami már a felületen van: az asztalon, a széken, a földön.',
+        'Где? Местонахождение на поверхности: -on/-en/-ön.', 'A könyv az asztalon van.', 'Книга лежит на столе.'],
+      ['Honnan? A felületről való eltávolítást fejez ki: az asztalról, a székről.',
+        'Откуда? Движение с поверхности: -ról/-ről.', 'Leveszem a könyvet az asztalról.', 'Я снимаю книгу со стола.'],
+      ['Ezt az A1-es -ban/-ben és a korábbi A2-es -ba/-be, -ból/-ből sorral érdemes összevetni.',
+        'Сравни с уже изученной серией для внутреннего пространства.', 'a dobozba – a dobozban – a dobozból', 'в коробку — в коробке — из коробки']
+    ], ['Mi illik ide? „A könyv a ___ van.” (szék)', 'széken',
+      'A hol? kérdésre a szék szó -en ragot kap.',
+      'На вопрос hol? после szék используется -en: széken.'],
+    ['Az asztalon (felület) és az asztalban (valaminek a belseje) nem ugyanazt jelenti.',
+      'Asztalon — на столе, asztalban — внутри стола; не смешивай эти значения.']);
 
   // Az eredetileg csak rövid szabályt és tesztet tartalmazó nyolc A1–A2
   // leckéhez saját ragozási/szóalaktani táblázatot is szerkesztünk.

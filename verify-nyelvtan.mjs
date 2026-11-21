@@ -15,26 +15,40 @@ runInNewContext(readFileSync(join(base, 'nyelvtan-a1a2-bovites.js'), 'utf8'), co
 const extendedTopics = [...context.window.GRAMMAR_TOPICS];
 runInNewContext(readFileSync(join(base, 'nyelvtan-a2-melyites.js'), 'utf8'), context);
 runInNewContext(readFileSync(join(base, 'nyelvtan-a2-tovabb.js'), 'utf8'), context);
+runInNewContext(readFileSync(join(base, 'nyelvtan-a1a2-hidak.js'), 'utf8'), context);
+runInNewContext(readFileSync(join(base, 'nyelvtan-cimek-ru.js'), 'utf8'), context);
+runInNewContext(readFileSync(join(base, 'nyelvtan-cimek.js'), 'utf8'), context);
+runInNewContext(readFileSync(join(base, 'nyelvtan-elofeltetelek.js'), 'utf8'), context);
 runInNewContext(readFileSync(join(base, 'nyelvtan-tankonyv.js'), 'utf8'), context);
 runInNewContext(readFileSync(join(base, 'nyelvtan-utasitasok.js'), 'utf8'), context);
 const topics = context.window.GRAMMAR_TOPICS;
 const info = context.window.GRAMMAR_EXTENSION_INFO;
 const deepening = context.window.GRAMMAR_A2_DEEPENING_INFO;
 const continuation = context.window.GRAMMAR_A2_CONTINUATION_INFO;
+const bridges = context.window.GRAMMAR_BRIDGES_INFO;
+const russianTitles = context.window.GRAMMAR_RUSSIAN_TITLES_INFO;
+const prerequisites = context.window.GRAMMAR_PREREQUISITES_INFO;
 const textbook = context.window.GRAMMAR_TEXTBOOK_INFO;
 const russianInstructions = context.window.GRAMMAR_RUSSIAN_INSTRUCTIONS_INFO;
 
 assert.equal(originalTopics.length, 16, 'A korábbi 16 témakör megmaradt.');
-assert.equal(topics.length, originalTopics.length + info.topics + deepening.topics + continuation.topics);
+assert.equal(topics.length, originalTopics.length + info.topics + deepening.topics + continuation.topics + bridges.topics);
 assert.ok(info.topics >= 12, 'Legalább 12 új nyelvtani lecke szükséges.');
 assert.ok(info.questions >= 95, 'Legalább 95 új feladat szükséges.');
 assert.equal(deepening.topics, 3, 'Három új A2-es fejezet szükséges.');
 assert.equal(deepening.questions, 34, 'A három fejezetben összesen 34 feladatnak kell lennie.');
 assert.equal(continuation.topics, 3, 'Három folytatólagos A2-es fejezet szükséges.');
 assert.equal(continuation.questions, 36, 'Mindhárom új A2-es fejezethez 12 feladat kell.');
-assert.equal(textbook.chapters, 28, 'Minden A1–A2 fejezetnek legyen tankönyvi oldala.');
-assert.equal(russianInstructions.topics, 36, 'A1-től B2-ig minden nyelvtani fejezethez kell orosz utasítás.');
-assert.equal(russianInstructions.questions, 259, 'Minden nyelvtani kérdésnél legyen orosz feladatutasítás.');
+assert.equal(bridges.topics, 4, 'Egy A1-es és három A2-es összekötő fejezet szükséges.');
+assert.equal(bridges.a1Topics, 1);
+assert.equal(bridges.a2Topics, 3);
+assert.equal(bridges.questions, 45, 'Kilenc A1-es és 36 A2-es hídgyakorlat szükséges.');
+assert.equal(textbook.chapters, 32, 'Minden A1–A2 fejezetnek legyen tankönyvi oldala.');
+assert.equal(russianTitles.topics, 40, 'Az összes A1–B2 témakör címe legyen oroszul is megadva.');
+assert.equal(prerequisites.a2Topics, 22, 'Az A2 összes témájához kell előismereti hivatkozás.');
+assert.ok(prerequisites.links >= 30, 'Az A2 témáihoz valós előismereti lánc szükséges.');
+assert.equal(russianInstructions.topics, 40, 'A1-től B2-ig minden nyelvtani fejezethez kell orosz utasítás.');
+assert.equal(russianInstructions.questions, 304, 'Minden nyelvtani kérdésnél legyen orosz feladatutasítás.');
 assert.equal(russianInstructions.fallbackTopics.length, 0,
   'Jelenleg minden A1–B2 témakörhöz egyedi orosz feladatutasítás szükséges.');
 assert.equal(topics.find(t => t.level === 'A1' && t.title.includes('létige'))
@@ -50,6 +64,7 @@ for (const [i, old] of extendedTopics.entries()) {
 for (const [topicId, topic] of topics.entries()) {
   assert.ok(['A1', 'A2', 'B1', 'B2'].includes(topic.level));
   assert.ok(topic.title?.trim());
+  assert.match(topic.titleRu, /[А-Яа-яЁё]/u, 'A témacímhez valódi orosz fordítás szükséges.');
   assert.ok(topic.rule?.trim());
   assert.ok(Array.isArray(topic.examples) && topic.examples.length >= 2);
   assert.ok(Array.isArray(topic.questions) && topic.questions.length >= 5);
@@ -66,6 +81,19 @@ for (const [topicId, topic] of topics.entries()) {
     assert.ok(lesson.worked.question?.trim() && lesson.worked.answer?.trim());
     assert.ok(lesson.worked.whyHu?.trim() && lesson.worked.whyRu?.trim());
     assert.ok(lesson.pitfall.hu?.trim() && lesson.pitfall.ru?.trim());
+  }
+  if (topic.level === 'A2') {
+    assert.ok(topic.prerequisites?.length, topic.title + ': hiányzó előismeret.');
+    for (const source of topic.prerequisites) {
+      assert.ok(source.titleRu?.trim() && source.title?.trim());
+      const match = topics.find(t => t.title === source.title);
+      assert.ok(match && match.level === source.level, topic.title + ': hibás előfeltétel.');
+      if (source.level === 'A2') {
+        assert.ok(topics.filter(t => t.level === 'A2').indexOf(match) <
+          topics.filter(t => t.level === 'A2').indexOf(topic),
+        topic.title + ': az előfeltétel nem lehet későbbi A2-es téma.');
+      }
+    }
   }
   if (topic.table) {
     assert.ok(topic.table.heads.length >= 2);
@@ -113,6 +141,8 @@ assert.ok(verbatim.includes('renderLesson(t.lesson)'),
   'A motor jelenítse meg a tankönyvi oldalakat.');
 assert.ok(verbatim.includes('q.instructionRu'),
   'A gyakorló mutassa az orosz nyelvű utasítást minden feladat alatt.');
+assert.ok(verbatim.includes('t.titleRu') && verbatim.includes('t.prerequisites'),
+  'Az orosz témacímek és a tanulási előfeltételek a felületen is jelenjenek meg.');
 assert.ok(page.includes('nyelvtan-a2-tovabb.js'),
   'Az A2-es folytatás töltődjön be a tankönyv és a motor előtt.');
 assert.ok(page.indexOf('src="nyelvtan-utasitasok.js') >
@@ -124,14 +154,23 @@ const continuationScript = page.indexOf('src="nyelvtan-a2-tovabb.js');
 assert.ok(continuationScript > page.indexOf('src="nyelvtan-a2-melyites.js') &&
   continuationScript < page.indexOf('src="nyelvtan-tankonyv.js'),
   'A folytatás a korábbi A2-fejezetek után, a tankönyv előtt töltődjön be.');
+const bridgeScript = page.indexOf('src="nyelvtan-a1a2-hidak.js');
+const existingTitleScript = page.indexOf('src="nyelvtan-cimek-ru.js');
+const titleScript = page.indexOf('src="nyelvtan-cimek.js');
+const prerequisiteScript = page.indexOf('src="nyelvtan-elofeltetelek.js');
+assert.ok(continuationScript < bridgeScript && bridgeScript < existingTitleScript &&
+  existingTitleScript < titleScript &&
+  titleScript < prerequisiteScript && prerequisiteScript < page.indexOf('src="nyelvtan-tankonyv.js'),
+  'Az összekötő leckék, címek és előfeltételek a tankönyv előtt töltődjenek be.');
 const scriptReferences = ['nyelvtan-a1a2-bovites.js', 'nyelvtan-a2-melyites.js',
   'nyelvtan-tankonyv.js', 'nyelvtan-motor.js'].map(s => page.indexOf(`src="${s}`));
 assert.ok(scriptReferences.every(v => v !== -1) &&
   scriptReferences.every((v, i) => i === 0 || v > scriptReferences[i - 1]),
   'A tankönyv és az új leckék az értékelőmotor előtt töltődjenek be.');
-assert.equal(counts.A1.topics, 9);
-assert.equal(counts.A2.topics, 19);
-assert.equal(counts.A2.questions, 162);
+assert.equal(counts.A1.topics, 10);
+assert.equal(counts.A1.questions, 66);
+assert.equal(counts.A2.topics, 22);
+assert.equal(counts.A2.questions, 198);
 const unusual = topics.find(t => t.title === 'Rendhagyó felszólítás – egyél vagy edd?');
 assert.ok(unusual.questions.some(q => q.accept?.includes('Egyed')),
   'Az egyed hosszabb alakot is el kell fogadni.');
@@ -158,9 +197,30 @@ for (const topic of [future, necessity, possession]) {
   assert.equal(topic.questions.filter(q => q.type === 'input').length, 4);
   assert.ok(topic.questions.every(q => q.whyRu?.trim()), 'A2-es javításhoz orosz indoklás kell.');
 }
+for (const title of [
+  'Ki cselekszik? Alany, ige és tárgy',
+  'Birtoklás: van könyvem, nincs autóm',
+  'Részes eset: -nak/-nek – kinek?',
+  'Helyragok II.: -ra/-re, -on/-en/-ön, -ról/-ről'
+]) {
+  const topic = topics.find(t => t.title === title);
+  assert.ok(topic?.lesson?.steps?.length >= 3, title + ': részletes tanító magyarázat szükséges.');
+  assert.equal(topic.questions.length, title.startsWith('Ki cselekszik') ? 9 : 12);
+  assert.ok(topic.table?.rows?.length >= 6);
+  assert.ok(topic.questions.every(q => q.whyRu?.trim()));
+}
+const indexPage = readFileSync(join(base, 'index.html'), 'utf8');
+assert.match(indexPage, /id="landingScreen"[^>]*lang="ru"/);
+assert.match(indexPage, /id="landingStart"/);
+assert.match(indexPage, /landing\.css/);
+assert.match(indexPage, /landing\.js/);
+const landingStyles = readFileSync(join(base, 'landing.css'), 'utf8');
+assert.match(landingStyles, /landing-mode main\.wrap/);
 
 console.log(JSON.stringify({oldTopics: originalTopics.length, addedTopics: info.topics,
-  newQuestions: info.questions + deepening.questions + continuation.questions, textbookChapters: textbook.chapters,
+  newQuestions: info.questions + deepening.questions + continuation.questions + bridges.questions,
+  textbookChapters: textbook.chapters, russianTopicTitles: russianTitles.topics,
+  a2PrerequisiteLinks: prerequisites.links,
   russianPracticeInstructions: russianInstructions.questions,
   totalTopics: topics.length,
   totalQuestions: topics.reduce((n, t) => n + t.questions.length, 0), levels: counts}, null, 2));

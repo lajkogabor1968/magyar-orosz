@@ -1,0 +1,80 @@
+/* Nyugodt, orosz nyelvű nyitóképernyő; a tanulófelület indulásig rejtve. */
+html.landing-mode .masthead,
+html.landing-mode main.wrap,
+html.landing-mode footer.foot { display: none !important; }
+.landing-screen[hidden] { display: none !important; }
+.landing-screen {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: clamp(24px, 6vw, 80px) 20px;
+  color: #173b3b;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(194, 221, 213, .46), transparent 34%),
+    radial-gradient(circle at 10% 88%, rgba(218, 230, 215, .45), transparent 40%),
+    #f7f8f4;
+}
+.landing-content { width: min(100%, 760px); text-align: center; }
+.landing-brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: #244e4a; font-size: 14px; letter-spacing: .03em;
+  font-weight: 750; margin-bottom: clamp(32px, 7vh, 72px);
+}
+.landing-badge {
+  display: inline-block; padding: 9px 13px;
+  border-radius: 12px; border: 1px solid #c9ddd5;
+  background: #fff; font-size: 15px;
+}
+.landing-kicker {
+  color: #56847a; text-transform: uppercase; font-size: 12px;
+  font-weight: 800; letter-spacing: .16em; margin: 0 0 16px;
+}
+.landing-content h1 {
+  color: #173d3c; font-weight: 800; line-height: 1.14;
+  letter-spacing: -.035em; font-size: clamp(34px, 6vw, 59px);
+  max-width: 740px; margin: 0 auto 24px;
+}
+.landing-description {
+  font-size: clamp(16px, 2vw, 19px); line-height: 1.75;
+  color: #526d68; max-width: 675px; margin: 0 auto 28px;
+}
+.landing-topics {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 9px; margin: 0 auto 40px;
+}
+.landing-topics span {
+  padding: 9px 14px; border: 1px solid #dbe8e1; background: #fff;
+  border-radius: 999px; color: #456c62; font-size: 14px;
+}
+.landing-actions {
+  display: flex; justify-content: center; align-items: center;
+  gap: 12px; flex-wrap: wrap;
+}
+.landing-actions button, .landing-actions a {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 52px; min-width: 215px; padding: 13px 21px;
+  font: inherit; font-size: 16px; font-weight: 700; text-decoration: none;
+  border-radius: 14px; cursor: pointer;
+}
+.landing-actions .landing-primary {
+  background: #164e4a; border: 1px solid #164e4a; color: white;
+  box-shadow: 0 10px 25px rgba(22, 78, 74, .15);
+}
+.landing-actions .landing-secondary {
+  background: #fff; border: 1px solid #bfd3ca; color: #164e4a;
+}
+.landing-actions :is(button,a):focus-visible {
+  outline: 3px solid #78ada3; outline-offset: 4px;
+}
+.landing-footnote {
+  color: #82968f; font-size: 13px; margin: 28px 0 0;
+}
+.landing-back {
+  margin-left: 12px; font-size: 13px; white-space: nowrap;
+}
+@media (max-width: 540px) {
+  .landing-actions button, .landing-actions a { width: 100%; }
+  .landing-topics { margin-bottom: 30px; }
+  .landing-brand { margin-bottom: 38px; }
+}

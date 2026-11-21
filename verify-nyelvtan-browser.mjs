@@ -17,13 +17,15 @@ page.on('pageerror', err => errors.push(err.message));
 try {
   await page.goto(`file://${file}?level=A2`);
   await page.locator('#topic option').first().waitFor();
-  assert.match(await page.locator('#count').textContent(), /19 nyelvtani témakör · 162 feladat/);
+  assert.match(await page.locator('#count').textContent(), /22 témakör \/ тем · 198 feladat \/ заданий/);
   const select = page.locator('#topic');
   const target = await select.locator('option').evaluateAll(opts =>
     opts.find(el => el.textContent.includes('Felszólító mód I.'))?.value);
   assert.ok(target, 'Nem található a felszólító mód első fejezete.');
   await select.selectOption(target);
   assert.match(await page.locator('#title').textContent(), /Felszólító mód I/);
+  assert.match(await page.locator('.grammar-topic-title-ru').textContent(), /Повелительное наклонение/);
+  assert.ok(await page.locator('.grammar-prerequisites-links button').count() >= 1);
   assert.equal(await page.locator('.conjugation-table tbody tr').count(), 6,
     'A felszólító mód hat személyű táblázata látható.');
   assert.equal(await page.locator('.grammar-input').count(), 3);
@@ -95,8 +97,31 @@ try {
     assert.match(await page.locator('#result').textContent(), /12 \/ 12 pont · 100%/);
     assert.equal(await page.locator('.feedback-ru').count(), 12);
   }
+  for (const [index, title] of [
+    ['19', 'Birtoklás: van könyvem'], ['20', 'Részes eset: -nak/-nek'],
+    ['21', 'Helyragok II.']
+  ]) {
+    await select.selectOption(index);
+    assert.ok((await page.locator('#title').textContent()).includes(title));
+    assert.ok((await page.locator('.grammar-topic-title-ru').textContent()).trim().length > 8);
+    assert.ok(await page.locator('.grammar-prerequisites-links button').count() >= 1);
+    assert.ok(await page.locator('.lesson-step').count() >= 3);
+    assert.equal(await page.locator('#questions .question-instruction-ru').count(), 12);
+    const questions = await page.evaluate(i => window.GRAMMAR_TOPICS.filter(
+      t => t.level === 'A2')[Number(i)].questions, index);
+    for (const [i, q] of questions.entries()) {
+      const row = page.locator('#questions .question').nth(i);
+      if (q.type === 'input') await row.locator('input').fill(q.accept[0]);
+      else await row.getByRole('button', {name: q.options[q.answer], exact: true}).click();
+    }
+    await page.locator('#check').click();
+    assert.match(await page.locator('#result').textContent(), /12 \/ 12 pont · 100%/);
+  }
   await page.locator('#levels [data-level="A1"]').click();
-  assert.match(await page.locator('#count').textContent(), /9 nyelvtani témakör · 57 feladat/);
+  assert.match(await page.locator('#count').textContent(), /10 témakör \/ тем · 66 feladat \/ заданий/);
+  await select.selectOption('9');
+  assert.match(await page.locator('#title').textContent(), /Alany, ige és tárgy/);
+  assert.equal(await page.locator('#questions .question-instruction-ru').count(), 9);
   assert.equal(await page.locator('.conjugation-table').count(), 1,
     'Az A1-es alaptémákhoz is tartozzon táblázat.');
 
@@ -114,8 +139,18 @@ try {
   await page.locator('#levels [data-level="A2"]').click();
   await select.selectOption(target);
   await page.screenshot({path: '/tmp/tanulomuhely-a2-nyelvtan-mobile.png', fullPage: true});
+  await page.goto('file://' + join(dirname(fileURLToPath(import.meta.url)), 'index.html'));
+  assert.ok(await page.locator('html').evaluate(el => el.classList.contains('landing-mode')),
+    'A kezdőlapon először csak az orosz üdvözlés jelenjen meg.');
+  assert.ok(!(await page.locator('#listView').isVisible()),
+    'A szólista induláskor legyen elrejtve.');
+  assert.match(await page.locator('#landingTitle').textContent(), /Добро пожаловать/);
+  await page.locator('#landingStart').click();
+  assert.ok(await page.locator('#listView').isVisible(), 'Az Indítás megnyissa a tanulófelületet.');
+  await page.locator('.landing-back').click();
+  assert.ok(await page.locator('#landingScreen').isVisible(), 'Vissza lehessen lépni a kezdőlapra.');
   assert.equal(errors.length, 0, `Böngészőhibák: ${errors.join('; ')}`);
-  console.log('Böngészős teszt rendben: A1–B2 orosz feladatutasítások, A1/A2 tankönyv, táblázatok, 259 feladat, eredménymegőrzés, mobilnézet.');
+  console.log('Böngészős teszt rendben: 40 kétnyelvű cím, 304 feladat, 32 tankönyv, 22 A2 előfeltétel, eredménymegőrzés és orosz kezdőképernyő.');
 } finally {
   await browser.close();
 }

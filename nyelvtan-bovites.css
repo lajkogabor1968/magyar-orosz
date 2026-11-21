@@ -108,3 +108,15 @@
   .lesson-step {padding: 12px;}
   .textbook-panel > h2 {font-size: 1.3rem;}
 }
+/* Orosz cím az eredeti magyar témacím alatt, a tanulói eredménykulcs érintése nélkül. */
+.grammar-topic-title-ru {
+  margin: -8px 0 18px;
+  color: #386b66;
+  font-size: clamp(1.06rem, 2.6vw, 1.3rem);
+  font-weight: 600;
+  line-height: 1.4;
+}
+.grammar-prerequisites { padding: 14px 16px; margin: 10px 0 18px; border-radius: 12px; background: #eef7f2; border: 1px solid #d7e8df; }
+.grammar-prerequisites > strong { display: block; margin-bottom: 9px; font-size: .91rem; }
+.grammar-prerequisites-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.grammar-prerequisites-links button { font-size: .82rem; text-align: left; white-space: normal; line-height: 1.4; }
