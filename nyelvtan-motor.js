@@ -1,6 +1,8 @@
 (() => {
   'use strict';
   const topicsAll = window.GRAMMAR_TOPICS;
+  const titleRu = window.GRAMMAR_TOPIC_TITLES_RU || {};
+  const displayTitle = t => titleRu[t.title] ? `${t.title} / ${titleRu[t.title]}` : t.title;
   const levels = ['A1', 'A2', 'B1', 'B2'];
   const $ = id => document.getElementById(id);
   const storeKey = 'hu-ru-grammar-v1'; // A korábbi eredmények tárolókulcsa változatlan.
@@ -183,7 +185,7 @@
     $('topic').value = String(topicIndex);
     $('count').textContent = `${level} · ${topics().length} nyelvtani témakör · ${topics().reduce((n, item) => n + item.questions.length, 0)} feladat`;
     $('tag').textContent = level;
-    $('title').textContent = t.title;
+    $('title').textContent = displayTitle(t);
     $('rule').textContent = t.rule;
     huRule.textContent = t.ruleHu || '';
     huRule.classList.toggle('hidden', !t.ruleHu);
@@ -265,7 +267,7 @@
     const selector = $('topic');
     selector.replaceChildren();
     topics().forEach((t, i) => {
-      const opt = node('option', `${i + 1}. ${t.title}`);
+      const opt = node('option', `${i + 1}. ${displayTitle(t)}`);
       opt.value = String(i);
       selector.append(opt);
     });
