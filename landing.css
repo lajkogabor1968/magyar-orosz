@@ -252,3 +252,30 @@ html.study-book .masthead{padding:13px 0}
 .lesson-advice p{margin:6px 0 12px}
 .lesson-advice button{border-radius:8px;border:1px solid #698f80;background:#fff;color:#1b5545;padding:10px 12px;cursor:pointer}
 .lesson-advice button:last-child{background:#1b5d4d;color:white}
+
+/* Modern visual textbook: restrained movement, useful imagery and readable pages. */
+.lesson-reading{padding:clamp(14px,3vw,24px);background:linear-gradient(145deg,#f4faf6,#fff);border-radius:15px;border:1px solid #d8e9e0;margin:0 0 22px}
+.lesson-reading-line{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #e1ede7}
+.lesson-reading-pair{flex:1}.lesson-reading-pair p{margin:3px 0}.lesson-reading-pair p:first-child{font-size:1.09rem;font-weight:620;color:#163f35}
+.lesson-reading-translation{font-size:.93rem;color:#527162}.lesson-reading-translation[hidden]{display:none}
+.lesson-reading-line button{flex-shrink:0;border-radius:11px}
+.lesson-reading-check{padding:12px 0 2px}.lesson-reading-check .integrated-answer{margin:7px 0;width:100%}
+.lesson-visual{border-radius:18px;padding:clamp(14px,3vw,24px);background:linear-gradient(125deg,#133f47 0%,#276856 70%,#2d6b68 100%);color:#fff;box-shadow:0 9px 27px #163d341c;margin:0 0 20px;overflow:hidden}
+.chapter-visual-header{display:flex;align-items:center;gap:13px;margin-bottom:18px}
+.chapter-visual-symbol{font-size:clamp(38px,6vw,62px);line-height:1;filter:drop-shadow(0 4px 7px #0003)}
+.chapter-visual-header strong{font-size:clamp(18px,3vw,26px);line-height:1.25;display:block}
+.chapter-visual-header small{color:#d9f2e9;display:block;margin-top:4px}
+.chapter-visual-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.chapter-visual-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 6px;border:1px solid #ffffff55;background:#ffffff1a;border-radius:13px;text-align:center;min-width:0}
+.chapter-visual-emoji{font-size:clamp(25px,4vw,40px);line-height:1.2}
+.chapter-visual-card strong{font-size:clamp(13px,2.1vw,19px);overflow-wrap:anywhere;color:white}
+.chapter-visual-card small{color:#e3f7ef;overflow-wrap:anywhere}
+.chapter-visual-card button{background:#ffffffeb!important;color:#134a3a!important;border:0!important;min-height:38px;padding:6px 15px;border-radius:20px}
+.chapter-direction-diagram,.chapter-time-diagram{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:17px;background:#ffffff20;padding:12px;border-radius:11px;font-weight:650}
+.moving-arrow{animation:learning-arrow 2.8s ease-in-out infinite;display:inline-block;font-size:22px}
+@keyframes learning-arrow{0%,100%{transform:translateX(0);opacity:.65}50%{transform:translateX(6px);opacity:1}}
+.lesson-review{border:1px solid #d5e6dc;border-left:4px solid #38735f;border-radius:11px;margin-bottom:22px;padding:14px;background:#f8fbf9}
+.lesson-review[hidden]{display:none!important}
+.lesson-review input{width:100%;padding:10px;border-radius:8px;border:1px solid #adc7b9;margin:8px 0 12px}
+@media(max-width:480px){.chapter-visual-cards{gap:6px}.chapter-visual-card{padding:10px 4px}.chapter-visual-card button{padding:7px 10px}}
+@media(prefers-reduced-motion:reduce){.moving-arrow{animation:none!important}}
