@@ -34,19 +34,17 @@ if (hash !== expectedHash) problems.push('Az A2 címszavak sorrendje vagy szöve
 // Az „Ez a táska az enyém.” jellegű valódi közléseket nem jelöljük sablonnak.
 const generic = /^(?:Ez (?:a|az|egy) [^\s,.!?;]+(?: [^\s,.!?;]+)?|Ő ezt mondja.*|Ezt mondom.*|A „.*” szó rövid)\.$/;
 const reviewedBad = [];
-const remainingBad = [];
 data.A2.forEach((row, index) => {
   if (!generic.test(row[2])) return;
-  (index <= 1080 ? reviewedBad : remainingBad).push(index);
+  reviewedBad.push(index);
 });
-if (reviewedBad.length) problems.push(`Az első kilenc A2-adagban maradt ${reviewedBad.length} sablon: ${reviewedBad.join(', ')}`);
+if (reviewedBad.length) problems.push(`Az A2 szókincsben maradt ${reviewedBad.length} sablon: ${reviewedBad.join(', ')}`);
 
-console.log(`A2: ${data.A2.length} szócikk, első kilenc ellenőrzött adag: 1081`);
-console.log(`Egyértelmű sablonok az első kilenc adagban: ${reviewedBad.length}`);
-console.log(`Előszűréssel talált további sablonok: ${remainingBad.length} (még felülvizsgálandók)`);
+console.log(`A2: ${data.A2.length} szócikk, mind a tíz első körös ellenőrzési adag kész: 1200`);
+console.log(`Egyértelmű sablonok a teljes A2 szókincsben: ${reviewedBad.length}`);
 if (problems.length) {
   for (const problem of problems) console.error(`HIBA: ${problem}`);
   process.exitCode = 1;
 } else {
-  console.log('A2 szerkezeti teszt: RENDBEN. A teljes A2 még NINCS nyelvileg hitelesítve.');
+  console.log('A2 szerkezeti teszt: RENDBEN. Az első nyelvi kör lezárult; orosz anyanyelvi lektorálás még szükséges.');
 }

@@ -295,3 +295,20 @@ Az A2-fejlesztés a felhasználó új döntése alapján megkezdődött. A szint
 | Online rendelés | E-mailben visszaigazolták a rendelésemet. | Мой заказ подтвердили по электронной почте. |
 
 **Automatikus ellenőrzés:** az első 1081 tételben a szűk sablonfelismerő **0 egyértelműen üres példamondatot** jelez; ez nem helyettesíti a nyelvi minőség tételes mérését. A felülvizsgált sorok százaléka a munkafolyamat előrehaladását, nem a fordítások bizonyított hibamentességét mutatja. A teljes A2 második ellenőrzése, orosz anyanyelvű kontroll és tanulói kipróbálás továbbra is szükséges. **Következő és egyben utolsó első körös adag:** `A2:1081`–`A2:1199`.
+
+## A2 nyelvi és pedagógiai fejlesztés – 10. adag (2026-11-21)
+
+- **Utolsó első körös szókincstartomány:** `A2:1081`–`A2:1199` (119 bejegyzés). **17 célzottan javított szócikk**, 102 már megfelelő szócikk változatlan. A pontos mezőváltozásokat az `a2-audit-2026-11-21-part10.json` dokumentálja.
+- **Teljes A2 első körös lefedettség:** **1200/1200 (100%)**. A tíz adagban összesen **931 bejegyzést javítottunk**, a többi **269 bejegyzés** az eredeti formájában használható maradt az első áttekintés alapján. Ez a százalék az átnézett bejegyzések aránya, nem orosz anyanyelvi minőségi tanúsítvány.
+- **Pedagógiai és nyelvi szempont:** a közlekedési csatlakozás, járatlekésés, időben érkezés, állás és munkaidő, digitális ügyintézés, egészségügyi tünetek és véleménykifejezés valódi A2-es kommunikációs mintáit pontosítottuk. Az `egyik sem` nem feltétlenül pontosan két lehetőségre utal; a `műszakban dolgozik` példájában a magyar rokoni megnevezés és az orosz nemi megjelölés most egyértelműen egyezik.
+- **Megőrzött szerkezet:** az összes A2 magyar címszó sorrendje és szócikkindexe változatlan; a feladatok, tárolt eredmények, valamint az A1 600 / A2 1200 / B1 431 / B2 14 elemű adatszerkezet nem változott. A `verify-a2.mjs` már a teljes A2-t vizsgálja szerkezetileg és az egyértelműen semmitmondó sablonok szempontjából.
+
+| A2-es kommunikációs helyzet | Magyar mondat | Orosz megfelelő |
+|---|---|---|
+| Vonatcsatlakozás | Van csatlakozás a Pécsre induló vonathoz? | Есть ли пересадка на поезд до Печа? |
+| Tünetek elmondása | Részletesen leírom az orvosnak a tüneteimet. | Я подробно описываю врачу свои симптомы. |
+| Műszakos munkavégzés | A nővérem műszakban dolgozik. | Моя старшая сестра работает посменно. |
+| Online megbeszélés | A kollégám megosztja a képernyőjét. | Мой коллега включает демонстрацию экрана. |
+| Választási lehetőség | Egyik lehetőség sem jó. | Ни один из вариантов не подходит. |
+
+**Első kör lezárva:** a gépi ellenőrzés **0 egyértelműen semmitmondó sablont** talál a teljes A2-anyagban. Ez nem zárja ki a ritkább nyelvtani, lexikai vagy pedagógiai hibákat. **Következő minőségi kapu:** a többjelentésű és az orosz igeszemléletre érzékeny tételek keresztellenőrzése, orosz anyanyelvi lektorálás, végül tényleges tanulói teszt és a hangos felolvasás ellenőrzése. E kapuk nélkül az A2-t nem tekintjük teljesen hitelesítettnek.
