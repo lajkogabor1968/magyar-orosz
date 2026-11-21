@@ -9,6 +9,7 @@
   let level = initialLevel;
   let topicIndex = 0;
   let selections = {};
+  let optionOrders = {};
   let checked = false;
   let progress = {};
   try { progress = JSON.parse(localStorage.getItem(storeKey) || '{}') || {}; } catch (_) {}
@@ -25,6 +26,18 @@
     .replace(/[.!?]+$/u, '')
     .replace(/\s+/gu, ' ')
     .trim();
+
+  // A régi feleletválasztós leckékben sokszor az első válasz volt helyes.
+  // Fisher–Yates-keveréssel minden próbálkozásban változhat a sorrend,
+  // miközben a tárolt pontszámok és az eredeti válaszkulcsok változatlanok.
+  function shuffleOptions(options) {
+    const order = options.map((label, originalIndex) => ({label, originalIndex}));
+    for (let i = order.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+    return order;
+  }
 
   // A régi oldal adatainak és a kiegészített fejezeteknek közös megjelenítője.
   const ruleEl = $('rule');
@@ -86,6 +99,7 @@
   function render() {
     checked = false;
     selections = {};
+    optionOrders = {};
     const t = topics()[topicIndex];
     $('topic').value = String(topicIndex);
     $('count').textContent = `${level} · ${topics().length} nyelvtani témakör · ${topics().reduce((n, item) => n + item.questions.length, 0)} feladat`;
@@ -135,13 +149,15 @@
         group.append(inp);
       } else {
         const options = node('div', undefined, 'options');
-        q.options.forEach((answer, j) => {
-          const button = node('button', answer);
+        const order = shuffleOptions(q.options);
+        optionOrders[i] = order;
+        order.forEach(({label, originalIndex}, j) => {
+          const button = node('button', label);
           button.type = 'button';
           button.setAttribute('aria-pressed', 'false');
           button.onclick = () => {
             if (checked) return;
-            selections[i] = j;
+            selections[i] = originalIndex;
             [...options.children].forEach((other, k) => {
               other.classList.toggle('chosen', k === j);
               other.setAttribute('aria-pressed', String(k === j));
@@ -199,19 +215,20 @@
         inp.disabled = true;
         inp.classList.toggle('right', correct);
         inp.classList.toggle('wrong', !correct);
-        correctAnswer = q.accept[0];
+        correctAnswer = q.accept.join(' / ');
       } else {
         const buttons = [...group.querySelectorAll('.options button')];
         buttons.forEach((button, j) => {
           button.disabled = true;
           button.classList.remove('chosen');
-          if (j === q.answer) button.classList.add('right');
-          else if (j === selections[i]) button.classList.add('wrong');
+          const originalIndex = optionOrders[i][j].originalIndex;
+          if (originalIndex === q.answer) button.classList.add('right');
+          else if (originalIndex === selections[i]) button.classList.add('wrong');
         });
         correctAnswer = q.options[q.answer];
       }
       group.querySelector('.feedback').textContent =
-        `${correct ? '✓ Helyes. ' : '✗ Javítás. '}Helyes válasz: ${correctAnswer}. ${q.why}`;
+        `${correct ? '✓ Helyes. ' : '✗ Javítás. '}${q.type === 'input' ? 'Elfogadott alakok' : 'Helyes válasz'}: ${correctAnswer}. ${q.why}`;
     });
     const percent = Math.round(score / t.questions.length * 100);
     $('result').textContent = `${score} / ${t.questions.length} pont · ${percent}%. ` +

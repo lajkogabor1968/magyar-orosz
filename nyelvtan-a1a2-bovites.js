@@ -190,8 +190,8 @@
     },
     {
       level: 'A2', title: 'Felszólító mód I. – kérés és utasítás',
-      ruleHu: 'A felszólító mód alapjele -j, de az igealakban hangváltozás is lehet. Te: várj, kérj, menj. Ön: várjon, kérjen, menjen. Mi: várjunk, kérjünk, menjünk. A felszólító mód nem csak parancsot, hanem kérést és közös javaslatot is kifejezhet.',
-      rule: 'Повелительное наклонение может выражать приказ, просьбу и совместное предложение. Важные формы: te várj, Ön várjon, mi várjunk, ti várjatok, Önök várjanak. У некоторых глаголов основа меняется: megy → menj!',
+      ruleHu: 'A felszólító mód alapjele -j, de az igealakban hangváltozás is lehet. Te: várj, kérj, menj. Ön: várjon, kérjen, menjen. Mi: várjunk, kérjünk, menjünk. A te alak rövidebb és hosszabb változata is helyes lehet: kérj/kérjél. A felszólító mód kérést és közös javaslatot is kifejezhet.',
+      rule: 'Повелительное наклонение может выражать приказ, просьбу и совместное предложение. Важные формы: te várj, Ön várjon, mi várjunk, ti várjatok, Önök várjanak. Во 2-м лице могут быть две правильные формы: kérj / kérjél. У некоторых глаголов основа меняется: megy → menj!',
       examples: [['Várj egy percet!', 'Подожди минуту!'], ['Kérem, várjon itt!', 'Пожалуйста, подождите здесь!'], ['Menjünk haza!', 'Пойдём домой!']],
       table: {heads: ['Személy', 'vár – felszólító', 'megy – felszólító'], rows: [
         ['én', 'várjak', 'menjek'], ['te', 'várj', 'menj'], ['ő / Ön', 'várjon', 'menjen'],
@@ -203,7 +203,7 @@
         choose('___ a parkba! (mi)', ['Megyünk', 'Menjünk', 'Menjetek'], 1, 'Mi: menjünk!'),
         choose('___ haza! (ti)', ['Menjenek', 'Menjünk', 'Menjetek'], 2, 'Ti: menjetek!'),
         choose('Kérem, ___ holnap! (Önök; jön)', ['jöjjenek', 'jönnek', 'jöjjetek'], 0, 'Önök: jöjjenek!'),
-        write('Írd be a felszólító alakot! Te: ___! (kér)', 'kérj', 'Kérj!'),
+        write('Írd be a felszólító alakot! Te: ___! (kér)', 'kérj', 'A kérj és a kérjél alak is helyes.', ['kérjél']),
         write('Írd be a felszólító alakot! Mi: ___! (vár)', 'várjunk', 'Várjunk!'),
         write('Írd be az udvarias felszólító alakot! Ön: ___! (megy)', 'menjen', 'Menjen!')
       ]
@@ -223,7 +223,7 @@
         choose('___ meg a filmet! (mi)', ['Nézünk', 'Nézzetek', 'Nézzük'], 2, 'Mi + a filmet: nézzük meg!'),
         choose('___ le a szavakat! (ti)', ['Írjatok', 'Írjátok', 'Írnak'], 1, 'Ti + a szavakat: írjátok le!'),
         choose('Kérem, ___ meg ezt a képet! (Ön; néz)', ['nézzen', 'nézitek', 'nézze'], 2, 'Ön + ezt a képet: nézze meg!'),
-        write('Írd be! Te, ___ a levelet! (ír)', 'írd', 'Írd a levelet!'),
+        write('Írd be! Te, ___ a levelet! (ír)', 'írd', 'A határozott felszólító alak: írd; az írjad is elfogadható.', ['írjad']),
         write('Írd be! Mi, ___ meg a képet! (néz)', 'nézzük', 'Nézzük meg a képet!'),
         write('Írd be! Ti, ___ el a történetet! (olvas)', 'olvassátok', 'Olvassátok el a történetet!')
       ]
@@ -244,9 +244,9 @@
         choose('Melyik a helyes felszólító alak? (lát)', ['láts', 'láss', 'látj'], 1, 'Lát → láss!'),
         choose('Melyik a helyes felszólító alak? (tanít)', ['taníts', 'taníss', 'tanítj'], 0, 'Tanít → taníts!'),
         choose('Melyik a helyes felszólító alak? (játszik)', ['játsz', 'játszj', 'játssz'], 2, 'Játszik → játssz!'),
-        write('Írd be! Te ___! (hoz)', 'hozz', 'Hoz → hozz!'),
-        write('Írd be! Te ___! (mos)', 'moss', 'Mos → moss!'),
-        write('Írd be! Te ___! (segít)', 'segíts', 'Segít → segíts!')
+        write('Írd be! Te ___! (hoz)', 'hozz', 'Hoz → hozz; a hozzál hosszabb alak is helyes.', ['hozzál']),
+        write('Írd be! Te ___! (mos)', 'moss', 'Mos → moss; a mossál hosszabb alak is helyes.', ['mossál']),
+        write('Írd be! Te ___! (segít)', 'segíts', 'Segít → segíts; a segítsél hosszabb alak is helyes.', ['segítsél'])
       ]
     },
     {
@@ -265,9 +265,9 @@
         choose('A „Ne írd meg!” melyik mondat ellentéte?', ['Írsz meg!', 'Megírsz!', 'Írd meg!'], 2, 'Felszólítás: Írd meg!; tiltás: Ne írd meg!'),
         choose('Mi fejez ki tiltást?', ['Nem dolgozom.', 'Ne dolgozz!', 'Dolgozom.'], 1, 'Ne dolgozz!'),
         choose('Melyik a helyes tagadó felszólítás?', ['Ne menj el!', 'Ne elmenj!', 'Nem menj el!'], 0, 'Ne menj el!'),
-        write('Alakítsd tiltássá! „Várj!” → …', 'Ne várj', 'Ne várj!'),
-        write('Alakítsd tiltássá! „Írd le!” → …', 'Ne írd le', 'Ne írd le!'),
-        write('Alakítsd tiltássá! „Olvasd el!” → …', 'Ne olvasd el', 'Ne olvasd el!')
+        write('Alakítsd tiltássá! „Várj!” → …', 'Ne várj', 'Ne várj! A ne várjál is helyes.', ['Ne várjál']),
+        write('Alakítsd tiltássá! „Írd le!” → …', 'Ne írd le', 'Ne írd le! A ne írjad le is helyes.', ['Ne írjad le']),
+        write('Alakítsd tiltássá! „Olvasd el!” → …', 'Ne olvasd el', 'Ne olvasd el! A ne olvassad el is helyes.', ['Ne olvassad el'])
       ]
     },
     {
@@ -294,6 +294,14 @@
 
   if (!Array.isArray(window.GRAMMAR_TOPICS)) {
     throw new Error('Hiányzik a nyelvtani alapadatok tömbje.');
+  }
+  // A korábbi létige-lecke nyitófeladata az igei személyragozást kérdezte;
+  // helyette valóban a létigét gyakoroltatjuk. A fejezet sorszáma és pontszáma megmarad.
+  const létige = window.GRAMMAR_TOPICS.find(topic =>
+    topic.level === 'A1' && topic.title === 'A létige: vagyok, vagy, van');
+  if (létige?.questions[0]?.q === 'Én magyarul ___ .') {
+    létige.questions[0] = choose('Én most otthon ___.',
+      ['vagy', 'van', 'vagyok'], 2, 'Én → vagyok. A létige helyet is kifejezhet: otthon vagyok.');
   }
   window.GRAMMAR_TOPICS.push(...extra);
   window.GRAMMAR_EXTENSION_INFO = Object.freeze({

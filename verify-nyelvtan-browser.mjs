@@ -38,7 +38,12 @@ try {
   for (const [i, q] of currentQuestions.entries()) {
     const row = page.locator('#questions .question').nth(i);
     if (q.type === 'input') await row.locator('input').fill(q.accept[0]);
-    else await row.locator('button').nth(q.answer).click();
+    else {
+      const labels = await row.locator('button').allTextContents();
+      const choiceIndex = labels.indexOf(q.options[q.answer]);
+      assert.ok(choiceIndex >= 0, 'A jó válasz nem jelenik meg a kevert lehetőségek közt.');
+      await row.locator('button').nth(choiceIndex).click();
+    }
   }
   await page.locator('#check').click();
   assert.match(await page.locator('#result').textContent(), /8 \/ 8 pont · 100%/);
