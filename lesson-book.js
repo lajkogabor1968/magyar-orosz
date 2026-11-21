@@ -115,7 +115,9 @@ function checkComposition(){
   unsuitable=phrases.filter(t=>{const m=/^ez egy (.+)$/.exec(t);return !m||!valid.has(m[1])});
  }
  const enough=sentences.length>=minimum;
- compositionChecked=enough&&!duplicates&&!missingFinalPunctuation&&!fragments.length&&!unsuitable.length;
+ const questionCount=sentences.filter(t=>t.endsWith('?')).length;
+ const requiresQuestions=level==='A1'&&lessonIndex===6;
+ compositionChecked=enough&&!duplicates&&!missingFinalPunctuation&&!fragments.length&&!unsuitable.length&&(!requiresQuestions||questionCount>=2);
  stepButton.disabled=!compositionChecked;
  const messages=[];
  messages.push('Предложений: '+sentences.length+' / '+minimum+'.');
@@ -124,6 +126,7 @@ function checkComposition(){
  if(missingFinalPunctuation)messages.push('Поставьте знак конца предложения.');
  if(fragments.length)messages.push('В каждом предложении должно быть не менее двух слов.');
  if(unsuitable.length)messages.push('В этом первом задании используйте образец «Ez egy …» и слово из списка урока. Например: «Ez egy telefon.»');
+ if(requiresQuestions&&questionCount<2)messages.push('В уроке о вопросах напишите не менее двух вопросов со знаком «?», а также два ответа.');
  if(!/[áéíóöőúüű]/i.test(source))messages.push('Проверьте, нужны ли долгие венгерские гласные.');
  messages.push(compositionChecked?'✓ Формальные условия выполнены. Можно продолжать.':'Исправьте отмеченные пункты и проверьте ещё раз.');
  messages.push('Это проверка формы, а не полная оценка грамматики и содержания.');
