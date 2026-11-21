@@ -10,7 +10,7 @@
   const originLevel = ['A1','A2'].includes(params.get('returnLevel')) ? params.get('returnLevel') : null;
   const originLesson = /^\d+$/.test(params.get('returnLesson') || '') ? Number(params.get('returnLesson')) : null;
   if(params.get('from')==='workbook' && originLevel && originLesson !== null && originLesson < 100) {
-    const returnLink = node('a','← Вернуться к уроку');
+    const returnLink = document.createElement('a');returnLink.textContent='← Вернуться к уроку';
     returnLink.href = 'index.html?open=app&workbook=1&level='+encodeURIComponent(originLevel)+'&lesson='+originLesson;
     returnLink.style.cssText='display:inline-block;margin:10px 0;padding:10px 13px;background:#e4f4eb;border-radius:9px;color:#145d58;font-weight:700;text-decoration:none';
     const main = document.querySelector('main');
