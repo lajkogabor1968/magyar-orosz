@@ -279,3 +279,32 @@ html.study-book .masthead{padding:13px 0}
 .lesson-review input{width:100%;padding:10px;border-radius:8px;border:1px solid #adc7b9;margin:8px 0 12px}
 @media(max-width:480px){.chapter-visual-cards{gap:6px}.chapter-visual-card{padding:10px 4px}.chapter-visual-card button{padding:7px 10px}}
 @media(prefers-reduced-motion:reduce){.moving-arrow{animation:none!important}}
+
+/* A1-A2 visual textbook: opt-in challenges and subtle, user-controlled grammar motion. */
+.lesson-minigame{border:1px solid #c3dacc;border-radius:16px;margin:24px 0 4px;padding:clamp(14px,3vw,22px);background:linear-gradient(145deg,#eef8f0,#fff)}
+.lesson-game-heading{display:flex;justify-content:space-between;gap:15px;align-items:center}
+.lesson-game-heading h4{margin:4px 0 8px;font-size:1.22rem;color:#174c3e}
+.lesson-game-heading p{color:#426654;margin:0 0 15px}
+.lesson-game-kicker{letter-spacing:.13em;font-size:.74rem;font-weight:800;color:#267456}
+.lesson-game-illustration{font-size:clamp(38px,6vw,60px)}
+.lesson-game-word{font-size:clamp(24px,5vw,32px);font-weight:750;color:#123f34;margin:10px 0 14px}
+.lesson-game-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.lesson-game-choice{border:1px solid #a8c6b4!important;border-radius:12px!important;background:#fff!important;color:#183d33!important;padding:14px!important;min-height:56px;text-align:left}
+.lesson-game-choice:disabled{opacity:1!important}
+.lesson-game-choice.right{background:#d3f1db!important;border-color:#348357!important}
+.lesson-game-choice.wrong{background:#ffe5e2!important;border-color:#ba776d!important}
+#lessonGameFeedback{font-weight:620;margin:13px 0}
+.lesson-micro-motion{border-radius:12px;border:1px solid #d4e6dc;background:#f7fbf8;padding:12px 15px;margin-bottom:16px}
+.lesson-motion-scene{display:flex;gap:12px;justify-content:space-around;align-items:stretch;flex-wrap:wrap;margin:12px 0 0}
+.lesson-motion-step{border:1px solid #cee3d7;border-radius:11px;background:white;display:grid;justify-items:center;align-content:center;gap:4px;padding:12px 9px;min-width:140px;flex:1;text-align:center}
+.lesson-motion-icon{font-size:30px}
+.lesson-motion-step small{color:#46725f}
+.lesson-motion-step button{min-height:34px}
+.lesson-motion-scene.active .lesson-motion-step{animation:meaningful-motion 1.8s ease-in-out both}
+.lesson-motion-scene.active .lesson-motion-step:nth-child(2){animation-delay:.3s}
+.lesson-motion-scene.active .lesson-motion-step:nth-child(3){animation-delay:.6s}
+@keyframes meaningful-motion{0%{transform:translateY(8px);opacity:.72}50%{transform:translateY(-5px);opacity:1}100%{transform:translateY(0);opacity:1}}
+.lesson-video-block[hidden],.lesson-micro-motion[hidden],#lessonGameArea[hidden]{display:none!important}
+.lesson-video-block video{width:100%;max-height:380px;border-radius:12px;background:#102a27}
+@media(max-width:500px){.lesson-game-options{grid-template-columns:1fr}.lesson-motion-step{min-width:90px}}
+@media(prefers-reduced-motion:reduce){.lesson-motion-scene.active .lesson-motion-step{animation:none!important}}
