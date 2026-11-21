@@ -245,3 +245,10 @@ html.study-book .masthead{padding:13px 0}
 .lesson-error-row button{flex-shrink:0}
 .lesson-step-status{color:#2b604f;line-height:1.55;margin:10px 0 14px}
 @media (max-width:550px){.lesson-error-row{align-items:flex-start}.lesson-error-row button{max-width:42%;font-size:12px}}
+
+.lesson-advice{border:1px solid #c4d6ce;border-left:4px solid #426d5e;border-radius:10px;padding:14px 16px;margin:16px 0;background:#f8fbf9;color:#214a40}
+.lesson-advice[hidden]{display:none!important}
+.lesson-advice strong{display:block;margin-bottom:4px}
+.lesson-advice p{margin:6px 0 12px}
+.lesson-advice button{border-radius:8px;border:1px solid #698f80;background:#fff;color:#1b5545;padding:10px 12px;cursor:pointer}
+.lesson-advice button:last-child{background:#1b5d4d;color:white}
