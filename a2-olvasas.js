@@ -2,10 +2,13 @@
   'use strict';
 
   const lessons = window.A2_READING_LESSONS || [];
+  const matching = window.A2_HEADING_MATCHING;
   const $ = id => document.getElementById(id);
   const progressKey = 'hu-ru-a2-reading-v1';
+  const matchingKey = 'hu-ru-a2-headings-v1';
   let active = 0;
   let checked = false;
+  let matchingChecked = false;
   let progress = {};
 
   try {
@@ -88,6 +91,20 @@
     makeQuestion(questionIndex++, 'fill', 1, lesson.fill.text,
       lesson.fill.options, lesson.fill.answer, lesson.fill.evidence);
 
+    $('short-answers').replaceChildren();
+    lesson.shortAnswers.forEach((question, index) => {
+      const item = makeText('div', '', 'short-answer');
+      const label = makeText('label', (index + 1) + '. ' + question.text);
+      label.htmlFor = 'short-answer-' + index;
+      const answer = document.createElement('textarea');
+      answer.id = label.htmlFor;
+      answer.rows = 2;
+      answer.placeholder = 'Rövid válasz magyarul / Краткий ответ';
+      const model = makeText('p', '', 'model hidden');
+      model.id = 'short-model-' + index;
+      item.append(label, answer, model);
+      $('short-answers').append(item);
+    });
     $('open-question').textContent = lesson.open.question;
     $('open-answer').value = '';
     $('open-answer').disabled = false;
@@ -153,6 +170,12 @@
     });
     $('model').textContent = 'Lehetséges válasz / Пример ответа: ' + lessons[active].open.sample;
     $('model').classList.remove('hidden');
+    lessons[active].shortAnswers.forEach((question, index) => {
+      const model = $('short-model-' + index);
+      model.textContent = 'Mintaválasz / Пример: ' + question.sample +
+        ' · A szövegben: „' + question.evidence + '”';
+      model.classList.remove('hidden');
+    });
     $('check').disabled = true;
     saveScore(score, questions.length);
     $('result').append(makeText('p',
@@ -160,6 +183,89 @@
       ' pont. ' + (score === questions.length ? 'Nagyszerű! / Отлично!' : 'Olvasd el az indoklásokat, majd próbáld újra! / Прочитайте объяснения и попробуйте ещё раз.'),
       'result'));
     updateProgress();
+  }
+
+  function renderMatching() {
+    if (!matching) return;
+    const root = $('matching-list');
+    root.replaceChildren();
+    matching.notices.forEach((notice, index) => {
+      const item = makeText('div', '', 'match-item');
+      item.append(makeText('strong', (index + 1) + '. rövid szöveg'));
+      item.append(makeText('p', notice.text));
+      const label = makeText('label', 'Melyik cím illik hozzá? / Подберите заголовок');
+      label.htmlFor = 'matching-' + index;
+      const select = document.createElement('select');
+      select.id = label.htmlFor;
+      select.append(new Option('Válassz egy címet! / Выберите заголовок', ''));
+      matching.headings.forEach(([id, title]) => select.append(new Option(title, id)));
+      const feedback = makeText('p', '', 'answer-feedback hidden');
+      feedback.id = 'matching-feedback-' + index;
+      item.append(label, select, feedback);
+      root.append(item);
+    });
+    $('matching-glossary').replaceChildren();
+    matching.glossary.forEach(([hungarian, russian]) => {
+      const item = makeText('div', '', 'word');
+      item.append(makeText('strong', hungarian));
+      const meaning = makeText('span', ' — ' + russian, 'ru');
+      meaning.lang = 'ru';
+      item.append(meaning);
+      $('matching-glossary').append(item);
+    });
+  }
+
+  function checkMatching() {
+    if (!matching || matchingChecked) return;
+    const selects = matching.notices.map((_, index) => $('matching-' + index));
+    const answers = selects.map(select => select.value);
+    if (answers.some(answer => !answer)) {
+      $('matching-result').replaceChildren(makeText('p',
+        'Mind a hat címválasztást töltsd ki! / Выберите все шесть заголовков.', 'notice'));
+      selects.find(select => !select.value)?.focus();
+      return;
+    }
+    if (new Set(answers).size !== answers.length) {
+      $('matching-result').replaceChildren(makeText('p',
+        'Ugyanazt a címet csak egyszer használhatod. / Каждый заголовок можно использовать только один раз.', 'notice'));
+      return;
+    }
+    matchingChecked = true;
+    let score = 0;
+    matching.notices.forEach((notice, index) => {
+      const correct = answers[index] === notice.answer;
+      if (correct) score++;
+      const title = matching.headings.find(([id]) => id === notice.answer)[1];
+      const feedback = $('matching-feedback-' + index);
+      feedback.textContent = (correct ? '✓ Helyes / Верно' : '✗ Helyes cím / Правильный заголовок') + ': ' + title;
+      feedback.className = 'answer-feedback' + (correct ? '' : ' wrong');
+      selects[index].disabled = true;
+    });
+    $('matching-check').disabled = true;
+    $('matching-result').replaceChildren(makeText('p',
+      'Párosítás / Сопоставление: ' + score + ' / ' + matching.notices.length + ' pont.', 'result'));
+    try {
+      const previous = JSON.parse(localStorage.getItem(matchingKey) || 'null');
+      if (!previous || score > previous.score) {
+        localStorage.setItem(matchingKey, JSON.stringify({ score, max: matching.notices.length, date: new Date().toISOString() }));
+      }
+    } catch {
+      // A tananyag helyi tárolás nélkül is használható.
+    }
+  }
+
+  function retryMatching() {
+    matchingChecked = false;
+    $('matching-list').querySelectorAll('select').forEach(select => {
+      select.value = '';
+      select.disabled = false;
+    });
+    $('matching-list').querySelectorAll('.answer-feedback').forEach(feedback => {
+      feedback.textContent = '';
+      feedback.className = 'answer-feedback hidden';
+    });
+    $('matching-check').disabled = false;
+    $('matching-result').replaceChildren();
   }
 
   if (!lessons.length) {
@@ -184,5 +290,8 @@
   $('next-bottom').addEventListener('click', () => changeLesson(active + 1));
   $('check').addEventListener('click', check);
   $('retry').addEventListener('click', render);
+  $('matching-check').addEventListener('click', checkMatching);
+  $('matching-retry').addEventListener('click', retryMatching);
+  renderMatching();
   render();
 })();

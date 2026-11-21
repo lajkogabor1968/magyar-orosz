@@ -29,6 +29,10 @@ window.A2_READING_LESSONS = [
       { text: 'Mit készítenek este?', options: ['Levest és rizst.', 'Szendvicset és joghurtot.', 'Tojást és salátát.'], answer: 2, evidence: 'Tojást sütnek, és friss salátát esznek.' }
     ],
     fill: { text: 'A reggelit a munkahelyén, a ___ eszi meg.', options: ['szünetben', 'pályaudvaron', 'kertben'], answer: 0, evidence: 'A reggelit a munkahelyén, a szünetben eszi meg.' },
+    shortAnswers: [
+      { text: 'Mikor kel fel Viktor hétköznap?', sample: 'Hat óra húsz perckor.', evidence: 'Hétköznap hat óra húsz perckor kel fel.' },
+      { text: 'Hol eszi meg szerdán a reggelijét?', sample: 'A munkahelyén, a szünetben.', evidence: 'A reggelit a munkahelyén, a szünetben eszi meg.' }
+    ],
     open: { question: 'Te mit szoktál enni és inni reggelire?', sample: 'Reggelire kenyeret és sajtot eszem, és teát iszom.' }
   },
   {
@@ -60,6 +64,10 @@ window.A2_READING_LESSONS = [
       { text: 'Mikor nézi meg Mária a busztársaság honlapját?', options: ['Indulás előtt.', 'Ebédszünetben.', 'Munka után.'], answer: 2, evidence: 'Munka után Mária megnézi a busztársaság honlapját, hogy másnap honnan indul a busz.' }
     ],
     fill: { text: 'A buszmegálló öt perc ___ van a lakásától.', options: ['sétára', 'vonattal', 'ebédre'], answer: 0, evidence: 'A buszmegálló öt perc sétára van a lakásától.' },
+    shortAnswers: [
+      { text: 'Hol van az új buszmegálló?', sample: 'A gyógyszertár mellett.', evidence: 'Az új megálló a gyógyszertár mellett van, két utcával arrébb.' },
+      { text: 'Kit hív fel Mária, amikor később érkezik?', sample: 'A főnökét.', evidence: 'Felhívja a főnökét, aki megköszöni, hogy szólt.' }
+    ],
     open: { question: 'Te hogyan jársz munkába vagy iskolába?', sample: 'Általában busszal járok munkába. Az út húsz percig tart.' }
   },
   {
@@ -91,6 +99,10 @@ window.A2_READING_LESSONS = [
       { text: 'Mikor érkeznek a vendégek?', options: ['Délben.', 'Háromkor.', 'Négykor.'], answer: 2, evidence: 'A vendégek pontosan négykor érkeznek.' }
     ],
     fill: { text: 'Az alma a ___ mellett van.', options: ['bejárat', 'pénztár', 'parkoló'], answer: 0, evidence: 'Az alma a bejárat mellett van, de banánt nem találnak.' },
+    shortAnswers: [
+      { text: 'Mit szeretne készíteni Anton?', sample: 'Melegszendvicseket.', evidence: 'Zsófi gyümölcssalátát szeretne készíteni, Anton pedig melegszendvicseket.' },
+      { text: 'Miért vesznek papírtáskát?', sample: 'Mert otthon maradt a vászontáska.', evidence: 'A pénztárnál észreveszik, hogy otthon maradt a vászontáska.' }
+    ],
     open: { question: 'Mit vásárolsz, ha két barátod jön hozzád?', sample: 'Kenyeret, sajtot és gyümölcsöt vásárolok. Szendvicset készítek.' }
   },
   {
@@ -122,6 +134,41 @@ window.A2_READING_LESSONS = [
       { text: 'Miért örül Olga a következő találkozónak?', options: ['Mert új állást keres.', 'Mert elutazhat.', 'Mert jobban megismerheti a szomszédokat.'], answer: 2, evidence: 'Olga örül, mert szeretne jobban megismerkedni velük.' }
     ],
     fill: { text: 'Hazafelé Éva megadja Olgának a ___.', options: ['telefonszámát', 'lakáskulcsát', 'könyvét'], answer: 0, evidence: 'Hazafelé Éva megadja neki a telefonszámát.' },
+    shortAnswers: [
+      { text: 'Melyik emeleten lakik Éva?', sample: 'A második emeleten.', evidence: 'Pénteken találkozik a lépcsőházban Évával, aki a második emeleten lakik.' },
+      { text: 'Hogyan segít Éva Olgának a beszélgetésben?', sample: 'Lassabban beszél, és néha egy-egy szóval segít.', evidence: 'Éva lassabban beszél hozzá, és néha segít egy-egy szóval.' }
+    ],
     open: { question: 'Mit mondasz, amikor új szomszéddal találkozol?', sample: 'Jó napot! Olga vagyok, most költöztem ide. Örülök, hogy találkoztunk.' }
   }
 ];
+
+// Eredeti rövid üzenetek: témacím-párosítás két fölösleges címmel.
+window.A2_HEADING_MATCHING = {
+  title: 'Hat rövid hír a városból',
+  headings: [
+    ['pool', 'Családi sportprogram'],
+    ['garden', 'Közös kertészkedés'],
+    ['housing', 'Új lakás keresése'],
+    ['library', 'Könyvtári program'],
+    ['bread', 'Friss pékáru'],
+    ['music', 'Zenei előadás'],
+    ['bus', 'Megváltozott buszmegálló'],
+    ['language', 'Magyar nyelvgyakorlás']
+  ],
+  notices: [
+    { text: 'A helyi könyvtárban péntek délután felolvasás lesz. A gyerekek elhozhatják a kedvenc könyvüket is.', answer: 'library' },
+    { text: 'A 6-os busz holnap nem áll meg a főtéren. Az utasok a következő utcában szállhatnak fel.', answer: 'bus' },
+    { text: 'Az uszodában vasárnap délelőtt családi úszás lesz. A kisebb gyerekeknek külön medencét készítenek.', answer: 'pool' },
+    { text: 'A pékség pénteken reggel hatkor nyit. Friss rozskenyeret és túrós péksüteményt is lehet vásárolni.', answer: 'bread' },
+    { text: 'A parkban szombaton közösen virágokat ültetnek a lakók. Aki szeretne segíteni, hozzon kis lapátot és kesztyűt!', answer: 'garden' },
+    { text: 'Kedden este kezdődik a kezdő magyar beszélgetőcsoport. Rövid bemutatkozásokat és bolti párbeszédeket gyakorolnak.', answer: 'language' }
+  ],
+  glossary: [
+    ['felolvasás', 'чтение вслух'],
+    ['főtér', 'центральная площадь'],
+    ['medence', 'бассейн'],
+    ['rozskenyér', 'ржаной хлеб'],
+    ['ültetnek', 'сажают'],
+    ['kesztyű', 'перчатки']
+  ]
+};

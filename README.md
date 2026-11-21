@@ -25,10 +25,14 @@ A böngésző a megjelölt szavakat és eredményeket helyben (`localStorage`) t
 
 Az [A2-es olvasásmodul](a2-olvasas.html) négy teljesen saját készítésű, rövid, hétköznapi történettel bővíti a tananyagot: reggeli szokások, munkába járás, bevásárlás és szomszédi kapcsolatok. A korábban kapott tankönyvi kép kizárólag a **feladattípusok mintája** volt; a történetek és a megoldókulcsok nem annak másolatai vagy átírásai.
 
-Minden olvasmányhoz 6 igaz–hamis állítás, 3 feleletválasztós kérdés, 1 mondatkiegészítés, magyar–orosz szószedet és 1 rövid szabad válasz tartozik. A 40 automatikusan ellenőrizhető kérdésnél a javítás visszakereshető bizonyító mondatot mutat; az önálló mondatalkotás nem kap gépi pontszámot, helyette mintaválasz látható. Az elért legjobb pontszámokat külön, új `hu-ru-a2-reading-v1` böngészős kulcs alatt tároljuk, a meglévő eredményekhez nem nyúlunk.
+Minden olvasmányhoz 6 igaz–hamis állítás, 3 feleletválasztós kérdés, 1 mondatkiegészítés, magyar–orosz szószedet, 2 rövid, szöveg alapján megválaszolandó kérdés és 1 saját mondatos válasz tartozik. A 40 automatikusan ellenőrizhető kérdésnél a javítás visszakereshető bizonyító mondatot mutat. Emellett 6 teljesen új rövid üzenetet 8 témacímhez kell párosítani; 2 cím fölösleges. Az önálló szövegalkotás és rövid válasz nem kap gépi pontszámot, helyette mintaválasz látható. Az elért legjobb pontszámokat külön, új böngészős kulcsok alatt tároljuk, a meglévő eredményekhez nem nyúlunk.
 
 Automatikus szerkezeti teszt: `node magyar-orosz/verify-a2-olvasas.mjs`. A szövegeket továbbra is ajánlott tanári és orosz anyanyelvű lektorral ellenőrizni tanulói kiadás előtt.
 
+
+### A2 – Íráskészség gyakorlása
+
+Az [A2-es írásmodul](a2-iras.html) négy önálló, hétköznapi íráshelyzetet kínál: üzenet a szomszédnak, tanfolyami bejegyzés, munkahelyi üzenet és baráti meghívás. A tanuló kb. 50 szót ír, négy tartalmi pont alapján dolgozik, láthatja a szószámot, és saját maga ellenőrizheti a feladat teljesítését. A program a magyar szöveget nem pontozza automatikusan, nem tárolja és nem küldi el; mintamegoldást ad az összehasonlításhoz. A feladatok tartalma nem a mintaként kapott ECL-feladatlapok átirata. Automatikus ellenőrzés: `node magyar-orosz/verify-a2-iras.mjs`.
 
 ### B1 – Ügyintézés Magyarországon (B2-es folytatással)
 

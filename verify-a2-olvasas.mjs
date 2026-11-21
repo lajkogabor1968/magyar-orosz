@@ -49,13 +49,35 @@ for (const [index, lesson] of (lessons || []).entries()) {
     }
   }
   check(lesson.open?.question && lesson.open?.sample, label + ': hiányzik az önálló feladat vagy mintaválasza.');
+  check(Array.isArray(lesson.shortAnswers) && lesson.shortAnswers.length === 2,
+    label + ': két önellenőrzős rövid válasz szükséges.');
+  for (const answer of lesson.shortAnswers || []) {
+    check(typeof answer.text === 'string' && typeof answer.sample === 'string' && answer.sample.length >= 5,
+      label + ': hiányos rövid válasz vagy mintamegoldás.');
+    check(typeof answer.evidence === 'string' && text.includes(answer.evidence),
+      label + ': a rövid válasz bizonyítéka nem szerepel a szövegben.');
+  }
   total += questions.length;
 }
+
+const matching = context.window.A2_HEADING_MATCHING;
+check(matching?.headings?.length === 8, 'Nyolc cím szükséges a párosításhoz.');
+check(matching?.notices?.length === 6, 'Hat eredeti rövid szöveg szükséges a párosításhoz.');
+const headingIds = (matching?.headings || []).map(pair => pair[0]);
+const chosenHeadings = (matching?.notices || []).map(notice => notice.answer);
+check(new Set(headingIds).size === 8, 'A címek azonosítója nem lehet ismétlődő.');
+check(new Set(chosenHeadings).size === 6, 'A hat helyes címnek különböznie kell.');
+check(chosenHeadings.every(id => headingIds.includes(id)), 'A párosítás nem létező címet jelöl helyesnek.');
+check((matching?.notices || []).every(item => item.text.length >= 55 && !item.text.includes('...')),
+  'A rövid hírek nem lehetnek üresek vagy hiányosak.');
+check((matching?.glossary || []).length >= 5, 'A párosításhoz hiányzik a szószedet.');
 
 const html = fs.readFileSync(path.join(root, 'a2-olvasas.html'), 'utf8');
 const a2 = fs.readFileSync(path.join(root, 'a2.html'), 'utf8');
 const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 check(html.includes('a2-olvasas-data.js') && html.includes('a2-olvasas.js'), 'Az olvasásmodul nem tölti be mindkét saját szkriptjét.');
+check(html.includes('id="cimparositas"') && html.includes('id="short-answers"'),
+  'A rövid válasz vagy a cím–szöveg párosítás hiányzik a felületről.');
 check(a2.includes('href="a2-olvasas.html"'), 'Hiányzik a hivatkozás az A2-es párbeszédekből.');
 check(home.includes('href="a2-olvasas.html" data-levels="A2"'), 'Hiányzik az A2-es főmenü-hivatkozás.');
 
@@ -64,6 +86,6 @@ if (problems.length) {
   process.exitCode = 1;
 } else {
   console.log('✓ ' + lessons.length + ' saját A2-es olvasmány, ' + total + ' pontozható kérdés, ' +
-    lessons.length + ' szabad válasz és visszakereshető szövegbizonyíték minden feladathoz.');
+    (lessons.length * 2) + ' rövid válasz, ' + lessons.length + ' szabad válasz és 6 önálló cím–szöveg párosítás.');
   console.log('✓ A modul az eredeti Tanulóműhely A2-es felületéről érhető el; a régi tanulói adatokhoz nem nyúl.');
 }

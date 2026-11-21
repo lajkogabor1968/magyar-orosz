@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#17464b">
+  <title>A2 – Íráskészség · Magyar–orosz Tanulóműhely</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#18373c;background:#f3f7f5;line-height:1.55}
+    *{box-sizing:border-box}body{margin:0}header{background:#17464b;color:white;padding:22px max(16px,calc((100vw - 900px)/2))}header a{color:#e0f6ec}header h1{margin:9px 0 4px;font-size:clamp(1.6rem,4vw,2.2rem)}
+    main{max-width:900px;margin:auto;padding:18px}.panel{background:white;padding:23px;border:1px solid #d4e6dd;border-radius:16px;margin:15px 0;box-shadow:0 3px 14px #12352d0d}
+    h2{margin:0 0 12px;font-size:1.3rem}h3{font-size:1.05rem;margin:14px 0 8px}p{margin:9px 0}.muted{color:#536d6b}.small{font-size:.92rem}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row select{flex:1;min-width:220px}
+    select,button,textarea{font:inherit;border:1px solid #abc7bc;border-radius:9px;padding:10px 12px;background:white;color:#194d4a}
+    button{cursor:pointer;font-weight:650}button:hover:not(:disabled){background:#ecf7ef}button.primary{background:#176b62;color:white;border-color:#176b62}button:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid #e2a13a;outline-offset:2px}button:disabled{opacity:.55;cursor:not-allowed}
+    .situation{background:#edf8f2;border-left:4px solid #297a68;padding:14px 16px;border-radius:7px;margin:12px 0}
+    .cues{padding-left:22px}.cues li{margin:9px 0}.expressions{background:#f7faf8;padding:15px;border-radius:9px}
+    .expressions p{margin:8px 0}.expressions strong{color:#14675d}summary{cursor:pointer;font-weight:700}
+    textarea{width:100%;min-height:240px;resize:vertical;font-size:1.05rem;line-height:1.75;margin:10px 0}
+    .check-row{display:flex;align-items:flex-start;gap:10px;padding:9px 4px}.check-row input{width:18px;height:18px;margin-top:4px;accent-color:#176b62}
+    .feedback{background:#eaf6eb;padding:13px 15px;border-radius:9px;font-weight:650;margin:16px 0}.warning{background:#fff4df;color:#805328}
+    .model{background:#eef5fa;border-left:4px solid #477b9e;padding:15px 18px;border-radius:8px;line-height:1.8}.hidden{display:none!important}
+    footer{text-align:center;color:#617971;padding:18px}
+    @media(max-width:600px){main{padding:10px}.panel{padding:15px}.row select{min-width:0;width:100%}.row button{flex:1}textarea{min-height:270px}}
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html">← Magyar–orosz Tanulóműhely</a> · <a href="a2.html">A2 párbeszédek</a> · <a href="a2-olvasas.html">A2 olvasás</a>
+    <h1>A2 – Íráskészség</h1>
+    <p>4 eredeti rövid írásfeladat · üzenet · fórumhozzászólás · e-mail · önellenőrzés</p>
+    <p lang="ru">Напишите короткий текст по четырём пунктам. Примерно 50 слов. Проверьте себя по списку и сравните с примером.</p>
+  </header>
+  <main>
+    <section class="panel">
+      <h2>Válassz írásfeladatot!</h2>
+      <div class="row">
+        <label for="task">Feladat:</label><select id="task"></select>
+        <button id="previous" type="button">← Előző</button><button id="next" type="button">Következő →</button>
+      </div>
+      <p class="small muted">A cél kb. 50 magyar szó. Ez gyakorlófeladat, nem hivatalos vizsga és nem automatikus nyelvi értékelés.</p>
+    </section>
+    <section class="panel">
+      <h2 id="title"></h2>
+      <p id="kind" class="muted"></p>
+      <div class="situation"><p id="situation"></p><p id="situation-ru" lang="ru"></p></div>
+      <h3>Mind a négy pontról írj! / <span lang="ru">Раскройте все четыре пункта!</span></h3>
+      <ol id="cues" class="cues"></ol>
+      <details class="expressions"><summary>Segítő kifejezések / <span lang="ru">Полезные фразы</span></summary><div id="expressions"></div></details>
+    </section>
+    <section class="panel">
+      <h2>Írd meg magyarul!</h2>
+      <label for="answer">Saját szöveged / <span lang="ru">Ваш текст</span></label>
+      <textarea id="answer" spellcheck="true" placeholder="Itt írhatsz magyarul…"></textarea>
+      <p id="word-count" class="muted" role="status"></p>
+      <p class="small muted">A begépelt szöveget nem küldjük el, és nem mentjük el. Ha szeretnéd megőrizni, másold ki a saját eszközödre.</p>
+    </section>
+    <section class="panel">
+      <h2>Önellenőrzés / <span lang="ru">Самопроверка</span></h2>
+      <p class="muted">Jelöld, ha a saját szöveged valóban tartalmazza az adott információt. A program ezt nem tudja hitelesen megállapítani.</p>
+      <div id="checklist"></div>
+      <div class="row">
+        <button id="review" type="button" class="primary">Önellenőrzés összesítése</button>
+        <button id="show-model" type="button">Mintaválasz megmutatása</button>
+      </div>
+      <div id="feedback" role="status" aria-live="polite"></div>
+      <div id="model" class="model hidden"></div>
+    </section>
+  </main>
+  <footer>Magyar–orosz Tanulóműhely · A feladatszövegek és a mintaválaszok saját készítésűek.</footer>
+  <script src="a2-iras-data.js"></script>
+  <script src="a2-iras.js"></script>
+</body>
+</html>

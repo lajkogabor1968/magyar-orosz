@@ -27,6 +27,8 @@
     .answer-feedback{margin:11px 0 0;font-size:.94rem;border-radius:8px;padding:9px 12px;background:#eff5f1;color:#264e40}
     .answer-feedback strong{display:block}.answer-feedback.wrong{background:#fff0ed;color:#77372e}
     .instructions{margin:0 0 15px;color:#566e68}.result{border-radius:10px;background:#e7f6eb;color:#145e3b;padding:13px 16px;font-weight:750}
+    .short-answer{border:1px solid #d6e6e2;border-radius:10px;padding:14px;margin:12px 0}.short-answer label{display:block;font-weight:650}.short-answer textarea{min-height:66px}
+    .match-item{background:#f7faf8;border:1px solid #d6e6dc;border-radius:11px;padding:15px;margin:12px 0}.match-item select{margin-top:9px;width:100%}.match-item p{line-height:1.7}
     .notice{color:#935124;background:#fff3df;border:1px solid #f0d2a1;padding:10px 13px;border-radius:9px}
     textarea{display:block;width:100%;min-height:95px;margin:10px 0;resize:vertical}.model{background:#eef6fa;border-left:4px solid #49809b;padding:12px;margin:12px 0}
     .hidden{display:none!important}footer{max-width:1040px;margin:0 auto;color:#657a71;font-size:.9rem;padding:5px 18px 30px}
@@ -37,7 +39,7 @@
   <header>
     <a href="index.html">← Magyar–orosz Tanulóműhely</a> · <a href="a2.html">A2 párbeszédek</a>
     <h1>A2 – Olvasott szövegértés</h1>
-    <p>4 eredeti, hétköznapi történet · 24 igaz–hamis állítás · 12 feleletválasztós kérdés · 4 mondatkiegészítés · önálló válaszok</p>
+    <p>4 eredeti, hétköznapi történet · 40 automatikus kérdés · rövid válaszok · 6 cím–szöveg párosítás</p>
     <p lang="ru">Четыре оригинальных текста уровня A2. Прочитайте текст и выполните задания. После проверки вы увидите правильные ответы и объяснения.</p>
   </header>
   <main>
@@ -50,6 +52,7 @@
         <button id="next" type="button">Következő →</button>
       </div>
       <p class="muted small" id="progress" aria-live="polite"></p>
+      <p class="small"><a href="#cimparositas">🧩 Ugrás a rövid szövegek párosításához</a> · <a href="a2-iras.html">✍️ A2 írásgyakorlatok</a></p>
     </section>
     <section class="panel" aria-labelledby="reading-title">
       <span id="topic" class="kicker"></span>
@@ -75,8 +78,13 @@
       <h2 id="gap-heading">4. Egészítsd ki a mondatot!</h2>
       <div id="fill"></div>
     </section>
+    <section class="panel" aria-labelledby="short-heading">
+      <h2 id="short-heading">5. Válaszolj röviden a szöveg alapján!</h2>
+      <p class="instructions">Egy-két szó vagy rövid mondat is elég. A mintamegoldásokat ellenőrzés után látod; ezek nem kapnak automatikus pontot. / <span lang="ru">Дайте короткие ответы. Проверяйте их по образцу.</span></p>
+      <div id="short-answers"></div>
+    </section>
     <section class="panel" aria-labelledby="open-heading">
-      <h2 id="open-heading">5. Válaszolj saját mondattal!</h2>
+      <h2 id="open-heading">6. Válaszolj saját mondattal!</h2>
       <p id="open-question"></p>
       <textarea id="open-answer" aria-label="Saját válasz magyarul" placeholder="Írj egy-két magyar mondatot!"></textarea>
       <p class="muted small">Ez a válasz nem része az automatikus pontozásnak. Ellenőrzés után mintaválaszt kapsz. / <span lang="ru">Этот ответ не оценивается автоматически.</span></p>
@@ -90,6 +98,18 @@
         <button id="next-bottom" type="button">Következő történet →</button>
       </div>
       <p id="result" role="status" aria-live="polite"></p>
+    </section>
+    <section id="cimparositas" class="panel" aria-labelledby="matching-heading">
+      <span class="kicker">Másik A2-es feladattípus · Самостоятельное задание</span>
+      <h2 id="matching-heading">7. Párosítsd a címet a rövid szöveggel!</h2>
+      <p class="instructions">Hat rövid üzenethez válassz egy-egy címet. Nyolc cím van, kettőre nem lesz szükség. Egy címet csak egyszer használhatsz. / <span lang="ru">Подберите заголовки к шести сообщениям. Два заголовка лишние.</span></p>
+      <div id="matching-list"></div>
+      <div class="row">
+        <button id="matching-check" class="primary" type="button">Párosítás ellenőrzése / Проверить</button>
+        <button id="matching-retry" type="button">Újrakezdés / Ещё раз</button>
+      </div>
+      <p id="matching-result" role="status" aria-live="polite"></p>
+      <details class="glossary"><summary>Segítő szavak / <span lang="ru">Подсказки</span></summary><div id="matching-glossary" class="glossary-list"></div></details>
     </section>
   </main>
   <footer>A Magyar–orosz Tanulóműhely A2-es olvasásmodulja. Az eredmények csak ezen az eszközön, a böngészőben tárolódnak. A szövegek és feladatok önállóan készültek; nem hivatalos nyelvvizsgafeladatok.</footer>
