@@ -95,7 +95,7 @@ $('integratedCardSpeak').onclick=()=>say(rows()[cardIndex%rows().length].hu);
 $('integratedGrammarMore').onclick=()=>location.href='nyelvtan.html?level='+level;
 /* A nyelvtani állomás teljesítését a példára épülő helyes válasz igazolja. */
 const dialogueLines=()=>lesson().dialogue;
-$('integratedDialogueRepeat').onclick=()=>{dialoguePractised=true;stepButton.disabled=false;$('integratedDialogueFeedback').textContent='✓ Спасибо! Вы потренировали реплику вслух. Если нужно, прослушайте её ещё раз.';};
+$('integratedDialogueRepeat').onclick=()=>{if(!dialogueListened){$('integratedDialogueFeedback').textContent='Сначала нажмите 🔊 рядом с репликой, послушайте её и повторите вслух.';return}dialoguePractised=true;stepButton.disabled=false;$('integratedDialogueFeedback').textContent='✓ Хорошо! Вы повторили фразу вслух. Если нужно, прослушайте её ещё раз.';};
 $('integratedDialogueMic').onclick=()=>{
  const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
  if(!Recognition){$('integratedDialogueFeedback').textContent='В этом браузере распознавание речи недоступно. Повторите фразу вслух, затем нажмите «Я повторил(а) вслух».';return}
