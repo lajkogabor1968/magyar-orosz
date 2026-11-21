@@ -340,19 +340,17 @@
         correctAnswer = q.options[q.answer];
       }
       const feedback = group.querySelector('.feedback');
+      // A1–A2: a tanuló a visszajelzést magyar nyelvtudás nélkül is értse.
+      const explanation = q.whyRu || (['A1','A2'].includes(level) ? t.rule : q.why);
       feedback.textContent =
-        `${correct ? '✓ Helyes. ' : '✗ Javítás. '}${q.type === 'input' ? 'Elfogadott alakok' : 'Helyes válasz'}: ${correctAnswer}. ${q.why}`;
-      if (q.whyRu) {
-        const russian = node('span', ` ${q.whyRu}`, 'feedback-ru');
-        russian.lang = 'ru';
-        feedback.append(russian);
-      }
+        `${correct ? '✓ Верно. ' : '✗ Попробуйте ещё раз. '}${q.type === 'input' ? 'Правильные варианты' : 'Правильный ответ'}: ${correctAnswer}. ${explanation || ''}`;
+      feedback.lang = 'ru';
     });
     const percent = Math.round(score / t.questions.length * 100);
-    $('result').textContent = `${score} / ${t.questions.length} pont · ${percent}%. ` +
+    $('result').textContent = `${score} / ${t.questions.length} баллов · ${percent}%. ` +
       (score === t.questions.length
-        ? 'Kiváló! / Отлично!'
-        : 'Olvasd el a magyarázatokat, majd próbáld újra! / Повторите объяснения и попробуйте снова.');
+        ? 'Отлично!'
+        : 'Прочитайте объяснения и попробуйте снова.');
     $('check').disabled = true;
     const key = `${level}:${topicIndex}`;
     // Csak a legjobb eredményt tároljuk, a korábbi pontok nem vesznek el.
