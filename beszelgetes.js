@@ -26,12 +26,17 @@ window.TanuloSpokenDialogue = (() => {
 <div class="voice-bar"><button id="voiceListen" type="button" disabled>🔊 Прослушать ещё раз</button><button id="voiceMic" class="voice-main" type="button" disabled>🎙️ Ответить голосом</button><button id="voiceHint" type="button" disabled>Показать пример</button></div>
 <label for="voiceTyped" class="voice-tip">Если микрофон недоступен, напишите ответ:</label>
 <input id="voiceTyped" class="voice-input" autocomplete="off" lang="hu" placeholder="Írjon magyarul...">
-<div class="voice-bar"><button id="voiceSend" type="button" disabled>Отправить ответ</button><button id="voiceStop" type="button">Остановить</button></div>
-<p id="voiceStatus" class="voice-status" role="status" aria-live="polite"></p>`;
+<div class="voice-bar"><button id="voiceSend" type="button" disabled>Отправить ответ</button><button id="voiceNext" type="button" disabled>Продолжить →</button><button id="voiceStop" type="button">Остановить</button></div>
+<p id="voiceStatus" class="voice-status" role="status" aria-live="polite"></p><div id="voiceFeedback" class="voice-message" role="status" aria-live="polite" hidden></div><p id="voiceProgress" class="voice-tip"></p>`;
     document.querySelector('main').append(panel);
     const $=id=>panel.querySelector('#'+id);
     const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
     let rec=null, session=null, token=0;
+    const practiceKey="magyarorosz.spoken-practice.v1";
+    function feedback(message){const box=$("voiceFeedback");box.textContent=message;box.hidden=!message}
+    function storeSession(data){try{const old=JSON.parse(localStorage.getItem(practiceKey)||"[]");const history=Array.isArray(old)?old:[];history.push({...data,date:new Date().toISOString()});localStorage.setItem(practiceKey,JSON.stringify(history.slice(-100)))}catch(_){}}
+    function progress(){if(session)$("voiceProgress").textContent="Успешные ответы: "+session.correct+" / "+session.attempts+" · Реплика "+(session.index+1)+" / "+session.lines.length}
+
     function status(msg){$('voiceStatus').textContent=msg}
     function stopSpeech(){token++;try{rec?.abort()}catch(_){}rec=null;try{window.TanuloTTS?.cancel()}catch(_){}}
     function lesson(){return lessons[Number(getIndex())]}
@@ -43,7 +48,7 @@ window.TanuloSpokenDialogue = (() => {
       for(const role of roles){const option=document.createElement('option');option.textContent=role;option.value=role;$('voiceRole').append(option)}
       $('voiceLine').textContent='Выберите роль и начните диалог.';
       $('voiceStep').textContent='';
-      $('voiceTyped').value='';
+      $('voiceTyped').value='';feedback('');$('voiceProgress').textContent='';$('voiceNext').disabled=true;
       for(const id of ['voiceListen','voiceMic','voiceHint','voiceSend']) $(id).disabled=true;
       status(!Recognition?'Распознавание речи недоступно в этом браузере. Можно отвечать письменно или повторять вслух.':'');
     }
@@ -68,16 +73,17 @@ window.TanuloSpokenDialogue = (() => {
     function proceed(){
       if(!session)return;
       const lines=session.lines;
-      if(session.index>=lines.length){session=null;$('voiceLine').textContent='Разговор завершён. Отличная практика!';
+      if(session.index>=lines.length){const finished=session;storeSession({lesson:lesson()?.t||'',correct:finished.correct,attempts:finished.attempts});feedback('Разговор завершён. Успешных ответов: '+finished.correct+' из '+finished.attempts+'. Попробуйте поменять роль и повторить трудные фразы.');session=null;$('voiceLine').textContent='Разговор завершён. Отличная практика!';
         $('voiceStep').textContent='Готово';$('voiceMic').disabled=true;$('voiceSend').disabled=true;$('voiceHint').disabled=true;
         $('voiceListen').disabled=true;status('Повторите диалог, поменяв роль.');return}
       const [speaker,line]=lines[session.index];
       const yours=speaker===session.role;
       $('voiceStep').textContent=(session.index+1)+' / '+lines.length+' · '+(yours?'Ваша очередь':'Собеседник говорит');
       $('voiceLine').textContent=yours?'Ваша очередь. Ответьте по-венгерски.':'🔊 '+line;
-      $('voiceListen').disabled=false;$('voiceMic').disabled=!yours||!Recognition;$('voiceSend').disabled=!yours;
+      $('voiceListen').disabled=false;$('voiceMic').disabled=!yours||!Recognition;$('voiceSend').disabled=!yours;$('voiceNext').disabled=yours;
       $('voiceHint').disabled=!yours;
       $('voiceTyped').value='';
+      progress();
       if(!yours){status('Прослушайте реплику собеседника.');speak(line,()=>{if(session){session.index++;proceed()}})}
       else status(Recognition?'Нажмите на микрофон и произнесите ответ.':'Произнесите ответ вслух, затем введите текст для проверки.');
     }
@@ -85,13 +91,15 @@ window.TanuloSpokenDialogue = (() => {
       if(!session)return;
       const expected=session.lines[session.index]?.[1]||'';
       if(!expected)return;
-      if(evaluate(text,expected)){status('Хорошо! Продолжаем разговор.');session.index++;proceed()}
-      else {status('Попробуйте ещё раз. Если трудно, нажмите «Показать пример». Это сравнение с образцом, а не оценка произношения.');}
+      session.attempts++;
+      if(evaluate(text,expected)){session.correct++;feedback('✓ Хорошо! Вы сказали или написали: «'+text+'». Ответ близок к образцу. Это не оценка произношения.');status('Нажмите «Продолжить», когда будете готовы.');$('voiceMic').disabled=true;$('voiceSend').disabled=true;}
+      else {feedback('Распознано или введено: «'+text+'». Образец: «'+expected+'». Сравните слова и окончания, затем повторите. Другие правильные формулировки пока не оцениваются.');status('Повторите ответ или продолжите разговор.');}
+      $('voiceNext').disabled=false;session.ready=true;progress();
     }
     $('voiceBegin').addEventListener('click',()=>{
       const lines=lesson()?.lines||[];
       if(!lines.length){status('Для этого урока пока нет диалога.');return}
-      stopSpeech();session={role:$('voiceRole').value,lines,index:0};proceed();
+      stopSpeech();session={role:$('voiceRole').value,lines,index:0,correct:0,attempts:0,ready:false};feedback('');proceed();
     });
     $('voiceListen').addEventListener('click',()=>{
       if(!session)return;
@@ -114,6 +122,7 @@ window.TanuloSpokenDialogue = (() => {
       }catch(_){status('Не удалось включить микрофон. Можно ввести ответ вручную.')}
     });
     $('voiceSend').addEventListener('click',()=>send($('voiceTyped').value));
+    $('voiceNext').addEventListener('click',()=>{if(session&&session.ready){session.ready=false;session.index++;proceed()}});
     $('voiceTyped').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(!$('voiceSend').disabled)send($('voiceTyped').value)}});
     $('voiceStop').addEventListener('click',reset);
     document.getElementById('lesson')?.addEventListener('change',reset);
