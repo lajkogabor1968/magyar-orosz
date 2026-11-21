@@ -2,7 +2,7 @@
    Honest limitation: dialogue follows existing lesson; no open-domain AI. */
 window.TanuloSpokenDialogue = (() => {
   'use strict';
-  function mount({lessons,getIndex}) {
+  function mount({lessons,getIndex,exactModel=false}) {
     if (!Array.isArray(lessons) || !document.querySelector('main') || document.getElementById('spokenDialogue')) return;
     const panel=document.createElement('section');
     panel.id='spokenDialogue';panel.className='panel';
@@ -66,6 +66,7 @@ window.TanuloSpokenDialogue = (() => {
       const a=normalize(text),b=normalize(target);
       if(!a)return false;
       if(a===b)return true;
+      if(exactModel)return false;
       const x=new Set(a.split(' ').filter(w=>w.length>1)),y=new Set(b.split(' ').filter(w=>w.length>1));
       const common=[...x].filter(w=>y.has(w)).length;
       return common>=Math.max(2,Math.ceil(y.size*.65)) && common/Math.max(x.size,y.size)>=.55;

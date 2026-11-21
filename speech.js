@@ -37,7 +37,7 @@
       box.setAttribute('role', 'status');
       box.setAttribute('aria-live', 'polite');
       Object.assign(box.style, {
-        position: 'fixed', left: '12px', right: '12px', bottom: '12px',
+        pointerEvents: 'none', position: 'fixed', left: '12px', right: '12px', bottom: '12px',
         zIndex: '10000', maxWidth: '540px', margin: '0 auto',
         padding: '13px 16px', borderRadius: '12px',
         color: '#173d3c', background: '#fff4d8',
@@ -46,7 +46,8 @@
       });
       document.body.appendChild(box);
     }
-    box.textContent = text;
+    const [russian, hungarian] = text.split(' / ');
+    box.textContent = document.documentElement.lang === 'hu' && hungarian ? hungarian : russian;
     box.hidden = false;
     clearTimeout(noticeTimer);
     noticeTimer = setTimeout(() => { box.hidden = true; }, 16000);
@@ -114,10 +115,10 @@
         player.pause();
         activeAudio = null;
         if (available) {
-          message('Az MP3 nem játszható le. Próbálkozás a készülék magyar felolvasójával.');
+          message('Не удалось воспроизвести запись. Пробуем венгерский голос устройства. / Az MP3 nem játszható le. Próbálkozás a készülék magyar felolvasójával.');
           speak(utterance, true);
         } else {
-          message('Az MP3 nem játszható le, és ezen a készüléken nincs beszédszintézis.');
+          message('Запись недоступна. Устройство не поддерживает синтез речи. / Az MP3 nem játszható le, és ezen a készüléken nincs beszédszintézis.');
           if (typeof utterance.onerror === 'function') utterance.onerror(event);
         }
       }
@@ -126,7 +127,7 @@
       return true;
     }
     if (!available) {
-      message('Ez a böngésző nem támogatja a felolvasást. Nyisd meg az alkalmazást a telefon Chrome böngészőjében.');
+      message('Синтез речи недоступен. Попробуйте другой браузер. / Ez a böngésző nem támogatja a felolvasást. Nyisd meg az alkalmazást a telefon Chrome böngészőjében.');
       return false;
     }
     const parts = chunks(utterance.text);
@@ -136,7 +137,7 @@
     const originalError = utterance.onerror;
     const selectedVoice = voiceFor(utterance.lang);
     if (!selectedVoice && voices.length && String(utterance.lang).toLowerCase().startsWith('hu')) {
-      message('Nem található magyar beszédhang a készüléken. Androidon a Szövegfelolvasó kimenet beállításainál töltsd le a magyar hangot.');
+      message('На устройстве не найден венгерский голос. Проверьте настройки синтеза речи. / Nem található magyar beszédhang a készüléken. Androidon a Szövegfelolvasó kimenet beállításainál töltsd le a magyar hangot.');
     }
     let index = 0;
 
@@ -155,7 +156,7 @@
       active = u;
       const timeout = setTimeout(() => {
         if (token === generation && active === u && !started && !finished && !engine.speaking) {
-          message('Nem indult el a hang. Androidon próbáld Chrome-ban, és ellenőrizd a Beállítások → Szövegfelolvasó kimenet menüben a magyar hangot.');
+          message('Звук не запустился. Проверьте венгерский голос в настройках синтеза речи. / Nem indult el a hang. Androidon próbáld Chrome-ban, és ellenőrizd a Beállítások → Szövegfelolvasó kimenet menüben a magyar hangot.');
         }
       }, 2800);
 
@@ -180,7 +181,7 @@
         clearTimeout(timeout);
         if (token !== generation) return;
         active = null;
-        message('A felolvasás nem sikerült. Androidon ellenőrizd a magyar beszédhangot, vagy próbáld a Chrome böngészőt.');
+        message('Не удалось озвучить текст. Проверьте настройки венгерского голоса. / A felolvasás nem sikerült. Androidon ellenőrizd a magyar beszédhangot, vagy próbáld a Chrome böngészőt.');
         if (typeof originalError === 'function') originalError.call(utterance, event);
       };
       try {
@@ -191,7 +192,7 @@
       } catch (error) {
         clearTimeout(timeout);
         active = null;
-        message('A készülék nem tudta elindítani a hangot. Ellenőrizd a böngésző és a szövegfelolvasó beállításait.');
+        message('Не удалось запустить звук. Проверьте настройки браузера и синтеза речи. / A készülék nem tudta elindítani a hangot. Ellenőrizd a böngésző és a szövegfelolvasó beállításait.');
         if (typeof originalError === 'function') originalError.call(utterance, { error: 'synthesis-failed' });
       }
     }

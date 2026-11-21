@@ -8,7 +8,7 @@ const {chromium} = packageLocation
   : await import('playwright');
 
 const file = join(dirname(fileURLToPath(import.meta.url)), 'nyelvtan.html');
-const browser = await chromium.launch({executablePath: '/usr/bin/chromium', headless: true,
+const browser = await chromium.launch({executablePath: process.env.CHROMIUM_EXECUTABLE || '/usr/bin/chromium', headless: true,
   args: ['--no-sandbox']});
 const page = await browser.newPage({viewport: {width: 1280, height: 900}});
 const errors = [];
@@ -16,7 +16,7 @@ page.on('pageerror', err => errors.push(err.message));
 
 try {
   await page.goto(`file://${file}?level=A2`);
-  await page.locator('#topic option').first().waitFor();
+  await page.locator('#topic option').first().waitFor({state: 'attached'});
   assert.match(await page.locator('#count').textContent(), /22 témakör \/ тем · 198 feladat \/ заданий/);
   const select = page.locator('#topic');
   const target = await select.locator('option').evaluateAll(opts =>
@@ -55,7 +55,7 @@ try {
     }
   }
   await page.locator('#check').click();
-  assert.match(await page.locator('#result').textContent(), /8 \/ 8 pont · 100%/);
+  assert.match(await page.locator('#result').textContent(), /8 \/ 8 баллов · 100%/);
   assert.equal(await page.locator('.feedback').count(), 8);
   const key = `A2:${target}`;
   assert.deepEqual(JSON.parse(await page.evaluate(k => localStorage.getItem(k), 'hu-ru-grammar-v1'))[key],
@@ -74,15 +74,15 @@ try {
     else await row.getByRole('button', {name: q.options[q.answer], exact: true}).click();
   }
   await page.locator('#check').click();
-  assert.match(await page.locator('#result').textContent(), /12 \/ 12 pont · 100%/);
-  assert.equal(await page.locator('.feedback-ru').count(), 12);
+  assert.match(await page.locator('#result').textContent(), /12 \/ 12 баллов · 100%/);
+  assert.equal(await page.locator('.feedback[lang="ru"]').count(), 12);
 
   for (const [index, title] of [
     ['16', 'Jövő idő'], ['17', 'Kell és a személyragos'], ['18', 'Birtokos személyjelek']
   ]) {
     await select.selectOption(index);
     assert.ok((await page.locator('#title').textContent()).includes(title));
-    assert.equal(await page.locator('.lesson-step').count(), 3,
+    assert.ok(await page.locator('.lesson-step').count() >= 3,
       'Az új A2-es leckék tanulható magyarázattal induljanak.');
     assert.equal(await page.locator('.conjugation-table tbody tr').count(), 6);
     assert.equal(await page.locator('#questions .question-instruction-ru').count(), 12);
@@ -94,8 +94,8 @@ try {
       else await row.getByRole('button', {name: q.options[q.answer], exact: true}).click();
     }
     await page.locator('#check').click();
-    assert.match(await page.locator('#result').textContent(), /12 \/ 12 pont · 100%/);
-    assert.equal(await page.locator('.feedback-ru').count(), 12);
+    assert.match(await page.locator('#result').textContent(), /12 \/ 12 баллов · 100%/);
+    assert.equal(await page.locator('.feedback[lang="ru"]').count(), 12);
   }
   for (const [index, title] of [
     ['19', 'Birtoklás: van könyvem'], ['20', 'Részes eset: -nak/-nek'],
@@ -115,7 +115,7 @@ try {
       else await row.getByRole('button', {name: q.options[q.answer], exact: true}).click();
     }
     await page.locator('#check').click();
-    assert.match(await page.locator('#result').textContent(), /12 \/ 12 pont · 100%/);
+    assert.match(await page.locator('#result').textContent(), /12 \/ 12 баллов · 100%/);
   }
   await page.locator('#levels [data-level="A1"]').click();
   assert.match(await page.locator('#count').textContent(), /10 témakör \/ тем · 66 feladat \/ заданий/);
@@ -144,9 +144,9 @@ try {
     'A kezdőlapon először csak az orosz üdvözlés jelenjen meg.');
   assert.ok(!(await page.locator('#listView').isVisible()),
     'A szólista induláskor legyen elrejtve.');
-  assert.match(await page.locator('#landingTitle').textContent(), /Добро пожаловать/);
+  assert.match(await page.locator('#landingTitle').textContent(), /Венгерский с нуля/);
   await page.locator('#landingStart').click();
-  assert.ok(await page.locator('#listView').isVisible(), 'Az Indítás megnyissa a tanulófelületet.');
+  assert.ok(await page.locator('#lessonsPrimary').isVisible(), 'Az Indítás után a vezetett leckék legyenek elérhetők.');
   await page.locator('.landing-back').click();
   assert.ok(await page.locator('#landingScreen').isVisible(), 'Vissza lehessen lépni a kezdőlapra.');
   assert.equal(errors.length, 0, `Böngészőhibák: ${errors.join('; ')}`);

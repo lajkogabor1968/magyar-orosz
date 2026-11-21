@@ -157,7 +157,7 @@
       typeof v.score === 'number' && typeof v.max === 'number');
     const points = values.reduce((sum, v) => sum + v.score, 0);
     const max = values.reduce((sum, v) => sum + v.max, 0);
-    $('progress').textContent = `${values.length} befejezett témakör · ${points} / ${max} legjobb pont`;
+    $('progress').textContent = `${values.length} befejezett témakör / завершённых тем · ${points} / ${max} legjobb pont / лучший результат`;
   }
 
   function renderTable(tableData) {

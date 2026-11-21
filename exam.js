@@ -42,10 +42,18 @@
     const data = rows(level);
     const answerKey = kind === 'reverse' ? 'hu' : kind === 'sentence' ? 'translation' : 'ru';
     const promptKey = kind === 'reverse' ? 'ru' : kind === 'sentence' ? 'sentence' : 'hu';
+    const answersByPrompt = new Map();
+    for (const row of data) {
+      const prompt = clean(row[promptKey]).normalize('NFC').toLocaleLowerCase();
+      if (!answersByPrompt.has(prompt)) answersByPrompt.set(prompt, new Set());
+      answersByPrompt.get(prompt).add(clean(row[answerKey]));
+    }
     const seen = new Set();
     const entries = shuffle(data).filter(row => {
-      const signature = clean(row[promptKey]) + '|' + clean(row[answerKey]);
-      if (seen.has(signature)) return false;
+      const prompt = clean(row[promptKey]).normalize('NFC').toLocaleLowerCase();
+      const beginners = level === 'A1' || level === 'A2';
+      const signature = beginners ? prompt : clean(row[promptKey]) + '|' + clean(row[answerKey]);
+      if (seen.has(signature) || (beginners && answersByPrompt.get(prompt).size !== 1)) return false;
       seen.add(signature); return true;
     });
     const answerPool = [...new Set(data.map(r=>r[answerKey]))];
@@ -94,7 +102,7 @@
     const priorities=[...byType].filter(x=>x.incorrect.length).sort((a,b)=>a.percent-b.percent);
     const good=byType.filter(x=>x.percent>=90).map(x=>x.name);
     let intro;
-    if(percent>=90) intro='Отличная работа! Вы уверенно справились с заданиями этого уровня. Переход на следующий уровень открыт. Продолжайте повторять знакомые слова и конструкции.';
+    if(percent>=90) intro='Отличная работа! Вы уверенно справились с заданиями этого уровня. Достигнут рекомендуемый ориентир 90%. Продолжайте повторять знакомые слова и конструкции.';
     else if(percent>=75) intro='Хороший результат! Вы уже многое знаете. Перед переходом рекомендуем укрепить несколько навыков и достичь 90%.';
     else if(percent>=50) intro='У вас уже есть основа. Пока некоторые задания вызывают затруднения; это нормально на этапе обучения. Повторите указанные ниже темы и попробуйте снова.';
     else intro='Сейчас полезнее сосредоточиться на основах: закрепить знакомые слова и короткие предложения, затем вернуться к экзамену. Продвигайтесь небольшими шагами.';

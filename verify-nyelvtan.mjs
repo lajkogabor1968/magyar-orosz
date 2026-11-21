@@ -51,8 +51,8 @@ assert.equal(russianInstructions.topics, 40, 'A1-től B2-ig minden nyelvtani fej
 assert.equal(russianInstructions.questions, 304, 'Minden nyelvtani kérdésnél legyen orosz feladatutasítás.');
 assert.equal(russianInstructions.fallbackTopics.length, 0,
   'Jelenleg minden A1–B2 témakörhöz egyedi orosz feladatutasítás szükséges.');
-assert.equal(topics.find(t => t.level === 'A1' && t.title.includes('létige'))
-  ?.questions[0].options[2], 'vagyok', 'A létige-lecke nyitófeladata a létigét kérdezze.');
+const firstCopulaQuestion = topics.find(t => t.level === 'A1' && t.title.includes('létige')).questions[0];
+assert.equal(firstCopulaQuestion.options[firstCopulaQuestion.answer], 'vagyok', 'A létige-lecke nyitófeladata a létigét kérdezze.');
 
 for (const [i, old] of originalTopics.entries()) {
   assert.equal(topics[i], old, `A korábbi ${i + 1}. fejezet megváltozott.`);
