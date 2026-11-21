@@ -78,3 +78,21 @@ html.landing-mode footer.foot { display: none !important; }
   .landing-topics { margin-bottom: 30px; }
   .landing-brand { margin-bottom: 38px; }
 }
+
+/* Minimal landing: one decision (level), one primary action. */
+.landing-brand { margin-bottom: 34px; justify-content: center; }
+.landing-content { max-width: 680px; }
+.landing-content h1 { margin-bottom: 18px; }
+.landing-description { max-width: 510px; margin-bottom: 38px; font-size: clamp(16px,2vw,18px); line-height: 1.55; }
+.landing-levels { border: 0; margin: 0 auto 32px; padding: 0; max-width: 560px; min-width: 0; }
+.landing-levels legend { font-size: 15px; font-weight: 700; color: #325b55; margin: 0 auto 16px; padding: 0; }
+.landing-level-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
+.landing-level-grid label { cursor: pointer; position: relative; min-width: 0; }
+.landing-level-grid input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.landing-level-grid label span { min-height: 82px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; background: #fff; border: 2px solid #dbe6e1; border-radius: 14px; color: #315751; transition: background .15s,border-color .15s; padding: 10px 4px; }
+.landing-level-grid strong { font-size: 22px; }
+.landing-level-grid small { font-size: 12px; }
+.landing-level-grid input:checked + span { border-color: #176e65; background: #eaf5ef; }
+.landing-level-grid input:focus-visible + span { outline: 3px solid #78ada3; outline-offset: 3px; }
+.landing-actions .landing-primary { min-width: 260px; }
+@media(max-width:540px) { .landing-level-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .landing-brand { margin-bottom: 25px; } .landing-description { margin-bottom: 28px; } }
