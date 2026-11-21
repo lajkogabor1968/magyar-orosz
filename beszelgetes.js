@@ -80,17 +80,17 @@ window.TanuloSpokenDialogue = (() => {
       const yours=speaker===session.role;
       $('voiceStep').textContent=(session.index+1)+' / '+lines.length+' · '+(yours?'Ваша очередь':'Собеседник говорит');
       $('voiceLine').textContent=yours?'Ваша очередь. Ответьте по-венгерски.':'🔊 '+line;
-      $('voiceListen').disabled=false;$('voiceMic').disabled=!yours||!Recognition;$('voiceSend').disabled=!yours;$('voiceNext').disabled=yours;
+      $('voiceListen').disabled=false;$('voiceMic').disabled=!yours||!Recognition;$('voiceSend').disabled=!yours;$('voiceNext').disabled=yours;session.ready=!yours;
       $('voiceHint').disabled=!yours;
       $('voiceTyped').value='';
       progress();
-      if(!yours){status('Прослушайте реплику собеседника.');speak(line,()=>{if(session){session.index++;proceed()}})}
+      if(!yours){status('Прослушайте реплику собеседника. Если звук не работает, нажмите «Продолжить».');speak(line,()=>{if(session){session.ready=false;session.index++;proceed()}})}
       else status(Recognition?'Нажмите на микрофон и произнесите ответ.':'Произнесите ответ вслух, затем введите текст для проверки.');
     }
     function send(text){
       if(!session)return;
       const expected=session.lines[session.index]?.[1]||'';
-      if(!expected)return;
+      if(!expected||!text.trim()){status('Сначала произнесите или напишите ответ по-венгерски.');return}
       session.attempts++;
       if(evaluate(text,expected)){session.correct++;feedback('✓ Хорошо! Вы сказали или написали: «'+text+'». Ответ близок к образцу. Это не оценка произношения.');status('Нажмите «Продолжить», когда будете готовы.');$('voiceMic').disabled=true;$('voiceSend').disabled=true;}
       else {feedback('Распознано или введено: «'+text+'». Образец: «'+expected+'». Сравните слова и окончания, затем повторите. Другие правильные формулировки пока не оцениваются.');status('Повторите ответ или продолжите разговор.');}
@@ -122,7 +122,7 @@ window.TanuloSpokenDialogue = (() => {
       }catch(_){status('Не удалось включить микрофон. Можно ввести ответ вручную.')}
     });
     $('voiceSend').addEventListener('click',()=>send($('voiceTyped').value));
-    $('voiceNext').addEventListener('click',()=>{if(session&&session.ready){session.ready=false;session.index++;proceed()}});
+    $('voiceNext').addEventListener('click',()=>{if(session&&session.ready){stopSpeech();session.ready=false;session.index++;feedback('');proceed()}});
     $('voiceTyped').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(!$('voiceSend').disabled)send($('voiceTyped').value)}});
     $('voiceStop').addEventListener('click',reset);
     document.getElementById('lesson')?.addEventListener('change',reset);
