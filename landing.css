@@ -159,3 +159,21 @@ html.study-exam #examView{display:block!important}
 .study-exam-button{background:#e5f4ed;border:1px solid #b9dacc;color:#145e50;border-radius:12px;padding:13px 20px;font-weight:700;margin-top:23px;min-height:48px}
 .level-locked span{opacity:.5;cursor:not-allowed}
 .level-locked span:after{content:" 🔒";font-size:12px}
+
+/* Subscriber-only online lesson entry; details stay out of the initial landing screen. */
+.study-online-entry{margin:20px auto 0;max-width:520px;text-align:center}
+.study-online-entry>button{width:100%;display:flex;flex-direction:column;align-items:center;gap:7px;border:1px solid #d2e1d9;background:#fff;color:#20584f;border-radius:14px;padding:16px}
+.study-online-entry>button span{color:#647c74;font-size:13px}
+#onlineLessonsSubmenu[hidden],#onlineLessonView[hidden]{display:none!important}
+#onlineLessonsSubmenu{margin:8px auto 0}
+#onlineLessonsSubmenu button{border:1px solid #d2e1d9;background:#edf7f1;padding:12px;border-radius:11px;color:#20584f}
+html.study-online .welcome,html.study-online .tabs,html.study-online .headline-stats,html.study-online #moduleHint,html.study-online footer.foot,html.study-online #studyHub,html.study-online #a1DailyJourney,html.study-online main.wrap>.panel{display:none!important}
+html.study-online #onlineLessonView{display:block!important}
+html.study-online .masthead{padding:13px 0}
+html.study-online .masthead .logo p{display:none}
+.online-lesson-view{max-width:720px;margin:8px auto 30px;padding:clamp(20px,4vw,32px);background:white;border:1px solid #dce8e1;border-radius:18px;line-height:1.6}
+.online-lesson-view form{display:grid;gap:10px;margin:18px 0}
+.online-lesson-view form label{font-weight:600}
+.online-lesson-view form input,.online-lesson-view form textarea{width:100%;max-width:100%;border:1px solid #b9cdc3;border-radius:10px;padding:12px;font:inherit}
+.online-lesson-view form button{padding:13px;border-radius:10px;border:0;background:#2f6960;color:white}
+.online-lesson-view form button:disabled{opacity:.55;cursor:not-allowed}
