@@ -4,7 +4,7 @@
   const lessons = [
     {
       title: 'Вежливо просим: szeretnék',
-      words: ['étterem', 'kávé', 'tea', 'víz', 'ásványvíz', 'sütemény', 'cukor', 'só', 'pohár', 'szeret'],
+      words: ['szeretnék', 'szeretnél', 'szeretne', 'étterem', 'kávé', 'tea', 'víz', 'ásványvíz', 'sütemény', 'cukor', 'só', 'pohár', 'szeret'],
       extra: [
         ['szeretnék', 'я хотел(а) бы', 'Szeretnék egy teát.', 'Я хотел(а) бы чай.'],
         ['szeretnél', 'ты хотел(а) бы', 'Szeretnél egy kávét?', 'Ты хотел(а) бы кофе?'],
@@ -70,7 +70,7 @@
     },
     {
       title: 'Сколько нужно? Hány? Mennyi? Кило и литры',
-      words: ['kiló', 'liter', 'üveg', 'pohár', 'alma', 'tej', 'víz', 'tojás', 'sajt', 'kenyér'],
+      words: ['Hány?', 'Mennyi?', 'kiló', 'liter', 'üveg', 'pohár', 'alma', 'tej', 'víz', 'tojás', 'sajt', 'kenyér'],
       extra: [
         ['Hány?', 'сколько штук? (для считаемых предметов)', 'Hány almát kér?', 'Сколько яблок Вы хотите?'],
         ['Mennyi?', 'сколько? (количество вещества)', 'Mennyi tejet kér?', 'Сколько молока Вы хотите?'],
@@ -136,7 +136,7 @@
     },
     {
       title: 'В ресторане: меню, заказ и счёт',
-      words: ['étterem', 'leves', 'saláta', 'rizs', 'hús', 'sütemény', 'ásványvíz', 'szendvics', 'finom', 'ebéd'],
+      words: ['étlap', 'menü', 'főétel', 'desszert', 'étterem', 'leves', 'saláta', 'rizs', 'hús', 'sütemény', 'ásványvíz', 'szendvics', 'finom', 'ebéd'],
       extra: [
         ['étlap', 'меню, список блюд', 'Kérem az étlapot.', 'Меню, пожалуйста.'],
         ['menü', 'комплексный обед, меню дня', 'Ma jó a menü.', 'Сегодня хорошее комплексное меню.'],
@@ -203,7 +203,7 @@
     },
     {
       title: 'На рынке: цена, количество и вежливый выбор',
-      words: ['piac', 'bolt', 'paradicsom', 'narancs', 'alma', 'olcsó', 'drága', 'pénz', 'fizet', 'jó'],
+      words: ['Mennyibe kerül?', 'paradicsomot', 'narancsot', 'összesen', 'piac', 'bolt', 'paradicsom', 'narancs', 'alma', 'olcsó', 'drága', 'pénz', 'fizet', 'jó'],
       extra: [
         ['paradicsomot', 'помидоры (что? винительный падеж)', 'Egy kiló paradicsomot kérek.', 'Мне, пожалуйста, килограмм помидоров.'],
         ['narancsot', 'апельсин (что? винительный падеж)', 'Két narancsot kérek.', 'Мне, пожалуйста, два апельсина.'],

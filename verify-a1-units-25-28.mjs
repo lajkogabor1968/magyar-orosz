@@ -38,7 +38,9 @@ const essential=[
 for(const [offset,lesson] of lessons.entries()){
   const id=`A1:${24+offset}`;
   assert.ok(!used.has(lesson.title),`${id} repeats a previous title`);used.add(lesson.title);
-  assert.ok(lesson.words.length>=9 && lesson.words.length<=12,`${id}: headword load too high`);
+  assert.ok(lesson.words.length>=9 && lesson.words.length<=14,`${id}: headword load too high`);
+  assert.equal(lesson.words[0],['szeretnék','Hány?','étlap','Mennyibe kerül?'][offset],
+    `${id}: introduce the central new expression first`);
   assert.equal(new Set(lesson.words).size,lesson.words.length,`${id}: duplicated headword`);
   const extras=new Map(lesson.extra.map(row=>[row[0].toLocaleLowerCase('hu-HU'),row]));
   assert.equal(extras.size,lesson.extra.length,`${id}: duplicate new form`);
