@@ -72,6 +72,7 @@ for (const [offset, lesson] of lessons.entries()) {
   const cards = runInNewContext(`${rowsCode}; rows()`, runtime);
   assert.ok(cards.length >= lesson.words.length && cards.every(card => card.hu && card.ru && card.example && card.translation),
     `${id}: nem minden tanulói kártyához tartozik magyar és orosz példa.`);
+  assert.ok(cards.length <= 20, `${id}: húsznál több kártya túlterhelheti a kezdő tanulót.`);
   assert.equal(cards[0].hu, lesson.words[0], `${id}: a kártyák nem tanári sorrendben kezdődnek.`);
 }
 

@@ -5,7 +5,7 @@
 ## Jelenlegi, automatizáltan mérhető kiindulás
 
 - A1 szókincstár: 600 bejegyzés, 580 különböző magyar címszó.
-- A1 vezetett tanulási út: **16 lecke**, 196 különböző tanított szó vagy kifejezés; 121 címszó szerepel az A1-szótárban (**20,9%-os címszólefedettség**). A 9–12. lecke a személyes adatokat, országokat, nyelveket és az 1–20-as számokat, a 13–16. lecke a családi viszonyokat, foglalkozásokat, tulajdonságokat és a birtokos alakok kezdetét tanítja.
+- A1 vezetett tanulási út: **16 lecke**, 194 különböző tanított szó vagy kifejezés; 121 címszó szerepel az A1-szótárban (**20,9%-os címszólefedettség**). A 9–12. lecke a személyes adatokat, országokat, nyelveket és az 1–20-as számokat, a 13–16. lecke a családi viszonyokat, foglalkozásokat, tulajdonságokat és a birtokos alakok kezdetét tanítja.
 - A1 nyelvtan: 10 tanító fejezet, 66 feladat.
 - A2 vezetett tanulási út: 3 lecke, 25 különböző szó vagy kifejezés; az A1-es szókincs ismétlése szándékos.
 - A szókincstár, az önálló nyelvtani modul, az ECL-gyakorlók és a kiegészítő szövegértések több anyagot tartalmaznak, mint a vezetett leckeút. A fenti arány **csak a vezetett leckék szókincslefedettsége**, nem az alkalmazás teljes szókincse.

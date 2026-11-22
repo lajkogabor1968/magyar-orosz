@@ -178,7 +178,7 @@
     },
     {
       title: 'У меня есть — у меня нет',
-      words: ['van', 'könyv', 'táska', 'telefon', 'kulcs', 'autó', 'szoba', 'család', 'testvér', 'barát', 'lakás', 'nem'],
+      words: ['van', 'könyv', 'táska', 'autó', 'testvér', 'barát', 'telefon', 'kulcs', 'család', 'nem'],
       extra: [
         ['nincs', 'нет; отсутствует', 'Nincs autóm.', 'У меня нет машины.'],
         ['könyvem', 'моя книга', 'Van egy könyvem.', 'У меня есть книга.'],
@@ -187,11 +187,7 @@
         ['táskád', 'твоя сумка', 'Hol van a táskád?', 'Где твоя сумка?'],
         ['autóm', 'моя машина', 'Nincs autóm.', 'У меня нет машины.'],
         ['autód', 'твоя машина', 'Van autód?', 'У тебя есть машина?'],
-        ['testvérem', 'мой брат или сестра', 'Van egy testvérem.', 'У меня есть брат или сестра.'],
         ['testvéred', 'твой брат или сестра', 'Van testvéred?', 'У тебя есть брат или сестра?'],
-        ['húgom', 'моя младшая сестра', 'Van egy húgom.', 'У меня есть младшая сестра.'],
-        ['Van könyved?', 'У тебя есть книга?', 'Van könyved?', 'У тебя есть книга?'],
-        ['Nincs autóm.', 'У меня нет машины.', 'Nincs autóm.', 'У меня нет машины.']
       ],
       grammar: [
         'Принадлежность и наличие: van / nincs + личное окончание',
