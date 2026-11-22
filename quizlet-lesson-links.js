@@ -13,7 +13,7 @@ window.TanmuhelyLinkQuizletLessons=function(courses){
   for(const word of words){
    const normalized=normalize(word);
    if(known.has(normalized)){report.alreadyPresent.push({level,index,word});continue;}
-   const exists=(db[level]||[]).some(row=>normalize(row[0])===normalized);
+   const exists=[...(db[level]||[]),...(level==='A2'?(db.A1||[]):[])].some(row=>normalize(row[0])===normalized);
    if(!exists){report.missing.push({level,index,word});continue;}
    lesson.words.push(word);known.add(normalized);
    report.linked.push({level,index,word});
