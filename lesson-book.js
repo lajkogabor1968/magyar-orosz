@@ -549,7 +549,10 @@ function stageView(){
   if(i===step)item.setAttribute('aria-current','step');else item.removeAttribute('aria-current');
  });
  document.querySelectorAll('.lesson-sections a').forEach((a,i)=>{a.hidden=i!==step;a.textContent=(i+1)+'. '+stepsRu[i]});
- $('integratedLessonIntro').textContent=['Слушайте слова, изучайте венгерские буквы и откройте перевод пяти карточек.','Прочитайте правило по-русски и ответьте на один вопрос.','Послушайте реплику и повторите её вслух.','Напишите правильно три разных слова; в первом уроке минимум два с долгой гласной.','Напишите небольшой текст по образцу и проверьте его структуру.','Ответьте на вопросы и узнайте результат сразу.'][step];
+ const vocabularyIntro=level==='A1'&&lessonIndex===0
+  ? 'Слушайте слова, изучайте венгерские буквы и откройте перевод пяти карточек.'
+  : 'Изучите слова и откройте перевод пяти разных карточек.';
+ $('integratedLessonIntro').textContent=[vocabularyIntro,'Прочитайте правило по-русски и ответьте на один вопрос.','Послушайте реплику и повторите её вслух.','Напишите правильно три разных слова; в первом уроке минимум два с долгой гласной.','Напишите небольшой текст по образцу и проверьте его структуру.','Ответьте на вопросы и узнайте результат сразу.'][step];
  $('integratedStepNext').textContent=step===5?'Завершить урок':'Следующий шаг';
  $('integratedStepNext').disabled=!canAdvance();
  document.querySelector('.lesson-end').hidden=true;
