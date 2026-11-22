@@ -297,7 +297,23 @@ function renderReading(){
   listen.onclick=()=>say(hu);
   row.append(pair,listen);box.append(row);
  }
- $('lessonReadingPlay').onclick=()=>say(reading.lines.map(item=>item[0]).join(' '));
+ $('lessonReadingPlay').onclick=()=>{
+  const fullText=reading.lines.map(item=>item[0]).join(' ').normalize('NFC').replace(/\s+/g,' ').trim();
+  const registered=window.TanuloGaborReadingClips?.[level]?.[lessonIndex];
+  const approved=window.TanuloApprovedGaborReadingManifest?.[level]?.[lessonIndex];
+  const selected=approved?.text===fullText&&approved?.url ? approved : registered?.text===fullText&&registered?.url ? registered : null;
+  const feedback=$('lessonReadingFeedback');
+  // Teacher reading must never silently become the generic device's synthesized voice.
+  if(!selected){feedback.textContent='Запись голосом Габора для этого полного текста пока недоступна. Синтезатор речи не включается. / Ehhez a teljes szöveghez még nincs Gábor-hangfelvétel. Nem váltunk géphangra.';return;}
+  window.TanuloTTS?.cancel?.();
+  if(window.tanmuhelyActiveTeacherReading){try{window.tanmuhelyActiveTeacherReading.pause()}catch(_){}}
+  const player=new Audio(selected.url);window.tanmuhelyActiveTeacherReading=player;
+  player.preload='auto';player.playbackRate=1;
+  feedback.textContent=selected.status==='remote-trial'?'Пробная запись голоса Габора (внешнее размещение). / Gábor-hangpróba, külső tárhelyről.':'Образцовое чтение преподавателя. / Tanári mintafelolvasás.';
+  player.onended=()=>{if(window.tanmuhelyActiveTeacherReading===player)window.tanmuhelyActiveTeacherReading=null;};
+  player.onerror=()=>{if(window.tanmuhelyActiveTeacherReading===player)window.tanmuhelyActiveTeacherReading=null;feedback.textContent='Запись временно недоступна. Другой голос не используется. / A hangfelvétel nem érhető el, nem kapcsolunk másik hangra.';};
+  player.play().catch(()=>{feedback.textContent='Не удалось воспроизвести запись. Другой голос не используется. / A felvétel nem indult el, nem használunk másik hangot.';});
+};
  $('lessonReadingTranslations').onclick=()=>{
   translationVisible=!translationVisible;
   translations.forEach(p=>p.hidden=!translationVisible);
