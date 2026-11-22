@@ -26,6 +26,10 @@
   "A nevem Anna.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=bb45119d49ba4801bc7115e08cdfb7ae.wav",
   "Én is jól vagyok.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=4a72716ec3104c179cdd5db89c724333.wav",
   "Jó napot kívánok!": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=e0604c2c0f76493bb9979b260e69afb0.wav",
+  "Ki ez?": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=5d621f4edc8d4a2184a6ec69ca0962c1.wav",
+  "Ő az anyukám.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=f4aa14db9b504899a067dbd1aef42f44.wav",
+  "És ő?": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=c4d3fc1fe9d443e1b6b37272497e7239.wav",
+  "Ő az apukám.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=b09dbb55f3804d308c2e78175f0b925c.wav",
   "Kérsz egy teát?": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=1ff33c5387954c27b0cca2bc704bdb3a.wav"
 };
   window.TanuloVoicePilotKeys = Object.keys(clips);
