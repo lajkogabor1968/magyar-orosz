@@ -8,9 +8,11 @@ const read = name => readFileSync(join(folder, name), 'utf8');
 const context = {window: {}};
 runInNewContext(read('data.js'), context);
 runInNewContext(read('ecl-vocab.js'), context);
+runInNewContext(read('a1-guided-lessons-next.js'), context);
 const match = read('lesson-book.js').match(/const courses=(\{[\s\S]*?\});\nconst dialogueTranslations=/);
 if (!match) throw new Error('Nem találhatók a vezetett leckék.');
 const courses = JSON.parse(match[1]);
+courses.A1.push(...context.window.TanmuhelyA1Continuation.lessons);
 
 for (const level of ['A1', 'A2']) {
   const entries = context.window.MAGYAR_OROSZ_DATA[level];

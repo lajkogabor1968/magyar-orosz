@@ -115,4 +115,10 @@ A szólistában a hangszóró a magyar szót, a beszéd ikon a magyar példamond
 
 A kiegészítő szövegértési és nyelvtani modul válaszkeverése valódi Fisher–Yates-keverést használ. A vezetett leckék mini-szövegértési válaszai is változó sorrendben jelennek meg úgy, hogy a helyes megoldás azonosítója megmarad. Az A2-es múlt idejű feladat kétértelmű mondatát pontosítottuk; a nyelvtani eredményjelző szintenként számol, a korábbi eredménykulcsok módosítása nélkül.
 
-Regressziós teszt: `node magyar-orosz/verify-quiz-integrity.mjs`. A vezetett leckék teljes szókincslefedettségét a `node magyar-orosz/verify-guided-coverage.mjs` méri; a jelenlegi nyolc A1-es lecke még nem fedi le az A1-szókincstár egészét. A széles körű kiadás előtti pedagógiai és technikai feltételek: [`A1-KIADASI-MINOSEGI-KAPUK.md`](A1-KIADASI-MINOSEGI-KAPUK.md).
+Regressziós teszt: `node magyar-orosz/verify-quiz-integrity.mjs`. A vezetett leckék teljes szókincslefedettségét a `node magyar-orosz/verify-guided-coverage.mjs` méri. A **12 A1-es vezetett lecke** jelenleg az 580 különböző A1-szótári címszóból 87-et tanít közvetlenül (15,0%); az alkalmazás többi modulja ennél több szót kínál. A széles körű kiadás előtti pedagógiai és technikai feltételek: [`A1-KIADASI-MINOSEGI-KAPUK.md`](A1-KIADASI-MINOSEGI-KAPUK.md).
+
+### Új A1-es vezetett leckék (9–12.)
+
+A meglevő nyolc lecke sorrendjét és mentett pontjait megtartva négy új, hatlépéses lecke készült: **név, foglalkozás és lakóhely**; **országok és nyelvek**; **számok 1–10**; **számok 11–20 és bemutatkozás**. Mindegyikhez kétnyelvű szókártyák, orosz nyelvű nyelvtani magyarázat, saját példatábla, párbeszéd, rövid olvasmány és ellenőrzőkérdés, írásos gyakorlat, valamint külön teszt tartozik. A nyelvtani és olvasmánykérdések válaszai a helyes megoldás megőrzésével keverednek. A személyes adatoknál fiktív nevet és lakóhelyet is szabad használni, valós címet nem kérünk.
+
+Az új leckék külön tartalomfájlban találhatók: `a1-guided-lessons-next.js`. Szerkezeti teszt: `node magyar-orosz/verify-a1-guided-extension.mjs`. A magyar–orosz fordítások és a tényleges készülékhangok orosz anyanyelvi és eszközös próbája továbbra is szükséges a széles körű kiadás előtt.

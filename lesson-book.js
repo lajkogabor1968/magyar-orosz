@@ -47,12 +47,20 @@ const checks={
  'A2:1':{q:'Какая форма означает «в дом»?',a:['házban','házba','házból'],ok:1,why:'házba — «в дом» (куда?); házban — «в доме»; házból — «из дома».'},
  'A2:2':{q:'Какая форма означает «Вчера я учился / училась»?',a:['Ma tanulok.','Tegnap tanultam.','Holnap tanulok.'],ok:1,why:'Tegnap — «вчера», tanultam — прошедшее время 1-го лица единственного числа. В венгерском нет различия по роду.'}
 };
+// The continuation is appended, never inserted among existing lessons: saved A1:0–7
+// checkpoint, writing and quiz identifiers retain their original meaning.
+const continuation=window.TanmuhelyA1Continuation;
+if(continuation){
+ courses.A1.push(...continuation.lessons);
+ Object.assign(dialogueTranslations,continuation.dialogueTranslations);
+ Object.assign(checks,continuation.checks);
+}
 function lessonKey(){return level+':'+lessonIndex}
 function grammarQuestion(){
  const c=checks[lessonKey()],box=$('integratedGrammarOptions');
  box.replaceChildren();$('integratedGrammarQuestion').textContent=c.q;
  $('integratedGrammarFeedback').textContent='Выберите ответ. Вы сразу увидите объяснение.';
- c.a.forEach((answer,i)=>{const btn=el('button',answer,'integrated-answer');btn.type='button';btn.onclick=()=>{
+ randomOrder(c.a.map((answer,i)=>({answer,i}))).forEach(({answer,i})=>{const btn=el('button',answer,'integrated-answer');btn.type='button';btn.onclick=()=>{
   const good=i===c.ok;
   $('integratedGrammarFeedback').textContent=(good?'✓ Верно. ':'✗ Пока неверно. ')+c.why;
   if(good){grammarReviewed=true;saveCheckpoint();stepButton.disabled=false;note('✓ Пример понятен. Продолжайте обучение.')}
@@ -148,6 +156,7 @@ const chapterVisuals={
  {icon:'🕰️',title:'Вчера и сегодня',subtitle:'Простое прошедшее время',cards:[['☀️','Ma tanulok.','Сегодня я учусь.'],['🕰️','Tegnap tanultam.','Вчера я учился / училась.'],['📖','olvastam','я читал / читала']]}
  ]
 };
+if(continuation)chapterVisuals.A1.push(...continuation.visuals);
 function renderVisual(){
  const box=$('lessonVisual');if(!box)return;
  box.replaceChildren();

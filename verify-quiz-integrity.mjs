@@ -48,6 +48,9 @@ const workbook = source('lesson-book.js');
 const coursesText = workbook.match(/const courses=(\{[\s\S]*?\});\nconst dialogueTranslations=/)?.[1];
 assert.ok(coursesText, 'A vezetett leckék adatai nem olvashatók.');
 const courses = JSON.parse(coursesText);
+const continuationContext = {window: {}};
+runInNewContext(source('a1-guided-lessons-next.js'), continuationContext);
+courses.A1.push(...continuationContext.window.TanmuhelyA1Continuation.lessons);
 let guidedReadingQuestions = 0;
 for (const [level, lessons] of Object.entries(courses)) {
   for (const lesson of lessons) {
@@ -60,6 +63,8 @@ for (const [level, lessons] of Object.entries(courses)) {
 }
 assert.match(workbook, /randomOrder\(reading\.options\.map\(\(option,i\)=>\(\{option,i\}\)\)\)\.forEach\(\(\{option,i\}\)=>/,
   'A vezetett leckék olvasmányainál a helyes válasz indexével együtt kell keverni.');
+assert.match(workbook, /randomOrder\(c\.a\.map\(\(answer,i\)=>\(\{answer,i\}\)\)\)\.forEach\(\(\{answer,i\}\)=>/,
+  'A leckék nyelvtani ellenőrző válaszait is keverni kell a megoldásindex megtartásával.');
 
 // A korábbi eredménykulcsok változatlanok, de csak a megnyitott szint
 // eredménye kerülhet a szintenkénti kijelzőre.

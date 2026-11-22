@@ -5,7 +5,7 @@
 ## Jelenlegi, automatizáltan mérhető kiindulás
 
 - A1 szókincstár: 600 bejegyzés, 580 különböző magyar címszó.
-- A1 vezetett tanulási út: 8 lecke, 77 különböző tanított szó vagy kifejezés; 68 címszó szerepel az A1-szótárban (11,7%-os címszólefedettség).
+- A1 vezetett tanulási út: **12 lecke**, 135 különböző tanított szó vagy kifejezés; 87 címszó szerepel az A1-szótárban (**15,0%-os címszólefedettség**). A 9–12. lecke a személyes adatokat, országokat, nyelveket és az 1–20-as számokat tanítja.
 - A1 nyelvtan: 10 tanító fejezet, 66 feladat.
 - A2 vezetett tanulási út: 3 lecke, 25 különböző szó vagy kifejezés; az A1-es szókincs ismétlése szándékos.
 - A szókincstár, az önálló nyelvtani modul, az ECL-gyakorlók és a kiegészítő szövegértések több anyagot tartalmaznak, mint a vezetett leckeút. A fenti arány **csak a vezetett leckék szókincslefedettsége**, nem az alkalmazás teljes szókincse.
@@ -24,11 +24,11 @@ A mérés megismételhető: `node magyar-orosz/verify-guided-coverage.mjs`.
 
 ## Javasolt A1-es bővítési rend
 
-Megmaradnak a jelenlegi nyolc lecke és eredményazonosítóik. Az új leckék utánuk kerülnek, amíg nincs stabil, tartós tanulóazonosító-alapú átrendezés.
+Megmaradnak az eredeti nyolc lecke és eredményazonosítóik; a 9–12. lecke új, `A1:8`–`A1:11` azonosítóval már elkészült. A további új leckék ezek után kerülnek, amíg nincs stabil, tartós tanulóazonosító-alapú átrendezés.
 
 | Egység | Tanulási cél | Nyelvtani alap |
 | --- | --- | --- |
-| A1/9–12 | Személyes adatok, országok, nyelvek, számok | lenni, kérdések, számnevek |
+| A1/9–12 | **Elkészült:** személyes adatok, országok, nyelvek, számok 1–20-ig | lenni, kérdések, számnevek |
 | A1/13–16 | Család, foglalkozás, tulajdonságok | birtokos alakok kezdő szinten, névelők |
 | A1/17–20 | Otthon, iskola, környezet | hol? hová?, alapvető helyragok |
 | A1/21–24 | Napi tevékenységek, időpont, hét | jelen idejű alanyi ragozás, tagadás |
