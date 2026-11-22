@@ -5,7 +5,7 @@
 (() => {
   'use strict';
   const p = new URLSearchParams(window.location.search);
-  if (p.get('voicepilot') !== '1') return;
+  const enableWordPilot = p.get('voicepilot') === '1';
   const clips = {
   "telefon": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=9362231869ca482893e1fb23fa381e67.wav",
   "metró": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=42403921cd364e958fad098d455a2ca5.wav",
@@ -43,6 +43,28 @@
   "Mit csináltál tegnap? Tegnap tanultam. És ma? Ma dolgozom.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=22a531e93555460b9d330bd48835cef1.wav",
   "Kérsz egy teát?": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=1ff33c5387954c27b0cca2bc704bdb3a.wav"
 };
+  // Reading trials are available in the regular textbook, independently of the optional word-voice pilot.
+  // Never use these remote trial clips as evidence of a permanent, teacher-approved local recording.
+  const readingKeys = {
+    A1: [
+      'Ez egy telefon. Ez egy taxi. Ez a metró.',
+      'Szia! A nevem Anna. Jól vagyok, köszönöm.',
+      'Ez a családom. Ő az anyukám. Ő az apukám.',
+      'Ez a szobám. Ez egy szék. A kulcs az asztalon van.',
+      'Kérek egy teát. Vizet iszom. Reggel kenyeret eszem.',
+      'Ma tanulok. Este olvasok. Holnap dolgozom.',
+      'Mikor tanulsz? Reggel tanulok. Mit csinálsz este? Este olvasok.',
+      'Hol van apa? Apa a boltban van. Anya a kertben van.'
+    ],
+    A2: [
+      'Szia! Van egy perced? Miről szeretnél beszélgetni? A holnapi programról.',
+      'Hová költözöl? Egy új lakásba. Hányadik emeleten van? A másodikon.',
+      'Mit csináltál tegnap? Tegnap tanultam. És ma? Ma dolgozom.'
+    ]
+  };
+  window.TanuloGaborReadingClips = Object.fromEntries(Object.entries(readingKeys).map(([level, texts]) =>
+    [level, texts.map(text => ({ text, url: clips[text], status: 'remote-trial' }))]));
+  if (!enableWordPilot) return;
   window.TanuloVoicePilotKeys = Object.keys(clips);
   window.TanuloVoicePilotReview = [];
   window.TanuloAudioManifest = Object.assign({}, window.TanuloAudioManifest || {}, clips);
