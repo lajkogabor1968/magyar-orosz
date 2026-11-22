@@ -30,6 +30,14 @@
   "Ő az anyukám.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=f4aa14db9b504899a067dbd1aef42f44.wav",
   "És ő?": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=c4d3fc1fe9d443e1b6b37272497e7239.wav",
   "Ő az apukám.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=b09dbb55f3804d308c2e78175f0b925c.wav",
+  "Ez egy telefon. Ez egy taxi. Ez a metró.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=116e88ab5474434a8116e38195cce66a.wav",
+  "Szia! A nevem Anna. Jól vagyok, köszönöm.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=a92167e764594e98a55315871c772d6c.wav",
+  "Ez a családom. Ő az anyukám. Ő az apukám.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=49fad5cb77a94591b877fdf82cc010dc.wav",
+  "Ez a szobám. Ez egy szék. A kulcs az asztalon van.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=67cc6e1154954a73a91bc37f0d303116.wav",
+  "Kérek egy teát. Vizet iszom. Reggel kenyeret eszem.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=7bf418c6006349668d1713d38d6bd65a.wav",
+  "Ma tanulok. Este olvasok. Holnap dolgozom.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=9ff9b862311c4c4e885d8a3ade218891.wav",
+  "Mikor tanulsz? Reggel tanulok. Mit csinálsz este? Este olvasok.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=5d4cf15cf0f04d45bc87403380117efb.wav",
+  "Hol van apa? Apa a boltban van. Anya a kertben van.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=8db6ef558a9e4badaed858ba5c7fa418.wav",
   "Kérsz egy teát?": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=1ff33c5387954c27b0cca2bc704bdb3a.wav"
 };
   window.TanuloVoicePilotKeys = Object.keys(clips);
