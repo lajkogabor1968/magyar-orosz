@@ -1,16 +1,16 @@
-/* Teacher-approved character MP3s. Key: level:lessonIndex:lineIndex (zero based).
+/* Teacher-approved MP3s. Key: level:lessonIndex:lineIndex (zero based).
    NEVER put the original speaker's voice sample in this public repository.
-   Do not add Anna's voice: the current voice project uses Gábor's voice only.
-   Existing standard playback remains unchanged until recordings are approved. */
+   No unapproved character voice: Gábor's recordings play first; otherwise Hungarian TTS. */
 window.TanuloDialogueAudioManifest = Object.assign(
   Object.create(null),
   window.TanuloDialogueAudioManifest || {}
 );
 
-/* Isolated, opt-in A1/A2 review: ?voice=gabor
-   Only explicitly approved, locally hosted Gábor recordings may play.
+/* Opt-in A1/A2 Gábor review: ?voice=gabor
+   Prefer approved, locally hosted Gábor clips and fall back to Hungarian TTS.
    The manifest is intentionally empty until Gábor supplies a verified sample
-   and approves each derived recording. Do not commit his raw voice sample. */
+   and approves each derived recording. Do not commit his raw voice sample.
+   The historical review-mode flag is retained for compatible review URLs. */
 window.TanuloApprovedGaborManifest = Object.create(null);
 window.TanuloOnlyGaborVoice =
   /\/(a1|a2)\.html$/.test(window.location.pathname) &&

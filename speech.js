@@ -1,5 +1,5 @@
 /* Shared speech playback for the Magyar–orosz Tanulóműhely.
-   Prefer pre-generated Hungarian MP3 recordings, then device speech. */
+   Prefer approved Gábor recordings; use the device's Hungarian TTS if missing. */
 (() => {
   'use strict';
   if (window.TanuloTTS) return;
@@ -11,6 +11,7 @@
   let active = null;
   let activeAudio = null;
   let noticeTimer = null;
+  let ttsNoticeShown = false;
 
   function refreshVoices() {
     if (!available) return;
@@ -85,29 +86,42 @@
     }
   }
 
+  function approvedClipFor(utterance) {
+    if (!String(utterance?.lang || 'hu-HU').toLowerCase().startsWith('hu')) return null;
+    const phrase = String(utterance?.text || '').normalize('NFC').replace(/\s+/g, ' ').trim();
+    const key = String(utterance?.recordingKey || '');
+    const recordings = window.TanuloApprovedGaborManifest || {};
+    const source = key ? recordings[key] : recordings[phrase];
+    return typeof source === 'string' &&
+      /^audio\/gabor\/(a1|a2)\/[a-z0-9][a-z0-9._-]*\.(mp3|wav|ogg)$/i.test(source)
+      ? source : null;
+  }
+
+  function pilotClipFor(utterance) {
+    // The HeyGen pilot is an explicitly opt-in experiment, never a default voice.
+    if (!String(utterance?.lang || 'hu-HU').toLowerCase().startsWith('hu')) return null;
+    const phrase = String(utterance?.text || '').normalize('NFC').replace(/\s+/g, ' ').trim();
+    if (!window.TanuloVoicePilotKeys?.includes(phrase)) return null;
+    const source = window.TanuloAudioManifest?.[phrase];
+    return typeof source === 'string' &&
+      /^https:\/\/resource2\.heygen\.ai\/text_to_speech\/[a-z0-9]+\/[a-z0-9]+\/id=[a-z0-9]+\.wav$/i.test(source)
+      ? source : null;
+  }
+
+  function sourceFor(utterance) {
+    if (approvedClipFor(utterance)) return 'gabor';
+    if (pilotClipFor(utterance)) return 'pilot';
+    return available ? 'tts' : 'unavailable';
+  }
+
   function speak(utterance, skipRecording = false) {
     if (!utterance || !String(utterance.text || '').trim()) return false;
     const lang = String(utterance.lang || 'hu-HU').toLowerCase();
-    const phrase = String(utterance.text).normalize('NFC').replace(/\s+/g, ' ').trim();
-    const recordings = window.TanuloAudioManifest || {};
-    const dialogueRecordings = window.TanuloDialogueAudioManifest || {};
-    // Each speaker can have a distinct recording even for identical wording.
-    const recordingKey = String(utterance.recordingKey || '');
-    const gaborOnly = Boolean(window.TanuloOnlyGaborVoice) && lang.startsWith('hu');
-    const gaborRecordings = window.TanuloApprovedGaborManifest || {};
-    const gaborSource = recordingKey ? gaborRecordings[recordingKey] : gaborRecordings[phrase];
-    // A strict preview never silently switches to a generic or another person's voice.
-    // Only approved local exports, never raw voice samples or remote demo URLs.
-    const approvedGaborClip = typeof gaborSource === 'string' &&
-      /^audio\/gabor\/(a1|a2)\/[a-z0-9][a-z0-9._-]*\.(mp3|wav|ogg)$/i.test(gaborSource)
-      ? gaborSource : null;
-    const clip = gaborOnly ? approvedGaborClip : (!skipRecording && lang.startsWith('hu')
-      ? (recordingKey ? dialogueRecordings[recordingKey] : recordings[phrase])
-      : null);
-    if (gaborOnly && !clip) {
-      message('Запись голосом Габора ещё не готова. Другие голоса не используются. / Ehhez még nincs jóváhagyott Gábor-felvétel. Más hangot nem használunk.');
-      return false;
-    }
+    // Legacy MP3s without Gábor approval must not be presented as his voice.
+    // The optional, labelled Gábor trial is kept for ?voicepilot=1 reviews.
+    const approvedClip = skipRecording ? null : approvedClipFor(utterance);
+    const pilotClip = !skipRecording && !approvedClip ? pilotClipFor(utterance) : null;
+    const clip = approvedClip || pilotClip;
     if (clip) {
       cancel();
       const token = generation;
@@ -117,9 +131,9 @@
       player.playbackRate = Math.max(0.5, Math.min(2, Number(utterance.rate) || 1));
       player.onplaying = event => {
         if (token !== generation) return;
-        if ((window.TanuloVoicePilotKeys || []).includes(phrase)) {
-          message('Тестовая запись голоса Габора воспроизводится: ' + phrase + ' / Gábor hangpróba szól: ' + phrase);
-        }
+        message(pilotClip
+          ?'Звучит пробная запись голоса Габора. / Gábor kísérleti hangpróbája szól.'
+          :'Звучит запись голосом Габора. / Gábor saját felvétele szól.');
         if (typeof utterance.onstart === 'function') utterance.onstart(event);
       };
       player.onended = event => {
@@ -135,18 +149,8 @@
         player.onended = null;
         player.pause();
         activeAudio = null;
-        if (gaborOnly) {
-          message('Запись Габора недоступна. Другой голос не включается. / A jóváhagyott Gábor-felvétel nem érhető el. Nem váltunk másik hangra.');
-          if (typeof utterance.onerror === 'function') utterance.onerror(event);
-          return;
-        }
-        if ((window.TanuloVoicePilotKeys || []).includes(phrase)) {
-          message('Запись Габора не загрузилась. Голос устройства отключён для теста. / Gábor hangmintája nem érhető el. Tesztmódban nem váltunk át a készülék másik hangjára.');
-          if (typeof utterance.onerror === 'function') utterance.onerror(event);
-          return;
-        }
         if (available) {
-          message('Не удалось воспроизвести запись. Пробуем венгерский голос устройства. / Az MP3 nem játszható le. Próbálkozás a készülék magyar felolvasójával.');
+          message('Запись Габора недоступна. Пробуем венгерский компьютерный голос. / Gábor felvétele nem érhető el. Magyar géphanggal próbálkozunk.');
           speak(utterance, true);
         } else {
           message('Запись недоступна. Устройство не поддерживает синтез речи. / Az MP3 nem játszható le, és ezen a készüléken nincs beszédszintézis.');
@@ -161,6 +165,7 @@
       message('Синтез речи недоступен. Попробуйте другой браузер. / Ez a böngésző nem támogatja a felolvasást. Nyisd meg az alkalmazást a telefon Chrome böngészőjében.');
       return false;
     }
+    cancel();
     const parts = chunks(utterance.text);
     const token = generation;
     const originalEnd = utterance.onend;
@@ -169,6 +174,10 @@
     const selectedVoice = voiceFor(utterance.lang);
     if (!selectedVoice && voices.length && String(utterance.lang).toLowerCase().startsWith('hu')) {
       message('На устройстве не найден венгерский голос. Проверьте настройки синтеза речи. / Nem található magyar beszédhang a készüléken. Androidon a Szövegfelolvasó kimenet beállításainál töltsd le a magyar hangot.');
+    }
+    if (!ttsNoticeShown && lang.startsWith('hu')) {
+      ttsNoticeShown = true;
+      message('Для этой фразы используется венгерский компьютерный голос. Запись Габора всегда имеет приоритет. / Ehhez a szöveghez magyar géphangot használunk. Gábor felvétele mindig elsőbbséget élvez.');
     }
     let index = 0;
 
@@ -236,5 +245,5 @@
     if (engine.addEventListener) engine.addEventListener('voiceschanged', refreshVoices);
     window.addEventListener('pageshow', refreshVoices);
   }
-  window.TanuloTTS = { speak, cancel, getVoices: () => { refreshVoices(); return voices.slice(); } };
+  window.TanuloTTS = { speak, cancel, sourceFor, getVoices: () => { refreshVoices(); return voices.slice(); } };
 })();

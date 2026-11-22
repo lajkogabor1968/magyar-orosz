@@ -1,5 +1,5 @@
 // Futtatás: node magyar-orosz/verify-gabor-voice.mjs
-// A Gábor-only A1/A2 próbában sem a készülék, sem más ember hangja nem szólhat.
+// Gábor hangja elsőbbséget kap; hiányzó / hibás felvételnél magyar TTS indul.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -58,34 +58,59 @@ for (const page of ['a1', 'a2']) {
   const inlineScripts = [...html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)];
   for (const [, source] of inlineScripts) new vm.Script(source, { filename: `${page}.html` });
   if (page === 'a1') {
-    assert.match(html, /function audioTest\(\)\s*\{\s*stop\(\);\s*if\(window\.TanuloOnlyGaborVoice\)/,
-      'A régi, közvetlen MP3-hangtesztet is tiltani kell a kizárólagos Gábor-módban.');
+    assert.match(html, /function audioTest\(\)\s*\{\s*stop\(\);/,
+      'A hangpróbának a közös hangmotort kell használnia.');
+    assert.ok(!html.includes('new Audio(source)'), 'Régi, ismeretlen beszélőjű MP3 nem szólhat közvetlenül.');
   }
   const { calls, window, utterance, links } = createSandbox(page, '?voice=gabor');
   assert.equal(window.TanuloOnlyGaborVoice, true);
   calls.events.DOMContentLoaded();
   assert.deepEqual(links.map(link => link.value), ['a1.html?voice=gabor', 'a2.html?voice=gabor'],
     `${page}: szintváltáskor se kapcsoljon vissza másik hangra`);
-  assert.equal(window.TanuloTTS.speak(utterance), false, `${page}: nincs jóváhagyott hang`);
-  assert.equal(calls.device, 0, `${page}: TTS-átváltás tilos`);
+  assert.equal(window.TanuloTTS.sourceFor(utterance), 'tts');
+  assert.equal(window.TanuloTTS.speak(utterance), true, `${page}: hiányzó Gábor-felvétel helyett géphang`);
+  assert.equal(calls.device, 1, `${page}: a magyar géphang induljon el`);
   assert.deepEqual(calls.files, [], `${page}: régi/idegen felvétel lejátszása tilos`);
 
   window.TanuloApprovedGaborManifest[`${page}:0:0`] = 'https://example.com/other.wav';
-  assert.equal(window.TanuloTTS.speak(utterance), false, `${page}: külső hanghivatkozás tilos`);
-  assert.equal(calls.device, 0);
+  assert.equal(window.TanuloTTS.speak(utterance), true, `${page}: nem engedélyezett külső URL helyett géphang`);
+  assert.equal(calls.device, 2);
+  assert.deepEqual(calls.files, [], `${page}: külső hanghivatkozás tilos`);
 
   window.TanuloApprovedGaborManifest[`${page}:0:0`] = `audio/gabor/${page}/approved-001.mp3`;
+  assert.equal(window.TanuloTTS.sourceFor(utterance), 'gabor');
   assert.equal(window.TanuloTTS.speak(utterance), true, `${page}: jóváhagyott hang indul`);
   assert.deepEqual(calls.files, [`audio/gabor/${page}/approved-001.mp3`]);
-  assert.equal(calls.device, 0, `${page}: jóváhagyott felvétel mellett sincs TTS`);
+  assert.equal(calls.device, 2, `${page}: jóváhagyott felvétel mellett nincs TTS`);
   calls.player.onerror(new Error('404'));
-  assert.equal(calls.device, 0, `${page}: MP3-hiba esetén sem szólhat más hang`);
+  assert.equal(calls.device, 3, `${page}: hibás Gábor-MP3 helyett magyar TTS`);
 
   const regular = createSandbox(page, '');
   assert.equal(regular.window.TanuloOnlyGaborVoice, false);
-  // The regular lesson experience still uses recordings where present, or TTS.
+  // Legacy MP3s are not labelled as Gábor's voice; TTS handles their absence.
   assert.equal(regular.window.TanuloTTS.speak(regular.utterance), true);
-  assert.equal(regular.calls.files.length + regular.calls.device, 1);
+  assert.equal(regular.calls.device, 1);
+  assert.deepEqual(regular.calls.files, []);
 }
 
-console.log('Gábor-only A1/A2 hangteszt: RENDBEN (nincs idegen hang vagy TTS-visszaváltás).');
+const pilot = createSandbox('a1', '?voicepilot=1');
+pilot.window.TanuloVoicePilotKeys = ['Szia!'];
+pilot.window.TanuloAudioManifest['Szia!'] =
+  'https://resource2.heygen.ai/text_to_speech/abcdef/123456/id=aa123.wav';
+assert.equal(pilot.window.TanuloTTS.sourceFor(pilot.utterance), 'pilot');
+assert.equal(pilot.window.TanuloTTS.speak(pilot.utterance), true,
+  'Az elkülönített Gábor-próbahang változatlanul kipróbálható.');
+assert.equal(pilot.calls.files.length, 1);
+assert.equal(pilot.calls.device, 0);
+
+const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+assert.ok(index.indexOf('audio/dialogue-manifest.js') < index.indexOf('speech.js'),
+  'A főoldalon is elérhető legyen a jóváhagyott Gábor-hangjegyzék.');
+const book = fs.readFileSync(path.join(root, 'lesson-book.js'), 'utf8');
+assert.match(book, /if\(!selected\)\{fallback\(\);return;\}/,
+  'Hiányzó teljes Gábor-szövegnél gépi felolvasás legyen.');
+assert.match(book, /player\.onerror=failedRecording/,
+  'A hibás teljes szöveges felvételnek is legyen géphangos pótlása.');
+assert.ok(!book.includes('Nem váltunk géphangra'), 'A régi géphangtilalom nem maradhat a tanulási útban.');
+
+console.log('Gábor-első A1/A2 hangteszt: RENDBEN (jóváhagyott felvétel, géphangos pótlás, idegen MP3 kizárva).');
