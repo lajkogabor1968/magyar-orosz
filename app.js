@@ -214,7 +214,8 @@ function renderExercise(type){
    }
    $(`${prefix}Score`).textContent=`${s.score} pont / баллов`;
    const example=e.huS+' — '+e.ruS;
-   $(`${prefix}Feedback`).textContent=(ok?'✓ Helyes válasz! / Правильно!':'✗ Helyes megoldás / Правильный ответ: '+e[key]+'.')+' Пример / Példa: '+example+(ok?'':' Повторите выражение; оно появится в повторении.');
+   const answer=e[key],end=/[.!?…]$/.test(answer)?'':'.';
+   $(`${prefix}Feedback`).textContent=(ok?'✓ Helyes válasz! / Правильно!':'✗ Helyes megoldás / Правильный ответ: '+answer+end)+' Пример / Példa: '+example+(ok?'':' Повторите выражение; оно появится в повторении.');
    $(`${prefix}Next`).classList.remove('hidden');
    $(`${prefix}Next`).textContent=s.index===n-1?'Eredmény megtekintése / Результат':'Következő / Далее';
   });

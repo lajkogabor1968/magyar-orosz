@@ -16,7 +16,7 @@ for (const id of ['quickReviewPrimary', 'quickReviewProgress', 'a1DailyJourney',
 assert.ok(html.indexOf('id="quickReviewPrimary"') > html.indexOf('id="lessonsPrimary"'));
 assert.ok(html.indexOf('id="quickReviewPrimary"') < html.indexOf('id="studyMore"'), 'daily practice is not hidden among advanced tools');
 assert.match(html, /5 слов · 5 предложений · 3 фразы вслух/);
-for (const script of ['app.js?v=20261122-adaptive-daily1',
+for (const script of ['app.js?v=20261122-adaptive-daily2',
   'study.js?v=20261122-quick-daily1', 'lesson-book.js?v=20261122-a1-feedback1']) {
   assert.ok(html.includes(script), `${script} cache must be refreshed`);
 }
@@ -38,6 +38,8 @@ assert.match(daily, /prioritizedPick\(pool\.filter\(e=>!chosen\.has\(e\.id\)\),M
 assert.match(app, /function finishA1Daily\(type\)/, 'daily results remain recorded');
 assert.match(app, /saved\.a1DailyJourney=progress;save\(\)/);
 assert.match(app, /const example=e\.huS\+' — '\+e\.ruS/, 'corrective feedback uses a bilingual sentence');
+assert.match(app, /const answer=e\[key\],end=\/\[\.!\?…\]\$\/\.test\(answer\)\?'':'\.'/,
+  'sentence feedback avoids doubling terminal punctuation');
 assert.match(app, /trackMistake\(e,ok,type\)/, 'wrong answers remain available for review');
 assert.match(app, /const storeKey='magyarorosz\.v1'/, 'existing browser progress storage retained');
 
