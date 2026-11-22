@@ -52,9 +52,11 @@ const continuationContext = {window: {}};
 runInNewContext(source('a1-guided-lessons-next.js'), continuationContext);
 runInNewContext(source('a1-guided-lessons-13-16.js'), continuationContext);
 runInNewContext(source('a1-guided-lessons-17-20.js'), continuationContext);
+runInNewContext(source('a1-guided-lessons-21-24.js'), continuationContext);
 courses.A1.push(...continuationContext.window.TanmuhelyA1Continuation.lessons);
 courses.A1.push(...continuationContext.window.TanmuhelyA1Units13to16.lessons);
 courses.A1.push(...continuationContext.window.TanmuhelyA1Units17to20.lessons);
+courses.A1.push(...continuationContext.window.TanmuhelyA1Units21to24.lessons);
 let guidedReadingQuestions = 0;
 for (const [level, lessons] of Object.entries(courses)) {
   for (const lesson of lessons) {

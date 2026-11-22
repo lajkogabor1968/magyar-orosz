@@ -115,7 +115,7 @@ A szólistában a hangszóró a magyar szót, a beszéd ikon a magyar példamond
 
 A kiegészítő szövegértési és nyelvtani modul válaszkeverése valódi Fisher–Yates-keverést használ. A vezetett leckék mini-szövegértési válaszai is változó sorrendben jelennek meg úgy, hogy a helyes megoldás azonosítója megmarad. Az A2-es múlt idejű feladat kétértelmű mondatát pontosítottuk; a nyelvtani eredményjelző szintenként számol, a korábbi eredménykulcsok módosítása nélkül.
 
-Regressziós teszt: `node magyar-orosz/verify-quiz-integrity.mjs`. A vezetett leckék teljes szókincslefedettségét a `node magyar-orosz/verify-guided-coverage.mjs` méri. A **20 A1-es vezetett lecke** jelenleg az 580 különböző A1-szótári címszóból 135-öt tanít közvetlenül (23,3%); az alkalmazás többi modulja ennél több szót kínál. A széles körű kiadás előtti pedagógiai és technikai feltételek: [`A1-KIADASI-MINOSEGI-KAPUK.md`](A1-KIADASI-MINOSEGI-KAPUK.md).
+Regressziós teszt: `node magyar-orosz/verify-quiz-integrity.mjs`. A vezetett leckék teljes szókincslefedettségét a `node magyar-orosz/verify-guided-coverage.mjs` méri. A **24 A1-es vezetett lecke** jelenleg az 580 különböző A1-szótári címszóból 148-at tanít közvetlenül (25,5%); az alkalmazás többi modulja ennél több szót kínál. A széles körű kiadás előtti pedagógiai és technikai feltételek: [`A1-KIADASI-MINOSEGI-KAPUK.md`](A1-KIADASI-MINOSEGI-KAPUK.md).
 
 ### Új A1-es vezetett leckék (9–12.)
 
@@ -146,3 +146,9 @@ Az arculatváltás nem módosítja a szótárat, a tanulói pontozást, a helyi 
 Az A1-es tanulási menüben külön, azonnal elérhető a **napi rövid gyakorlás**: 5 szókérdés, 5 mondatkérdés és 3 hangos gyakorlómondat. A napi részfeladatok állapota a menüben is látható. A szó- és mondatkérdések elsősorban a korábban elrontott vagy esedékes kifejezésekből válogatnak; a súlyozott kiválasztás csökkenti, hogy sok hibánál mindig ugyanaz az öt tétel következzen. A megoldás után a helyes választ és magyar–orosz példamondatot mutatjuk. A vezetett lecke nyelvtani és olvasmánykérdéseinél színes helyes/hibás jelzés és pontosabb javító visszajelzés segít.
 
 Megmaradtak a régi pontszámok, hibák, ütemezett ismétlések és mentési kulcsok; az A2 menübe nem került át az A1-es napi gomb. Új regressziós teszt: `node magyar-orosz/verify-a1-quick-review.mjs`. A három hangos mondat teljesítése önbevalláson alapul, nem automatikus kiejtésértékelés. A tényleges mobilos tanulói próba és a nyelvi lektorálás továbbra is hátravan.
+
+### Új A1-es vezetett leckék (21–24.)
+
+A további négy hatlépéses lecke az orosz anyanyelvű kezdőt a mindennapi cselekvések felé vezeti: **jelen idejű alanyi igeragozás** (*tanulok/tanulsz/tanul*, *olvasok/olvasol*, *dolgozom/dolgozol/dolgozik*); **szeret + főnévi igenév, tagadás és kérdés** (*szeretek olvasni*, *nem szeretek főzni*); **napok és egész órák időpontjai** (*hétfőn*, *nyolckor*); valamint **egyszerű vásárlási mondatok és a -t tárgyrag** (*kérek egy almát*, *tejet*, *kenyeret*). Az orosz magyarázatok külön jelzik a szabályoktól eltérő vagy megjegyzendő szóalakokat. Mindegyikhez ragozási vagy grammatikai tábla, példamondatok, 20-nál nem több szókártya, magyar–orosz párbeszéd, olvasmány, ötmondatos írásfeladat és javítókulcs tartozik.
+
+Új tartalom: `a1-guided-lessons-21-24.js`. Ellenőrzés: `node magyar-orosz/verify-a1-units-21-24.mjs`. A korábbi `A1:0`–`A1:19` és az A2 eredményazonosítók változatlanok. A vezetett A1-es út lefedettsége ezzel 148/580 címszóra (25,5%) nőtt; **ez még nem teljes A1-es kurzus**. Az új leckék teljes tanári hangfelvételei, orosz anyanyelvi lektorálása és valós tanulói próbája a széles körű kiadás előtt szükséges.
