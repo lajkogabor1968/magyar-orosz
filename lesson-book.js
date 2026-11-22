@@ -73,6 +73,12 @@ if(actionUnits){
  Object.assign(dialogueTranslations,actionUnits.dialogueTranslations);
  Object.assign(checks,actionUnits.checks);
 }
+const shoppingUnits=window.TanmuhelyA1Units25to28;
+if(shoppingUnits){
+ courses.A1.push(...shoppingUnits.lessons);
+ Object.assign(dialogueTranslations,shoppingUnits.dialogueTranslations);
+ Object.assign(checks,shoppingUnits.checks);
+}
 function lessonKey(){return level+':'+lessonIndex}
 function highlightAnswerButtons(box,selected,correctText){
  for(const button of box.querySelectorAll('button')){
@@ -196,6 +202,7 @@ if(continuation)chapterVisuals.A1.push(...continuation.visuals);
 if(familyAndWorkUnits)chapterVisuals.A1.push(...familyAndWorkUnits.visuals);
 if(locationUnits)chapterVisuals.A1.push(...locationUnits.visuals);
 if(actionUnits)chapterVisuals.A1.push(...actionUnits.visuals);
+if(shoppingUnits)chapterVisuals.A1.push(...shoppingUnits.visuals);
 function renderVisual(){
  const box=$('lessonVisual');if(!box)return;
  box.replaceChildren();
