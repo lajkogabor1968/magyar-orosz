@@ -55,6 +55,12 @@ if(continuation){
  Object.assign(dialogueTranslations,continuation.dialogueTranslations);
  Object.assign(checks,continuation.checks);
 }
+const familyAndWorkUnits=window.TanmuhelyA1Units13to16;
+if(familyAndWorkUnits){
+ courses.A1.push(...familyAndWorkUnits.lessons);
+ Object.assign(dialogueTranslations,familyAndWorkUnits.dialogueTranslations);
+ Object.assign(checks,familyAndWorkUnits.checks);
+}
 function lessonKey(){return level+':'+lessonIndex}
 function grammarQuestion(){
  const c=checks[lessonKey()],box=$('integratedGrammarOptions');
@@ -165,6 +171,7 @@ const chapterVisuals={
  ]
 };
 if(continuation)chapterVisuals.A1.push(...continuation.visuals);
+if(familyAndWorkUnits)chapterVisuals.A1.push(...familyAndWorkUnits.visuals);
 function renderVisual(){
  const box=$('lessonVisual');if(!box)return;
  box.replaceChildren();

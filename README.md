@@ -115,10 +115,16 @@ A szólistában a hangszóró a magyar szót, a beszéd ikon a magyar példamond
 
 A kiegészítő szövegértési és nyelvtani modul válaszkeverése valódi Fisher–Yates-keverést használ. A vezetett leckék mini-szövegértési válaszai is változó sorrendben jelennek meg úgy, hogy a helyes megoldás azonosítója megmarad. Az A2-es múlt idejű feladat kétértelmű mondatát pontosítottuk; a nyelvtani eredményjelző szintenként számol, a korábbi eredménykulcsok módosítása nélkül.
 
-Regressziós teszt: `node magyar-orosz/verify-quiz-integrity.mjs`. A vezetett leckék teljes szókincslefedettségét a `node magyar-orosz/verify-guided-coverage.mjs` méri. A **12 A1-es vezetett lecke** jelenleg az 580 különböző A1-szótári címszóból 87-et tanít közvetlenül (15,0%); az alkalmazás többi modulja ennél több szót kínál. A széles körű kiadás előtti pedagógiai és technikai feltételek: [`A1-KIADASI-MINOSEGI-KAPUK.md`](A1-KIADASI-MINOSEGI-KAPUK.md).
+Regressziós teszt: `node magyar-orosz/verify-quiz-integrity.mjs`. A vezetett leckék teljes szókincslefedettségét a `node magyar-orosz/verify-guided-coverage.mjs` méri. A **16 A1-es vezetett lecke** jelenleg az 580 különböző A1-szótári címszóból 121-et tanít közvetlenül (20,9%); az alkalmazás többi modulja ennél több szót kínál. A széles körű kiadás előtti pedagógiai és technikai feltételek: [`A1-KIADASI-MINOSEGI-KAPUK.md`](A1-KIADASI-MINOSEGI-KAPUK.md).
 
 ### Új A1-es vezetett leckék (9–12.)
 
 A meglevő nyolc lecke sorrendjét és mentett pontjait megtartva négy új, hatlépéses lecke készült: **név, foglalkozás és lakóhely**; **országok és nyelvek**; **számok 1–10**; **számok 11–20 és bemutatkozás**. Mindegyikhez kétnyelvű szókártyák, orosz nyelvű nyelvtani magyarázat, saját példatábla, párbeszéd, rövid olvasmány és ellenőrzőkérdés, írásos gyakorlat, valamint külön teszt tartozik. A nyelvtani és olvasmánykérdések válaszai a helyes megoldás megőrzésével keverednek. A személyes adatoknál fiktív nevet és lakóhelyet is szabad használni, valós címet nem kérünk.
 
 Az új leckék külön tartalomfájlban találhatók: `a1-guided-lessons-next.js`. Szerkezeti teszt: `node magyar-orosz/verify-a1-guided-extension.mjs`. A magyar–orosz fordítások és a tényleges készülékhangok orosz anyanyelvi és eszközös próbája továbbra is szükséges a széles körű kiadás előtt.
+
+### Új A1-es vezetett leckék (13–16.)
+
+Újabb négy leckével folytatódik az A1-es út: **rokonok és családi kapcsolatok** (húgom, öcsém, nővérem, nagymamám), **foglalkozás és munkahely** (tanár vagyok, dolgozom/dolgozol/dolgozik), **tulajdonságok** (kedves tanár / a tanár kedves, nem, nagyon), valamint **egyszerű birtoklás és hiány** (könyvem/könyved, táskám/táskád, van/nincs). Mindegyik orosz nyelvű nyelvtani magyarázatot, példatáblázatot, kétnyelvű szókártyákat, párbeszédet, rövid olvasmányt, önálló írásfeladatot és javítással kísért ellenőrzést tartalmaz. A 3. családlecke ismétlése helyett új, magyarázott alakokat vezetünk be.
+
+Az új tartalom külön fájlban marad: `a1-guided-lessons-13-16.js`, így a megelőző leckék és az eredmények kulcsai változatlanok. Szerkezeti és tananyagintegrációs ellenőrzés: `node magyar-orosz/verify-a1-units-13-16.mjs`. Az A1-es szint még nem teljes, az anyanyelvi lektorálás és a valós tanulói próba továbbra is minőségi kapu.

@@ -50,7 +50,9 @@ assert.ok(coursesText, 'A vezetett leckék adatai nem olvashatók.');
 const courses = JSON.parse(coursesText);
 const continuationContext = {window: {}};
 runInNewContext(source('a1-guided-lessons-next.js'), continuationContext);
+runInNewContext(source('a1-guided-lessons-13-16.js'), continuationContext);
 courses.A1.push(...continuationContext.window.TanmuhelyA1Continuation.lessons);
+courses.A1.push(...continuationContext.window.TanmuhelyA1Units13to16.lessons);
 let guidedReadingQuestions = 0;
 for (const [level, lessons] of Object.entries(courses)) {
   for (const lesson of lessons) {
