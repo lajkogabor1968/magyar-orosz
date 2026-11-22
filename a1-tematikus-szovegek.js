@@ -264,7 +264,7 @@ const units={
 ['Nyolc diák.','Восемь учеников.']
 ],questions:[['Hány ceruzát lát Anna?','Три.','Четыре.','Пять.',0],['Hány könyv van a polcon?','Восемь.','Девять.','Десять.',1]]}
 ,11:{title:'Возраст и числа от одиннадцати до двадцати',lines:[
-['Ma Anna születésnapja van.','Сегодня день рождения Анны.'],
+['Ma van Anna születésnapja.','Сегодня день рождения Анны.'],
 ['Anna tizennyolc éves.','Анне восемнадцать лет.'],
 ['A barátai délután jönnek.','Её друзья придут днём.'],
 ['A szobában tizenkét szék van.','В комнате двенадцать стульев.'],
@@ -277,7 +277,7 @@ const units={
 ['Az egyik barátja tizenhat éves.','Одному из её друзей шестнадцать лет.'],
 ['A másik barátja tizenhét éves.','Другому её другу семнадцать лет.'],
 ['A testvére tizenkilenc éves.','Её брату девятнадцать лет.'],
-['A torta húsz szeletre van vágva.','Торт разрезан на двадцать кусочков.'],
+['Az asztalon húsz szelet torta van.','На столе двадцать кусочков торта.'],
 ['Mindenki boldog a születésnapon.','Все счастливы на дне рождения.']
 ],dialogue:[
 ['Szia, Anna! Hány éves vagy ma?','Привет, Анна! Сколько тебе сегодня лет?'],
