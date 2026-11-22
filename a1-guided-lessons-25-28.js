@@ -321,7 +321,7 @@
     {icon:'☕',title:'Вежливо в кафе',subtitle:'Szeretnék — «я хотел(а) бы»',cards:[['☕','szeretnék','я хотел(а) бы'],['🥤','egy pohár vizet','стакан воды'],['🍬','cukor nélkül','без сахара']]},
     {icon:'⚖️',title:'Сколько продуктов?',subtitle:'Hány? и Mennyi?',cards:[['🍎','három almát','три яблока'],['🥛','egy liter tejet','литр молока'],['🧀','fél kiló sajtot','полкило сыра']]},
     {icon:'🍽️',title:'Обед в ресторане',subtitle:'Меню, блюдо и счёт',cards:[['📖','étlap','список блюд'],['🥣','egy levest','суп (заказ)'],['🧾','a számlát','счёт (что?)']]},
-    {icon:'🛒',title:'Покупка на рынке',subtitle:'Цена, количество и вежливость',cards:[['🍅','paradicsomot','помидоры (что?)'],['🍊','két narancsot','два апельсина'],['💶','összesen','всего']]}
+    {icon:'🛒',title:'Покупка на рынке',subtitle:'Цена, количество и вежливость',cards:[['🍅','paradicsomot','помидоры (что?)'],['🍊','két narancsot','два апельсина'],['💰','összesen','всего']]}
   ];
 
   window.TanmuhelyA1Units25to28={lessons,dialogueTranslations,checks,visuals};
