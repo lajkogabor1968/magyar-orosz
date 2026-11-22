@@ -163,8 +163,12 @@
   }
 
   function updateProgress() {
-    const values = Object.values(progress).filter(v =>
-      typeof v.score === 'number' && typeof v.max === 'number');
+    // A szinthez tartozó eredményeket mutatjuk, nem az A1–B2 összegét.
+    // A tárolási kulcsok és a korábbi tanulói pontszámok változatlanok.
+    const values = Object.entries(progress)
+      .filter(([key, v]) => key.startsWith(`${level}:`) &&
+        typeof v?.score === 'number' && typeof v?.max === 'number')
+      .map(([, v]) => v);
     const points = values.reduce((sum, v) => sum + v.score, 0);
     const max = values.reduce((sum, v) => sum + v.max, 0);
     $('progress').textContent = `${values.length} befejezett témakör / завершённых тем · ${points} / ${max} legjobb pont / лучший результат`;

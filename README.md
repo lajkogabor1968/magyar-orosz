@@ -110,3 +110,9 @@ Az A2 szókincs **mind az 1200 bejegyzésének első körös, tételes nyelvi fe
 
 ## Magyar nyelvű felolvasás
 A szólistában a hangszóró a magyar szót, a beszéd ikon a magyar példamondatot olvassa fel. A mondatgyakorlás magyar mondatot és magyar hangot használ; a válaszlehetőségek orosz fordítások. A tanulókártyákon a „Magyar kiejtés” gomb mindig a magyar oldalt olvassa fel, még akkor is, ha az orosz fordítás látható. Az `audio/hu-manifest.js` jelenleg 57 magyar hangfájlra hivatkozik; a többi kifejezés a készülék beszédszintézisét igényelheti.
+
+## 2026. november 22. – pontozás és A1-es tanulási út
+
+A kiegészítő szövegértési és nyelvtani modul válaszkeverése valódi Fisher–Yates-keverést használ. A vezetett leckék mini-szövegértési válaszai is változó sorrendben jelennek meg úgy, hogy a helyes megoldás azonosítója megmarad. Az A2-es múlt idejű feladat kétértelmű mondatát pontosítottuk; a nyelvtani eredményjelző szintenként számol, a korábbi eredménykulcsok módosítása nélkül.
+
+Regressziós teszt: `node magyar-orosz/verify-quiz-integrity.mjs`. A vezetett leckék teljes szókincslefedettségét a `node magyar-orosz/verify-guided-coverage.mjs` méri; a jelenlegi nyolc A1-es lecke még nem fedi le az A1-szókincstár egészét. A széles körű kiadás előtti pedagógiai és technikai feltételek: [`A1-KIADASI-MINOSEGI-KAPUK.md`](A1-KIADASI-MINOSEGI-KAPUK.md).

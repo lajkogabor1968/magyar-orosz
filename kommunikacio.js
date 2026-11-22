@@ -5,7 +5,8 @@ const storageKey='magyarozo.szovegertest.v1';let progress={};try{progress=JSON.p
 function store(){try{localStorage.setItem(storageKey,JSON.stringify(progress))}catch{}}
 function safeText(el,value){el.textContent=String(value)}
 function make(tag,cls,content){const e=document.createElement(tag);if(cls)e.className=cls;if(content!==undefined)e.textContent=content;return e}
-function shuffled(a){return [...a].map((v,i)=>({v,k:(i+Math.random())})).sort((a,b)=>a.k-b.k).map(x=>x.v)}
+// Fisher–Yates: a helyes válasz nem maradhat mindig az első helyen.
+function shuffled(items, random=Math.random){const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function allTexts(){return DATA[level]?.texts||[]}
 function selectedIndexes(){return allTexts().map((t,i)=>i).filter(i=>$('kind').value==='all'||allTexts()[i][0]===$('kind').value)}
 function updateCounters(){let keys=Object.keys(progress).filter(k=>k.startsWith(level+':'));let good=keys.filter(k=>progress[k]===3||progress[k]===4).length;$('progress').replaceChildren(make('span','pill',`Ezen a szinten: ${allTexts().length} szöveg`),make('span','pill',`${DATA[level].grammar.length} nyelvtani feladat`),make('span','pill',`${keys.length} elvégzett feladatsor`));}

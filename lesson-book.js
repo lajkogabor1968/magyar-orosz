@@ -322,7 +322,9 @@ function renderReading(){
  $('lessonReadingTranslations').textContent='Показать русский перевод';
  $('lessonReadingQuestion').textContent=reading.q;
  $('lessonReadingFeedback').textContent='Выберите ответ. Проверка проводится сразу.';
- reading.options.forEach((option,i)=>{
+ // A kérdés válaszai minden megjelenítéskor más sorrendbe kerülhetnek.
+ // Az eredeti válaszazonosító megmarad, ezért a pontozás nem változik.
+ randomOrder(reading.options.map((option,i)=>({option,i}))).forEach(({option,i})=>{
   const button=el('button',option,'integrated-answer');button.type='button';
   button.onclick=()=>{
     const correct=i===reading.answer;
