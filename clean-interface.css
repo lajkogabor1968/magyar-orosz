@@ -226,7 +226,7 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
 .lesson-game-heading h4 { color: #194e3b; }
 .lesson-game-kicker { color: #317b5a; letter-spacing: .05em; }
 .lesson-grammar-check { border: 1px solid #dce9e1; background: #f7fbf8; border-radius: 20px; padding: 22px; margin: 20px 0; }
-#integratedGrammar p { font-size: 17px; max-width: 75ch; line-height: 1.78; margin: 12px 0; }
+#integratedGrammar p { font-size: 17px; max-width: 75ch; line-height: 1.78; margin: 12px 0; white-space: pre-line; }
 .lesson-grammar-examples { margin: 20px 0; }
 .lesson-grammar-table { min-width: 450px; }
 .lesson-grammar-table th { background: #e8f6ed; }

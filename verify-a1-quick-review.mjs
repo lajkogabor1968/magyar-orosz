@@ -17,7 +17,7 @@ assert.ok(html.indexOf('id="quickReviewPrimary"') > html.indexOf('id="lessonsPri
 assert.ok(html.indexOf('id="quickReviewPrimary"') < html.indexOf('id="studyMore"'), 'daily practice is not hidden among advanced tools');
 assert.match(html, /5 слов · 5 предложений · 3 фразы вслух/);
 for (const script of ['app.js?v=20261122-adaptive-daily2',
-  'study.js?v=20261122-quick-daily1', 'lesson-book.js?v=20261122-a1-quality-gates1']) {
+  'study.js?v=20261122-quick-daily1', 'lesson-book.js?v=20261122-a1-quality-gates2']) {
   assert.ok(html.includes(script), `${script} cache must be refreshed`);
 }
 
