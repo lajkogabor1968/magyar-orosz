@@ -104,3 +104,12 @@
 .a1-daily-summary p{margin:9px 0;overflow-wrap:anywhere}
 .a1-daily-summary button{margin-top:9px;white-space:normal}
 @media(max-width:600px){.a1-daily-summary{padding:13px}.a1-daily-summary button{width:100%}}
+
+/* Uniform Russian–Hungarian grammar examples, A1 and A2. */
+.lesson-grammar-examples{max-width:100%;overflow-x:auto;margin:1rem 0 1.25rem}
+.lesson-grammar-examples h4{margin:.25rem 0 .65rem}
+.lesson-grammar-table{width:100%;border-collapse:collapse;min-width:480px;font-size:.94rem}
+.lesson-grammar-table th,.lesson-grammar-table td{text-align:left;vertical-align:top;padding:.65rem .7rem;border-bottom:1px solid #d4e2e1}
+.lesson-grammar-table th{background:#eaf4f1;color:#163f3d;font-weight:650}
+.lesson-grammar-table td:first-child{font-weight:600}
+@media(max-width:600px){.lesson-grammar-table{min-width:460px}}
