@@ -237,6 +237,59 @@ const units={
 ['Beszéljünk magyarul!','Давай говорить по-венгерски!']
 ],questions:[['Honnan jött Thomas?','Из Германии.','Из Венгрии.','Из России.',0],['Milyen nyelven beszél Anna?','По-русски.','По-испански.','По-итальянски.',0]]}
 
+,10:{title:'Числа от одного до десяти',lines:[
+['Ma a magyarórán számolunk.','Сегодня на уроке венгерского мы считаем.'],
+['A tanár a táblánál áll.','Учитель стоит у доски.'],
+['Az asztalon egy könyv van.','На столе одна книга.'],
+['A könyv mellett két toll van.','Рядом с книгой две ручки.'],
+['Anna három ceruzát lát.','Анна видит три карандаша.'],
+['Péter négy almát rajzol.','Петер рисует четыре яблока.'],
+['Az asztalon öt füzet van.','На столе пять тетрадей.'],
+['A tanár hat szót ír a táblára.','Учитель пишет на доске шесть слов.'],
+['A teremben hét szék van.','В комнате семь стульев.'],
+['Nyolc diák ül a székeken.','Восемь учеников сидят на стульях.'],
+['Kilenc könyv van a polcon.','На полке девять книг.'],
+['Tíz percig tanulunk.','Мы учимся десять минут.'],
+['Anna hangosan számol.','Анна считает вслух.'],
+['Péter is számol.','Петер тоже считает.'],
+['A tanár azt mondja: nagyon jó!','Учитель говорит: очень хорошо!']
+],dialogue:[
+['Hány könyv van az asztalon?','Сколько книг на столе?'],
+['Egy könyv van az asztalon.','На столе одна книга.'],
+['Hány toll van mellette?','Сколько ручек рядом с ней?'],
+['Két toll.','Две ручки.'],
+['Hány almát rajzol Péter?','Сколько яблок рисует Петер?'],
+['Négy almát.','Четыре яблока.'],
+['Hány diák van itt?','Сколько здесь учеников?'],
+['Nyolc diák.','Восемь учеников.']
+],questions:[['Hány ceruzát lát Anna?','Три.','Четыре.','Пять.',0],['Hány könyv van a polcon?','Восемь.','Девять.','Десять.',1]]}
+,11:{title:'Возраст и числа от одиннадцати до двадцати',lines:[
+['Ma Anna születésnapja van.','Сегодня день рождения Анны.'],
+['Anna tizennyolc éves.','Анне восемнадцать лет.'],
+['A barátai délután jönnek.','Её друзья придут днём.'],
+['A szobában tizenkét szék van.','В комнате двенадцать стульев.'],
+['Az asztalon tizenegy pohár van.','На столе одиннадцать стаканов.'],
+['A konyhában tizenhárom tányér van.','На кухне тринадцать тарелок.'],
+['Péter tizennégy léggömböt hoz.','Петер приносит четырнадцать воздушных шаров.'],
+['Dóra tizenöt szalvétát tesz az asztalra.','Дора кладёт на стол пятнадцать салфеток.'],
+['A tortán tizennyolc gyertya van.','На торте восемнадцать свечей.'],
+['Anna nagyon örül a tortának.','Анна очень рада торту.'],
+['Az egyik barátja tizenhat éves.','Одному из её друзей шестнадцать лет.'],
+['A másik barátja tizenhét éves.','Другому её другу семнадцать лет.'],
+['A testvére tizenkilenc éves.','Её брату девятнадцать лет.'],
+['A torta húsz szeletre van vágva.','Торт разрезан на двадцать кусочков.'],
+['Mindenki boldog a születésnapon.','Все счастливы на дне рождения.']
+],dialogue:[
+['Szia, Anna! Hány éves vagy ma?','Привет, Анна! Сколько тебе сегодня лет?'],
+['Tizennyolc éves vagyok.','Мне восемнадцать лет.'],
+['Boldog születésnapot!','С днём рождения!'],
+['Köszönöm szépen!','Большое спасибо!'],
+['Hány gyertya van a tortán?','Сколько свечей на торте?'],
+['Tizennyolc gyertya.','Восемнадцать свечей.'],
+['És hány szelet torta van?','А сколько кусочков торта?'],
+['Húsz szelet.','Двадцать кусочков.']
+],questions:[['Hány éves Anna?','Шестнадцать.','Восемнадцать.','Двадцать.',1],['Hány pohár van az asztalon?','Одиннадцать.','Двенадцать.','Тринадцать.',0]]}
+
 };
 const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
 window.TanmuhelyRenderA1LongReadings=(level,index)=>{
@@ -254,9 +307,8 @@ window.TanmuhelyRenderA1LongReadings=(level,index)=>{
  details.append(toggle,body,el('h4','Диалог · Párbeszéd'));
  for(const [hu,ru] of data.dialogue){const row=el('div');row.className='lesson-reading-pair';const p=el('p',hu);p.lang='hu';const t=el('p',ru);t.lang='ru';t.hidden=true;translations.push(t);row.append(p,t);details.append(row);}
  const section=el('div');section.append(el('h4','Проверьте понимание'));
- const feedback=el('p');feedback.setAttribute('role','status');
- data.questions.forEach(([question,...rest])=>{const correct=rest.pop();const prompt=el('p',question);prompt.lang='hu';section.append(prompt);rest.forEach((choice,i)=>{const button=el('button',choice);button.type='button';button.className='integrated-answer';button.onclick=()=>{feedback.textContent=i===correct?'✓ Верно.':'✗ Попробуйте ещё раз.';};section.append(button);});});
- section.append(feedback);details.append(section);
+ data.questions.forEach(([question,...rest])=>{const correct=rest.pop();const block=el('div');block.className='a1-reading-check';const prompt=el('p',question);prompt.lang='hu';block.append(prompt);const feedback=el('p');feedback.setAttribute('role','status');rest.forEach((choice,i)=>{const button=el('button',choice);button.type='button';button.className='integrated-answer';button.onclick=()=>{feedback.textContent=i===correct?'✓ Верно.':'✗ Попробуйте ещё раз.';block.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));};block.append(button);});block.append(feedback);section.append(block);});
+ details.append(section);
  anchor.insertAdjacentElement('afterend',details);
 };
 window.TANMUHELY_A1_LONG_READING_REPORT=Object.entries(units).map(([index,u])=>({lesson:Number(index)+1,sentences:u.lines.length,dialogueTurns:u.dialogue.length}));
