@@ -72,7 +72,7 @@ for(const [offset,lesson] of lessons.entries()){
 }
 
 const html=read('index.html');
-assert.match(html,/src="a1-guided-lessons-21-24\.js[^\"]*"[^\n]*src="a1-guided-lessons-25-28\.js[^\"]*"[^\n]*src="lesson-book\.js/,
+assert.match(html,/src="a1-guided-lessons-21-24\.js[^\"]*"[\s\S]*?src="a1-guided-lessons-25-28\.js[^\"]*"[\s\S]*?src="lesson-book\.js/,
   'New course units must load after the previous A1 units and before the renderer');
 assert.match(book,/courses\.A1\.push\(\.\.\.shoppingUnits\.lessons\)/);
 assert.match(book,/Object\.assign\(checks,shoppingUnits\.checks\)/);
