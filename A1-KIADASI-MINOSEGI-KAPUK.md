@@ -12,6 +12,35 @@
 
 A mérés megismételhető: `node magyar-orosz/verify-guided-coverage.mjs`.
 
+## Duolingo-mintájú, megismételhető A1-audit – 2026. november 22.
+
+Futtatás a repó gyökeréből: `node magyar-orosz/audit-a1-release.mjs`. Ezt a
+korábbi 14 célzott technikai ellenőrzéssel együtt futtattuk. A keretrendszer
+**nem** a Duolingo nem nyilvános belső tesztjeinek másolata: annak közzétett
+tananyag-tervezési és ellenőrzési elveiből indultunk ki.
+
+| Ellenőrzési kapu | Megfigyelt eredmény | Értelmezés |
+| --- | --- | --- |
+| 28 A1-es lecke, egyedi sorrend, régi azonosítók | Rendben | A korábbi tanulói eredmények kulcsai érintetlenek. |
+| Szókártyák, orosz magyarázatok, minták, párbeszédek | 28/28 lecke szerkezetileg ellenőrizve | Ez **nem** hitelesíti a fordítások nyelvi helyességét. |
+| Nyelvtani és szövegértési javítókulcs | 28/28 lecke: létező kulcs, nem duplikált választási lehetőségek | A többféleképpen helyes válaszok emberi lektorálása még szükséges. |
+| Teljes automatikus A1-audit | **0 fennmaradó kritikus szerkezeti találat** | A feltárt első leckés magyarázati hiányt javítottuk. |
+| Szókincsterhelés | **13 lecke szakmai felülvizsgálatra jelölve** | 9–13 új alapszókártya; figyelmeztetés, nem automatikus bukás. |
+| Vezetett út / A1-szótár | 173/580 különböző címszó, **29,8%** | Nem tekinthető kész A1-es útvonalnak. |
+| Független nyelvi és tanulói próba | **Még nem teljesült** | Orosz anyanyelvű lektor és 6–10 valós tanuló szükséges. |
+
+Az első körben megoldott pedagógiai hiba: az 1. lecke immár külön elmagyarázza,
+hogy az oroszban nincsenek névelők, de a magyarban az `egy` és az `a/az`
+eltérő szerepet tölt be; az `a–á`, `e–é` hangpárok minőségben is különböznek.
+Az olvasmányi ellenőrzés továbbra is csak a szókártyás, nyelvtani és párbeszédes
+tanítás után jelenik meg.
+
+**Szakmai minták, nem hivatalos átvett szabályok:**
+
+- A [Duolingo saját leírása a kurzuskészítésről](https://blog.duolingo.com/how-duolingo-experts-work-with-ai/): tantervtervezés, tananyag, gyakorlatok, személyre szabás; a tanuló anyanyelvéhez igazítás.
+- A [Duolingo korábbi minőségi metrikáiról szóló beszámoló](https://blog.duolingo.com/how-were-improving-duolingos-course-creation-process/) 6–7 szót említ kedvező leckénkénti terhelésként. Ez 2019-es, a Duolingo akkori leckeszerkezetére vonatkozó adat; az A1-es Tanműhelyre csak **felülvizsgálati jelzésként** használjuk, nem vakon alkalmazott határértékként.
+- Az [Európa Tanács A1-es KER-leírása](https://www.coe.int/en/web/common-european-framework-reference-languages/table-1-%20cefr-3.3-common-reference-levels-global-scale) az egyszerű hétköznapi kommunikációt és a saját élethelyzetekről való alapvető kérdés–választ tekinti célnak. A fenti automatizált ellenőrzés **nem méri** ezt a tanulói kimenetet.
+
 ## Kötelező kapuk a széles körű A1-kiadás előtt
 
 1. **Tartalmi teljesség:** minden A1-es címszó kapjon tanulási helyet egy fokozatos, rövid leckékre bontott útban; legyen elkülönítve az új szó és az ismétlés. A többjelentésű címszavak jelentéseit külön ellenőrizzük. Nem elegendő csak az önálló szólistában szerepeltetni őket.
