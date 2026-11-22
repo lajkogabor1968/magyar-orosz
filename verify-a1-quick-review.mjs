@@ -17,7 +17,7 @@ assert.ok(html.indexOf('id="quickReviewPrimary"') > html.indexOf('id="lessonsPri
 assert.ok(html.indexOf('id="quickReviewPrimary"') < html.indexOf('id="studyMore"'), 'daily practice is not hidden among advanced tools');
 assert.match(html, /5 слов · 5 предложений · 3 фразы вслух/);
 for (const script of ['app.js?v=20261122-adaptive-daily2',
-  'study.js?v=20261122-quick-daily1', 'lesson-book.js?v=20261122-gabor-tts2']) {
+  'study.js?v=20261122-quick-daily1', 'lesson-book.js?v=20261122-a1-reading-after-teaching1']) {
   assert.ok(html.includes(script), `${script} cache must be refreshed`);
 }
 
@@ -51,6 +51,10 @@ assert.match(lessons, /highlightAnswerButtons\(box,btn,c\.a\[c\.ok\]\)/, 'gramma
 assert.match(lessons, /const answer=c\.a\[c\.ok\],end=\/\[\.!\?…\]\$\/\.test\(answer\)\?'':'\.'/,
   'grammar feedback avoids doubling terminal punctuation');
 assert.match(lessons, /highlightAnswerButtons\(answers,button,answer\)/, 'reading reveals the correct answer');
+assert.match(lessons, /function placeReadingAfterTeaching\(\)/, 'A1 reading order is managed separately');
+assert.match(lessons, /if\(level!=='A1'\)\{\s*if\(moved\)\{original\.append/, 'A2 retains its previous reading position');
+assert.match(lessons, /writing\.prepend\(panel\)/, 'A1 comprehension comes after taught vocabulary and grammar');
+assert.match(lessons, /placeReadingAfterTeaching\(\);renderVisual\(\)/, 'every rendered lesson uses the correct reading order');
 assert.match(css, /\.lesson-answer-options \.integrated-answer\.right/);
 assert.match(css, /\.lesson-answer-options \.integrated-answer\.wrong/);
 
