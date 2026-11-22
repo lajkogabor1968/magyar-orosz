@@ -1,4 +1,4 @@
-/* Gábor A1 voice pilot with word and phrase trials.
+/* Gábor A1–A2 voice pilot with word, phrase and mini-reading trials.
    Usage: ?voicepilot=1; no effect on standard visitors, data or lesson progress.
    These are HeyGen-hosted trial WAV URLs; they are not permanent, locally hosted assets.
    Teacher-approved falling-intonation takes are used for "rádió" and "metró". */
@@ -38,6 +38,9 @@
   "Ma tanulok. Este olvasok. Holnap dolgozom.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=9ff9b862311c4c4e885d8a3ade218891.wav",
   "Mikor tanulsz? Reggel tanulok. Mit csinálsz este? Este olvasok.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=5d4cf15cf0f04d45bc87403380117efb.wav",
   "Hol van apa? Apa a boltban van. Anya a kertben van.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=8db6ef558a9e4badaed858ba5c7fa418.wav",
+  "Szia! Van egy perced? Miről szeretnél beszélgetni? A holnapi programról.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=e0bf515b734b4e88aa5d59a533a48f00.wav",
+  "Hová költözöl? Egy új lakásba. Hányadik emeleten van? A másodikon.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=429bc3a8720b40759312529ad18b3761.wav",
+  "Mit csináltál tegnap? Tegnap tanultam. És ma? Ma dolgozom.": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=22a531e93555460b9d330bd48835cef1.wav",
   "Kérsz egy teát?": "https://resource2.heygen.ai/text_to_speech/e45fb1f2f10d4ae39d090b1d18b14dd3/8c6600d646584d17a495a0d09981a940/id=1ff33c5387954c27b0cca2bc704bdb3a.wav"
 };
   window.TanuloVoicePilotKeys = Object.keys(clips);
