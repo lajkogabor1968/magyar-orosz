@@ -37,6 +37,16 @@ eltérő szerepet tölt be; az `a–á`, `e–é` hangpárok minőségben is kü
 Az olvasmányi ellenőrzés továbbra is csak a szókártyás, nyelvtani és párbeszédes
 tanítás után jelenik meg.
 
+**2026. november 22., A1-es felhasználói felülvizsgálat:** a kötelező tíz
+szókártya megnyitásának állása immár külön, szemantikus folyamatjelzőn látszik.
+Az ezen felüli kártyák „Дополнительно” jelzést kapnak, ezért nem sugalljuk,
+hogy bekerülnek a számonkérésbe. Az első leckében a négy alapvető magánhangzó
+(`a, á, e, é`) rögtön meghallgatható, a teljes 44 betűs ábécé egy lenyitható,
+megőrzött hangos referencia; így a következő lépés kevésbé vész el a hosszú
+betűlista alatt. Nem változtak a mentési kulcsok, a kötelező szókártyák vagy
+az A2 anyagai. A statikus regressziótesztek átmentek; **valós tanulói és
+mobilos eszközteszt nélkül még nem tekinthető véglegesen igazoltnak a UX**.
+
 **Szakmai minták, nem hivatalos átvett szabályok:**
 
 - A [Duolingo saját leírása a kurzuskészítésről](https://blog.duolingo.com/how-duolingo-experts-work-with-ai/): tantervtervezés, tananyag, gyakorlatok, személyre szabás; a tanuló anyanyelvéhez igazítás.

@@ -205,7 +205,29 @@ function saveReviewedError(hu){
  store[previous]=[...new Set([...(store[previous]||[]),hu])];
  try{localStorage.setItem(reviewedErrorsKey,JSON.stringify(store))}catch(_){ $('lessonReviewFeedback').textContent+=' Не удалось сохранить результат повторения.' }
 }
-function renderAlphabet(){document.getElementById('alphabetLesson')?.remove();if(level!=='A1'||lessonIndex!==0)return;const section=el('section',undefined,'lesson-alphabet');section.id='alphabetLesson';section.append(el('h3','Венгерский алфавит — 44 буквы'),el('p','Прослушайте каждую букву. Русские подсказки приблизительны: точный венгерский звук лучше слушать.'));const grid=el('div',undefined,'alphabet-grid');for(const [letter,hint]of alphabet){const button=el('button',undefined,'alphabet-letter');button.type='button';button.append(el('strong',letter),el('small',hint));button.onclick=()=>say(letter);grid.append(button)}section.append(grid,el('p','Особенно важно: o–ó, ö–ő, u–ú, ü–ű. Долгота гласных меняет произношение.'));document.querySelector('#lessonWords .lesson-reference').before(section)}
+function renderAlphabet(){
+ document.getElementById('alphabetLesson')?.remove();
+ if(level!=='A1'||lessonIndex!==0)return;
+ const section=el('section',undefined,'lesson-alphabet');section.id='alphabetLesson';
+ section.append(el('h3','Первые венгерские звуки'),el('p','Сравните пары букв: в венгерском языке a и á, e и é произносятся по-разному. Послушайте каждую.'));
+ const starter=el('div',undefined,'alphabet-starter');
+ for(const letter of ['a','á','e','é']){
+  const button=el('button',letter,'alphabet-starter-letter');button.type='button';button.lang='hu';
+  button.setAttribute('aria-label','Прослушать венгерскую букву '+letter);
+  button.onclick=()=>say(letter);starter.append(button);
+ }
+ section.append(starter);
+ const details=el('details',undefined,'alphabet-full');
+ details.append(el('summary','Весь алфавит — 44 буквы · открыть для прослушивания'),el('p','Русские подсказки приблизительны: точный венгерский звук лучше слушать.'));
+ const grid=el('div',undefined,'alphabet-grid');
+ for(const [letter,hint]of alphabet){
+  const button=el('button',undefined,'alphabet-letter');button.type='button';button.lang='hu';
+  button.append(el('strong',letter),el('small',hint));button.onclick=()=>say(letter);grid.append(button);
+ }
+ details.append(grid,el('p','Особенно важно: o–ó, ö–ő, u–ú, ü–ű. Долгота гласных меняет произношение.'));
+ section.append(details);
+ document.querySelector('#lessonWords .lesson-reference').before(section);
+}
 const chapterVisuals={
  A1:[
  {icon:'📱',title:'Знакомые слова — новый язык',subtitle:'Уже знакомые понятия звучат по-венгерски',cards:[['📱','telefon','телефон'],['🚇','metró','метро'],['📻','rádió','радио']]},
@@ -501,7 +523,34 @@ function renderWords(){
  }
  renderAlphabet()
 }
-function card(){const w=rows(),v=w[cardIndex%w.length];if(!v)return;$('integratedCardPosition').textContent=(cardIndex+1)+' / '+w.length;$('integratedCardHungarian').textContent=v.hu;$('integratedCardRussian').textContent=v.ru;$('integratedCardRussian').hidden=true;$('integratedCardFlip').textContent='Показать перевод'}
+function updateCardProgress(){
+ const flash=$('integratedFlashcard');let meter=flash.querySelector('.lesson-card-mastery');
+ if(level!=='A1'){meter?.remove();return}
+ if(!meter){
+  meter=el('div',undefined,'lesson-card-mastery');
+  const head=el('div',undefined,'lesson-card-mastery-heading');
+  head.append(el('strong','Переводы для итоговой проверки'),el('span','0 / 10','lesson-card-mastery-count'));
+  const bar=el('progress',undefined,'lesson-card-mastery-bar');bar.max=requiredCardCount();
+  bar.setAttribute('aria-label','Открыто переводов из обязательных слов');
+  meter.append(head,bar);flash.prepend(meter);
+ }
+ const count=[...flippedWords].filter(i=>i<requiredCardCount()).length;
+ meter.querySelector('.lesson-card-mastery-count').textContent=count+' / '+requiredCardCount();
+ meter.querySelector('progress').value=count;
+ meter.classList.toggle('is-complete',count===requiredCardCount());
+}
+function card(){
+ const w=rows(),v=w[cardIndex%w.length];if(!v)return;
+ const core=requiredCardCount();
+ $('integratedCardPosition').textContent=level==='A1'
+  ? (cardIndex<core?'Обязательное слово '+(cardIndex+1)+' из '+core:'Дополнительно · '+(cardIndex-core+1)+' из '+(w.length-core))
+  : (cardIndex+1)+' / '+w.length;
+ $('integratedCardHungarian').textContent=v.hu;
+ $('integratedCardRussian').textContent=v.ru;
+ $('integratedCardRussian').hidden=true;
+ $('integratedCardFlip').textContent='Показать перевод';
+ updateCardProgress();
+}
 function norm(s){return String(s).normalize('NFC').toLocaleLowerCase('hu-HU').trim().replace(/[.!?]+$/,'').replace(/\s+/g,' ')}
 function sentencePractice(reset=false){
  const ui=$('lessonSentencePractice');
@@ -672,7 +721,7 @@ function confirmLessonChange(targetIndex){
 }
 $('integratedLessonSelect').addEventListener('change',e=>{const target=Number(e.target.value);e.target.value=String(lessonIndex);confirmLessonChange(target)});
 $('integratedFlashcardOpen').onclick=()=>{cardIndex=0;card();$('integratedFlashcard').hidden=false;note('Повторите карточки. Уже открытые переводы сохраняются в прогрессе урока.')};
-$('integratedCardFlip').onclick=()=>{const node=$('integratedCardRussian');node.hidden=!node.hidden;if(!node.hidden){flippedWords.add(cardIndex);saveCheckpoint();if(step===0&&canAdvance())stepButton.disabled=false;const count=level==='A1'?[...flippedWords].filter(i=>i<requiredCardCount()).length:flippedWords.size;note('Проверено обязательных слов: '+count+' / '+requiredCardCount()+'.')} $('integratedCardFlip').textContent=node.hidden?'Показать перевод':'Скрыть перевод'};
+$('integratedCardFlip').onclick=()=>{const node=$('integratedCardRussian');node.hidden=!node.hidden;if(!node.hidden){flippedWords.add(cardIndex);saveCheckpoint();if(step===0&&canAdvance())stepButton.disabled=false;const count=level==='A1'?[...flippedWords].filter(i=>i<requiredCardCount()).length:flippedWords.size;note(level==='A1'&&canAdvance()?'✓ Все десять обязательных переводов открыты. Можно перейти к правилу или повторить слова.':'Открыто переводов: '+count+' / '+requiredCardCount()+'.');updateCardProgress()} $('integratedCardFlip').textContent=node.hidden?'Показать перевод':'Скрыть перевод'};
 $('integratedCardNext').onclick=()=>{cardIndex=(cardIndex+1)%rows().length;card()};
 $('integratedCardSpeak').onclick=()=>say(rows()[cardIndex%rows().length].hu);
 const grammarLinks={

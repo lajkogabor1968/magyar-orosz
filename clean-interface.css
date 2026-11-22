@@ -212,6 +212,29 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
 .lesson-flashcard #integratedCardRussian { font-size: 19px; color: #547361; margin: 5px 0 17px; }
 .lesson-flashcard .lesson-actions { justify-content: center; }
 .lesson-flashcard #integratedCardFlip { background: #198565 !important; color: #fff !important; border: 2px solid #198565 !important; border-radius: 13px !important; }
+.lesson-card-mastery { max-width: 530px; margin: 0 auto 26px; text-align: left; }
+.lesson-card-mastery-heading { display: flex; gap: 12px; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.lesson-flashcard .lesson-card-mastery-heading strong { display: inline; margin: 0; color: #426e59; font-size: 14px; font-weight: 750; line-height: 1.35; }
+.lesson-card-mastery-count { color: #1d7655; font-size: 15px; font-weight: 850; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.lesson-card-mastery-bar { display: block; width: 100%; height: 9px; border: 0; border-radius: 999px; accent-color: #1f9970; }
+.lesson-card-mastery-bar::-webkit-progress-bar { background: #dcece0; border-radius: 999px; }
+.lesson-card-mastery-bar::-webkit-progress-value { background: #279d73; border-radius: 999px; }
+.lesson-card-mastery-bar::-moz-progress-bar { background: #279d73; border-radius: 999px; }
+.lesson-card-mastery.is-complete .lesson-card-mastery-count { color: #125e43; }
+#integratedCardPosition { display: block; color: #476d5a; font-size: 14px; font-weight: 750; }
+.lesson-alphabet { padding: 20px 22px; background: #f7fbf8; border: 1px solid #dbe9df; border-radius: 19px; margin: 19px 0 23px; }
+.lesson-alphabet h3 { margin: 0 0 7px; font-size: 21px; color: #194c3a; }
+.lesson-alphabet > p { color: #557364; margin: 0; font-size: 15px; line-height: 1.5; }
+.alphabet-starter { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 9px; max-width: 345px; margin: 16px 0 18px; }
+.lesson-alphabet .alphabet-starter-letter { min-height: 56px; border: 2px solid #bcdcc8; border-bottom: 4px solid #a8cfb7; background: #fff; border-radius: 13px; color: #16583f; font-size: 25px; font-weight: 850; }
+.lesson-alphabet .alphabet-starter-letter:hover { background: #e7f7ec; border-color: #78b994; }
+.alphabet-full { border-top: 1px solid #d8e7db; padding-top: 12px; }
+.alphabet-full summary { cursor: pointer; color: #176248; font-weight: 800; font-size: 15px; line-height: 1.45; padding: 5px 0; }
+.alphabet-full[open] summary { margin-bottom: 13px; }
+.alphabet-full p { font-size: 14px; line-height: 1.5; color: #547160; margin: 8px 0 13px; }
+.alphabet-full .alphabet-grid { margin: 0 0 13px; }
+.alphabet-full .alphabet-letter { min-height: 66px; color: #185b47; border-radius: 12px; }
+.alphabet-full .alphabet-letter small { color: #537362; font-size: 12px; }
 #integratedFlashcardOpen { font-size: 14px; }
 .lesson-reference { border: 1px solid #dce9e1; background: #fcfefd; border-radius: 17px; margin: 18px 0 22px; }
 .lesson-reference summary { display: flex; justify-content: space-between; align-items: center; gap: 10px; cursor: pointer; padding: 19px; font-size: 16px; font-weight: 750; color: #1b644c; list-style: none; }

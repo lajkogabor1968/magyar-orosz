@@ -15,7 +15,7 @@ for (const id of [
   assert.equal(occurrence(html, `id="${id}"`), 1, `${id} must occur once`);
 }
 
-assert.match(html, /clean-interface\.css\?v=20261122-a1-reading-breaks1/);
+assert.match(html, /clean-interface\.css\?v=20261122-a1-cards-alphabet2/);
 assert.match(html, /<ol id="integratedStageTrack"[^>]*>(?:<li>[^<]+<\/li>){6}<\/ol>/);
 assert.ok(html.indexOf('id="integratedStepNext"') > html.indexOf('id="lessonExercise"'), 'step action is after current activity');
 assert.ok(html.indexOf('id="integratedStepNext"') < html.indexOf('class="lesson-end"'), 'step action precedes final lesson controls');
@@ -26,7 +26,13 @@ for (const id of ['integratedWords', 'integratedPhrases', 'integratedExpressions
   const at = html.indexOf(`id="${id}"`);
   assert.ok(at > referenceStart && at < referenceEnd, `${id} belongs to the optional reference`);
 }
-assert.match(lessons, /document\.querySelector\('#lessonWords \.lesson-reference'\)\.before\(section\)/, 'A1 alphabet stays visible before the optional reference');
+assert.match(lessons, /document\.querySelector\('#lessonWords \.lesson-reference'\)\.before\(section\)/, 'A1 alphabet remains before the optional reference');
+assert.match(lessons, /details=el\('details',undefined,'alphabet-full'\)/, 'the 44-letter reference is collapsed by default');
+assert.match(lessons, /for\(const letter of \['a','á','e','é'\]\)/, 'essential beginner vowels are always visible and playable');
+assert.match(lessons, /meter\.querySelector\('progress'\)\.value=count/, 'visible card progress is synchronized to existing saved flips');
+assert.match(lessons, /cardIndex<core\?'Обязательное слово '/, 'mandatory versus optional cards have a plain-language label');
+assert.match(css, /\.lesson-card-mastery-bar/);
+assert.match(css, /\.alphabet-starter-letter/);
 assert.match(lessons, /item\.setAttribute\('aria-current','step'\)/, 'current stage is announced to screen readers');
 assert.match(lessons, /view\.scrollIntoView\(\{block:'start',behavior:'instant'\}\)/, 'next stage returns to its heading');
 assert.match(css, /:focus-visible/);
