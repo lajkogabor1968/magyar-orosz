@@ -84,8 +84,8 @@ assert.ok(lessons[2].grammar[1].includes('Kérek egy levest.')&&lessons[2].gramm
   'Indefinite and definite request forms must be contrasted');
 assert.ok(lessons[3].grammar[1].includes('Ez olcsó')&&lessons[3].grammar[1].includes('Ez drága'),
   'Capstone should include price comparison');
-assert.ok(visuals[3].cards.every(card=>card[0]!=='💶'),
-  'Market visuals must not imply that Hungarian forint prices are in euros');
+assert.ok(visuals[3].cards.every(card=>!['💶','💰'].includes(card[0])),
+  'Market visuals must not imply that Hungarian forint prices are in euros or dollars');
 
 console.log('PASS: A1 units 25–28: polite requests, quantities, restaurant and market with Russian explanations.');
 console.log('PASS: 24 previous A1 lesson keys and all A2 keys unchanged; ≤20 bilingual cards per new unit.');
