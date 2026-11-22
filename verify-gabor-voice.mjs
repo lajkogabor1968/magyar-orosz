@@ -111,6 +111,8 @@ assert.match(book, /if\(!selected\)\{fallback\(\);return;\}/,
   'Hiányzó teljes Gábor-szövegnél gépi felolvasás legyen.');
 assert.match(book, /player\.onerror=failedRecording/,
   'A hibás teljes szöveges felvételnek is legyen géphangos pótlása.');
+assert.match(book, /onerror:\(\)=>\{feedback\.textContent='Компьютерный голос не запустился/,
+  'A készülékhang hibája a teljes olvasmány alatt is jelenjen meg.');
 assert.ok(!book.includes('Nem váltunk géphangra'), 'A régi géphangtilalom nem maradhat a tanulási útban.');
 
 console.log('Gábor-első A1/A2 hangteszt: RENDBEN (jóváhagyott felvétel, géphangos pótlás, idegen MP3 kizárva).');

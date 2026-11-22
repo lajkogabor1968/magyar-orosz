@@ -115,7 +115,7 @@ function moveNext(){if(!canAdvance()){note(['Сначала откройте п�
 
 function read(key){try{return JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(_){return {}}}
 function save(){const s=read(KEY);s[level]={lessonIndex,step};if(level==='A1')s.migratedFirstUnit20261121=true;try{localStorage.setItem(KEY,JSON.stringify(s))}catch(_){}}
-function say(text){try{if(window.tanmuhelyActiveTeacherReading){window.tanmuhelyActiveTeacherReading.pause();window.tanmuhelyActiveTeacherReading=null}const u=window.SpeechSynthesisUtterance?new SpeechSynthesisUtterance(text):{text};u.lang='hu-HU';u.rate=.85;if(window.TanuloTTS?.speak)return window.TanuloTTS.speak(u);speechSynthesis.cancel();speechSynthesis.speak(u);return true}catch(_){return false}}
+function say(text,callbacks={}){try{if(window.tanmuhelyActiveTeacherReading){window.tanmuhelyActiveTeacherReading.pause();window.tanmuhelyActiveTeacherReading=null}const u=window.SpeechSynthesisUtterance?new SpeechSynthesisUtterance(text):{text};u.lang='hu-HU';u.rate=.85;u.onstart=callbacks.onstart;u.onend=callbacks.onend;u.onerror=callbacks.onerror;if(window.TanuloTTS?.speak)return window.TanuloTTS.speak(u);speechSynthesis.cancel();speechSynthesis.speak(u);return true}catch(_){return false}}
 function el(tag,txt,cl){const node=document.createElement(tag);if(txt!==undefined)node.textContent=txt;if(cl)node.className=cl;return node}
 function lesson(){return courses[level][lessonIndex]}
 function rows(){const l=lesson(),base=window.MAGYAR_OROSZ_DATA?.[level]||[],result=[];for(const word of l.words){const row=base.find(r=>r[0].toLocaleLowerCase('hu-HU')===word.toLocaleLowerCase('hu-HU')) || (level==='A2'?window.MAGYAR_OROSZ_DATA?.A1?.find(r=>r[0].toLocaleLowerCase('hu-HU')===word.toLocaleLowerCase('hu-HU')):null);if(row){const beginnerExamples={
@@ -360,9 +360,13 @@ function renderReading(){
   const feedback=$('lessonReadingFeedback');
   const fallback=()=>{
    window.tanmuhelyActiveTeacherReading=null;
-   feedback.textContent=say(fullText)
-    ?'Компьютерное чтение на венгерском: запись Габора пока недоступна. / Magyar géphang olvassa fel: Gábor felvétele még nem érhető el.'
-    :'В этом браузере нет доступного синтеза речи. Попробуйте Chrome с венгерским голосом. / Ezen a készüléken nem érhető el a magyar géphang. Próbáld Chrome-ban.';
+   feedback.textContent='Запускаем венгерский компьютерный голос вместо отсутствующей записи Габора. / Magyar géphangot indítunk Gábor hiányzó felvétele helyett.';
+   const started=say(fullText,{
+    onstart:()=>{feedback.textContent='Читает компьютерный венгерский голос. / Magyar géphang olvassa a szöveget.'},
+    onend:()=>{feedback.textContent='Компьютерное чтение завершено. / A gépi felolvasás véget ért.'},
+    onerror:()=>{feedback.textContent='Компьютерный голос не запустился. Проверьте, установлен ли венгерский голос на устройстве. / A géphang nem indult el. Ellenőrizd a magyar beszédhang beállításait.'}
+   });
+   if(!started)feedback.textContent='В этом браузере нет доступного синтеза речи. Попробуйте Chrome с венгерским голосом. / Ezen a készüléken nem érhető el a magyar géphang. Próbáld Chrome-ban.';
   };
   if(window.tanmuhelyActiveTeacherReading){try{window.tanmuhelyActiveTeacherReading.pause()}catch(_){}}
   window.tanmuhelyActiveTeacherReading=null;
