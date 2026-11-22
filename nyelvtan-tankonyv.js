@@ -459,6 +459,56 @@
     ['Az asztalon (felület) és az asztalban (valaminek a belseje) nem ugyanazt jelenti.',
       'Asztalon — на столе, asztalban — внутри стола; не смешивай эти значения.']);
 
+  // A2 – a helyviszonyok, a társhatározó és az összehasonlítás új lépcsői.
+  teach('Társ és eszköz: -val/-vel',
+    'Meg tudod mondani, kivel vagy mivel történik valami, és helyesen leírod a hasonulást.',
+    'Ты научишься говорить «с кем?» и «чем?», правильно записывая окончания.', [
+      ['Először válaszd ki a jelentést: kivel? társ, mivel? eszköz. Mindkettőhöz -val/-vel tartozhat.',
+        'Вопрос kivel? относится к сопровождающему человеку, mivel? — к инструменту.', 'A barátommal sétálok. Ceruzával írok.', 'Я гуляю с другом. Я пишу карандашом.'],
+      ['A szó hangrendje dönti el, -val vagy -vel kell. Magánhangzó után megmarad a v; a szóvégi a/e rendszerint hosszúvá válik.',
+        'Выбор -val/-vel зависит от гласных основы. После гласной v сохраняется; конечные a/e удлиняются.', 'ceruza → ceruzával', 'карандаш → карандашом'],
+      ['Mássalhangzó után a v hasonul: az utolsó mássalhangzó kettőződik. A többjegyű sz betűt ssz formában írjuk.',
+        'После согласной v уподобляется последнему согласному, которое удваивается. Буква sz удваивается как ssz.', 'barát → baráttal; busz → busszal', 'с другом; на автобусе']
+    ], ['Írd be! „___ utazom.” (busz; mivel?)', 'busszal',
+      'A busz sz végződése után a -val v-je hasonul: busz + -val → busszal.',
+      'Сочетание sz при удвоении пишется ssz: busszal.'],
+    ['Ne írj „buszval” vagy „kézvel” alakot. Az -val/-vel nem ugyanaz, mint a -hoz/-hez/-höz.',
+      'Не пиши buszval или kézvel; правильно busszal и kézzel. Не путай -val/-vel с суффиксами направления.']);
+
+  teach('Helyragok III.: -hoz/-hez/-höz, -nál/-nél, -tól/-től',
+    'Megkülönbözteted a valakihez, valakinél és valakitől viszonyt.',
+    'Ты различишь движение к человеку, нахождение у него и движение от него.', [
+      ['A hová? kérdésnél a -hoz/-hez/-höz azt mutatja, hogy valakihez vagy valami közelébe megyünk.',
+        'Для направления к человеку или месту используем -hoz/-hez/-höz.', 'Az orvoshoz megyek.', 'Я иду к врачу.'],
+      ['A hol? kérdésre a -nál/-nél gyakran azt jelenti, hogy valakinél vagy valami mellett vagyunk.',
+        'При ответе на hol? используем -nál/-nél: у кого-то, около чего-то.', 'Az orvosnál vagyok. A boltnál várok.', 'Я у врача. Я жду у магазина.'],
+      ['A honnan? kérdésre -tól/-től jelezheti, hogy valakitől vagy valaminek a közeléből jövünk.',
+        'Для движения от человека или места: -tól/-től.', 'Az orvostól jövök.', 'Я иду от врача.'],
+      ['Figyeld a hangrendet és az a/e megnyúlását. Hasonlítsd össze a korábban tanult belső és felületi helyragokkal.',
+        'Следи за гармонией гласных и удлинением конечных a/e. Сравни с ранее изученными падежами места.', 'iskola → iskolához – iskolánál – iskolától', 'к школе — у школы — от школы']
+    ], ['Hogyan mondod? „A bolt mellett várok.” (bolt; hol?)', 'a boltnál',
+      'A hol? kérdésre a boltnál felel: valaminek a közelében vagyok.',
+      'Если ожидаем у магазина, используем a boltnál.'],
+    ['Az orvoshoz (hova megyek?) és az orvosnál (hol vagyok?) nem cserélhető fel. A boltban a belső teret, a boltnál a környékét jelöli.',
+      'Не смешивай az orvoshoz и az orvosnál. Boltban — внутри магазина, boltnál — у магазина.']);
+
+  teach('Melléknevek fokozása: -bb és mint',
+    'Megtanulod két dolog tulajdonságát egyszerű mondatban összehasonlítani.',
+    'Ты научишься сравнивать свойства двух предметов.', [
+      ['Először keresd meg a melléknevet: milyen valami? A gyors, nagy, szép tulajdonságot nevez meg.',
+        'Сначала найди прилагательное — слово, называющее признак предмета.', 'A busz gyors. A ház nagy.', 'Автобус быстрый. Дом большой.'],
+      ['Két dolog összehasonlításakor gyakran -bb vagy kötőhangzós -abb/-ebb jelenik meg. A mint vezeti be azt, amivel összehasonlítunk.',
+        'Для сравнительной степени часто используется -bb с соединительной гласной при необходимости. Mint означает «чем».', 'A busz gyorsabb, mint a bicikli.', 'Автобус быстрее велосипеда.'],
+      ['Néhány tő megváltozik; ezeket külön tanuld meg: szép → szebb, jó → jobb, nagy → nagyobb, kicsi → kisebb.',
+        'Некоторые формы нужно запомнить отдельно: szebb, jobb, nagyobb, kisebb.', 'Ez a feladat jobb. Ez a szoba nagyobb.', 'Это задание лучше. Эта комната больше.'],
+      ['A leg- előtag már felsőfok, tehát nem két dolog egyszerű összehasonlítása.',
+        'Приставка leg- образует превосходную степень, а не обычную сравнительную.', 'gyors – gyorsabb – leggyorsabb', 'быстрый – быстрее – самый быстрый']
+    ], ['Egészítsd ki! „A busz ___, mint a bicikli.” (gyors)', 'gyorsabb',
+      'Két dolgot hasonlítunk össze, ezért gyorsabb + mint.',
+      'При сравнении двух предметов: gyorsabb, mint.'],
+    ['Ne írj „szépebb” vagy „jóbb” alakot. Helyesen: szebb, jobb. A legjobb felsőfok.',
+      'Неверно szépebb и jóbb; правильно szebb и jobb. Legjobb — превосходная степень.']);
+
   // Az eredetileg csak rövid szabályt és tesztet tartalmazó nyolc A1–A2
   // leckéhez saját ragozási/szóalaktani táblázatot is szerkesztünk.
   // Ez a táblázatos, összehasonlító szemlélet a feltöltött orosz nyelvű

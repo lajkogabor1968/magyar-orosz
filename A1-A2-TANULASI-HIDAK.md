@@ -1,19 +1,19 @@
 # A1–A2 nyelvtani egymásra épülés – ellenőrzési jegyzőkönyv
 
-Állapot: 2026. november 21.
+Állapot: 2026. november 22.
 
 ## Eredmény
 
-Az A1-ben 10 témakör és 66 feladat; az A2-ben 22 témakör és 198 feladat található.
-A négy szint együtt 40 témakört és 304 nyelvtani kérdést ad.
-Az A1–A2 összes 32 leckéjéhez magyar–orosz tanító fejezet,
+Az A1-ben 10 témakör és 66 feladat; az A2-ben 25 témakör és 234 feladat található.
+A négy szint együtt 43 témakört és 340 nyelvtani kérdést ad.
+Az A1–A2 összes 35 leckéjéhez magyar–orosz tanító fejezet,
 önálló nyelvtani táblázat és legalább öt gyakorlófeladat tartozik.
-Mind a 40 témacímnek van orosz fordítása, és a 304 kérdés mindegyikénél
+Mind a 43 témacímnek van orosz fordítása, és a 340 kérdés mindegyikénél
 megjelenik orosz feladatutasítás.
 
-A strukturált előismereti ellenőrzés eredménye: **22/22 A2-téma** rendelkezik
+A strukturált előismereti ellenőrzés eredménye: **25/25 A2-téma** rendelkezik
 legalább egy megfelelő A1-es vagy korábbi A2-es alapozó leckével.
-Összesen **38 kattintható előfeltétel-kapcsolat** került a tanulófelületre.
+Összesen **44 kattintható előfeltétel-kapcsolat** került a tanulófelületre.
 A megfelelő korábbi lecke közvetlenül megnyitható a témakör alatt.
 
 ## Feltárt hiányok és elvégzett javítások
@@ -27,10 +27,13 @@ A megfelelő korábbi lecke közvetlenül megnyitható a témakör alatt.
 | Az A2 leckéiből nem lehetett látni, melyik A1-es ismeretet érdemes felfrissíteni. | A teljes A2 kapott 38 közvetlen, kétnyelvű előfeltétel-hivatkozást; automatikusan ellenőrizzük, hogy nincs nem létező vagy későbbi A2-es előfeltétel. |
 | A témakörválasztó és a lecke fejlécének címe kizárólag magyarul szerepelt. | Mind a 40 cím orosz fordítása megjelenik a listában és a fejlécben is. |
 | Egy új feladat beírandó teljes szót várt, miközben a kérdés csupán rag pótlását sugallta; egy másik alaktani példa mesterkélt volt. | A részes eset feladatai már következetesen **teljes alak** beírását kérik; a személynek címzett példákban az **Emese → Emesének** természetes személynévi mintát használjuk. |
+| A társ és az eszköz kifejezése -val/-vel raggal nem volt külön tanítva; ez orosz anyanyelvűeknek különösen nehéz a v teljes hasonulása miatt. | Új A2-es fejezet: **Társ és eszköz: -val/-vel**. A ceruzával, baráttal, busszal, kézzel mintákat magyar–orosz szabállyal, táblázattal és 12 feladattal tanítjuk. |
+| A korábbi helyragok után hiányzott a valakihez / valakinél / valakitől sor. | Új A2-es fejezet: **Helyragok III.**, a -hoz/-hez/-höz, -nál/-nél, -tól/-től háromirányú rendszerével és 12 gyakorlattal. |
+| A tulajdonságok összehasonlításának alakjai nem jelentek meg tanító fejezetként. | Új A2-es fejezet: **Melléknevek fokozása**, -bb és mint szerkezettel, szebb, jobb, nagyobb, kisebb külön alakokkal és 12 feladattal. |
 
 ## Előismereti láncok
 
-A teljes, 22 témakörre kiterjedő gépileg ellenőrzött lista a
+A teljes, 25 témakörre kiterjedő gépileg ellenőrzött lista a
 nyelvtan-elofeltetelek.js fájlban található. A tanítási összefüggések:
 
 | A2-es témacsoport | A1-es alap | További, korábbi A2-es lépés |
@@ -44,6 +47,9 @@ nyelvtan-elofeltetelek.js fájlban található. A tanítási összefüggések:
 | Személyragos főnévi igenév + kell | Főnévi igenév; személyes névmások | A kinek? névmási sor magyarázata a leckében; részletes részes eset külön fejezetben |
 | Birtokos személyjelek és birtoklás | Szótő–toldalék; létige | Birtokos jel → van/nincs birtoklási mondat |
 | Részes eset -nak/-nek | Hangrend, alany–tárgy felismerése | Különbség a tárgy (mit?) és a címzett (kinek?) között |
+| Társ és eszköz -val/-vel | Hangrend, szótő és toldalék | Részes eset mint toldalékolási előzmény; -val/-vel v-hasonulás |
+| Helyragok III. | Magánhangzó-harmónia és létige | Hová? Hol? Honnan? → felületi helyragok → közelségi helyragok |
+| Melléknevek középfoka | Egyszerű minősítő mondatok a létigénél, névelők | -bb, mint; szebb, jobb, nagyobb, kisebb |
 
 ## Sorrend és tanulói eredmények
 
@@ -57,7 +63,7 @@ bevezetése után lehet majd biztonságosan újrarendezni a tanulási útvonalat
 ## Ellenőrzés és fennmaradó feladat
 
 - node magyar-orosz/verify-nyelvtan.mjs: teljes körű szerkezeti vizsgálat,
-  címfordítások, 304 orosz feladatutasítás, 32 tankönyvi fejezet, 38 előfeltétel,
+  címfordítások, 340 orosz feladatutasítás, 35 tankönyvi fejezet, 44 előfeltétel,
   feladatkulcsok és régi témaazonosítók ellenőrzése.
 - node magyar-orosz/verify-nyelvtan-browser.mjs: a tanulói felület,
   pontozás, haladásmegőrzés, orosz címsorok és a kezdőképernyő böngészős ellenőrzése
@@ -69,3 +75,6 @@ bevezetése után lehet majd biztonságosan újrarendezni a tanulási útvonalat
 
 Az új szövegek, feladatok és táblázatok önálló szerkesztésűek; a feltöltött
 orosz nyelvű nyelvtankönyv felépítése módszertani minta, nem másolt tananyag.
+
+A -val/-vel rag hasonulási szabályainak ellenőrzési forrása:
+[A magyar helyesírás szabályai, AkH. 82. pont](https://helyesiras.mta.hu/helyesiras/default/akh).

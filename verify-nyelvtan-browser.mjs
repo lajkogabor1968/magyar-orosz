@@ -17,7 +17,7 @@ page.on('pageerror', err => errors.push(err.message));
 try {
   await page.goto(`file://${file}?level=A2`);
   await page.locator('#topic option').first().waitFor({state: 'attached'});
-  assert.match(await page.locator('#count').textContent(), /22 témakör \/ тем · 198 feladat \/ заданий/);
+  assert.match(await page.locator('#count').textContent(), /25 témakör \/ тем · 234 feladat \/ заданий/);
   const select = page.locator('#topic');
   const target = await select.locator('option').evaluateAll(opts =>
     opts.find(el => el.textContent.includes('Felszólító mód I.'))?.value);
@@ -117,6 +117,27 @@ try {
     await page.locator('#check').click();
     assert.match(await page.locator('#result').textContent(), /12 \/ 12 баллов · 100%/);
   }
+  for (const [index, title] of [
+    ['22', 'Társ és eszköz'], ['23', 'Helyragok III.'], ['24', 'Melléknevek fokozása']
+  ]) {
+    await select.selectOption(index);
+    assert.ok((await page.locator('#title').textContent()).includes(title));
+    assert.ok((await page.locator('.grammar-topic-title-ru').textContent()).trim().length > 8);
+    assert.equal(await page.locator('.grammar-prerequisites-links button').count(), 2);
+    assert.ok(await page.locator('.lesson-step').count() >= 3);
+    assert.equal(await page.locator('.conjugation-table tbody tr').count(), 6);
+    assert.equal(await page.locator('.question-instruction-ru').count(), 12);
+    const questions = await page.evaluate(i => window.GRAMMAR_TOPICS.filter(
+      t => t.level === 'A2')[Number(i)].questions, index);
+    for (const [i, q] of questions.entries()) {
+      const row = page.locator('#questions .question').nth(i);
+      if (q.type === 'input') await row.locator('input').fill(q.accept[0]);
+      else await row.getByRole('button', {name: q.options[q.answer], exact: true}).click();
+    }
+    await page.locator('#check').click();
+    assert.match(await page.locator('#result').textContent(), /12 \/ 12 баллов · 100%/);
+    assert.equal(await page.locator('.feedback[lang="ru"]').count(), 12);
+  }
   await page.locator('#levels [data-level="A1"]').click();
   assert.match(await page.locator('#count').textContent(), /10 témakör \/ тем · 66 feladat \/ заданий/);
   await select.selectOption('9');
@@ -150,7 +171,7 @@ try {
   await page.locator('.landing-back').click();
   assert.ok(await page.locator('#landingScreen').isVisible(), 'Vissza lehessen lépni a kezdőlapra.');
   assert.equal(errors.length, 0, `Böngészőhibák: ${errors.join('; ')}`);
-  console.log('Böngészős teszt rendben: 40 kétnyelvű cím, 304 feladat, 32 tankönyv, 22 A2 előfeltétel, eredménymegőrzés és orosz kezdőképernyő.');
+  console.log('Böngészős teszt rendben: 43 kétnyelvű cím, 340 feladat, 35 tankönyv, 25 A2 előfeltétel, eredménymegőrzés és orosz kezdőképernyő.');
 } finally {
   await browser.close();
 }

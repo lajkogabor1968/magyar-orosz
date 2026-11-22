@@ -27,7 +27,10 @@
     'Birtokos személyjelek – könyvem, könyved, könyve': ['Szótő és toldalék: hogyan épül fel egy szó?', 'Igeragozás I. – én, te, ő, mi, ti, ők'],
     'Birtoklás: van könyvem, nincs autóm': ['A létige: vagyok, vagy, van', 'Birtokos személyjelek – könyvem, könyved, könyve'],
     'Részes eset: -nak/-nek – kinek?': ['Magánhangzó-harmónia: -ban/-ben', 'Ki cselekszik? Alany, ige és tárgy'],
-    'Helyragok II.: -ra/-re, -on/-en/-ön, -ról/-ről': ['Magánhangzó-harmónia: -ban/-ben', 'Hová? Hol? Honnan?']
+    'Helyragok II.: -ra/-re, -on/-en/-ön, -ról/-ről': ['Magánhangzó-harmónia: -ban/-ben', 'Hová? Hol? Honnan?'],
+    'Társ és eszköz: -val/-vel': ['Magánhangzó-harmónia: -ban/-ben', 'Részes eset: -nak/-nek – kinek?'],
+    'Helyragok III.: -hoz/-hez/-höz, -nál/-nél, -tól/-től': ['Hová? Hol? Honnan?', 'Helyragok II.: -ra/-re, -on/-en/-ön, -ról/-ről'],
+    'Melléknevek fokozása: -bb és mint': ['A létige: vagyok, vagy, van', 'Többes szám és a névelők']
   };
   const topics = window.GRAMMAR_TOPICS;
   if (!Array.isArray(topics)) throw new Error('Hiányzik a nyelvtani témalista.');

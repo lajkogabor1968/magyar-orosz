@@ -13,7 +13,10 @@
     'Ki cselekszik? Alany, ige és tárgy': 'Кто действует? Подлежащее, глагол и дополнение',
     'Birtoklás: van könyvem, nincs autóm': 'Наличие и отсутствие — van könyvem, nincs autóm',
     'Részes eset: -nak/-nek – kinek?': 'Дательный падеж: -nak/-nek — кому?',
-    'Helyragok II.: -ra/-re, -on/-en/-ön, -ról/-ről': 'Падежи места II — на что? на чём? с чего?'
+    'Helyragok II.: -ra/-re, -on/-en/-ön, -ról/-ről': 'Падежи места II — на что? на чём? с чего?',
+    'Társ és eszköz: -val/-vel': 'С кем? Чем? Формы с -val/-vel',
+    'Helyragok III.: -hoz/-hez/-höz, -nál/-nél, -tól/-től': 'Падежи места III — к кому? у кого? от кого?',
+    'Melléknevek fokozása: -bb és mint': 'Сравнительная степень прилагательных — -bb и mint'
   });
   for (const topic of window.GRAMMAR_TOPICS) {
     if (!russian[topic.title]) throw new Error('Hiányzó orosz témacím: ' + topic.title);
