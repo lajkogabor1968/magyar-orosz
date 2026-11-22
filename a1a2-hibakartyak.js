@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const cards=[
 {id:'article',level:'A1',lessons:[0,1,4],title:'Артикль a/az и egy — névelő',wrong:'Ez telefon.',right:'Ez egy telefon.',why:'Перед исчисляемым существительным в этом образце нужен артикль egy. В русском языке артикля нет.'},
-{id:'vowels',level:'A1',lessons:[0,3,5],title:'Долгие гласные — hosszú magánhangzók',wrong:'Vizet kérek. (a víz szó ékezete nélkül: viz)',right:'Kérek egy pohár vizet. (víz → vizet)',why:'В словарной форме víz пишется с í. В форме vizet гласная становится краткой; это не опечатка.'},
+{id:'vowels',level:'A1',lessons:[0,3,5],title:'Долгие гласные — hosszú magánhangzók',wrong:'Ez viz.',right:'Ez víz.',why:'В словарной форме víz пишется с í. В форме vizet гласная становится краткой; это не опечатка.'},
 {id:'place',level:'A1',lessons:[3,7],title:'Где? — Hol?',wrong:'A kulcs az asztalban van. (если ключ лежит сверху)',right:'A kulcs az asztalon van.',why:'-on: на поверхности; -ban/-ben: внутри предмета или помещения.'},
 {id:'harmony',level:'A1',lessons:[3,7],title:'Гармония гласных — magánhangzó-harmónia',wrong:'A kertban vagyok.',right:'A kertben vagyok.',why:'После гласных переднего ряда здесь используется -ben, а не -ban.'},
 {id:'move',level:'A2',lessons:[0,1],title:'Где? Куда? Откуда? — hol / hová / honnan',wrong:'Az iskolában megyek.',right:'Az iskolába megyek.',why:'С глаголом megyek («иду») направление обозначает -ba/-be: hová?; hely: -ban/-ben: hol?'},
