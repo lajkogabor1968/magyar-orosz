@@ -79,7 +79,7 @@ assert.match(scripts,/src="a1-guided-lessons-17-20\.js[^\"]*"[^\n]*src="a1-guide
 assert.match(book,/courses\.A1\.push\(\.\.\.actionUnits\.lessons\)/);
 assert.match(book,/Object\.assign\(checks,actionUnits\.checks\)/);
 assert.match(book,/chapterVisuals\.A1\.push\(\.\.\.actionUnits\.visuals\)/);
-assert.match(book,/const vocabularyIntro=level==='A1'&&lessonIndex===0/, 'Alphabet instructions must be limited to lesson 1');
+assert.match(book,/lessonIndex===0\?'Слушайте слова, изучайте венгерские буквы/, 'Alphabet instructions must be limited to lesson 1');
 assert.match(book,/Изучите слова и откройте перевод пяти разных карточек\./, 'Later lessons must have appropriate instructions');
 assert.ok(lessons[0].grammar[1].includes('olvasol'),'Second-person sibilant verbs must be explicit');
 assert.ok(lessons[0].grammar[1].includes('dolgozom'),'Ik conjugation exception must be explicit');

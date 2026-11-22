@@ -15,7 +15,8 @@ A mérés megismételhető: `node magyar-orosz/verify-guided-coverage.mjs`.
 ## Duolingo-mintájú, megismételhető A1-audit – 2026. november 22.
 
 Futtatás a repó gyökeréből: `node magyar-orosz/audit-a1-release.mjs`. Ezt a
-korábbi 14 célzott technikai ellenőrzéssel együtt futtattuk. A keretrendszer
+korábbi 14 célzott technikai ellenőrzéssel és a
+`node magyar-orosz/verify-a1-teach-before-test.mjs` biztonsági teszttel együtt futtattuk. A keretrendszer
 **nem** a Duolingo nem nyilvános belső tesztjeinek másolata: annak közzétett
 tananyag-tervezési és ellenőrzési elveiből indultunk ki.
 
@@ -24,6 +25,7 @@ tananyag-tervezési és ellenőrzési elveiből indultunk ki.
 | 28 A1-es lecke, egyedi sorrend, régi azonosítók | Rendben | A korábbi tanulói eredmények kulcsai érintetlenek. |
 | Szókártyák, orosz magyarázatok, minták, párbeszédek | 28/28 lecke szerkezetileg ellenőrizve | Ez **nem** hitelesíti a fordítások nyelvi helyességét. |
 | Nyelvtani és szövegértési javítókulcs | 28/28 lecke: létező kulcs, nem duplikált választási lehetőségek | A többféleképpen helyes válaszok emberi lektorálása még szükséges. |
+| Tanítás előtti számonkérés kizárása | Az újonnan indított A1-es záróteszt 10 kérdése csak a kötelezően átnézett első 10 kártyából kerülhet ki | A többi kártya külön, szabadon tanulható; a régi folyamatban lévő tesztek sorrendje megmarad. |
 | Teljes automatikus A1-audit | **0 fennmaradó kritikus szerkezeti találat** | A feltárt első leckés magyarázati hiányt javítottuk. |
 | Szókincsterhelés | **13 lecke szakmai felülvizsgálatra jelölve** | 9–13 új alapszókártya; figyelmeztetés, nem automatikus bukás. |
 | Vezetett út / A1-szótár | 173/580 különböző címszó, **29,8%** | Nem tekinthető kész A1-es útvonalnak. |

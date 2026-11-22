@@ -117,8 +117,18 @@ function grammarQuestion(){
 }
 
 function note(message){let node=$('integratedStepStatus');if(!node){node=el('p','','lesson-step-status');node.id='integratedStepStatus';node.setAttribute('role','status');node.setAttribute('aria-live','polite');$('integratedStepNext').after(node)}node.textContent=message}
+function requiredCardCount(){return Math.min(level==='A1'?10:5,rows().length)}
+function requiredCardsSeen(){return Array.from({length:requiredCardCount()},(_,i)=>i).every(i=>flippedWords.has(i))}
+function initialTestOrder(){
+ const indices=rows().map((_,i)=>i);
+ if(level!=='A1')return randomOrder(indices);
+ const taughtCount=requiredCardCount();
+ // Only the first, deliberately sequenced A1 cards are assessed. The rest
+ // remain accessible for optional learning; old in-progress quizzes resume.
+ return [...randomOrder(indices.slice(0,taughtCount)),...randomOrder(indices.slice(taughtCount))];
+}
 function canAdvance(){
-if(step===0)return flippedWords.size>=Math.min(5,rows().length);
+if(step===0)return level==='A1'?requiredCardsSeen():flippedWords.size>=requiredCardCount();
 if(step===1)return grammarReviewed;
 if(step===2)return dialoguePractised;
 if(step===3)return correctWriting.size>=Math.min(3,rows().length) && (level!=='A1'||lessonIndex!==0||[...correctWriting].filter(i=>/[áéíóöőúüű]/.test(rows()[i]?.hu||'')).length>=2);
@@ -126,7 +136,7 @@ if(step===4)return compositionChecked;
 if(step===5)return testCompleted;
 return true
 }
-function moveNext(){if(!canAdvance()){note(['Сначала откройте перевод как минимум пяти разных слов на карточках.','Прочитайте правило и выберите правильный ответ.','Прослушайте диалог и повторите хотя бы одну реплику вслух.','Сначала правильно напишите не менее трёх слов.','Сначала напишите мини-сочинение и проверьте его структуру.','Сначала ответьте на все вопросы итоговой проверки.'][step]);return}if(step<5){step++;save();stageView()}else{const old=read(KEY);const finished=old.completed||{};finished[lessonKey()]={score:testCorrect,max:Math.min(10,rows().length),errors:quizMisses.map(v=>v.hu),date:new Date().toISOString()};old.completed=finished;try{localStorage.setItem(KEY,JSON.stringify(old));persistQuiz(true)}catch(_){note('Не удалось сохранить результат. Скопируйте его перед выходом.');return}if(lessonIndex+1<courses[level].length){const nextIndex=lessonIndex+1;confirmLessonChange(nextIndex);if(lessonIndex===nextIndex)note('✓ Урок завершён. Вы перешли к следующему.');else note('✓ Урок завершён. Выберите повторение или продолжение обучения.')}else{step=0;save();render();note(Object.keys(courses[level]).every(i=>finished[level+':'+i])?'✓ Все подготовленные уроки этого уровня завершены.':'✓ Урок завершён. В списке уроков выберите следующий без отметки ✓.')}}}
+function moveNext(){if(!canAdvance()){note([level==='A1'?'Сначала откройте перевод первых десяти слов на карточках.':'Сначала откройте перевод как минимум пяти разных слов на карточках.','Прочитайте правило и выберите правильный ответ.','Прослушайте диалог и повторите хотя бы одну реплику вслух.','Сначала правильно напишите не менее трёх слов.','Сначала напишите мини-сочинение и проверьте его структуру.','Сначала ответьте на все вопросы итоговой проверки.'][step]);return}if(step<5){step++;save();stageView()}else{const old=read(KEY);const finished=old.completed||{};finished[lessonKey()]={score:testCorrect,max:Math.min(10,rows().length),errors:quizMisses.map(v=>v.hu),date:new Date().toISOString()};old.completed=finished;try{localStorage.setItem(KEY,JSON.stringify(old));persistQuiz(true)}catch(_){note('Не удалось сохранить результат. Скопируйте его перед выходом.');return}if(lessonIndex+1<courses[level].length){const nextIndex=lessonIndex+1;confirmLessonChange(nextIndex);if(lessonIndex===nextIndex)note('✓ Урок завершён. Вы перешли к следующему.');else note('✓ Урок завершён. Выберите повторение или продолжение обучения.')}else{step=0;save();render();note(Object.keys(courses[level]).every(i=>finished[level+':'+i])?'✓ Все подготовленные уроки этого уровня завершены.':'✓ Урок завершён. В списке уроков выберите следующий без отметки ✓.')}}}
 
 function read(key){try{return JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(_){return {}}}
 function save(){const s=read(KEY);s[level]={lessonIndex,step};if(level==='A1')s.migratedFirstUnit20261121=true;try{localStorage.setItem(KEY,JSON.stringify(s))}catch(_){}}
@@ -558,6 +568,7 @@ function persistQuiz(clear=false){
 }
 function resumeQuiz(){
  quizAnswers=[];
+ if(level==='A1')testOrder=initialTestOrder();
  const saved=read(quizKey)[lessonKey()],w=rows();
  if(!saved||!Array.isArray(saved.order)||!Array.isArray(saved.answers))return;
  const order=saved.order.map(hu=>w.findIndex(r=>r.hu===hu)),n=Math.min(10,w.length);
@@ -578,7 +589,7 @@ function showQuizResult(){
  $('integratedAnswerFeedback').textContent='Результат: '+testCorrect+' / '+n+' ('+percent+'%). '+(percent>=90?'Отлично! Вы готовы к следующему уроку.':'Рекомендуем повторить слова и добиться 90%, но это не обязательное условие.');
  $('integratedNextQuestion').hidden=true;stepButton.disabled=false;
 }
-function test(){const w=rows(),v=w[testOrder[testIndex]??testIndex%w.length],box=$('integratedQuestion');box.replaceChildren();$('integratedErrorSummary').hidden=true;if(!v)return;const p=el('p',v.hu);p.lang='hu';box.append(p);const seen=new Set([v.ru]);const others=randomOrder(w.filter(r=>r.ru!==v.ru)).filter(r=>{if(seen.has(r.ru))return false;seen.add(r.ru);return true}).slice(0,3);const options=randomOrder([v,...others]);for(const candidate of options){const b=el('button',candidate.ru,'integrated-answer');b.type='button';b.onclick=()=>{if(hasAnswered||testCompleted)return;hasAnswered=true;quizAnswers[testIndex]=candidate.ru;persistQuiz();const good=candidate.ru===v.ru;if(good)testCorrect++;else quizMisses.push({hu:v.hu,ru:v.ru,example:v.example,translation:v.translation});$('integratedAnswerFeedback').textContent=good?'✓ Верно! '+v.hu+' — '+v.ru:'✗ Вы выбрали: '+candidate.ru+'. Правильный перевод: '+v.ru+'. Пример: '+v.example+' — '+v.translation+'. Прослушайте и повторите слово.';$('integratedNextQuestion').hidden=false;box.querySelectorAll('button').forEach(btn=>btn.disabled=true);$('integratedStepNext').disabled=true};box.append(b)}$('integratedNextQuestion').hidden=true;$('integratedAnswerFeedback').textContent='Вопрос '+(testIndex+1)+' / '+Math.min(10,w.length);
+function test(){const w=rows(),v=w[testOrder[testIndex]??testIndex%w.length],box=$('integratedQuestion');box.replaceChildren();$('integratedErrorSummary').hidden=true;if(!v)return;const p=el('p',v.hu);p.lang='hu';box.append(p);const seen=new Set([v.ru]);const distractors=level==='A1'?w.slice(0,requiredCardCount()):w;const others=randomOrder(distractors.filter(r=>r.ru!==v.ru)).filter(r=>{if(seen.has(r.ru))return false;seen.add(r.ru);return true}).slice(0,3);const options=randomOrder([v,...others]);for(const candidate of options){const b=el('button',candidate.ru,'integrated-answer');b.type='button';b.onclick=()=>{if(hasAnswered||testCompleted)return;hasAnswered=true;quizAnswers[testIndex]=candidate.ru;persistQuiz();const good=candidate.ru===v.ru;if(good)testCorrect++;else quizMisses.push({hu:v.hu,ru:v.ru,example:v.example,translation:v.translation});$('integratedAnswerFeedback').textContent=good?'✓ Верно! '+v.hu+' — '+v.ru:'✗ Вы выбрали: '+candidate.ru+'. Правильный перевод: '+v.ru+'. Пример: '+v.example+' — '+v.translation+'. Прослушайте и повторите слово.';$('integratedNextQuestion').hidden=false;box.querySelectorAll('button').forEach(btn=>btn.disabled=true);$('integratedStepNext').disabled=true};box.append(b)}$('integratedNextQuestion').hidden=true;$('integratedAnswerFeedback').textContent='Вопрос '+(testIndex+1)+' / '+Math.min(10,w.length);
  if(hasAnswered){
   box.querySelectorAll('button').forEach(b=>b.disabled=true);
   const a=quizAnswers[testIndex];
@@ -605,9 +616,11 @@ function stageView(){
   if(i===step)item.setAttribute('aria-current','step');else item.removeAttribute('aria-current');
  });
  document.querySelectorAll('.lesson-sections a').forEach((a,i)=>{a.hidden=i!==step;a.textContent=(i+1)+'. '+stepsRu[i]});
- const vocabularyIntro=level==='A1'&&lessonIndex===0
-  ? 'Слушайте слова, изучайте венгерские буквы и откройте перевод пяти карточек.'
+ const vocabularyIntro=level==='A1'
+  ? (lessonIndex===0?'Слушайте слова, изучайте венгерские буквы и откройте перевод первых ':'Изучите слова и откройте перевод первых ')+requiredCardCount()+' карточек.'
   : 'Изучите слова и откройте перевод пяти разных карточек.';
+ const cardHint=$('integratedFlashcard')?.previousElementSibling;
+ if(cardHint)cardHint.textContent=level==='A1'?'Послушайте и откройте перевод первых '+requiredCardCount()+' слов: именно они войдут в итоговую проверку. Остальные карточки доступны для дополнительного изучения.':'Послушайте слово, вспомните значение и откройте перевод пяти разных карточек.';
  $('integratedLessonIntro').textContent=[vocabularyIntro,'Прочитайте правило по-русски и ответьте на один вопрос.','Послушайте реплику и повторите её вслух.','Напишите правильно три разных слова; в первом уроке минимум два с долгой гласной.',level==='A1'?'Сначала прочитайте и прослушайте текст, ответьте на вопрос по содержанию. Затем напишите свой текст по образцу.':'Напишите небольшой текст по образцу и проверьте его структуру.','Ответьте на вопросы и узнайте результат сразу.'][step];
  $('integratedStepNext').textContent=step===5?'Завершить урок':'Следующий шаг';
  $('integratedStepNext').disabled=!canAdvance();
@@ -659,7 +672,7 @@ function confirmLessonChange(targetIndex){
 }
 $('integratedLessonSelect').addEventListener('change',e=>{const target=Number(e.target.value);e.target.value=String(lessonIndex);confirmLessonChange(target)});
 $('integratedFlashcardOpen').onclick=()=>{cardIndex=0;card();$('integratedFlashcard').hidden=false;note('Повторите карточки. Уже открытые переводы сохраняются в прогрессе урока.')};
-$('integratedCardFlip').onclick=()=>{const node=$('integratedCardRussian');node.hidden=!node.hidden;if(!node.hidden){flippedWords.add(cardIndex);saveCheckpoint();if(step===0&&canAdvance())stepButton.disabled=false;note('Проверено слов: '+flippedWords.size+' / '+Math.min(5,rows().length)+'.')} $('integratedCardFlip').textContent=node.hidden?'Показать перевод':'Скрыть перевод'};
+$('integratedCardFlip').onclick=()=>{const node=$('integratedCardRussian');node.hidden=!node.hidden;if(!node.hidden){flippedWords.add(cardIndex);saveCheckpoint();if(step===0&&canAdvance())stepButton.disabled=false;const count=level==='A1'?[...flippedWords].filter(i=>i<requiredCardCount()).length:flippedWords.size;note('Проверено обязательных слов: '+count+' / '+requiredCardCount()+'.')} $('integratedCardFlip').textContent=node.hidden?'Показать перевод':'Скрыть перевод'};
 $('integratedCardNext').onclick=()=>{cardIndex=(cardIndex+1)%rows().length;card()};
 $('integratedCardSpeak').onclick=()=>say(rows()[cardIndex%rows().length].hu);
 const grammarLinks={
