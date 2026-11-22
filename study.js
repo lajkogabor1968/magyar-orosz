@@ -31,7 +31,9 @@
   });
   more.addEventListener('click', () => {
     extra.hidden = !extra.hidden;
-    more.textContent = extra.hidden ? 'Другие упражнения' : 'Скрыть дополнительные занятия';
+    root.classList.toggle('study-advanced-open', !extra.hidden);
+    more.setAttribute('aria-expanded', String(!extra.hidden));
+    more.textContent = extra.hidden ? 'Дополнительные занятия и инструменты ▾' : 'Скрыть дополнительные занятия ▴';
   });
   document.getElementById('studyDaily')?.addEventListener('click', () => {
     const isA1 = document.querySelector('.welcome .level.active')?.dataset.level === 'A1';
