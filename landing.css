@@ -308,3 +308,25 @@ html.study-book .masthead{padding:13px 0}
 .lesson-video-block video{width:100%;max-height:380px;border-radius:12px;background:#102a27}
 @media(max-width:500px){.lesson-game-options{grid-template-columns:1fr}.lesson-motion-step{min-width:90px}}
 @media(prefers-reduced-motion:reduce){.lesson-motion-scene.active .lesson-motion-step{animation:none!important}}
+
+/* A1–A2: единственный основной маршрут; вспомогательные модули не удаляются. */
+html.study-menu .study-hub-options{grid-template-columns:minmax(0,1fr)}
+html.study-menu .study-hub-options #lessonsPrimary{min-height:116px;background:#174f48;border-color:#174f48;color:white;box-shadow:0 8px 24px #174f4820}
+html.study-menu .study-hub-options #lessonsPrimary span{color:#e1f4ed}
+html.study-menu:not(.study-advanced-open) .study-hub-options button:not(#lessonsPrimary),
+html.study-menu:not(.study-advanced-open) .study-online-entry,
+html.study-menu:not(.study-advanced-open) #examOpen,
+html.study-menu:not(.study-advanced-open) #coachOpen,
+html.study-menu:not(.study-advanced-open) .study-backup,
+html.study-menu:not(.study-advanced-open) .study-pricing{display:none!important}
+.study-backup{background:#fff;border:1px solid #dce8e2;border-radius:15px;padding:18px;margin:22px auto 8px;text-align:left;max-width:720px}
+.study-backup h3{margin:0 0 9px;font-size:1.1rem}
+.study-backup p,.study-pricing{color:#536e68;font-size:.9rem;line-height:1.55}
+.study-backup .lesson-actions{flex-wrap:wrap;gap:10px}
+.backup-import-label{display:inline-flex;align-items:center;min-height:42px;cursor:pointer;border:1px solid #a6c3b8;border-radius:9px;padding:10px 14px;background:#f7faf8;color:#174f48}
+.study-pricing{max-width:720px;margin:18px auto}
+.error-card{border:1px solid #d7e4df;border-radius:14px;padding:16px;margin:12px 0;background:#f8fbfa}
+.error-card h4{margin:0 0 8px}
+.error-card button{margin:8px 0;cursor:pointer}
+.error-card .error-card-answer{border-left:3px solid #38947c;padding:10px 14px;background:white}
+@media(max-width:600px){.study-backup .lesson-actions{display:flex;flex-direction:column;align-items:stretch}}
