@@ -79,6 +79,85 @@ const units={
 ['Köszönöm a segítséget!','Спасибо за помощь!'],
 ['Szívesen!','Пожалуйста!']
 ],questions:[['Hol van ma a kulcs?','В сумке.','В саду.','В школе.',0],['Hol van az asztal?','У двери.','У окна.','В саду.',1]]}
+,4:{title:'Еда и напитки: завтрак дома',lines:[
+['Ma szombat van.','Сегодня суббота.'],
+['Reggel nyolckor kelek.','Я встаю в восемь утра.'],
+['A konyhába megyek.','Я иду на кухню.'],
+['Az asztalon kenyér és sajt van.','На столе хлеб и сыр.'],
+['A hűtőben tej is van.','В холодильнике есть и молоко.'],
+['Először teát készítek.','Сначала я готовлю чай.'],
+['A teába nem kérek cukrot.','В чай я не хочу сахар.'],
+['Két szelet kenyeret eszem.','Я ем два ломтика хлеба.'],
+['A kenyérre sajtot teszek.','На хлеб я кладу сыр.'],
+['Anyukám kávét iszik.','Моя мама пьёт кофе.'],
+['Apukám egy almát eszik.','Мой папа ест яблоко.'],
+['A testvérem vizet kér.','Мой брат просит воды.'],
+['Együtt reggelizünk a konyhában.','Мы вместе завтракаем на кухне.'],
+['A reggeli egyszerű, de finom.','Завтрак простой, но вкусный.'],
+['Reggeli után elmosogatok.','После завтрака я мою посуду.']
+],dialogue:[
+['Jó reggelt! Kérsz teát?','Доброе утро! Хочешь чай?'],
+['Igen, kérek egy teát.','Да, мне чай, пожалуйста.'],
+['Kérsz cukrot is?','Хочешь ещё сахар?'],
+['Nem, köszönöm.','Нет, спасибо.'],
+['Mit eszel reggelire?','Что ты ешь на завтрак?'],
+['Kenyeret és sajtot eszem.','Я ем хлеб и сыр.'],
+['Kérsz egy almát?','Хочешь яблоко?'],
+['Igen, köszönöm szépen!','Да, большое спасибо!']
+],questions:[['Mit iszik az anyuka?','Кофе.','Молоко.','Воду.',0],['Hol reggelizik a család?','В саду.','На кухне.','В школе.',1]]}
+,5:{title:'Мой обычный день',lines:[
+['Hétfő van.','Сегодня понедельник.'],
+['Reggel hétkor kelek.','Я встаю в семь утра.'],
+['Megmosakszom és felöltözöm.','Я умываюсь и одеваюсь.'],
+['Fél nyolckor reggelizem.','Я завтракаю в половине восьмого.'],
+['Kenyeret eszem és vizet iszom.','Я ем хлеб и пью воду.'],
+['Nyolckor elindulok otthonról.','В восемь я выхожу из дома.'],
+['Busszal megyek az iskolába.','Я еду в школу на автобусе.'],
+['Délelőtt magyarul tanulok.','В первой половине дня я учу венгерский язык.'],
+['Délben ebédelek.','В полдень я обедаю.'],
+['Ebéd után egy kicsit pihenek.','После обеда я немного отдыхаю.'],
+['Délután házi feladatot írok.','Днём я делаю письменное домашнее задание.'],
+['Néha a parkban sétálok.','Иногда я гуляю в парке.'],
+['Este otthon vagyok.','Вечером я дома.'],
+['Vacsora után könyvet olvasok.','После ужина я читаю книгу.'],
+['Tíz órakor lefekszem.','В десять часов я ложусь спать.']
+],dialogue:[
+['Mikor kelsz reggel?','Во сколько ты встаёшь утром?'],
+['Hétkor kelek.','Я встаю в семь.'],
+['Mikor reggelizel?','Во сколько ты завтракаешь?'],
+['Fél nyolckor.','В половине восьмого.'],
+['Mit csinálsz délután?','Что ты делаешь днём?'],
+['Tanulok és sétálok.','Я учусь и гуляю.'],
+['Mikor fekszel le?','Во сколько ты ложишься спать?'],
+['Tíz órakor.','В десять часов.']
+],questions:[['Hogyan megy a tanuló az iskolába?','На автобусе.','Пешком.','На велосипеде.',0],['Mit csinál vacsora után?','Готовит.','Читает книгу.','Идёт в магазин.',1]]}
+,6:{title:'Вопросы в магазине',lines:[
+['Délután a boltba megyek.','Днём я иду в магазин.'],
+['A bolt közel van a házunkhoz.','Магазин находится рядом с нашим домом.'],
+['Kenyeret és tejet szeretnék venni.','Я хочу купить хлеб и молоко.'],
+['A boltban sok ember van.','В магазине много людей.'],
+['Először a kenyeret keresem.','Сначала я ищу хлеб.'],
+['Megkérdezem az eladót.','Я спрашиваю продавца.'],
+['Az eladó kedves.','Продавец приветливый.'],
+['Megmutatja, hol van a kenyér.','Он показывает, где находится хлеб.'],
+['Egy kenyeret veszek.','Я покупаю одну буханку хлеба.'],
+['Utána tejet keresek.','Потом я ищу молоко.'],
+['A tej a hűtőben van.','Молоко находится в холодильнике.'],
+['Két doboz tejet veszek.','Я покупаю две упаковки молока.'],
+['A pénztárnál fizetek.','Я плачу на кассе.'],
+['Bankkártyával fizetek.','Я плачу банковской картой.'],
+['Végül hazamegyek.','Наконец я возвращаюсь домой.']
+],dialogue:[
+['Jó napot kívánok! Hol van a kenyér?','Здравствуйте! Где хлеб?'],
+['Ott van, a polcon.','Там, на полке.'],
+['Köszönöm. És hol találom a tejet?','Спасибо. А где я найду молоко?'],
+['A tej a hűtőben van.','Молоко в холодильнике.'],
+['Mennyibe kerül ez a kenyér?','Сколько стоит этот хлеб?'],
+['Hatszáz forintba kerül.','Он стоит шестьсот форинтов.'],
+['Fizethetek kártyával?','Можно оплатить картой?'],
+['Igen, természetesen.','Да, конечно.']
+],questions:[['Mit vesz a tanuló?','Хлеб и молоко.','Сыр и воду.','Яблоки и чай.',0],['Hogyan fizet?','Наличными.','Картой.','Не платит.',1]]}
+
 };
 const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
 window.TanmuhelyRenderA1LongReadings=(level,index)=>{
