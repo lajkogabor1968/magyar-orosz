@@ -158,6 +158,85 @@ const units={
 ['Igen, természetesen.','Да, конечно.']
 ],questions:[['Mit vesz a tanuló?','Хлеб и молоко.','Сыр и воду.','Яблоки и чай.',0],['Hogyan fizet?','Наличными.','Картой.','Не платит.',1]]}
 
+,7:{title:'Где находятся мои вещи?',lines:[
+['Ma szombat van.','Сегодня суббота.'],
+['Anna otthon van.','Анна дома.'],
+['A lakásban három szoba van.','В квартире три комнаты.'],
+['Anna a szobájában tanul.','Анна учится в своей комнате.'],
+['A könyve az asztalon van.','Её книга лежит на столе.'],
+['A telefonja az ágyon van.','Её телефон лежит на кровати.'],
+['A kulcsa nincs az asztalon.','Её ключа нет на столе.'],
+['Anna megkeresi a kulcsát.','Анна ищет свой ключ.'],
+['Először a konyhában keres.','Сначала она ищет на кухне.'],
+['A kulcs nincs a konyhában.','Ключа на кухне нет.'],
+['Utána a táskájába néz.','Потом она заглядывает в свою сумку.'],
+['A kulcs a táskában van.','Ключ находится в сумке.'],
+['Anna örül.','Анна рада.'],
+['Most már elmehet a boltba.','Теперь она может пойти в магазин.'],
+['Délután a parkban sétál.','Днём она гуляет в парке.']
+],dialogue:[
+['Hol van a telefonod?','Где твой телефон?'],
+['Az ágyon van.','Он на кровати.'],
+['És hol van a kulcsod?','А где твой ключ?'],
+['Nem tudom.','Не знаю.'],
+['A táskádban van?','Он в твоей сумке?'],
+['Igen, ott van!','Да, он там!'],
+['Hová mész most?','Куда ты сейчас идёшь?'],
+['A boltba megyek.','Я иду в магазин.']
+],questions:[['Hol van Anna kulcsa?','В сумке.','На столе.','На кровати.',0],['Hol sétál Anna délután?','В школе.','В парке.','В магазине.',1]]}
+,8:{title:'Моё имя, работа и город',lines:[
+['A nevem Dóra.','Меня зовут Дора.'],
+['Huszonöt éves vagyok.','Мне двадцать пять лет.'],
+['Magyarországon élek.','Я живу в Венгрии.'],
+['Szegeden lakom.','Я живу в Сегеде.'],
+['Szeged szép város.','Сегед — красивый город.'],
+['Egy kis lakásban lakom.','Я живу в небольшой квартире.'],
+['A lakásom közel van a központhoz.','Моя квартира находится недалеко от центра.'],
+['Egy iskolában dolgozom.','Я работаю в школе.'],
+['Tanár vagyok.','Я учительница.'],
+['Magyarul és angolul beszélek.','Я говорю по-венгерски и по-английски.'],
+['Reggel nyolckor kezdődik a munka.','Работа начинается в восемь утра.'],
+['Délután hazamegyek.','Днём я возвращаюсь домой.'],
+['Este könyvet olvasok.','Вечером я читаю книгу.'],
+['Hétvégén találkozom a barátaimmal.','На выходных я встречаюсь с друзьями.'],
+['Szeretek Szegeden élni.','Мне нравится жить в Сегеде.']
+],dialogue:[
+['Jó napot! Hogy hívják?','Здравствуйте! Как вас зовут?'],
+['Dóra vagyok.','Меня зовут Дора.'],
+['Hol lakik?','Где вы живёте?'],
+['Szegeden lakom.','Я живу в Сегеде.'],
+['Mi a foglalkozása?','Какая у вас профессия?'],
+['Tanár vagyok.','Я учительница.'],
+['Beszél angolul?','Вы говорите по-английски?'],
+['Igen, beszélek angolul.','Да, я говорю по-английски.']
+],questions:[['Hol lakik Dóra?','В Будапеште.','В Сегеде.','В Пече.',1],['Mi Dóra foglalkozása?','Учительница.','Врач.','Продавец.',0]]}
+,9:{title:'Страны и языки на курсах',lines:[
+['Ma magyarórán vagyok.','Сегодня я на уроке венгерского языка.'],
+['Az osztályban sok diák van.','В классе много учеников.'],
+['A tanár neve Péter.','Учителя зовут Петер.'],
+['Péter magyar.','Петер венгр.'],
+['A csoportban Anna is tanul.','В группе учится и Анна.'],
+['Anna Oroszországból jött.','Анна приехала из России.'],
+['Anna oroszul beszél.','Анна говорит по-русски.'],
+['Magyarul még keveset beszél.','По-венгерски она пока говорит мало.'],
+['Éva magyar és angolul is beszél.','Эва венгерка и также говорит по-английски.'],
+['Thomas Németországból jött.','Томас приехал из Германии.'],
+['Ő németül beszél.','Он говорит по-немецки.'],
+['A diákok együtt tanulnak.','Ученики учатся вместе.'],
+['Új magyar szavakat írnak.','Они записывают новые венгерские слова.'],
+['Péter lassan beszél.','Петер говорит медленно.'],
+['Mindenki örül az új órának.','Все рады новому уроку.']
+],dialogue:[
+['Szia! Honnan jöttél?','Привет! Откуда ты приехал?'],
+['Oroszországból. És te?','Из России. А ты?'],
+['Németországból jöttem.','Я приехал из Германии.'],
+['Beszélsz magyarul?','Ты говоришь по-венгерски?'],
+['Igen, egy kicsit.','Да, немного.'],
+['És angolul?','А по-английски?'],
+['Igen, angolul is beszélek.','Да, по-английски я тоже говорю.'],
+['Beszéljünk magyarul!','Давай говорить по-венгерски!']
+],questions:[['Honnan jött Thomas?','Из Германии.','Из Венгрии.','Из России.',0],['Milyen nyelven beszél Anna?','По-русски.','По-испански.','По-итальянски.',0]]}
+
 };
 const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
 window.TanmuhelyRenderA1LongReadings=(level,index)=>{
