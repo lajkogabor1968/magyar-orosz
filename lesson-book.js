@@ -158,7 +158,7 @@ function saveReviewedError(hu){
  store[previous]=[...new Set([...(store[previous]||[]),hu])];
  try{localStorage.setItem(reviewedErrorsKey,JSON.stringify(store))}catch(_){ $('lessonReviewFeedback').textContent+=' Не удалось сохранить результат повторения.' }
 }
-function renderAlphabet(){document.getElementById('alphabetLesson')?.remove();if(level!=='A1'||lessonIndex!==0)return;const section=el('section',undefined,'lesson-alphabet');section.id='alphabetLesson';section.append(el('h3','Венгерский алфавит — 44 буквы'),el('p','Прослушайте каждую букву. Русские подсказки приблизительны: точный венгерский звук лучше слушать.'));const grid=el('div',undefined,'alphabet-grid');for(const [letter,hint]of alphabet){const button=el('button',undefined,'alphabet-letter');button.type='button';button.append(el('strong',letter),el('small',hint));button.onclick=()=>say(letter);grid.append(button)}section.append(grid,el('p','Особенно важно: o–ó, ö–ő, u–ú, ü–ű. Долгота гласных меняет произношение.'));$('integratedWords').before(section)}
+function renderAlphabet(){document.getElementById('alphabetLesson')?.remove();if(level!=='A1'||lessonIndex!==0)return;const section=el('section',undefined,'lesson-alphabet');section.id='alphabetLesson';section.append(el('h3','Венгерский алфавит — 44 буквы'),el('p','Прослушайте каждую букву. Русские подсказки приблизительны: точный венгерский звук лучше слушать.'));const grid=el('div',undefined,'alphabet-grid');for(const [letter,hint]of alphabet){const button=el('button',undefined,'alphabet-letter');button.type='button';button.append(el('strong',letter),el('small',hint));button.onclick=()=>say(letter);grid.append(button)}section.append(grid,el('p','Особенно важно: o–ó, ö–ő, u–ú, ü–ű. Долгота гласных меняет произношение.'));document.querySelector('#lessonWords .lesson-reference').before(section)}
 const chapterVisuals={
  A1:[
  {icon:'📱',title:'Знакомые слова — новый язык',subtitle:'Уже знакомые понятия звучат по-венгерски',cards:[['📱','telefon','телефон'],['🚇','metró','метро'],['📻','rádió','радио']]},
@@ -520,7 +520,23 @@ function renderErrorSummary(){
  for(const missed of quizMisses){const row=el('div',undefined,'lesson-error-row');const description=el('span',missed.hu+' — '+missed.ru);const speakButton=el('button','🔊 Слушать');speakButton.type='button';speakButton.setAttribute('aria-label','Прослушать '+missed.hu);speakButton.onclick=()=>say(missed.hu);row.append(description,speakButton);box.append(row)}
  box.append(el('p','Прослушайте ошибочные слова ещё раз. При необходимости вернитесь к разделу «Слова».'))
 }
-function stageView(){steps.forEach((id,i)=>$(id).hidden=i!==step);$('integratedPreviousStep').hidden=step===0;$('integratedRouteProgress').textContent='Урок '+(lessonIndex+1)+' · шаг '+(step+1)+' из 6 · '+stepsRu[step];$('integratedRouteBar').value=step+1;document.querySelectorAll('.lesson-sections a').forEach((a,i)=>{a.hidden=i!==step;a.textContent=(i+1)+'. '+stepsRu[i]});$('integratedLessonIntro').textContent='Шаг '+(step+1)+' из 6 · '+['Слушайте слова, изучайте венгерские буквы и откройте перевод пяти карточек.','Прочитайте правило по-русски и ответьте на один вопрос.','Послушайте реплику и повторите её вслух.','Напишите правильно три разных слова; в первом уроке минимум два с долгой гласной.','Напишите небольшой текст по образцу и проверьте его структуру.','Ответьте на вопросы и узнайте результат сразу.'][step];$('integratedStepNext').textContent=step===5?'Завершить урок →':'Следующий шаг →';$('integratedStepNext').disabled=!canAdvance();document.querySelector('.lesson-end').hidden=true}
+function stageView(){
+ steps.forEach((id,i)=>$(id).hidden=i!==step);
+ $('integratedPreviousStep').hidden=step===0;
+ $('integratedRouteProgress').textContent='Этап '+(step+1)+' из 6 · '+stepsRu[step];
+ $('integratedRouteBar').value=step+1;
+ document.querySelectorAll('#integratedStageTrack li').forEach((item,i)=>{
+  item.classList.toggle('is-done',i<step);
+  item.classList.toggle('is-current',i===step);
+  if(i===step)item.setAttribute('aria-current','step');else item.removeAttribute('aria-current');
+ });
+ document.querySelectorAll('.lesson-sections a').forEach((a,i)=>{a.hidden=i!==step;a.textContent=(i+1)+'. '+stepsRu[i]});
+ $('integratedLessonIntro').textContent=['Слушайте слова, изучайте венгерские буквы и откройте перевод пяти карточек.','Прочитайте правило по-русски и ответьте на один вопрос.','Послушайте реплику и повторите её вслух.','Напишите правильно три разных слова; в первом уроке минимум два с долгой гласной.','Напишите небольшой текст по образцу и проверьте его структуру.','Ответьте на вопросы и узнайте результат сразу.'][step];
+ $('integratedStepNext').textContent=step===5?'Завершить урок':'Следующий шаг';
+ $('integratedStepNext').disabled=!canAdvance();
+ document.querySelector('.lesson-end').hidden=true;
+ view.scrollIntoView({block:'start',behavior:'instant'});
+}
 function render(){$('integratedAdvanceAdvice').hidden=true;note('');const l=lesson();reviewPreviousErrors();
 const prerequisite=$('lessonPrerequisite');
 if(prerequisite){

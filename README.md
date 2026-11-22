@@ -134,3 +134,9 @@ Az új tartalom külön fájlban marad: `a1-guided-lessons-13-16.js`, így a meg
 Az újabb négy lecke az **otthoni helyiségek** neveit és -ban/-ben alakjait, a **hely és irány** különbségét (*hol? — hová?*, *iskolában — iskolába*), a **felszíni helyragokat** (*asztalon, széken, földön*), valamint a **különírt helyviszonyjelölő szavakat** (*mellett, előtt, mögött, alatt*) tanítja. A feladatok otthoni és iskolai helyzeteket követnek, és minden új szerkezethez orosz nyelvű magyarázat, példatáblázat, párbeszéd, olvasmány, szövegértés és önálló írás tartozik.
 
 A korábbi 16 lecke és az eredménykulcsok megmaradtak. Új forrásfájl: `a1-guided-lessons-17-20.js`. Tananyagi és technikai ellenőrzés: `node magyar-orosz/verify-a1-units-17-20.mjs`. A négy lecke egyikében sincs húsznál több szókártya. A hangok és a magyar–orosz szövegek emberi, anyanyelvi ellenőrzése a széles körű kiadás előtt továbbra is szükséges.
+
+### Letisztult, mobilbarát felület (2026. november 22.)
+
+A nyitóképernyő saját magyar–orosz beszédbuborékos és könyves arculatot, nagy szintválasztó elemeket és egy elsődleges indítógombot kapott. A tanulási menüben a fő tanfolyami útvonal kiemelt, a kiegészítő eszközök változatlanul elérhetők. A vezetett leckékben hatállomásos, akadálymentesen jelölt haladássáv jelenik meg, és a továbblépés a feladat után található. A hosszú szó-, mondat- és kifejezésjegyzék lenyitható segédanyag, de a legelső lecke ábécéje továbbra is közvetlenül látható. A megjelenés új stíluslapja: `clean-interface.css`.
+
+Az arculatváltás nem módosítja a szótárat, a tanulói pontozást, a helyi mentési kulcsokat vagy a hangválasztást. Az automatikus ellenőrzés: `node magyar-orosz/verify-clean-interface.mjs`. A telefonos kézi használhatósági teszt a publikálás után külön szükséges.
