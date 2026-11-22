@@ -18,6 +18,27 @@ const content={
  }
 };
 window.TanmuhelyEnrichA1A2=function(courses){
+// Az alábbi rövid kiegészítések saját szerkesztésűek; a torontói gyűjteményből
+// kizárólag a napirend és a múlt idő kommunikációs témaválasztását vettük ötletként.
+const focus=[
+ {level:'A1',index:5,notes:[
+  ['Mikor reggelizel?','Когда ты завтракаешь?','Mikor? — когда? Reggelizel — ты завтракаешь.'],
+  ['Reggel hétkor reggelizem.','Я завтракаю в семь утра.','Reggel — утром; hétkor — в семь часов.'],
+  ['Este egy kicsit olvasok.','Вечером я немного читаю.','Az időhatározó gyakran a mondat elején áll: este — вечером.']
+ ],tables:[['Reggel dolgozom.','Утром я работаю.','время + личная форма глагола'],['Holnap pihenek.','Завтра я отдыхаю.','завтра + настоящее время для будущего действия']]},
+ {level:'A2',index:2,notes:[
+  ['Mit csináltál hétvégén?','Что ты делал / делала на выходных?','A hétvégén — на выходных. Csináltál — прошедшее время, 2-е лицо.'],
+  ['Szombaton bevásároltam.','В субботу я сделал / сделала покупки.','Bevásároltam — прошедшее время от bevásárol.'],
+  ['Vasárnap otthon pihentem.','В воскресенье я отдыхал / отдыхала дома.','Pihentem — прошедшее время от pihen.']
+ ],tables:[['Ma pihenek.','Сегодня я отдыхаю.','настоящее время'],['Tegnap pihentem.','Вчера я отдыхал / отдыхала.','прошедшее время'],['Ma bevásárolok. / Tegnap bevásároltam.','Сегодня делаю покупки. / Вчера сделал(а) покупки.','сравните настоящее и прошедшее']]}
+];
+for(const unit of focus){const l=courses[unit.level]?.[unit.index];if(!l)continue;
+ l.preparation=l.preparation||[];l.grammarTable=l.grammarTable||[];
+ const noteKeys=new Set(l.preparation.map(x=>x[0]+'|'+x[1]));
+ const grammarKeys=new Set(l.grammarTable.map(x=>x[0]+'|'+x[1]));
+ for(const n of unit.notes){const key=n[0]+'|'+n[1];if(!noteKeys.has(key)){l.preparation.push(n);noteKeys.add(key)}}
+ for(const t of unit.tables){const key=t[0]+'|'+t[1];if(!grammarKeys.has(key)){l.grammarTable.push(t);grammarKeys.add(key)}}
+}
 const changes=[];
 for(const [lv,units] of Object.entries(content))for(const [ix,value] of Object.entries(units)){
  const lesson=courses[lv]?.[Number(ix)];if(!lesson)continue;
