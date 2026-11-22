@@ -98,7 +98,15 @@ function rows(){const l=lesson(),base=window.MAGYAR_OROSZ_DATA?.[level]||[],resu
 };const simple=(level==='A1'&&lessonIndex===0?beginnerExamples[word]:null)||l.examples?.[word]||null;result.push({hu:row[0],ru:l.senses?.[word]?.[0]||row[1],example:l.senses?.[word]?.[1]||simple?.[0]||row[2],translation:l.senses?.[word]?.[2]||simple?.[1]||row[3]})}}for(const [hu,ru,example,translation] of l.extra||[]){
  const entry={hu,ru,example,translation},at=result.findIndex(r=>r.hu===hu);
  if(at<0)result.push(entry);else result[at]=entry;
-}return result}
+}
+// New A1 units introduce counting words not yet present in the general wordbank.
+// Show their cards in the teacher-defined sequence; old units keep their exact
+// historical card indices so saved checkpoints remain meaningful.
+if(level==='A1'&&lessonIndex>=8){
+ const wordPosition=new Map(l.words.map((word,i)=>[word.toLocaleLowerCase('hu-HU'),i]));
+ result.sort((a,b)=>(wordPosition.get(a.hu.toLocaleLowerCase('hu-HU'))??Infinity)-(wordPosition.get(b.hu.toLocaleLowerCase('hu-HU'))??Infinity));
+}
+return result}
 function reviewPreviousErrors(){
  const pane=$('lessonPreviousErrors');
  pane.hidden=true;reviewItems=[];reviewPosition=0;
@@ -337,7 +345,8 @@ function renderReading(){
   const button=el('button',option,'integrated-answer');button.type='button';
   button.onclick=()=>{
     const correct=i===reading.answer;
-    $('lessonReadingFeedback').textContent=(correct?'✓ Верно. ':'✗ Пока неверно. ')+'Правильный ответ: '+reading.options[reading.answer]+'. Вернитесь к тексту, если хотите перечитать его.';
+    const answer=reading.options[reading.answer];
+    $('lessonReadingFeedback').textContent=(correct?'✓ Верно. ':'✗ Пока неверно. ')+'Правильный ответ: '+answer+(/[.!?]$/.test(answer)?'':'.')+' Вернитесь к тексту, если хотите перечитать его.';
   };
   answers.append(button);
  });
@@ -498,7 +507,7 @@ function renderErrorSummary(){
  box.append(el('p','Прослушайте ошибочные слова ещё раз. При необходимости вернитесь к разделу «Слова».'))
 }
 function stageView(){steps.forEach((id,i)=>$(id).hidden=i!==step);$('integratedPreviousStep').hidden=step===0;$('integratedRouteProgress').textContent='Урок '+(lessonIndex+1)+' · шаг '+(step+1)+' из 6 · '+stepsRu[step];$('integratedRouteBar').value=step+1;document.querySelectorAll('.lesson-sections a').forEach((a,i)=>{a.hidden=i!==step;a.textContent=(i+1)+'. '+stepsRu[i]});$('integratedLessonIntro').textContent='Шаг '+(step+1)+' из 6 · '+['Слушайте слова, изучайте венгерские буквы и откройте перевод пяти карточек.','Прочитайте правило по-русски и ответьте на один вопрос.','Послушайте реплику и повторите её вслух.','Напишите правильно три разных слова; в первом уроке минимум два с долгой гласной.','Напишите небольшой текст по образцу и проверьте его структуру.','Ответьте на вопросы и узнайте результат сразу.'][step];$('integratedStepNext').textContent=step===5?'Завершить урок →':'Следующий шаг →';$('integratedStepNext').disabled=!canAdvance();document.querySelector('.lesson-end').hidden=true}
-function render(){$('integratedAdvanceAdvice').hidden=true;const l=lesson();reviewPreviousErrors();
+function render(){$('integratedAdvanceAdvice').hidden=true;note('');const l=lesson();reviewPreviousErrors();
 const prerequisite=$('lessonPrerequisite');
 if(prerequisite){
  const bridges={

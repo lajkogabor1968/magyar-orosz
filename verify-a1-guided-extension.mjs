@@ -56,6 +56,18 @@ for (const [offset, lesson] of lessons.entries()) {
 }
 
 for (const number of numberSpellings) assert.ok(taught.has(number), `A számnevek között hiányzik: ${number}.`);
+const rowsSource = book.match(/function rows\(\)\{[\s\S]*?\nreturn result\}/)?.[0];
+assert.ok(rowsSource, 'Nem található a szókártyák sorrendjét előállító függvény.');
+for (const [offset, expected] of [[2, numberSpellings.slice(0, 10)], [3, numberSpellings.slice(10)]]) {
+  const runtime = {window: context.window, level: 'A1', lessonIndex: offset + 8, lesson: () => lessons[offset]};
+  const rows = runInNewContext(`${rowsSource}; rows()`, runtime);
+  assert.deepEqual(Array.from(rows, row => row.hu).slice(0, 10), expected,
+    `A ${offset + 9}. lecke kártyái nem a számokkal, helyes sorrendben kezdődnek.`);
+}
+assert.match(book, /render\(\)\{\$\('integratedAdvanceAdvice'\)\.hidden=true;note\(''\)/,
+  'Leckeváltás után az előző lecke visszajelzését törölni kell.');
+assert.match(book, /const answer=reading\.options\[reading\.answer\];/,
+  'Az olvasmány-visszajelzésnek egyetlen záró írásjelet szabad hozzáadnia.');
 assert.match(read('index.html'), /src="a1-guided-lessons-next\.js[^\"]*"[^\n]*src="lesson-book\.js/,
   'A folytatásnak a tanulói felület betöltése előtt kell érkeznie.');
 assert.match(book, /courses\.A1\.push\(\.\.\.continuation\.lessons\)/,
