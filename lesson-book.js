@@ -83,7 +83,8 @@ function grammarQuestion(){
  randomOrder(c.a.map((answer,i)=>({answer,i}))).forEach(({answer,i})=>{const btn=el('button',answer,'integrated-answer');btn.type='button';btn.onclick=()=>{
   const good=i===c.ok;
   highlightAnswerButtons(box,btn,c.a[c.ok]);
-  $('integratedGrammarFeedback').textContent=(good?'✓ Верно. ':'✗ Правильный ответ: '+c.a[c.ok]+'. ')+c.why;
+  const answer=c.a[c.ok],end=/[.!?…]$/.test(answer)?'':'.';
+  $('integratedGrammarFeedback').textContent=(good?'✓ Верно. ':'✗ Правильный ответ: '+answer+end+' ')+c.why;
   if(good){grammarReviewed=true;saveCheckpoint();stepButton.disabled=false;box.querySelectorAll('button').forEach(button=>button.disabled=true);note('✓ Пример понятен. Продолжайте обучение.')}
  };box.append(btn)})
 }

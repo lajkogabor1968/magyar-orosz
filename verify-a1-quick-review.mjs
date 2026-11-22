@@ -17,7 +17,7 @@ assert.ok(html.indexOf('id="quickReviewPrimary"') > html.indexOf('id="lessonsPri
 assert.ok(html.indexOf('id="quickReviewPrimary"') < html.indexOf('id="studyMore"'), 'daily practice is not hidden among advanced tools');
 assert.match(html, /5 слов · 5 предложений · 3 фразы вслух/);
 for (const script of ['app.js?v=20261122-adaptive-daily2',
-  'study.js?v=20261122-quick-daily1', 'lesson-book.js?v=20261122-a1-feedback1']) {
+  'study.js?v=20261122-quick-daily1', 'lesson-book.js?v=20261122-a1-feedback2']) {
   assert.ok(html.includes(script), `${script} cache must be refreshed`);
 }
 
@@ -48,6 +48,8 @@ assert.match(lessons, /button\.classList\.toggle\('right',right\)/);
 assert.match(lessons, /button\.classList\.toggle\('wrong',button===selected&&!right\)/);
 assert.match(lessons, /button\.setAttribute\('aria-pressed',String\(button===selected\)\)/);
 assert.match(lessons, /highlightAnswerButtons\(box,btn,c\.a\[c\.ok\]\)/, 'grammar reveals the correct answer');
+assert.match(lessons, /const answer=c\.a\[c\.ok\],end=\/\[\.!\?…\]\$\/\.test\(answer\)\?'':'\.'/,
+  'grammar feedback avoids doubling terminal punctuation');
 assert.match(lessons, /highlightAnswerButtons\(answers,button,answer\)/, 'reading reveals the correct answer');
 assert.match(css, /\.lesson-answer-options \.integrated-answer\.right/);
 assert.match(css, /\.lesson-answer-options \.integrated-answer\.wrong/);
