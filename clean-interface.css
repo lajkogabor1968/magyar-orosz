@@ -113,6 +113,22 @@ html.study-menu .study-hub-options #lessonsPrimary .hub-course-copy span { color
 .hub-course-cta { color: #fff !important; background: #198565; padding: 12px 17px; border-radius: 13px; font-weight: 800; font-size: 15px; }
 html.study-menu #studyMore { background: #fff !important; color: var(--focus-deep) !important; border: 2px solid var(--focus-line) !important; min-height: 49px; margin: 22px 0; border-radius: 14px; }
 .study-extra { justify-content: flex-start; }
+.quick-review-primary {
+  display: grid; grid-template-columns: 58px minmax(0,1fr) auto;
+  align-items: center; gap: 15px; width: 100%; text-align: left;
+  padding: 18px 21px !important; margin: 13px 0 10px;
+  color: #22513f !important; background: #fff !important;
+  border: 2px solid #dceae1 !important; border-bottom: 4px solid #d5e6d9 !important;
+  border-radius: 20px !important;
+}
+.quick-review-primary:hover { background: #f5fbf7 !important; border-color: #91c8a5 !important; }
+.quick-review-primary[hidden] { display: none !important; }
+.quick-review-icon { display: grid; place-items: center; border-radius: 18px; width: 58px; height: 58px; background: #f3f8f4; font-size: 30px; color: #228563; }
+.quick-review-copy { display: grid; gap: 4px; min-width: 0; }
+.quick-review-copy strong { font-size: clamp(18px,2.5vw,21px); line-height: 1.35; color: #245740; }
+.quick-review-copy span { color: #597568; font-size: 15px; line-height: 1.4; }
+.quick-review-copy small { color: #28805e; font-size: 14px; font-weight: 750; }
+.quick-review-cta { padding: 11px 15px; border-radius: 12px; background: #e7f7ed; color: #176447; font-size: 15px; font-weight: 800; }
 
 /* The guided lesson is one page with only its current activity visible. */
 html.study-book main.wrap { padding-top: 18px; }
@@ -174,6 +190,10 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
 }
 .lesson-answer-options .integrated-answer:not(:disabled):hover,
 #integratedQuestion .integrated-answer:not(:disabled):hover { border-color: #75b991 !important; background: #effaf2 !important; }
+.lesson-answer-options .integrated-answer.right,
+#integratedQuestion .integrated-answer.right { border-color: #49a96a !important; background: #def6e5 !important; color: #14573b !important; }
+.lesson-answer-options .integrated-answer.wrong,
+#integratedQuestion .integrated-answer.wrong { border-color: #d48684 !important; background: #fff0ef !important; color: #8e3535 !important; }
 .lesson-answer-options .integrated-answer:disabled { opacity: .75; }
 #lessonReadingFeedback, #integratedGrammarFeedback, #integratedDialogueFeedback, #integratedWritingFeedback,
 #integratedCompositionFeedback, #integratedAnswerFeedback { color: #236a4e; font-weight: 650; line-height: 1.55; margin-top: 12px; }
@@ -235,6 +255,9 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
   .hub-course-icon { width: 58px; height: 58px; font-size: 29px; border-radius: 17px; }
   html.study-menu .study-hub-options #lessonsPrimary .hub-course-icon { font-size: 29px !important; }
   .hub-course-cta { grid-column: 1/-1; justify-self: stretch; text-align: center; }
+  .quick-review-primary { grid-template-columns: 48px 1fr; padding: 15px !important; gap: 11px; }
+  .quick-review-icon { width: 48px; height: 48px; font-size: 26px; }
+  .quick-review-cta { grid-column: 1/-1; justify-self: stretch; text-align: center; }
   .integrated-lesson-view { border: 0; box-shadow: none; border-radius: 0; padding: 12px 0 30px; margin: 0 auto 50px; }
   html.study-book main.wrap { width: min(100% - 32px,600px); }
   #integratedLessonHeading { font-size: clamp(25px,6.5vw,32px); }

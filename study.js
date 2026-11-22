@@ -6,7 +6,26 @@
   const back = document.getElementById('studyBack');
   const extra = document.getElementById('studyExtra');
   const more = document.getElementById('studyMore');
+  const quick = document.getElementById('quickReviewPrimary');
   if (!hub || !back || !extra || !more) return;
+  function refreshQuickReview() {
+    if (!quick) return;
+    const isA1 = document.querySelector('.welcome .level.active')?.dataset.level === 'A1';
+    quick.hidden = !isA1;
+    if (!isA1) return;
+    const progress = document.getElementById('a1DailyOverall')?.textContent || '';
+    const done = progress.includes('завершена') ? 3 : Math.min(3, Number(progress.match(/(\d+)\/3/)?.[1] || 0));
+    document.getElementById('quickReviewProgress').textContent = done === 3
+      ? 'Сегодня все три этапа выполнены. Можно повторить.'
+      : done ? 'Сегодня выполнено ' + done + ' из 3 этапов.'
+        : 'Короткие задания с учётом ваших прежних ошибок';
+  }
+  quick?.addEventListener('click', () => {
+    if (document.querySelector('.welcome .level.active')?.dataset.level === 'A1') mode('study-daily');
+  });
+  const dailyProgress = document.getElementById('a1DailyOverall');
+  if (dailyProgress) new MutationObserver(refreshQuickReview).observe(dailyProgress, { childList: true, characterData: true, subtree: true });
+  document.querySelectorAll('.welcome .level').forEach(button => button.addEventListener('click', refreshQuickReview));
   function mode(value) {
     root.classList.remove('study-menu', 'study-active', 'study-daily', 'study-exam', 'study-online', 'study-coach', 'study-book');
     for (const id of ['examView','onlineLessonView','coachView','integratedLessonView']) {
@@ -47,5 +66,6 @@
   const start = document.getElementById('landingStart');
   start?.addEventListener('click', () => mode('study-menu'));
   document.querySelector('.landing-back')?.addEventListener('click', () => mode('study-menu'));
+  refreshQuickReview();
   mode('study-menu');
 })();

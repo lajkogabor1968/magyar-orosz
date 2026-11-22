@@ -140,3 +140,9 @@ A korábbi 16 lecke és az eredménykulcsok megmaradtak. Új forrásfájl: `a1-g
 A nyitóképernyő saját magyar–orosz beszédbuborékos és könyves arculatot, nagy szintválasztó elemeket és egy elsődleges indítógombot kapott. A tanulási menüben a fő tanfolyami útvonal kiemelt, a kiegészítő eszközök változatlanul elérhetők. A vezetett leckékben hatállomásos, akadálymentesen jelölt haladássáv jelenik meg, és a továbblépés a feladat után található. A hosszú szó-, mondat- és kifejezésjegyzék lenyitható segédanyag, de a legelső lecke ábécéje továbbra is közvetlenül látható. A megjelenés új stíluslapja: `clean-interface.css`.
 
 Az arculatváltás nem módosítja a szótárat, a tanulói pontozást, a helyi mentési kulcsokat vagy a hangválasztást. Az automatikus ellenőrzés: `node magyar-orosz/verify-clean-interface.mjs`. A telefonos kézi használhatósági teszt a publikálás után külön szükséges.
+
+### Napi rövid gyakorlás és érthetőbb javítás (2026. november 22.)
+
+Az A1-es tanulási menüben külön, azonnal elérhető a **napi rövid gyakorlás**: 5 szókérdés, 5 mondatkérdés és 3 hangos gyakorlómondat. A napi részfeladatok állapota a menüben is látható. A szó- és mondatkérdések elsősorban a korábban elrontott vagy esedékes kifejezésekből válogatnak; a súlyozott kiválasztás csökkenti, hogy sok hibánál mindig ugyanaz az öt tétel következzen. A megoldás után a helyes választ és magyar–orosz példamondatot mutatjuk. A vezetett lecke nyelvtani és olvasmánykérdéseinél színes helyes/hibás jelzés és pontosabb javító visszajelzés segít.
+
+Megmaradtak a régi pontszámok, hibák, ütemezett ismétlések és mentési kulcsok; az A2 menübe nem került át az A1-es napi gomb. Új regressziós teszt: `node magyar-orosz/verify-a1-quick-review.mjs`. A három hangos mondat teljesítése önbevalláson alapul, nem automatikus kiejtésértékelés. A tényleges mobilos tanulói próba és a nyelvi lektorálás továbbra is hátravan.

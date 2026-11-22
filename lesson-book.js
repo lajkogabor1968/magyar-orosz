@@ -68,14 +68,23 @@ if(locationUnits){
  Object.assign(checks,locationUnits.checks);
 }
 function lessonKey(){return level+':'+lessonIndex}
+function highlightAnswerButtons(box,selected,correctText){
+ for(const button of box.querySelectorAll('button')){
+  const right=button.textContent===correctText;
+  button.classList.toggle('right',right);
+  button.classList.toggle('wrong',button===selected&&!right);
+  button.setAttribute('aria-pressed',String(button===selected));
+ }
+}
 function grammarQuestion(){
  const c=checks[lessonKey()],box=$('integratedGrammarOptions');
  box.replaceChildren();$('integratedGrammarQuestion').textContent=c.q;
  $('integratedGrammarFeedback').textContent='Выберите ответ. Вы сразу увидите объяснение.';
  randomOrder(c.a.map((answer,i)=>({answer,i}))).forEach(({answer,i})=>{const btn=el('button',answer,'integrated-answer');btn.type='button';btn.onclick=()=>{
   const good=i===c.ok;
-  $('integratedGrammarFeedback').textContent=(good?'✓ Верно. ':'✗ Пока неверно. ')+c.why;
-  if(good){grammarReviewed=true;saveCheckpoint();stepButton.disabled=false;note('✓ Пример понятен. Продолжайте обучение.')}
+  highlightAnswerButtons(box,btn,c.a[c.ok]);
+  $('integratedGrammarFeedback').textContent=(good?'✓ Верно. ':'✗ Правильный ответ: '+c.a[c.ok]+'. ')+c.why;
+  if(good){grammarReviewed=true;saveCheckpoint();stepButton.disabled=false;box.querySelectorAll('button').forEach(button=>button.disabled=true);note('✓ Пример понятен. Продолжайте обучение.')}
  };box.append(btn)})
 }
 
@@ -360,6 +369,7 @@ function renderReading(){
   button.onclick=()=>{
     const correct=i===reading.answer;
     const answer=reading.options[reading.answer];
+    highlightAnswerButtons(answers,button,answer);
     $('lessonReadingFeedback').textContent=(correct?'✓ Верно. ':'✗ Пока неверно. ')+'Правильный ответ: '+answer+(/[.!?]$/.test(answer)?'':'.')+' Вернитесь к тексту, если хотите перечитать его.';
   };
   answers.append(button);

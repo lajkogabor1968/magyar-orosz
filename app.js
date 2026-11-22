@@ -134,7 +134,22 @@ function a1DailyAdvice(){const state=dailyA1State(),word=state.wordResult,senten
 function renderA1Daily(){const pane=$('a1DailyJourney');pane.classList.toggle('hidden',level!=='A1');if(level!=='A1')return;const state=dailyA1State(),spoken=dailySpeakingDone();$('a1DailyWordsState').textContent=state.words?'✓ Kész / Готово':'Még hátravan / Не завершено';$('a1DailySentencesState').textContent=state.sentences?'✓ Kész / Готово':'Még hátravan / Не завершено';$('a1DailySpeakingState').textContent=spoken+'/3 mondat / фразы';const done=Number(!!state.words)+Number(!!state.sentences)+Number(spoken>=3);$('a1DailyOverall').textContent=done===3?'✓ A mai A1-es gyakorlás kész! / Практика A1 на сегодня завершена!':'Mai haladás / Прогресс за сегодня: '+done+'/3 lépés / шага';const format=(result,done)=>done&&result&&result.total>0?result.correct+'/'+result.total+' ('+Math.round(result.correct/result.total*100)+'%)':'még nincs eredmény / пока нет результата';$('a1DailySummaryScores').textContent='Szavak / Слова: '+format(state.wordResult,state.words)+' · Mondatok / Предложения: '+format(state.sentenceResult,state.sentences)+' · Beszéd / Речь: '+spoken+'/3 (önjelölés / самооценка)';const wrong=[...(state.wordResult?.wrongIds||[])].filter(id=>typeof id==='string'&&id.startsWith('A1:'));const hard=wrong.slice(0,5).map(id=>current.find(e=>e.id===id)?.hu).filter(Boolean);$('a1DailySummaryHard').textContent=hard.length?'Mai nehéz szavak / Трудные слова: '+hard.join(', '):state.words?'A mai szótesztben nem volt hibás válasz. / Сегодня ошибок в словарном тесте не было.':'A nehéz szavak a napi szóteszt után jelennek meg. / Трудные слова появятся после теста.';const advice=a1DailyAdvice();$('a1DailySummaryAdvice').textContent='Javaslat / Рекомендация: '+advice.text;$('a1DailySuggestion').dataset.kind=advice.kind;}
 function startA1Suggested(){if(level!=='A1')return;const kind=$('a1DailySuggestion').dataset.kind;reviewOnly=false;const type=kind==='sentences'?'sentences':'quiz';const missed=current.filter(type==='quiz'?needsPractice:needsSentencePractice),due=current.filter(e=>dueAt(type,e)>0&&dueAt(type,e)<=Date.now()),p=missed.length?missed:due;if(p.length){session[type]={deck:prioritizedPick(p,Math.min(5,p.length),type),index:0,score:0,answered:false};renderExercise(type);setView(type);return}startNewExercise(type)}
 
-function startA1Daily(type){if(level!=='A1')return;reviewOnly=false;const now=Date.now(),pool=current.filter(e=>!e.id.startsWith('A2:'));const due=pool.filter(e=>dueAt(type,e)>0&&dueAt(type,e)<=now),mistakesPool=pool.filter(type==='quiz'?needsPractice:needsSentencePractice),selection=[...new Map([...mistakesPool,...due,...prioritizedPick(pool,Math.min(5,pool.length),type)].map(e=>[e.id,e])).values()].slice(0,5);const deck=selection.length?selection:prioritizedPick(pool,Math.min(5,pool.length),type);session[type]={deck,index:0,score:0,answered:false,daily:true,wrongIds:[]};renderExercise(type);setView(type==='quiz'?'quiz':'sentences')}
+function startA1Daily(type){
+ if(level!=='A1')return;
+ reviewOnly=false;
+ const now=Date.now(),pool=current.filter(e=>e.level==='A1');
+ const due=pool.filter(e=>dueAt(type,e)>0&&dueAt(type,e)<=now);
+ const mistaken=pool.filter(type==='quiz'?needsPractice:needsSentencePractice);
+ // Hiba és esedékesség előbb, de azonos öt tétel ne zárja ki a többi hibát.
+ const urgent=[...new Map([...mistaken,...due].map(e=>[e.id,e])).values()];
+ const priority=prioritizedPick(urgent,Math.min(5,urgent.length),type);
+ const chosen=new Set(priority.map(e=>e.id));
+ const fill=prioritizedPick(pool.filter(e=>!chosen.has(e.id)),Math.max(0,5-priority.length),type);
+ const deck=[...priority,...fill];
+ session[type]={deck,index:0,score:0,answered:false,daily:true,wrongIds:[]};
+ renderExercise(type);
+ setView(type==='quiz'?'quiz':'sentences');
+}
 function dailyContinueButton(type){return $(type==='quiz'?'a1DailyContinueWords':'a1DailyContinueSentences')}
 function refreshDailyContinue(type){const button=dailyContinueButton(type),run=session[type];button.classList.toggle('hidden',!(level==='A1'&&run?.daily&&run.deck.length>0&&run.index>=run.deck.length))}
 function finishA1Daily(type){const run=session[type];if(level!=='A1'||!run?.daily||run.deck.length===0||!run.answered||run.index!==run.deck.length-1)return;const progress=dailyA1State(),result={correct:run.score,total:run.deck.length,wrongIds:[...new Set(run.wrongIds||[])]};if(type==='quiz'){progress.words=true;progress.wordResult=result}else{progress.sentences=true;progress.sentenceResult=result}saved.a1DailyJourney=progress;save();renderA1Daily()}
@@ -158,7 +173,53 @@ function initExercise(type,onlyMistakes=false,onlyDue=false,newOnly=false){const
 function startNewExercise(type){if(!newItems(type).length){showNotice(type==='sentences'?'Ezen a szinten már minden mondatot gyakoroltál. / На этом уровне все предложения уже изучены.':'Ezen a szinten már minden szót gyakoroltál. / На этом уровне все слова уже изучены.');return}reviewOnly=false;initExercise(type,false,false,true);setView(type==='sentences'?'sentences':'quiz')}
 function startDueExercise(type){if(!dueCount(type)){showNotice(type==='sentences'?'Ma nincs esedékes mondat ezen a szinten. / Сегодня нет предложений для повторения.':'Ma nincs esedékes szó ezen a szinten. / Сегодня нет слов для повторения.');return}reviewOnly=false;initExercise(type,false,true);setView(type==='sentences'?'sentences':'quiz')}
 function restartExercise(type){const old=session[type]||{};if(old.daily&&level==='A1'){startA1Daily(type);return}if(old.onlyDue&&!dueCount(type)){showNotice('Minden mára esedékes feladatot megoldottál! / Все задания на сегодня выполнены!');return}if(old.newOnly&&!newItems(type).length){showNotice('Minden új feladatot megoldottál ezen a szinten! / Все новые задания на этом уровне выполнены!');return}initExercise(type,!!old.onlyMistakes,!!old.onlyDue,!!old.newOnly)}
-function renderExercise(type){const s=session[type],isSentence=type==='sentences',prefix=isSentence?'sentence':'quiz';if(!s)return;const n=s.deck.length;$(`${prefix}Counter`).textContent=`${Math.min(s.index+1,n)} / ${n}`;$(`${prefix}Score`).textContent=`${s.score} pont / баллов`;$(`${prefix}Bar`).style.width=(s.index/n*100)+'%';const options=$(`${prefix}Options`);options.replaceChildren();$(`${prefix}Feedback`).textContent='';$(`${prefix}Next`).classList.add('hidden');refreshDailyContinue(type);if(!isSentence)$('quizSpeak').classList.toggle('hidden',s.index>=n);if(s.index>=n){$(`${prefix}Prompt`).textContent=`A teszt véget ért / Тест завершён: ${s.score} / ${n} pont / баллов`;$(`${prefix}Counter`).textContent=`${n} / ${n}`;$(`${prefix}Bar`).style.width='100%';return}const e=s.deck[s.index];$(`${prefix}Prompt`).textContent=isSentence?e.huS:e.hu;const key=isSentence?'ruS':'ru';const candidates=window.MagyarOroszQuizOptions.buildOptions(e,current,type);for(const item of candidates){const btn=el('button','',item[key]);options.append(btn);btn.addEventListener('click',()=>{if(s.answered)return;s.answered=true;const ok=item[key]===e[key];if(ok)s.score++;else if(s.daily&&Array.isArray(s.wrongIds))s.wrongIds.push(e.id);logTodayAnswer(type,e.level,s);record(ok,type,e.level);trackMistake(e,ok,type);if(s.index===n-1){saveCompletedSet(type,s);finishA1Daily(type)}for(const b of options.children){b.disabled=true;if(b.textContent===e[key])b.classList.add('right');else if(b===btn)b.classList.add('wrong')}$(`${prefix}Score`).textContent=`${s.score} pont / баллов`;$(`${prefix}Feedback`).textContent=ok?'✓ Helyes válasz! / Правильно!':`A helyes megoldás / Правильный ответ: ${e[key]}`;$(`${prefix}Next`).classList.remove('hidden');$(`${prefix}Next`).textContent=s.index===n-1?'Eredmény megtekintése / Результат':'Következő / Далее →'})}}
+function renderExercise(type){
+ const s=session[type],isSentence=type==='sentences',prefix=isSentence?'sentence':'quiz';
+ if(!s)return;
+ const n=s.deck.length;
+ $(`${prefix}Counter`).textContent=`${Math.min(s.index+1,n)} / ${n}`;
+ $(`${prefix}Score`).textContent=`${s.score} pont / баллов`;
+ $(`${prefix}Bar`).style.width=(s.index/n*100)+'%';
+ const options=$(`${prefix}Options`);options.replaceChildren();
+ $(`${prefix}Feedback`).textContent='';
+ $(`${prefix}Next`).classList.add('hidden');
+ refreshDailyContinue(type);
+ if(!isSentence)$('quizSpeak').classList.toggle('hidden',s.index>=n);
+ if(s.index>=n){
+  $(`${prefix}Prompt`).textContent=`A teszt véget ért / Тест завершён: ${s.score} / ${n} pont / баллов`;
+  $(`${prefix}Counter`).textContent=`${n} / ${n}`;
+  $(`${prefix}Bar`).style.width='100%';
+  return;
+ }
+ const e=s.deck[s.index];
+ $(`${prefix}Prompt`).textContent=isSentence?e.huS:e.hu;
+ const key=isSentence?'ruS':'ru';
+ const candidates=window.MagyarOroszQuizOptions.buildOptions(e,current,type);
+ for(const item of candidates){
+  const btn=el('button','',item[key]);options.append(btn);
+  btn.addEventListener('click',()=>{
+   if(s.answered)return;
+   s.answered=true;
+   const ok=item[key]===e[key];
+   if(ok)s.score++;
+   else if(s.daily&&Array.isArray(s.wrongIds))s.wrongIds.push(e.id);
+   logTodayAnswer(type,e.level,s);
+   record(ok,type,e.level);
+   trackMistake(e,ok,type);
+   if(s.index===n-1){saveCompletedSet(type,s);finishA1Daily(type)}
+   for(const b of options.children){
+    b.disabled=true;
+    if(b.textContent===e[key])b.classList.add('right');
+    else if(b===btn)b.classList.add('wrong');
+   }
+   $(`${prefix}Score`).textContent=`${s.score} pont / баллов`;
+   const example=e.huS+' — '+e.ruS;
+   $(`${prefix}Feedback`).textContent=(ok?'✓ Helyes válasz! / Правильно!':'✗ Helyes megoldás / Правильный ответ: '+e[key]+'.')+' Пример / Példa: '+example+(ok?'':' Повторите выражение; оно появится в повторении.');
+   $(`${prefix}Next`).classList.remove('hidden');
+   $(`${prefix}Next`).textContent=s.index===n-1?'Eredmény megtekintése / Результат':'Következő / Далее';
+  });
+ }
+}
 function advance(type){const run=session[type];if(!run||!run.answered)return;run.index++;run.answered=false;renderExercise(type)}
 document.querySelectorAll('[data-level]').forEach(b=>b.addEventListener('click',()=>setLevel(b.dataset.level)));document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));$('search').addEventListener('input',e=>{query=e.target.value.trim();page=0;renderList()});$('starOnly').addEventListener('change',()=>{page=0;renderList()});$('prevPage').addEventListener('click',()=>{page--;renderList()});$('nextPage').addEventListener('click',()=>{page++;renderList()});$('cardSentence').addEventListener('change',e=>{cardSentence=e.target.checked;cardFlip=false;renderCard()});$('flashcard').addEventListener('click',flip);$('flashcard').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip()}});$('cardFlip').addEventListener('click',flip);$('cardPrev').addEventListener('click',()=>cardMove(-1));$('cardNext').addEventListener('click',()=>cardMove(1));$('a1CardHard').addEventListener('click',()=>saveA1CardAnswer('hard'));$('a1CardKnown').addEventListener('click',()=>saveA1CardAnswer('known'));$('a1CardRecommended').addEventListener('click',nextA1Recommended);$('cardStar').addEventListener('click',()=>{const e=cardDeck()[cardIndex];if(e)toggleMark(e)});$('quizRestart').addEventListener('click',()=>restartExercise('quiz'));$('quizSpeak').addEventListener('click',()=>{const s=session.quiz,e=s&&s.deck[s.index];if(e)speech(e.hu,'hu-HU')});$('sentenceRestart').addEventListener('click',()=>restartExercise('sentences'));$('quizNext').addEventListener('click',()=>advance('quiz'));$('sentenceNext').addEventListener('click',()=>advance('sentences'));$('speakHungarian').addEventListener('click',()=>{const s=session.sentences;const e=s&&s.deck[s.index];if(e)speech(e.huS,'hu-HU')});$('cardSpeak').addEventListener('click',()=>{const e=cardDeck()[cardIndex];if(e)speech(cardSentence?e.huS:e.hu,'hu-HU')});$('startAdvice').addEventListener('click',startRecommendation);$('startWeeklyFocus').addEventListener('click',startWeeklyFocus);$('reviewCards').addEventListener('click',()=>{if(!current.some(marked)){showNotice('Előbb jelölj meg legalább egy szót a szólistában. / Сначала отметьте хотя бы одно слово в списке.');return}reviewOnly=true;initCards();setView('cards')});$('reviewQuiz').addEventListener('click',()=>{if(!current.some(marked)){showNotice('Előbb jelölj meg legalább egy szót a szólistában. / Сначала отметьте хотя бы одно слово в списке.');return}reviewOnly=true;initExercise('quiz');setView('quiz')});$('reviewMistakes').addEventListener('click',()=>{if(!current.some(needsPractice)){showNotice('Ezen a szinten még nincs hibás szó. / На этом уровне пока нет слов с ошибками.');return}reviewOnly=false;initExercise('quiz',true);setView('quiz')});$('reviewSentenceMistakes').addEventListener('click',()=>{if(!current.some(needsSentencePractice)){showNotice('Ezen a szinten még nincs hibás mondat. / На этом уровне пока нет предложений с ошибками.');return}reviewOnly=false;initExercise('sentences',true);setView('sentences')});$('startNewWords').addEventListener('click',()=>startNewExercise('quiz'));$('a1DailyWords').addEventListener('click',()=>startA1Daily('quiz'));$('a1DailySentences').addEventListener('click',()=>startA1Daily('sentences'));$('a1DailySpeaking').addEventListener('click',startA1DailySpeaking);$('a1DailySuggestion').addEventListener('click',startA1Suggested);$('a1DailyContinueWords').addEventListener('click',()=>continueA1Daily('quiz'));$('a1DailyContinueSentences').addEventListener('click',()=>continueA1Daily('sentences'));window.addEventListener('pageshow',renderA1Daily);$('startNewSentences').addEventListener('click',()=>startNewExercise('sentences'));$('reviewDueWords').addEventListener('click',()=>startDueExercise('quiz'));$('reviewDueSentences').addEventListener('click',()=>startDueExercise('sentences'));$('resetStats').addEventListener('click',()=>{if(confirm('Töröljük a statisztikákat és a korábbi feladatsorok eredménysorát? A csillagozott és a hibásan megoldott szavak megmaradnak. / Удалить статистику и историю тестов? Отмеченные слова и ошибки сохранятся.')){saved.stats={correct:0,total:0};saved.levelStats={};saved.testHistory={};save();stats()}});
 $('totalTag').textContent=`${countAll} szócikk`;setLevel(level);setView('list');

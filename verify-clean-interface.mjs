@@ -15,7 +15,7 @@ for (const id of [
   assert.equal(occurrence(html, `id="${id}"`), 1, `${id} must occur once`);
 }
 
-assert.match(html, /clean-interface\.css\?v=20261122-focus2/);
+assert.match(html, /clean-interface\.css\?v=20261122-quick1/);
 assert.match(html, /<ol id="integratedStageTrack"[^>]*>(?:<li>[^<]+<\/li>){6}<\/ol>/);
 assert.ok(html.indexOf('id="integratedStepNext"') > html.indexOf('id="lessonExercise"'), 'step action is after current activity');
 assert.ok(html.indexOf('id="integratedStepNext"') < html.indexOf('class="lesson-end"'), 'step action precedes final lesson controls');

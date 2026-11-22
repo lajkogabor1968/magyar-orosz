@@ -11,7 +11,7 @@ const root = path.dirname(fileURLToPath(import.meta.url));
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const app = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
 const optionScript = html.indexOf('src="choice-options.js"');
-const appScript = html.indexOf('src="app.js"');
+const appScript = html.search(/src="app\.js(?:\?v=[^"]+)?"/);
 assert.ok(optionScript > 0 && appScript > optionScript, 'A kérdésválasz-modult az app.js előtt kell betölteni.');
 assert.match(app, /MagyarOroszQuizOptions\.buildOptions\(/, 'Az alkalmazás nem a tesztelt válaszválasztót használja.');
 const context = { window: {} };
