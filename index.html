@@ -101,6 +101,23 @@
     <button type="button" data-hub-view="contrast"><strong>Грамматика</strong><span>Правила и упражнения</span></button>
     <button type="button" data-hub-view="communication"><strong>Общение</strong><span>Диалоги и тексты</span></button>
   </div>
+  <details class="study-phonetics" lang="ru">
+   <summary><strong>Произношение A1</strong> · звуки ö/ü, долгие гласные и венгерские буквосочетания</summary>
+   <div class="lesson-grammar-check">
+    <p>В венгерском языке ударение обычно падает на первый слог слова. Безударные гласные не редуцируются так, как русское «о» в безударном положении. Долгота гласной меняет значение слова.</p>
+    <p><strong>Ö / ő:</strong> произнесите русское «э» с округлёнными губами. <strong>Ü / ű:</strong> произнесите «и», сохранив округлённые губы. Долгие ő и ű произносятся дольше, чем ö и ü.</p>
+    <p>Короткая и долгая гласная — сравните:</p>
+    <ul>
+     <li><button type="button" data-pronounce="kor"><span lang="hu">kor</span> 🔊</button> — возраст; <button type="button" data-pronounce="kór"><span lang="hu">kór</span> 🔊</button> — болезнь (o / ó)</li>
+     <li><button type="button" data-pronounce="ver"><span lang="hu">ver</span> 🔊</button> — бьёт; <button type="button" data-pronounce="vér"><span lang="hu">vér</span> 🔊</button> — кровь (e / é)</li>
+     <li><button type="button" data-pronounce="tör"><span lang="hu">tör</span> 🔊</button> — ломает; <button type="button" data-pronounce="tőr"><span lang="hu">tőr</span> 🔊</button> — кинжал (ö / ő)</li>
+     <li><button type="button" data-pronounce="öt"><span lang="hu">öt</span> 🔊</button> — пять; <button type="button" data-pronounce="őt"><span lang="hu">őt</span> 🔊</button> — его / её (кого?) (ö / ő)</li>
+    </ul>
+    <p>Важные буквосочетания: <span lang="hu">sz</span> ≈ русское «с», <span lang="hu">s</span> ≈ «ш», <span lang="hu">zs</span> ≈ «ж», <span lang="hu">cs</span> ≈ «ч», <span lang="hu">ny</span> — мягкое «нь», <span lang="hu">ty</span> — мягкое «ть», <span lang="hu">gy</span> — мягкое «дь», <span lang="hu">ly</span> обычно произносится как венгерское <span lang="hu">j</span>.</p>
+    <p class="muted">Кнопки 🔊 используют доступную запись, а при её отсутствии — венгерский голос устройства. Сначала слушайте, затем повторяйте вслух. Это не автоматическая проверка произношения.</p>
+    <p id="phoneticsStatus" role="status" aria-live="polite"></p>
+   </div>
+  </details>
   <button type="button" id="quickReviewPrimary" class="quick-review-primary"><span class="quick-review-icon" aria-hidden="true">↻</span><span class="quick-review-copy"><strong>Короткая практика на сегодня</strong><span>5 слов · 5 предложений · 3 фразы вслух. Сначала повторяем трудное.</span><small id="quickReviewProgress" aria-live="polite">Начните с пяти слов</small></span><span class="quick-review-cta" aria-hidden="true">Практика</span></button>
   <div class="study-online-entry"><button type="button" id="onlineLessonsMenu" disabled aria-disabled="true" aria-expanded="false" aria-controls="onlineLessonsSubmenu"><strong>Онлайн-занятия</strong><span>Пока недоступны · запись не открыта</span></button><div id="onlineLessonsSubmenu" hidden><button type="button" id="onlineSchedulingMenu">Согласование времени</button></div></div>
   <button id="examOpen" type="button" class="study-exam-button">Итоговый экзамен A1</button>
