@@ -111,6 +111,17 @@ visszatérési pozíciót, a gyorsított ellenőrzést és az A2-es kivételt.
 Ez működési logikai ellenőrzés, nem bizonyított böngészős/mobilos
 használhatóság; **a 13 szókincsterhelési figyelmeztetés megmaradt**.
 
+**Nulláról indulók A1-es mondat-előkészítése – 2026. november 23.:**
+az összes A1-es lecke szókártyái előtt három, korábban már a párbeszédhez
+előkészített magyar–orosz mondatot és orosz magyarázatot jelenítünk meg,
+külön magyar hangindító gombbal. A magyarázat összecsukható, ezért a
+már ismert mintákkal rendelkező tanulónak nem kötelező végigolvasnia.
+Az eddigi leckeazonosítók, feladatok és ellenőrzőpontok változatlanok;
+az A2-es tanmenethez nem nyúltunk. A `verify-a1-word-preview.mjs`
+ellenőrzi a három meglévő mondat helyes felületi kezelését és leckeváltáskor
+a tartalom frissítését. Ez még nem valódi mobilos vagy tanulói hatásvizsgálat:
+**a 13 túlterhelt lecke figyelmeztetését továbbra sem oldja fel**.
+
 **A1 szókártyák jelentésének célzott felülvizsgálata – 2026. november 23.:**
 az akkori kártyarenderelővel előállított **468 A1-es kártyát** a
 `verify-a1-card-meaning.mjs` ellenőrzi üres jelentésre, leckén belüli

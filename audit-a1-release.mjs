@@ -111,6 +111,8 @@ const intro=courses.A1[0].grammar?.[1]||'';
 if(!/в русском языке (нет|отсутствуют) артикл/i.test(intro)||!/a\/az/i.test(intro)||!/a\s*[–-]\s*á/.test(intro)||!/e\s*[–-]\s*é/.test(intro))
  fail('A1:0','RUSSIAN_STARTER_BRIDGE','A magyar névelőket és az a–á, e–é hangkülönbségeket nem tanítjuk kifejezetten orosz kezdőknek.');
 if(!book.includes('placeReadingAfterTeaching()')||!book.includes('writing.prepend(panel)'))fail('A1','READING_ORDER','A szövegértés nem bizonyíthatóan követi a tanítást.');
+if(!book.includes('function renderA1WordPreview()')||!book.includes('renderWords();renderA1WordPreview();renderGrammarExamples()')||!book.includes('prepared.slice(0,3)')||!book.includes('const started=say(hu)'))
+ fail('A1','BEGINNER_WORD_PREVIEW','A három kétnyelvű, meghallgatható tanári mondatminta nem jelenik meg a szókártyák előtt.');
 if(!book.includes('function requiredCardsSeen()')||!book.includes("if(level==='A1')testOrder=initialTestOrder()")||!book.includes("const distractors=level==='A1'?w.slice(0,requiredCardCount()):w"))
  fail('A1','UNTAUGHT_QUIZ_WORD','A záróteszt olyan A1-es szót vagy válaszlehetőséget is kérdezhet, amelynek jelentését előbb nem kellett megismerni.');
 if(!book.includes('function cardChunks()')||!book.includes('function renderCardCheckpoint()')||!book.includes('a1CheckedBatches'))
