@@ -700,6 +700,13 @@ function checkComposition(){
  const duplicates=phrases.length-new Set(phrases).size;
  const missingFinalPunctuation=source!==''&&!/[.!?]\s*$/.test(source);
  const nonHungarian=sentences.filter(t=>!/[a-záéíóöőúüű]/i.test(t)||/\p{Script=Cyrillic}/u.test(t));
+ // A full stop after a single word is not by itself evidence of sentence writing.
+ // This is only a structural minimum; genuinely valid one-word replies belong
+ // in dialogue practice, not in the requested multi-sentence composition.
+ const incompleteSentences=level==='A1'?sentences.filter(t=>{
+  const words=t.replace(/[.!?]+$/g,'').trim().split(/\s+/).filter(Boolean);
+  return words.length<2||!words.some(word=>/[a-záéíóöőúüű]{3,}/i.test(word));
+ }):[];
  const beginner=level==='A1'&&lessonIndex===0;
  let unsuitable=[];
  if(beginner){
@@ -710,7 +717,7 @@ function checkComposition(){
  const questionCount=sentences.filter(t=>t.endsWith('?')).length;
  const answerCount=sentences.filter(t=>/[.!]$/.test(t)).length;
  const requiresQuestions=level==='A1'&&lessonIndex===6;
- compositionChecked=enough&&!duplicates&&!missingFinalPunctuation&&!nonHungarian.length&&!unsuitable.length&&(!requiresQuestions||(questionCount>=2&&answerCount>=2));
+ compositionChecked=enough&&!duplicates&&!missingFinalPunctuation&&!nonHungarian.length&&!incompleteSentences.length&&!unsuitable.length&&(!requiresQuestions||(questionCount>=2&&answerCount>=2));
  stepButton.disabled=!compositionChecked;
  const messages=draftSaved?[]:['Не удалось сохранить текст. Скопируйте его перед выходом.'];
  messages.push('Предложений: '+sentences.length+' / '+minimum+'.');
@@ -718,6 +725,7 @@ function checkComposition(){
  if(duplicates)messages.push('Есть повторяющиеся предложения. Напишите разные примеры.');
  if(missingFinalPunctuation)messages.push('Поставьте знак конца предложения.');
  if(nonHungarian.length)messages.push('Напишите предложения по-венгерски латинскими буквами.');
+ if(incompleteSentences.length)messages.push('В мини-сочинении нужны полные короткие предложения (как минимум два слова, одно из них не короче трёх букв). Отдельное слово с точкой не засчитывается как предложение.');
  if(unsuitable.length)messages.push('В этом первом задании используйте образец «Ez egy …» и слово из списка урока. Например: «Ez egy telefon.»');
  if(requiresQuestions&&(questionCount<2||answerCount<2))messages.push('В уроке о вопросах напишите не менее двух вопросов со знаком «?», а также два ответа.');
 
