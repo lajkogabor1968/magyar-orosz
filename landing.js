@@ -13,7 +13,30 @@
     window.scrollTo({top: 0, behavior: 'instant'});
     document.querySelector('.masthead h1')?.focus?.();
   };
+  const picker = document.getElementById('landingChooseLesson');
+  const levelMenu = document.getElementById('landingLevelMenu');
+  function refreshLanding() {
+    const level = screen.querySelector('input[name="landingLevel"]:checked').value;
+    document.getElementById('landingChosenLevel').textContent = level;
+    picker.hidden = level !== 'A1';
+    let saved = false;
+    try {
+      saved = !!JSON.parse(localStorage.getItem('magyarorosz.lesson-route.v1'))?.A1;
+    } catch {}
+    start.textContent = level === 'A1' ? (saved ? 'Продолжить урок' : 'Начать урок') : 'Открыть курс';
+  }
+  levelMenu.addEventListener('change', () => {
+    refreshLanding();
+    levelMenu.open = false;
+    levelMenu.querySelector('summary').focus();
+  });
+  picker.addEventListener('click', () => {
+    start.click();
+    document.getElementById('lessonMenu').open = true;
+    document.getElementById('integratedLessonSelect').focus();
+  });
   const showLanding = () => {
+    refreshLanding();
     screen.hidden = false;
     document.documentElement.classList.add('landing-mode');
     window.scrollTo({top: 0, behavior: 'instant'});
@@ -29,6 +52,7 @@
   const currentLevel = document.querySelector('.welcome .level.active')?.dataset.level;
   const initialChoice = screen.querySelector('input[name="landingLevel"][value="' + currentLevel + '"]');
   if (initialChoice) initialChoice.checked = true;
+  refreshLanding();
   const home = document.createElement('button');
   home.type = 'button';
   home.className = 'secondary landing-back';

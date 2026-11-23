@@ -349,3 +349,21 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
   .lesson-reading-line { gap: 6px; }
   .lesson-reading-pair p:first-child { font-size: 16px; }
 }
+
+/* Compact course entry and on-demand navigation in the workbook. */
+#landingScreen { background: #fafcf9; }
+#landingScreen .landing-content { width: min(100%, 25rem); text-align: center; }
+#landingScreen h1 { font-size: clamp(2.35rem, 6vw, 3.15rem); margin: 0 0 1rem; }
+.course-menu > summary { cursor: pointer; color: #235e49; font-weight: 700; padding: .75rem; }
+#landingLevelMenu { margin-bottom: 1.4rem; }
+#landingLevelMenu strong { margin-inline-start: .25rem; }
+#landingLevelMenu .landing-levels { margin: .75rem 0; }
+#landingLevelMenu legend { margin: 0 auto .6rem; }
+#landingLevelMenu .landing-level-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+#landingScreen .landing-actions { display: grid; gap: .75rem; }
+#landingScreen .landing-actions button { width: 100%; min-width: 0; }
+#landingScreen .landing-actions [hidden] { display: none; }
+#lessonMenu { border-block: 1px solid #dce9e1; margin: .75rem 0 1rem; }
+#lessonMenu .lesson-select { display: block; }
+#lessonMenu .lesson-free-navigation { margin-top: .5rem; }
+html.study-book .masthead .logo p { display: none; }
