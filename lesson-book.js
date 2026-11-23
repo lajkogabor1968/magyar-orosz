@@ -845,7 +845,27 @@ function renderDialogueUnderstanding(){
  // visible dialogue line follows another one.
  $('integratedDialogueUnderstandingPrompt').textContent='Что означает венгерская реплика «'+prompt+'»?';
  const feedback=$('integratedDialogueUnderstandingFeedback');
- feedback.textContent=dialogueUnderstood?'✓ Вы уже правильно ответили на этот вопрос.':'Выберите правильный русский перевод. Это проверка понимания, а не оценка произношения.';
+ const promptNode=$('integratedDialogueUnderstandingPrompt');
+ const translationsOnScreen=Array.from($('integratedDialogue').querySelectorAll('.lesson-dialogue-text > small:last-child'));
+ // Teach first: learners can read the translations and listen before testing.
+ // Starting the check hides those translations, so the answer cannot simply
+ // be copied from the visible line immediately above the question.
+ const begin=el('button','Начать проверку без подсказок');
+ begin.type='button';
+ container.insertBefore(begin,promptNode);
+ const startAssessment=()=>{
+  translationsOnScreen.forEach(node=>{node.hidden=true;});
+  promptNode.hidden=false;choices.hidden=false;begin.hidden=true;
+  feedback.textContent='Выберите правильный русский перевод. Во время проверки перевод диалога скрыт.';
+ };
+ promptNode.hidden=!dialogueUnderstood;choices.hidden=!dialogueUnderstood;
+ if(dialogueUnderstood){
+  begin.hidden=true;
+  feedback.textContent='✓ Вы уже правильно ответили на этот вопрос.';
+ }else{
+  begin.onclick=startAssessment;
+  feedback.textContent='Сначала изучите диалог и его перевод. Затем начните проверку без подсказок.';
+ }
  const alternatives=[correct,...randomOrder([...new Set(translations.filter(v=>typeof v==='string'&&v.trim()&&v!==correct))]).slice(0,2)];
  randomOrder(alternatives).forEach(answer=>{
   const button=el('button',answer,'integrated-answer');button.type='button';button.lang='ru';
@@ -855,6 +875,8 @@ function renderDialogueUnderstanding(){
    const good=answer===correct;
    if(good){
     dialogueUnderstood=true;saveCheckpoint();
+    // After assessment, restore bilingual lines for revision.
+    translationsOnScreen.forEach(node=>{node.hidden=false;});
     choices.querySelectorAll('button').forEach(b=>{
      b.disabled=true;b.classList.toggle('right',b.textContent===correct);
     });
