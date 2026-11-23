@@ -296,10 +296,14 @@ function playHungarian(text,status){
  try{
   const utterance=window.SpeechSynthesisUtterance?new SpeechSynthesisUtterance(text):{text};
   utterance.lang='hu-HU';utterance.rate=.85;
+  utterance.onstart=()=>{status.textContent='▶ Воспроизводится венгерская речь. Слушайте и повторяйте.'};
+  utterance.onend=()=>{status.textContent='✓ Воспроизведение завершено. При желании послушайте ещё раз.'};
+  utterance.onerror=()=>{status.textContent='Не удалось воспроизвести венгерскую речь. Проверьте голос устройства или откройте страницу в Chrome.'};
   // The shared audio engine plays an approved Gábor recording first, then
   // falls back to device Hungarian TTS. Keep playback in the user click.
+  status.textContent='Запрашиваем озвучивание…';
   const started=window.TanuloTTS?.speak?.(utterance);
-  status.textContent=started?'Озвучивание запущено. Если звука нет, проверьте венгерский голос устройства.':'Озвучка недоступна. Проверьте настройки венгерского голоса или откройте страницу в Chrome.';
+  if(!started)status.textContent='Озвучка недоступна. Проверьте настройки венгерского голоса или откройте страницу в Chrome.';
  }catch(_){status.textContent='Озвучка недоступна. Попробуйте браузер Chrome и проверьте настройки речи.'}
 }
 function soundButton(text,status,full=false){

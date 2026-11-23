@@ -58,9 +58,15 @@ assert.equal(played.length,1);
 assert.equal(played[0].lang,'hu-HU');
 assert.equal(played[0].rate,.85);
 assert.match(played[0].text,/Anna vagyok/);
+const audioStatus=placed.querySelectorAll('p').find(item=>item.className==='a1-long-reading-audio-status');
+assert.match(audioStatus.textContent,/Запрашиваем озвучивание/,'a request is not proof of audible playback');
+played[0].onerror({error:'synthesis-failed'});
+assert.match(audioStatus.textContent,/Не удалось воспроизвести/,'the learner must see the actual TTS failure');
 const single=buttons.find(button=>button.className==='a1-reading-play-line');
 single.onclick();
 assert.equal(played[1].text,'Anna vagyok.');
+played[1].onstart();assert.match(audioStatus.textContent,/Воспроизводится/);
+played[1].onend();assert.match(audioStatus.textContent,/Воспроизведение завершено/);
 const toggle=buttons.find(button=>button.className==='a1-reading-translate');
 toggle.onclick();assert.ok(russian.every(item=>!item.hidden),'one control reveals translations for both text and dialogue');
 toggle.onclick();assert.ok(russian.every(item=>item.hidden),'translations can be hidden again');
@@ -71,9 +77,9 @@ assert.match(placed.querySelectorAll('p').find(item=>item.className==='a1-readin
 window.TanmuhelyRenderA1LongReadings('A2',1);
 assert.equal(placed,null,'A2 never receives A1 supplementary content');
 
-assert.match(html,/a1-tematikus-szovegek\.js\?v=20261123-a1-audio1/);
+assert.match(html,/a1-tematikus-szovegek\.js\?v=20261123-a1-audio2/);
 assert.match(css,/\.a1-long-reading \.a1-reading-play-line/);
 assert.match(css,/@media \(max-width: 700px\)/);
 console.log('PASS: eleven A1 topics, 165 paired sentences, 88 dialogue turns and 22 valid comprehension questions.');
 console.log('PASS: bilingual translations stay hidden; 253 selectable Hungarian audio items + 22 full-reading players use the existing voice engine.');
-console.log('PASS: error feedback names the correct answer; A2 remains untouched.');
+console.log('PASS: failed voice playback is never reported as success; comprehension feedback names the correct answer; A2 remains untouched.');
