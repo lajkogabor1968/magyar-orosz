@@ -125,6 +125,13 @@ else for(const [key,unit] of Object.entries(extraData.units)){
   warnings.push('Supplement '+key+': missing pre-reading grammar notes');
 }
 
+// Controls for repeated entry should be reused and a learner must be able to
+// interrupt assessment and return to the bilingual text without losing progress.
+if(!source.includes("let begin=$('integratedDialogueUnderstandingBegin')")||
+ !source.includes("let review=$('integratedDialogueUnderstandingReview')")||
+ !source.includes("review.onclick=showStudy")||
+ !source.includes("showStudy();"))
+ errors.push('A1: dialogue test may duplicate controls or prevent returning to study');
 // The translation must be shown while learning but hidden at assessment time.
 if(!source.includes("container.insertBefore(begin,promptNode)")||
  !source.includes("translationsOnScreen.forEach(node=>{node.hidden=true;})")||
