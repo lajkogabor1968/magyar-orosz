@@ -35,6 +35,10 @@ function improveEarlyA1CardExamples(){
  // barát and testvér stay at their original indices as optional extension;
  // earlier saved card and writing records must keep the same meaning.
  courses.A1[2].coreCount=8;
+ // The daily-routine lesson teaches ma/holnap/reggel/este and three verbs
+ // plus iskola first. sétál and mindennap are an optional extension at
+ // indices 8–9; no old saved index or sentence model is moved.
+ courses.A1[5].coreCount=8;
  greetings.examples={...greetings.examples,
   'én':['Én jól vagyok.','У меня всё хорошо.'],
   'te':['Te hogy vagy?','А ты как?'],

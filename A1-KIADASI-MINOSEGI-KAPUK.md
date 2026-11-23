@@ -25,10 +25,11 @@ tananyag-tervezési és ellenőrzési elveiből indultunk ki.
 | 30 A1-es lecke, egyedi sorrend, régi azonosítók | Rendben | A korábbi tanulói eredmények kulcsai érintetlenek. |
 | Szókártyák, orosz magyarázatok, minták, párbeszédek | 30/30 lecke szerkezetileg ellenőrizve | Ez **nem** hitelesíti a fordítások nyelvi helyességét. |
 | Nyelvtani és szövegértési javítókulcs | 30/30 lecke: létező kulcs, nem duplikált választási lehetőségek | A többféleképpen helyes válaszok emberi lektorálása még szükséges. |
-| Tanítás előtti számonkérés kizárása | Az A1-es záróteszt csak az adott leckében kötelezőnek jelölt, előre bemutatott szavakat kérdezi (általában 10, a 3. leckében 8); a tanulási csoportok külön-külön, két hibátlan írásválasszal átugorhatók | Két mintaszó nem igazolja a teljes csoport tudását. A nyelvtani, beszéd-, írás- és zárófeladat nem ugorható át. |
+| Tanítás előtti számonkérés kizárása | Az A1-es záróteszt csak az adott leckében kötelezőnek jelölt, előre bemutatott szavakat kérdezi (általában 10, a 3. és 6. leckében 8); a tanulási csoportok külön-külön, két hibátlan írásválasszal átugorhatók | Két mintaszó nem igazolja a teljes csoport tudását. A nyelvtani, beszéd-, írás- és zárófeladat nem ugorható át. |
 | Teljes automatikus A1-audit | **0 fennmaradó kritikus szerkezeti találat** | A feltárt első leckés magyarázati hiányt javítottuk. |
 | Szókincsterhelés | **13 lecke szakmai felülvizsgálatra jelölve** | 9–13 új alapszókártya; figyelmeztetés, nem automatikus bukás. A 29–30. leckében legfeljebb 8 új kötelező szó szerepel. |
 | 3. A1-lecke csökkentett kötelező anyaga | **8 kötelező + 2 választható, régi indexen** | Az összes új szószám alapú 13 figyelmeztetés változatlan; valós pedagógiai előnyt még nem mértünk. |
+| 6. A1-lecke csökkentett kötelező anyaga | **8 kötelező + 2 választható, régi indexen** | Az új teszt 8 kérdéses, régi 10 kérdéses mentés változatlan; valós pedagógiai előnyt még nem mértünk. |
 | Vezetett út / A1-szótár | 199/580 különböző címszó, **34,3%** | Nem tekinthető kész A1-es útvonalnak. |
 | A1-es kezdőlecke szabad kiválasztása | Szimulált állapotteszt sikeres | A 2. vagy későbbi lecke közvetlenül megnyitható, a választás mentődik; valódi mobilos próba még nincs. |
 | Ismert szavak gyors A1-es ellenőrzése | Két pontos magyar írásválasz egy ötszavas csoporthoz; az első csoport sikere a második hibája után is megmarad | A felismert csoport külön mentődik, nem jelöl meg nem nyitott kártyákat; valódi tanulói validálás még hátravan. |
@@ -150,6 +151,19 @@ a folyamatban levő korábbi teszt sem rövidül le utólag. A
 régi szósorrendet és az új/régi tesztmentések együttes kezelését.
 Ez pedagógiai próba, és önmagában nem jelenti a 13 teljes új-szószám
 alapú figyelmeztetés megszűnését vagy a valós tanulói eredmény igazolását.
+
+**Napirendlecke nyolc kötelező szóval – 2026. november 23.:**
+az A1/6 leckében az első nyolc kötelező szó: `ma`, `holnap`,
+`reggel`, `este`, `iskola`, `tanul`, `olvas`, `dolgozik`.
+A `sétál` és `mindennap` az eredeti kilencedik–tizedik helyen
+választható marad, a tanulási blokkok 5+3 szavasak, az új teszt
+8 kérdéses. A korábban elkezdett 10 kérdéses teszt végigvihető,
+a kártyák mentett indexe és az A2-es út változatlan. A kötelező rövid
+feladatok nem igénylik a két kiegészítő szót; a külön, felnyitható hosszú
+olvasmányban a `sétálok` alak fordítással szerepel.
+A `verify-a1-daily-core.mjs` szerkezeti regressziós próba ezt az
+elválasztást és a régi mentéseket ellenőrzi. A 13 teljes szókészletes
+figyelmeztetés megmarad, élő tanulói hatásmérés nem történt.
 
 **A1 szókártyák jelentésének célzott felülvizsgálata – 2026. november 23.:**
 az akkori kártyarenderelővel előállított **468 A1-es kártyát** a
