@@ -69,6 +69,22 @@ function improveEarlyA1CardExamples(){
  };
 }
 improveEarlyA1CardExamples();
+// Fully new learners can test article choices and the present-tense forms of
+// lenni without waiting for an open-writing mistake. These are optional,
+// non-scoring contrasts; the original cards, tests and save IDs stay intact.
+function installEarlyA1ContrastPractice(){
+ courses.A1[0].contrastPractice=[
+  {ru:'Это телефон; мы называем предмет впервые.',answers:['Ez egy telefon.','Ez a telefon.','Ez az telefon.'],correct:0,explanation:'Egy — неопределённый артикль. В выражении a telefon определённый артикль указывает на уже известный предмет. Az перед telefon неверно: слово начинается с согласного.'},
+  {ru:'Это конкретное метро, на которое мы указываем.',answers:['Ez a metró.','Ez az metró.','Ez egy metró.'],correct:0,explanation:'Для конкретного метро используем определённый артикль a, потому что metró начинается с согласного. Egy сообщает о неопределённом предмете.'},
+  {ru:'Как спросить «Что это?»',answers:['Mi ez?','Ki ez?','Hogy vagy?'],correct:0,explanation:'Mi — что, ki — кто, а Hogy vagy? означает «Как дела?».'}
+ ];
+ courses.A1[1].contrastPractice=[
+  {ru:'У меня всё хорошо.',answers:['Jól vagyok.','Jól vagy.','Jól van.'],correct:0,explanation:'Vagyok — форма «я», vagy — «ты», van — «он / она». Jól — хорошо.'},
+  {ru:'Как спросить у знакомого «Как дела?»',answers:['Hogy vagy?','Hogy van?','Mi ez?'],correct:0,explanation:'В разговоре на «ты» используем vagy. Hogy van? — вежливое обращение, Mi ez? — «Что это?».'},
+  {ru:'Он / она — учитель.',answers:['Ő tanár.','Ő tanár van.','Én tanár vagyok.'],correct:0,explanation:'В третьем лице настоящего времени перед профессией связка van не нужна: Ő tanár. Én tanár vagyok означает «Я учитель».'}
+ ];
+}
+installEarlyA1ContrastPractice();
 // Extend existing course word lists only after the entire textbook is defined.
 window.TanmuhelyLinkQuizletLessons?.(courses);
 window.TanmuhelyEnrichA1A2?.(courses);
