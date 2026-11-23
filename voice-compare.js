@@ -22,7 +22,7 @@
  });
  if(!start||!stop||!replay||!player||!feedback)return;
  const supported=!!(navigator.mediaDevices?.getUserMedia&&window.MediaRecorder);
- let recorder=null,stream=null,chunks=[],timer=null,url=null;
+ let recorder=null,stream=null,chunks=[],timer=null,url=null,generation=0;
  const status=text=>{feedback.textContent=text;};
  const release=()=>{
   if(timer!==null){clearTimeout(timer);timer=null;}
@@ -30,6 +30,21 @@
   recorder=null;start.disabled=!supported;stop.disabled=true;
  };
  const stopNow=()=>{if(recorder&&recorder.state==='recording')recorder.stop();else release();};
+ const reset=()=>{
+  ++generation;
+  if(recorder){
+   // Detach before stop: a finished clip from the previous lesson must
+   // never appear beside the new lesson's reference sentence.
+   recorder.onstop=null;recorder.ondataavailable=null;recorder.onerror=null;
+   if(recorder.state==='recording'){try{recorder.stop();}catch(_){}}
+  }
+  release();chunks=[];
+  if(url){URL.revokeObjectURL(url);url=null;}
+  player.pause?.();player.removeAttribute('src');player.load();
+  replay.disabled=true;
+  status('');
+ };
+ window.TanuloVoiceCompareReset=reset;
  if(!supported){
   start.disabled=true;stop.disabled=true;replay.disabled=true;
   status('Запись голоса недоступна в этом браузере. Используйте повторение вслух без автоматической оценки.');
@@ -37,10 +52,15 @@
  }
  start.onclick=async()=>{
   if(recorder&&recorder.state==='recording')return;
+  const ownGeneration=++generation;
   start.disabled=true;stop.disabled=true;replay.disabled=true;
   if(url){URL.revokeObjectURL(url);url=null;player.removeAttribute('src');player.load();}
   try{
-   stream=await navigator.mediaDevices.getUserMedia({audio:true});
+   const acquired=await navigator.mediaDevices.getUserMedia({audio:true});
+   if(ownGeneration!==generation){
+    acquired.getTracks().forEach(track=>track.stop());return;
+   }
+   stream=acquired;
    const preferred=['audio/webm;codecs=opus','audio/mp4','audio/webm'];
    const type=preferred.find(m=>typeof MediaRecorder.isTypeSupported==='function'&&MediaRecorder.isTypeSupported(m));
    recorder=new MediaRecorder(stream,type?{mimeType:type}:undefined);
@@ -59,9 +79,9 @@
    stop.disabled=false;
    status('Идёт запись. Произнесите услышанную фразу. Максимум 12 секунд.');
    timer=setTimeout(stopNow,12000);
-  }catch(e){release();status('Нет доступа к микрофону или запись недоступна. Разрешите микрофон в браузере либо повторите фразу вслух.');}
+  }catch(e){if(ownGeneration!==generation)return;release();status('Нет доступа к микрофону или запись недоступна. Разрешите микрофон в браузере либо повторите фразу вслух.');}
  };
  stop.onclick=stopNow;
  replay.onclick=()=>{if(player.src)player.play().catch(()=>status('Не удалось воспроизвести запись на этом устройстве.'));};
- window.addEventListener('pagehide',()=>{if(recorder?.state==='recording')stopNow();if(url)URL.revokeObjectURL(url);});
+ window.addEventListener('pagehide',reset);
 })();
