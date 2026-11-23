@@ -616,17 +616,24 @@ function renderGrammarExamples(){
   card.append(el('small','Фраза '+(number+1)+' из '+exercises.length),el('strong',exercise.ru));
   const options=el('div',undefined,'lesson-answer-options');
   const feedback=el('p','','lesson-contrast-feedback');feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');
+  const listen=el('button','🔊 Прослушать правильный вариант','lesson-contrast-listen');listen.type='button';listen.hidden=true;
+  const audioStatus=el('p','','lesson-contrast-sound-status');audioStatus.setAttribute('role','status');audioStatus.setAttribute('aria-live','polite');
+  listen.onclick=()=>{
+   const phrase=exercise.answers[exercise.correct];
+   audioStatus.textContent=say(phrase)?'Слушайте и повторите: '+phrase:'Озвучка недоступна. Проверьте венгерский голос на устройстве.';
+  };
   for(const {answer,index} of randomOrder(exercise.answers.map((answer,index)=>({answer,index})))){
    const button=el('button',answer,'integrated-answer');button.type='button';button.lang='hu';
    button.onclick=()=>{
     const good=index===exercise.correct,expected=exercise.answers[exercise.correct];
     highlightAnswerButtons(options,button,expected);
     feedback.textContent=(good?'✓ Верно. ':'✗ Правильный ответ: '+expected+' ')+exercise.explanation;
+    listen.hidden=false;audioStatus.textContent='';
     if(good)for(const choice of options.querySelectorAll('button'))choice.disabled=true;
    };
    options.append(button);
   }
-  card.append(options,feedback);practice.append(card);
+  card.append(options,feedback,listen,audioStatus);practice.append(card);
  }
  target.append(practice);
 }

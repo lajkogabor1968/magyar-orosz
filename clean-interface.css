@@ -308,6 +308,9 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
 .lesson-contrast-card > strong { display: block; color: #174c39; font-size: 17px; margin-bottom: 12px; }
 .lesson-contrast-card .integrated-answer { min-height: 48px; }
 .lesson-contrast-feedback { min-height: 1.3em; margin: 12px 0 0; color: #245e46; line-height: 1.5; }
+.lesson-contrast-listen { display: inline-flex; min-height: 46px; padding: 10px 14px; margin-top: 10px; border: 1px solid #a6d0b6; border-radius: 12px; color: #195f45; background: #e5f4eb; font-weight: 750; }
+.lesson-contrast-listen[hidden] { display: none; }
+.lesson-contrast-sound-status { margin: 8px 0 0; color: #3b7056; line-height: 1.5; }
 .lesson-continue-bar { padding: 14px; border: 1px solid #dbe9df; background: #fff; border-radius: 20px; box-shadow: 0 8px 22px #163e2b0a; margin: 24px 0 8px; }
 .lesson-continue-bar:has(#integratedStepNext:not(:disabled)) { position: sticky; bottom: max(9px,env(safe-area-inset-bottom)); z-index: 20; }
 .lesson-continue-bar .lesson-primary { width: 100%; margin: 0; border: 2px solid #198565 !important; border-bottom: 5px solid #12664e !important; background: #198565 !important; color: #fff !important; border-radius: 14px; min-height: 56px; font-size: 18px; }

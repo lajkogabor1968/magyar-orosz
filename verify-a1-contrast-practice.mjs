@@ -42,8 +42,9 @@ class Node {
 }
 const target=new Node('div'),el=(...args)=>new Node(...args);
 let current=description;
+let spoken='',soundAvailable=true;
 const state={level:'A1',lesson:()=>current,$:id=>id==='integratedGrammarExamples'?target:null,
- el,randomOrder:items=>[...items].reverse()};
+ el,randomOrder:items=>[...items].reverse(),say:phrase=>{spoken=phrase;return soundAvailable}};
 const render=runInNewContext(`${highlightSource}\n${renderSource}\nrenderGrammarExamples`,state);
 const practiceCards=()=>target.children[2]?.children.slice(2)||[];
 render();
@@ -53,6 +54,8 @@ const first=practiceCards()[0];
 assert.equal(first.children[1].textContent,'Учитель приветливый.');
 const options=first.children[2];
 assert.equal(options.children.length,3);
+const listen=first.children[4],audioStatus=first.children[5];
+assert.equal(listen.hidden,true,'listening becomes available only after revealing the model');
 const right=options.children.find(button=>button.textContent==='A tanár kedves.');
 const wrong=options.children.find(button=>button.textContent==='A tanár kedves van.');
 wrong.onclick();
@@ -60,9 +63,18 @@ assert.ok(wrong.classes.has('wrong'),'wrong choice receives visible correction')
 assert.ok(right.classes.has('right'),'correct answer is highlighted immediately');
 assert.equal(first.children[3].attributes['aria-live'],'polite');
 assert.match(first.children[3].textContent,/Правильный ответ: A tanár kedves\./);
+assert.equal(listen.hidden,false,'the corrected Hungarian sentence can now be played');
+assert.equal(spoken,'','checking a written answer must never auto-play audio');
+listen.onclick();
+assert.equal(spoken,'A tanár kedves.','audio must use the teacher-approved correct Hungarian model');
+assert.match(audioStatus.textContent,/Слушайте и повторите/);
+soundAvailable=false;listen.onclick();
+assert.match(audioStatus.textContent,/Озвучка недоступна/,'failed playback must not claim audio success');
+soundAvailable=true;
 assert.equal(options.children.filter(button=>button.disabled).length,0,'a wrong attempt allows retry');
 right.onclick();
 assert.match(first.children[3].textContent,/✓ Верно/);
+assert.equal(audioStatus.textContent,'','changing an answer clears stale audio status');
 assert.equal(options.children.filter(button=>button.disabled).length,3,'a correct answer completes only its own exercise');
 assert.equal(practiceCards()[1].children[2].children.filter(button=>button.disabled).length,0,
  'optional questions do not lock each other');
@@ -76,6 +88,8 @@ assert.match(noCar.children[3].textContent,/Nincs autóm\./,'a bad negative rece
 assert.match(noCar.children[3].textContent,/nem van/,'the hint explains why the negative is wrong');
 assert.match(read('clean-interface.css'),/\.lesson-contrast-card \.integrated-answer/,
  'the new answer controls have touch-friendly visual styling');
+assert.match(read('clean-interface.css'),/\.lesson-contrast-listen\[hidden\]/,
+ 'unanswered audio controls are hidden from the interaction flow');
 
 current=relatives;render();
 assert.equal(target.children.length,2,'other A1 lessons keep the previous grammar rendering');
@@ -86,5 +100,5 @@ assert.equal(target.children.length,2,'A2 gets no optional contrast practice');
 assert.doesNotMatch(renderSource,/localStorage|saveCheckpoint|compositionChecked|stepButton/,
  'optional practice must not mutate old progress, completion or quiz state');
 console.log('PASS: six A1/15–16 contrasts are rendered from the lesson data with one model answer each.');
-console.log('PASS: wrong and correct choices produce instant explanatory Russian feedback and independent retry.');
+console.log('PASS: wrong and correct choices produce instant explanatory Russian feedback, retry and optional Hungarian audio.');
 console.log('PASS: other lessons, A2 and existing saved progress/completion gates remain unchanged.');
