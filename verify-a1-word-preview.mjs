@@ -54,6 +54,25 @@ assert.match(panel.children[3].textContent,/Повторите вслух/,'the 
 soundAvailable=false;
 item.children[1].onclick();
 assert.match(panel.children[3].textContent,/Звук не запустился/,'unavailable speech is not reported as a success');
+soundAvailable=true;
+
+// Two later A1 lessons use their already translated fourth and fifth notes
+// to pre-teach forms that appear in mandatory reading or dialogue.
+const loaded={window:{}};
+runInNewContext(readFileSync(new URL('./a1-guided-lessons-13-16.js',import.meta.url),'utf8'),loaded);
+const [relatives,professions,descriptions]=loaded.window.TanmuhelyA1Units13to16.lessons;
+assert.equal(relatives.wordPreviewCount,undefined,'the family lesson keeps the short preview');
+active=professions;render();
+assert.match(panel.children[0].textContent,/пять/);
+assert.equal(panel.children[2].children.length,5,'workplace lesson must preview five explained phrases');
+assert.match(panel.children[2].children[4].children[0].children[0].textContent,/étteremben/);
+panel.children[2].children[4].children[1].onclick();
+assert.match(spoken,/étteremben/,'the fifth workplace example has a functioning sound action');
+active=descriptions;render();
+assert.equal(panel.children[2].children.length,5,'description lesson must preview five phrases');
+assert.match(panel.children[2].children[0].children[0].children[0].textContent,/új/);
+assert.match(panel.children[2].children[3].children[0].children[0].textContent,/nem/);
+assert.match(panel.children[2].children[4].children[0].children[0].textContent,/nagyon/);
 
 active=second;render();
 assert.equal(position.length,1,'lesson switches reuse the same panel');
@@ -63,4 +82,5 @@ state.level='A2';render();
 assert.equal(panel.hidden,true,'the frozen A2 teaching route is unchanged');
 assert.match(readFileSync(new URL('./clean-interface.css',import.meta.url),'utf8'),/\.lesson-word-preview li/);
 console.log('PASS: A1 word-stage preview teaches three existing bilingual phrases with listening and Russian explanations.');
+console.log('PASS: A1/14–15 pre-teach five explained phrases, including étteremben, új, nem and nagyon.');
 console.log('PASS: lesson changes refresh the examples; A2 is unchanged; no saved student key is added.');

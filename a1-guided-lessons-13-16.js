@@ -70,6 +70,9 @@
     {
       title: 'Профессии и место работы',
       words: ['tanár', 'tanárnő', 'magyartanár', 'orvos', 'eladó', 'pincér', 'dolgozik', 'munka', 'iskola', 'kórház', 'étterem', 'bolt'],
+      // The fifth prepared sentence explains étteremben before the reading;
+      // étterem remains an extra card at its original saved index.
+      wordPreviewCount: 5,
       extra: [
         ['dolgozom', 'я работаю', 'Az iskolában dolgozom.', 'Я работаю в школе.'],
         ['dolgozol', 'ты работаешь', 'Hol dolgozol?', 'Где ты работаешь?'],
@@ -128,6 +131,9 @@
     {
       title: 'Описываем людей: какой он?',
       words: ['kedves', 'fiatal', 'magas', 'alacsony', 'boldog', 'szép', 'jó', 'rossz', 'kicsi', 'nagy', 'új', 'régi', 'nagyon', 'nem'],
+      // All five prepared phrases are needed early to introduce új, nem and
+      // nagyon, even though those cards occur after the mandatory first ten.
+      wordPreviewCount: 5,
       extra: [
         ['Milyen?', 'какой? какая? какое?', 'Milyen a tanár?', 'Какой учитель? / Какой он, учитель?'],
         ['kedves tanár', 'добрый / приветливый учитель', 'Ez egy kedves tanár.', 'Это приветливый учитель.'],

@@ -31,6 +31,7 @@ tananyag-tervezési és ellenőrzési elveiből indultunk ki.
 | 3. A1-lecke csökkentett kötelező anyaga | **8 kötelező + 2 választható, régi indexen** | Az összes új szószám alapú 13 figyelmeztetés változatlan; valós pedagógiai előnyt még nem mértünk. |
 | 6. A1-lecke csökkentett kötelező anyaga | **8 kötelező + 2 választható, régi indexen** | Az új teszt 8 kérdéses, régi 10 kérdéses mentés változatlan; valós pedagógiai előnyt még nem mértünk. |
 | 13. A1-lecke csökkentett kötelező anyaga | **8 kötelező + 2 új választható szó, és ismétlés** | Az új teszt 8 kérdéses; 18 kártya és a régi 10 kérdéses mentés megmarad. |
+| 14–15. A1-lecke korai szóalak-előkészítése | **5-5 meghallgatható magyar–orosz minta a szókártyák előtt** | Az étteremben, illetve új, nem, nagyon alakokat a tanuló már a kötelező feladatok előtt látja; a valós megértés nem igazolt. |
 | Vezetett út / A1-szótár | 199/580 különböző címszó, **34,3%** | Nem tekinthető kész A1-es útvonalnak. |
 | A1-es kezdőlecke szabad kiválasztása | Szimulált állapotteszt sikeres | A 2. vagy későbbi lecke közvetlenül megnyitható, a választás mentődik; valódi mobilos próba még nincs. |
 | Ismert szavak gyors A1-es ellenőrzése | Két pontos magyar írásválasz egy ötszavas csoporthoz; az első csoport sikere a második hibája után is megmarad | A felismert csoport külön mentődik, nem jelöl meg nem nyitott kártyákat; valódi tanulói validálás még hátravan. |
@@ -115,13 +116,14 @@ Ez működési logikai ellenőrzés, nem bizonyított böngészős/mobilos
 használhatóság; **a 13 szókincsterhelési figyelmeztetés megmaradt**.
 
 **Nulláról indulók A1-es mondat-előkészítése – 2026. november 23.:**
-az összes A1-es lecke szókártyái előtt három, korábban már a párbeszédhez
-előkészített magyar–orosz mondatot és orosz magyarázatot jelenítünk meg,
+az összes A1-es lecke szókártyái előtt alapértelmezés szerint három,
+a 14. és 15. leckében öt, korábban már a párbeszédhez előkészített
+magyar–orosz mondatot és orosz magyarázatot jelenítünk meg,
 külön magyar hangindító gombbal. A magyarázat összecsukható, ezért a
 már ismert mintákkal rendelkező tanulónak nem kötelező végigolvasnia.
 Az eddigi leckeazonosítók, feladatok és ellenőrzőpontok változatlanok;
 az A2-es tanmenethez nem nyúltunk. A `verify-a1-word-preview.mjs`
-ellenőrzi a három meglévő mondat helyes felületi kezelését és leckeváltáskor
+ellenőrzi a három, illetve öt meglévő mondat helyes felületi kezelését és leckeváltáskor
 a tartalom frissítését. Ez még nem valódi mobilos vagy tanulói hatásvizsgálat:
 **a 13 túlterhelt lecke figyelmeztetését továbbra sem oldja fel**.
 
@@ -179,6 +181,18 @@ fogalmazás és önálló nyelvtani ellenőrzés nem kéri a két házastársi
 megnevezést. A `verify-a1-relatives-core.mjs` a tényleges kártyasort,
 mentéseket és az A2-es változatlanságot szimulálja. Ez továbbra is
 technikai-szerkezeti bizonyíték, nem validált tanulási hatás.
+
+**Foglalkozás- és személyleírási előtanítás – 2026. november 23.:**
+a 14. leckében az eredeti ötödik magyar–orosz előkészítő mondat már a
+szókártyák előtt elmagyarázza és meghallgathatóvá teszi az `étteremben`
+alakot, amely a kötelező olvasmányban is szerepel. A 15. leckében öt
+előkészítő mondat látható, így az `új`, `nem`, `nagyon` szavak sem csak
+a későbbi nyelvtanban vagy az opcionális kártyákon bukkannak fel.
+Ezek már létező fordítások és magyarázatok, csak korábbi ponton jelennek
+meg; az eredeti szóindexek, a mentések, a kötelező tesztek és A2
+változatlanok. A `verify-a1-word-preview.mjs` és a kiadási audit
+szimuláltan ellenőrzi a megjelenést, az öt gombot és az A2 kizárását.
+A valódi hangminőség és az orosz anyanyelvű megértés még nem igazolt.
 
 **A1 szókártyák jelentésének célzott felülvizsgálata – 2026. november 23.:**
 az akkori kártyarenderelővel előállított **468 A1-es kártyát** a

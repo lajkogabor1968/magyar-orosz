@@ -106,6 +106,13 @@ for(const [index,lesson] of courses.A1.entries()){
   if(coreCount!==8||lesson.words[8]!=='férj'||lesson.words[9]!=='feleség'||lesson.words[10]!=='család'||/férj|feleség/.test(mandatoryText))
    fail(id,'RELATIVES_CORE','A rokonságlecke opcionális szavai vagy a kötelező minták megváltoztak.');
  }
+ if(index===13&&(
+  lesson.wordPreviewCount!==5||!lesson.preparation?.[4]?.[0]?.includes('étteremben')
+ ))fail(id,'WORKPLACE_PRETEACH','Az étteremben szóalakhoz hiányzik az ötödik, előre hallgatható, oroszul magyarázott minta.');
+ if(index===14&&(
+  lesson.wordPreviewCount!==5||!lesson.preparation?.[0]?.[0]?.includes('új')||
+  !lesson.preparation?.[3]?.[0]?.includes('nem')||!lesson.preparation?.[4]?.[0]?.includes('nagyon')
+ ))fail(id,'DESCRIPTION_PRETEACH','Az új, nem, nagyon szavak kötelező használata előtt nincs meg az öt kétnyelvű minta.');
  totalNew+=newWords.length;
  if(newWords.length>8){
   overloaded++;
@@ -134,7 +141,7 @@ const intro=courses.A1[0].grammar?.[1]||'';
 if(!/в русском языке (нет|отсутствуют) артикл/i.test(intro)||!/a\/az/i.test(intro)||!/a\s*[–-]\s*á/.test(intro)||!/e\s*[–-]\s*é/.test(intro))
  fail('A1:0','RUSSIAN_STARTER_BRIDGE','A magyar névelőket és az a–á, e–é hangkülönbségeket nem tanítjuk kifejezetten orosz kezdőknek.');
 if(!book.includes('placeReadingAfterTeaching()')||!book.includes('writing.prepend(panel)'))fail('A1','READING_ORDER','A szövegértés nem bizonyíthatóan követi a tanítást.');
-if(!book.includes('function renderA1WordPreview()')||!book.includes('renderWords();renderA1WordPreview();renderGrammarExamples()')||!book.includes('prepared.slice(0,3)')||!book.includes('const started=say(hu)'))
+if(!book.includes('function renderA1WordPreview()')||!book.includes('renderWords();renderA1WordPreview();renderGrammarExamples()')||!book.includes('prepared.slice(0,previewCount)')||!book.includes('const started=say(hu)'))
  fail('A1','BEGINNER_WORD_PREVIEW','A három kétnyelvű, meghallgatható tanári mondatminta nem jelenik meg a szókártyák előtt.');
 if(!book.includes('function requiredCardsSeen()')||!book.includes("if(level==='A1')testOrder=initialTestOrder()")||!book.includes("const distractors=level==='A1'?w.slice(0,requiredCardCount()):w"))
  fail('A1','UNTAUGHT_QUIZ_WORD','A záróteszt olyan A1-es szót vagy válaszlehetőséget is kérdezhet, amelynek jelentését előbb nem kellett megismerni.');

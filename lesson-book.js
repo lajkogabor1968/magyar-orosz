@@ -639,25 +639,26 @@ function renderWords(){
  }
  renderAlphabet()
 }
-// Show three bilingual model phrases before the very first flashcard.
-// They are reused from the teacher-prepared dialogue notes: no new word ID,
-// translation or scored question is introduced into the saved course.
+// Show at least three bilingual model phrases before the very first card.
+// Lessons with out-of-core words in mandatory texts can request all five
+// prepared notes; no saved word ID, translation or score is changed.
 function renderA1WordPreview(){
  const flash=$('integratedFlashcard'),prepared=lesson().preparation||[];
+ const previewCount=level==='A1'&&lesson().wordPreviewCount===5?5:3;
  let panel=$('a1WordPreview');
  if(!panel){
   panel=el('details',undefined,'lesson-word-preview');panel.id='a1WordPreview';
   flash.previousElementSibling.before(panel);
  }
- panel.hidden=level!=='A1'||prepared.length<3;
+ panel.hidden=level!=='A1'||prepared.length<previewCount;
  if(panel.hidden)return;
  panel.replaceChildren();panel.open=true;
- panel.append(el('summary','Сначала три готовые фразы: послушайте и поймите'));
+ panel.append(el('summary',previewCount===5?'Сначала пять готовых фраз: послушайте и поймите':'Сначала три готовые фразы: послушайте и поймите'));
  panel.append(el('p','Не нужно знать эти слова заранее. Слушайте по-венгерски, читайте перевод и короткое объяснение по-русски. Если уже знакомо — закройте подсказку.'));
  const list=el('ol');
  const feedback=el('p','','lesson-word-preview-feedback');
  feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');
- for(const [hu,ru,explanation] of prepared.slice(0,3)){
+ for(const [hu,ru,explanation] of prepared.slice(0,previewCount)){
   const item=el('li'),words=el('div');
   const phrase=el('strong',hu);phrase.lang='hu';
   const translation=el('span',ru);translation.lang='ru';
