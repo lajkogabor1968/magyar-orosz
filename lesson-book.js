@@ -893,7 +893,7 @@ function stageView(){
  });
  document.querySelectorAll('.lesson-sections a').forEach((a,i)=>{a.hidden=i!==step;a.textContent=(i+1)+'. '+stepsRu[i]});
  const vocabularyIntro=level==='A1'
-  ? 'Послушайте слово и откройте перевод. После каждых пяти слов ответьте на два вопроса.'
+  ? (lessonIndex===0?'Слушайте слова, изучайте венгерские буквы и открывайте перевод.':'Послушайте слово и откройте перевод.')+' После каждых пяти слов ответьте на два вопроса.'
   : 'Изучите слова и откройте перевод пяти разных карточек.';
  const cardHint=$('integratedFlashcard')?.previousElementSibling;
  if(cardHint)cardHint.hidden=level==='A1';
