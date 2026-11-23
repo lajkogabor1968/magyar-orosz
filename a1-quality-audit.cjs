@@ -19,6 +19,27 @@ const additions = [
  ['a1-guided-lessons-21-24.js','TanmuhelyA1Units21to24'],
  ['a1-guided-lessons-25-28.js','TanmuhelyA1Units25to28']
 ];
+
+/* Validate the first eight original lessons as well as appended units. */
+const originalTranslationsMatch=source.match(/const dialogueTranslations=(\{[^\n]+\});\s*const /);
+if (!originalTranslationsMatch) throw Error('Original dialogue translations not located.');
+const originalTranslations=JSON.parse(originalTranslationsMatch[1]);
+const originalChecksMatch=source.match(/const checks=(\{[\s\S]*?\});\s*\/\/ The continuation/);
+if (!originalChecksMatch) throw Error('Original grammar answer keys not located.');
+const originalChecks=vm.runInNewContext('('+originalChecksMatch[1]+')',{}, {timeout:3000});
+function validQuestion(question,choices,correct) {
+ return typeof question==='string'&&question.trim()&&Array.isArray(choices)&&choices.length>=2&&
+  choices.every(x=>typeof x==='string'&&x.trim())&&new Set(choices).size===choices.length&&
+  Number.isInteger(correct)&&correct>=0&&correct<choices.length;
+}
+for (const [index,lesson] of original.entries()){
+ const key='A1:'+index, check=originalChecks[key];
+ if (!check||!validQuestion(check.q,check.a,check.ok))errors.push(key+': invalid or missing original grammar answer key');
+ if(!Array.isArray(originalTranslations[lesson.title])||
+   originalTranslations[lesson.title].length!==lesson.dialogue?.length)
+  errors.push(key+': original dialogue translations do not match');
+}
+
 const all = [...original];
 for (const [filename, exportName] of additions) {
  const sandbox = {window:{}};
@@ -27,10 +48,8 @@ for (const [filename, exportName] of additions) {
  if (!block || !Array.isArray(block.lessons)) {errors.push(filename+': missing lessons export');continue;}
  for (const lesson of block.lessons) {
   const idx = all.length, key='A1:'+idx, check=block.checks?.[key];
-  if (!check) errors.push(key+': missing grammar question');
-  else if (!Array.isArray(check.a)||check.a.length<2||!Number.isInteger(check.ok)||
-   check.ok<0||check.ok>=check.a.length||new Set(check.a).size!==check.a.length)
-   errors.push(key+': invalid grammar options or correct index');
+  if (!check||!validQuestion(check.q,check.a,check.ok))
+   errors.push(key+': invalid or missing grammar question');
   const translations=block.dialogueTranslations?.[lesson.title];
   if (!Array.isArray(translations)||translations.length!==lesson.dialogue?.length)
    errors.push(key+': dialogue translation count differs from Hungarian turns');
@@ -52,11 +71,39 @@ all.forEach((lesson,index)=>{
   {errors.push(id+': no usable reading');return;}
  if (reading.lines.some(pair=>!Array.isArray(pair)||pair.length!==2||
   pair.some(x=>typeof x!=='string'||!x.trim())))errors.push(id+': malformed Hungarian/Russian sentence pair');
- if (!reading.q||!Array.isArray(reading.options)||reading.options.length<2||
-  !Number.isInteger(reading.answer)||reading.answer<0||reading.answer>=reading.options.length||
-  new Set(reading.options).size!==reading.options.length)
+ if(!validQuestion(reading.q,reading.options,reading.answer))
   errors.push(id+': missing comprehension question or invalid answer index');
 });
+// Inspect the eleven supplementary 15-sentence readings and their Russian hints.
+const extraReadingSource=fs.readFileSync(path.join(dir,'a1-tematikus-szovegek.js'),'utf8');
+const extraToken='const el=(tag,text)=>';
+if(!extraReadingSource.includes(extraToken))throw Error('Supplementary reading module structure changed.');
+const extraSandbox={window:{}};
+vm.runInNewContext(extraReadingSource.replace(extraToken,
+ 'window.__A1_AUDIT={units,readingGuidance};'+extraToken),extraSandbox,
+ {filename:'a1-tematikus-szovegek.js',timeout:3000});
+const extraData=extraSandbox.window.__A1_AUDIT;
+if(!extraData||Object.keys(extraData.units).length!==11)
+ errors.push('Expected 11 supplementary A1 readings');
+else for(const [key,unit] of Object.entries(extraData.units)){
+ if(!Number.isInteger(Number(key))||Number(key)<1||Number(key)>27)
+  errors.push('Invalid supplementary lesson index '+key);
+ if(!Array.isArray(unit.lines)||unit.lines.length!==15||
+   unit.lines.some(pair=>!Array.isArray(pair)||pair.length!==2||
+    pair.some(text=>typeof text!=='string'||!text.trim())))
+  errors.push('Supplement '+key+': malformed Hungarian/Russian reading');
+ if(!Array.isArray(unit.dialogue)||unit.dialogue.length!==8||
+   unit.dialogue.some(pair=>!Array.isArray(pair)||pair.length!==2||
+    pair.some(text=>typeof text!=='string'||!text.trim())))
+  errors.push('Supplement '+key+': malformed bilingual dialogue');
+ if(!Array.isArray(unit.questions)||unit.questions.length!==2||
+    unit.questions.some(([q,a,b,c,correct])=>!validQuestion(q,[a,b,c],correct)))
+  errors.push('Supplement '+key+': invalid comprehension answer key');
+ if(!Array.isArray(extraData.readingGuidance[key])||
+    !extraData.readingGuidance[key].length)
+  warnings.push('Supplement '+key+': missing pre-reading grammar notes');
+}
+
 console.log('A1 audit: '+all.length+' lessons · '+errors.length+' errors · '+warnings.length+' warnings');
 for(const error of errors)console.error('ERROR '+error);
 for(const warning of warnings)console.warn('WARN '+warning);
