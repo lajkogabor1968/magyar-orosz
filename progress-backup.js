@@ -10,7 +10,7 @@ const download=document.getElementById('progressBackupDownload');
 download?.addEventListener('click',()=>{
  try{
   const data={};for(const k of keys()){const value=localStorage.getItem(k);if(value!==null){if(!valid(k,value))throw Error('invalid data');data[k]=value;}}
-  const payload={format:'tanmuhely-progress-backup',version:1,exportedAt:new Date().toISOString(),data};
+  const payload={format:'tanmuhely-progress-backup',version:2,exportedAt:new Date().toISOString(),data};
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob),anchor=document.createElement('a');
   anchor.href=url;anchor.download='tanmuhely-haladas-'+new Date().toISOString().slice(0,10)+'.json';
@@ -23,18 +23,30 @@ file?.addEventListener('change',async()=>{
  try{
   if(chosen.size>MAX)throw Error('size');
   const payload=JSON.parse(await chosen.text());
-  if(payload?.format!=='tanmuhely-progress-backup'||payload.version!==1||!payload.data||Array.isArray(payload.data)||typeof payload.data!=='object')throw Error('format');
+  if(payload?.format!=='tanmuhely-progress-backup'||![1,2].includes(payload.version)||!payload.data||Array.isArray(payload.data)||typeof payload.data!=='object')throw Error('format');
+  if(typeof payload.exportedAt!=='string'||!Number.isFinite(Date.parse(payload.exportedAt))||Date.parse(payload.exportedAt)>Date.now()+86400000)throw Error('date');
   const entries=Object.entries(payload.data);
   if(!entries.length||entries.length>100||entries.some(([k,v])=>!valid(k,v)))throw Error('entries');
   // All progress snapshots produced by the application are JSON structures.
   for(const [,v] of entries){const parsed=JSON.parse(v);if(parsed===null||typeof parsed!=='object')throw Error('json');}
-  if(!confirm('Восстановить '+entries.length+' записей? Текущие данные с теми же именами будут заменены. Перед импортом лучше сохранить текущий прогресс. / Visszaállítsuk a mentést? Az azonos nevű helyi adatok felülíródnak.')){
+  // Non-destructive by default: old exports must never silently replace
+  // newer practice results, lesson checkpoints or completed assessments.
+  // We cannot reliably order arbitrary browser records by modification time.
+  const missing=entries.filter(([k])=>localStorage.getItem(k)===null);
+  const existing=entries.length-missing.length;
+  if(!missing.length){
+   show('Всё уже сохранено на этом устройстве. '+existing+' существующих записей не заменены. / A meglévő haladást nem írtuk felül.');
+   return;
+  }
+  if(!confirm('Добавить '+missing.length+' отсутствующих записей из резервной копии от '+payload.exportedAt.slice(0,10)+'? '+(existing?'Существующие записи ('+existing+') НЕ будут заменены. ':'')+' / Csak a hiányzó adatok kerülnek visszaállításra.')){
    show('Восстановление отменено. / Visszaállítás megszakítva.');return;
   }
-  // Verify storage capacity before changing existing data.
-  const before=new Map(entries.map(([k])=>[k,localStorage.getItem(k)]));
-  try{for(const [k,v] of entries)localStorage.setItem(k,v);}catch(error){for(const [k,v] of before){if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v);}throw error;}
-  show('Прогресс восстановлен. Обновляем страницу… / Haladás visszaállítva.');location.reload();
+  const inserted=[];
+  try{
+   for(const [k,v] of missing){localStorage.setItem(k,v);inserted.push(k);}
+  }catch(error){for(const k of inserted)localStorage.removeItem(k);throw error;}
+  show('Добавлено записей: '+missing.length+'. Сохранено без изменений: '+existing+'. Обновляем страницу…');
+  location.reload();
  }catch(e){show('Неверный файл или недостаточно места. Ничего не импортировано. / Hibás mentés vagy nincs elég hely.');}
  finally{file.value='';}
 });

@@ -59,7 +59,7 @@ assert.equal(context.getIndex(),1,'Opening the workbook again must resume lesson
 context.choose(7);
 assert.equal(context.getIndex(),7,'Choosing a later lesson must not require completing the preceding lesson');
 assert.equal(advice.hidden,false,'A previous-lesson hint may remain visible, without gating entry');
-assert.match(advice.children[0].textContent,/Необязательная рекомендация/);
+assert.match(advice.children[0].textContent,/Необязательное повторение/);
 context.choose(2);
 assert.equal(context.getIndex(),2,'Moving back to another lesson must also work');
 context.resume();

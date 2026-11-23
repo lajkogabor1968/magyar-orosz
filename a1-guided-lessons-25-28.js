@@ -39,8 +39,8 @@
       reading: {
         lines: [
           ['Anna egy kávézóban van.', 'Анна в кафе.'],
-          ['Szeretnék egy teát.', 'Я хотел(а) бы чай.'],
-          ['Cukor nélkül, kérem.', 'Без сахара, пожалуйста.'],
+          ['Anna egy teát szeretne.', 'Анна хотела бы чай.'],
+          ['Cukor nélkül kéri.', 'Она просит чай без сахара.'],
           ['Péter egy kávét szeretne.', 'Петер хотел бы кофе.'],
           ['Anna egy pohár vizet is kér.', 'Анна просит ещё стакан воды.'],
           ['Köszönöm szépen!', 'Большое спасибо!']
@@ -90,7 +90,7 @@
       ],
       dialogue: [
         'Hány almát kér?',
-        'Három almát kérek.',
+        'Két almát kérek.',
         'Mennyi tejet kér?',
         'Egy liter tejet kérek.',
         'Még valamit?',
@@ -171,12 +171,12 @@
       reading: {
         lines: [
           ['Péter egy étteremben ebédel.', 'Петер обедает в ресторане.'],
-          ['Kérem az étlapot.', 'Меню, пожалуйста.'],
-          ['Kérek egy levest.', 'Мне, пожалуйста, суп.'],
+          ['Péter az étlapot kéri.', 'Петер просит меню.'],
+          ['Péter egy levest kér.', 'Петер заказывает суп.'],
           ['Anna egy salátát szeretne.', 'Анна хотела бы салат.'],
           ['Péter egy süteményt is kér.', 'Петер также просит пирожное.'],
           ['A leves finom.', 'Суп вкусный.'],
-          ['Végül Péter azt mondja: Kérem a számlát.', 'В конце Петер говорит: «Счёт, пожалуйста».']
+          ['Végül Péter azt mondja: „Kérem a számlát.”', 'В конце Петер говорит: «Счёт, пожалуйста».']
         ],
         q: 'Что Петер просит в конце?',
         options: ['Счёт.', 'Ещё один суп.', 'Стакан воды.'],
@@ -239,9 +239,9 @@
       reading: {
         lines: [
           ['Anna a piacon van.', 'Анна на рынке.'],
-          ['Szeretnék egy kiló paradicsomot.', 'Я хотела бы килограмм помидоров.'],
+          ['Anna egy kiló paradicsomot szeretne.', 'Анна хотела бы килограмм помидоров.'],
           ['A paradicsom ezer forint.', 'Помидоры стоят тысячу форинтов.'],
-          ['Két narancsot is kérek.', 'Мне, пожалуйста, ещё два апельсина.'],
+          ['Két narancsot is kér.', 'Она просит ещё два апельсина.'],
           ['A két narancs is ezer forint.', 'Два апельсина тоже стоят тысячу форинтов.'],
           ['Összesen kétezer forint.', 'Всего две тысячи форинтов.'],
           ['Anna fizet, és elköszön.', 'Анна платит и прощается.']
@@ -277,7 +277,7 @@
       'Без сахара?', 'Да, спасибо.', 'Пожалуйста, возьмите.'
     ],
     'Сколько нужно? Hány? Mennyi? Кило и литры': [
-      'Сколько яблок Вы хотите?', 'Мне три яблока, пожалуйста.',
+      'Сколько яблок Вы хотите?', 'Мне два яблока, пожалуйста.',
       'Сколько молока Вам нужно?', 'Мне литр молока, пожалуйста.',
       'Что-нибудь ещё?', 'Мне ещё два яйца, пожалуйста.'
     ],

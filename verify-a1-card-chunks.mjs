@@ -88,7 +88,7 @@ assert.equal(suggested('A1',[],[],false,[0]),5,'a group placed by writing reopen
 assert.equal(suggested('A1',[0,1,2,3,4,5,6,7],[0]),8,'second group resumes at its first unseen card');
 assert.equal(suggested('A1',[],[],true),0,'fast-track has no forged card progress to restore');
 assert.equal(suggested('A2',[0,1,2,3,4],[0]),0,'A2 keeps its previous card-start behavior');
-assert.match(source,/restoreCheckpoint\(\);cardIndex=resumeA1CardIndex\(\);resumeQuiz\(\)/,
+assert.match(source,/restoreCheckpoint\(\);cardIndex=resumeA1CardIndex\(\);grammarQuestion\(\);renderDialogueUnderstanding\(\);resumeQuiz\(\)/,
  'the actual workbook must use the restored A1 card position');
 
 const legacy=extract(/function restoreCheckpoint\(\)\{[\s\S]*?\n\}/);
@@ -97,6 +97,7 @@ const restore=flipped=>runInNewContext(`${required}\n${chunks}\n${legacy}\nresto
  checkpoint:()=>({flipped,written:[],grammar:false,dialogue:false}),
  flippedWords:new Set(),correctWriting:new Set(),checkedBatches:new Set(),
  fastTrackPacks:new Set(),
+ read:()=>({}),KEY:'magyarorosz.v1',dialogueUnderstood:false,
  checkBatch:0,checkStep:1,checkRendered:'question',grammarReviewed:false,dialoguePractised:false
 });
 assert.deepEqual([...restore([0,1,2,3,4,5,6,7,8,9])],[0,1],

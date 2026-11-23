@@ -151,7 +151,7 @@ if(!book.includes('function resumeA1CardIndex()')||!book.includes('restoreCheckp
  fail('A1','FIVE_WORD_RESUME','Az első ötszavas blokk után nincs menthető szünet, vagy újranyitáskor nem áll vissza a befejezetlen kártya.');
 if(!book.includes('a1FastTrackPacks:[...fastTrackPacks]')||!book.includes('fastTrackPacks.add(part)')||!book.includes('fastTrackPacks.has(i)||(checkedBatches.has(i)'))
  fail('A1','PARTIAL_KNOWN_WORDS','Az ismert ötszavas csoport nem ugorható át külön, vagy a részleges ellenőrzés nincs biztonságosan mentve.');
-if(!book.includes('function quizQuestionCount()')||!book.includes('quizTargetCount=quizQuestionCount()')||!book.includes('saved.count===undefined?Math.min(10,w.length):saved.count')||!book.includes('max:quizTargetCount'))
+if(!book.includes('function quizQuestionCount()')||!book.includes('quizTargetCount=quizQuestionCount()')||!book.includes('saved.count===undefined?Math.min(10,saved.order.length):saved.count')||!book.includes('max=quizTargetCount,current={score:testCorrect,max,'))
  fail('A1','LEGACY_QUIZ_LENGTH','A csökkentett kötelező szóanyag zárótesztje vagy a régi tízkérdéses teszt mentése nem biztonságos.');
 if(!book.includes("const KEY='magyarorosz.lesson-route.v1'")||!book.includes("const checkpointKey='magyarorosz.lesson-checkpoint.v1'"))fail('A1','SAVED_PROGRESS','A korábbi leckék és részfeladatok mentési kulcsa módosult.');
 if(!book.includes('randomOrder(reading.options.map')||!book.includes('randomOrder(c.a.map'))fail('A1','ANSWER_ORDER','A választási lehetőségek sorrendje nem keveredik.');

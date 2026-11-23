@@ -82,7 +82,7 @@ state.testCorrect=0;state.quizMisses=[];state.testCompleted=false;
 methods.resume();
 assert.equal(state.quizTargetCount,8,'new quizzes resume at the shorter eight-word target');
 assert.equal(state.testCorrect,4);
-assert.match(source,/max:quizTargetCount/,'the stored final lesson score uses the actual quiz length');
+assert.match(source,/max=quizTargetCount,current=\{score:testCorrect,max,/,'the stored final lesson score uses the actual quiz length');
 assert.match(source,/panel\.querySelector\('h4'\)\.textContent=/,
  'the smaller second card group has a correctly adjusted heading');
 

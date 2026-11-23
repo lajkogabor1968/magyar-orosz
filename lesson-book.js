@@ -88,7 +88,7 @@ installEarlyA1ContrastPractice();
 // Extend existing course word lists only after the entire textbook is defined.
 window.TanmuhelyLinkQuizletLessons?.(courses);
 window.TanmuhelyEnrichA1A2?.(courses);
-let level='A1',lessonIndex=0,step=0,cardIndex=0,writeIndex=0,correctWriting=new Set(),testIndex=0,testCorrect=0,hasAnswered=false,testCompleted=false,compositionChecked=false,flashcardsOpened=false,grammarReviewed=false,dialoguePractised=false,spokenTargetIndex=0,flippedWords=new Set(),checkedBatches=new Set(),checkBatch=-1,checkStep=0,checkRendered='',testOrder=[],quizMisses=[];
+let level='A1',lessonIndex=0,step=0,cardIndex=0,writeIndex=0,correctWriting=new Set(),testIndex=0,testCorrect=0,hasAnswered=false,testCompleted=false,compositionChecked=false,flashcardsOpened=false,grammarReviewed=false,dialoguePractised=false,dialogueUnderstood=false,spokenTargetIndex=0,flippedWords=new Set(),checkedBatches=new Set(),checkBatch=-1,checkStep=0,checkRendered='',testOrder=[],quizMisses=[];
 let a1FastTrackPassed=false,fastTrackPacks=new Set(),fastTrackWords=[],fastTrackPosition=0;
 const steps=['lessonWords','lessonGrammar','lessonDialogue','lessonWriting','lessonComposition','lessonExercise'];
 const stepsRu=['Слова','Грамматика','Разговор','Письмо','Мини-сочинение','Проверка'];
@@ -114,7 +114,7 @@ const dialogueRecognition=window.TanmuhelyDialogueRecognition.create({
    : 'Текст отличается от образца. Возможная подсказка: '+result.hint;
   $('integratedDialogueFeedback').textContent='Распознано: «'+heard+'». Образец: «'+target+'». '
    +explanation+' Распознавание может ошибаться. Это не оценка произношения.';
-  if(same){dialoguePractised=true;saveCheckpoint();stepButton.disabled=false}
+  if(same){dialoguePractised=true;saveCheckpoint();if(step===2)stepButton.disabled=!canAdvance()}
  },
  onFailure:kind=>{
   const messages={
@@ -135,7 +135,7 @@ const dialogueRecognition=window.TanmuhelyDialogueRecognition.create({
 function checkpoint(){return read(checkpointKey)[lessonKey()]||{}}
 function saveCheckpoint(){
  const old=read(checkpointKey);
- old[lessonKey()]={flipped:[...flippedWords],written:[...correctWriting],grammar:grammarReviewed,dialogue:dialoguePractised,sentence:$('lessonSentenceInput').value,...(level==='A1'?{a1CheckedBatches:[...checkedBatches],a1FastTrackPacks:[...fastTrackPacks],a1FastTrackPassed}:{})};
+ old[lessonKey()]={flipped:[...flippedWords],written:[...correctWriting],grammar:grammarReviewed,dialogue:dialoguePractised,dialogueUnderstood,sentence:$('lessonSentenceInput').value,...(level==='A1'?{a1CheckedBatches:[...checkedBatches],a1FastTrackPacks:[...fastTrackPacks],a1FastTrackPassed}:{})};
  try{localStorage.setItem(checkpointKey,JSON.stringify(old))}catch(_){}
 }
 function restoreCheckpoint(){
@@ -158,6 +158,10 @@ function restoreCheckpoint(){
  }
  checkBatch=-1;checkStep=0;checkRendered='';
  grammarReviewed=!!c.grammar;dialoguePractised=!!c.dialogue;
+ // A fully completed lesson from before this new check must remain completed.
+ // Keep the new objective check for active, incomplete A1 lessons.
+ const legacyFinished=level==='A1'&&read(KEY).completed?.[lessonKey()]!==undefined;
+ dialogueUnderstood=!!c.dialogueUnderstood||(legacyFinished&&!!c.dialogue);
 }
 function randomOrder(items){const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 
@@ -224,14 +228,32 @@ function highlightAnswerButtons(box,selected,correctText){
 function grammarQuestion(){
  const c=checks[lessonKey()],box=$('integratedGrammarOptions');
  box.replaceChildren();$('integratedGrammarQuestion').textContent=c.q;
- $('integratedGrammarFeedback').textContent='Выберите ответ. Вы сразу увидите объяснение.';
- randomOrder(c.a.map((answer,i)=>({answer,i}))).forEach(({answer,i})=>{const btn=el('button',answer,'integrated-answer');btn.type='button';btn.onclick=()=>{
-  const good=i===c.ok;
-  highlightAnswerButtons(box,btn,c.a[c.ok]);
-  const answer=c.a[c.ok],end=/[.!?…]$/.test(answer)?'':'.';
-  $('integratedGrammarFeedback').textContent=(good?'✓ Верно. ':'✗ Правильный ответ: '+answer+end+' ')+c.why;
-  if(good){grammarReviewed=true;saveCheckpoint();stepButton.disabled=false;box.querySelectorAll('button').forEach(button=>button.disabled=true);note('✓ Пример понятен. Продолжайте обучение.')}
- };box.append(btn)})
+ const feedback=$('integratedGrammarFeedback');
+ feedback.textContent=grammarReviewed?'✓ Этот вопрос уже решён правильно.':'Выберите ответ. После ошибки перечитайте правило и попробуйте ещё раз.';
+ let wrongAttempts=0;
+ randomOrder(c.a.map((answer,i)=>({answer,i}))).forEach(({answer,i})=>{
+  const btn=el('button',answer,'integrated-answer');btn.type='button';
+  btn.disabled=grammarReviewed;
+  btn.onclick=()=>{
+   if(grammarReviewed)return;
+   const good=i===c.ok,answerText=c.a[c.ok],ending=/[.!?…]$/.test(answerText)?'':'.';
+   if(good){
+    grammarReviewed=true;saveCheckpoint();if(step===1)stepButton.disabled=!canAdvance();
+    highlightAnswerButtons(box,btn,answerText);
+    feedback.textContent='✓ Верно. '+c.why;
+    box.querySelectorAll('button').forEach(button=>button.disabled=true);
+    note('✓ Правильный ответ подтверждён. Продолжайте обучение.');
+   }else{
+    wrongAttempts++;
+    btn.disabled=true;
+    btn.classList.add('wrong');
+    btn.setAttribute('aria-pressed','true');
+    feedback.textContent=wrongAttempts===1
+     ?'✗ Пока неверно. Ещё раз прочитайте правило и выберите другой ответ.'
+     :'✗ Правильный ответ: '+answerText+ending+' '+c.why+' Для закрепления перечитайте правило и нажмите правильный вариант.';
+   }
+  };box.append(btn);
+ })
 }
 
 function note(message){let node=$('integratedStepStatus');if(!node){node=el('p','','lesson-step-status');node.id='integratedStepStatus';node.setAttribute('role','status');node.setAttribute('aria-live','polite');$('integratedStepNext').after(node)}node.textContent=message}
@@ -258,19 +280,26 @@ function initialTestOrder(){
  // remain accessible for optional learning; old in-progress quizzes resume.
  return [...randomOrder(indices.slice(0,taughtCount)),...randomOrder(indices.slice(taughtCount))];
 }
+function canAssessDialogueSequence(){
+ const lines=lesson().dialogue,translations=dialogueTranslations[lesson().title];
+ return Array.isArray(lines)&&lines.length>=4&&
+  Array.isArray(translations)&&translations.length===lines.length&&
+  typeof translations[1]==='string'&&translations[1].trim()&&
+  new Set(translations.filter(v=>typeof v==='string'&&v.trim())).size>=3;
+}
 function canAdvance(){
 if(step===0)return level==='A1'?requiredCardsSeen():flippedWords.size>=requiredCardCount();
 if(step===1)return grammarReviewed;
-if(step===2)return dialoguePractised;
+if(step===2)return dialoguePractised&&(level!=='A1'||!canAssessDialogueSequence()||dialogueUnderstood);
 if(step===3)return correctWriting.size>=Math.min(3,rows().length) && (level!=='A1'||lessonIndex!==0||[...correctWriting].filter(i=>/[áéíóöőúüű]/.test(rows()[i]?.hu||'')).length>=2);
 if(step===4)return compositionChecked;
 if(step===5)return testCompleted;
 return true
 }
-function moveNext(){if(!canAdvance()){note([level==='A1'?'Сначала изучите две группы обязательных карточек или пройдите необязательную короткую проверку знакомых слов.':'Сначала откройте перевод как минимум пяти разных слов на карточках.','Прочитайте правило и выберите правильный ответ.','Прослушайте диалог и повторите хотя бы одну реплику вслух.','Сначала правильно напишите не менее трёх слов.','Сначала напишите мини-сочинение и проверьте его структуру.','Сначала ответьте на все вопросы итоговой проверки.'][step]);return}if(step<5){step++;save();stageView()}else{const old=read(KEY);const finished=old.completed||{};finished[lessonKey()]={score:testCorrect,max:quizTargetCount,errors:quizMisses.map(v=>v.hu),date:new Date().toISOString()};old.completed=finished;try{localStorage.setItem(KEY,JSON.stringify(old));persistQuiz(true)}catch(_){note('Не удалось сохранить результат. Скопируйте его перед выходом.');return}if(lessonIndex+1<courses[level].length){const nextIndex=lessonIndex+1;confirmLessonChange(nextIndex);if(lessonIndex===nextIndex)note('✓ Урок завершён. Вы перешли к следующему.');else note('✓ Урок завершён. Выберите повторение или продолжение обучения.')}else{step=0;save();render();note(Object.keys(courses[level]).every(i=>finished[level+':'+i])?'✓ Все подготовленные уроки этого уровня завершены.':'✓ Урок завершён. В списке уроков выберите следующий без отметки ✓.')}}}
+function moveNext(){if(!canAdvance()){note([level==='A1'?'Сначала изучите две группы обязательных карточек или пройдите необязательную короткую проверку знакомых слов.':'Сначала откройте перевод как минимум пяти разных слов на карточках.','Прочитайте правило и выберите правильный ответ.',level==='A1'?'Повторите реплику вслух и правильно выберите её русский перевод.':'Прослушайте диалог и повторите хотя бы одну реплику вслух.','Сначала правильно напишите не менее трёх слов.','Сначала напишите мини-сочинение и проверьте его структуру.','Сначала ответьте на все вопросы итоговой проверки.'][step]);return}if(step<5){step++;save();stageView()}else{const old=read(KEY);const finished=old.completed||{};const previous=finished[lessonKey()],max=quizTargetCount,current={score:testCorrect,max,errors:quizMisses.map(v=>v.hu),date:new Date().toISOString()};if(level==='A1'){const previousBest=previous&&Number.isFinite(previous.bestScore)&&Number.isFinite(previous.bestMax)&&previous.bestMax>0?{score:previous.bestScore,max:previous.bestMax}:previous&&Number.isFinite(previous.score)&&Number.isFinite(previous.max)&&previous.max>0?{score:previous.score,max:previous.max}:null;const best=previousBest&&previousBest.score/previousBest.max>testCorrect/Math.max(1,max)?previousBest:{score:testCorrect,max};current.bestScore=best.score;current.bestMax=best.max;current.attempts=(Number.isInteger(previous?.attempts)&&previous.attempts>0?previous.attempts:previous?1:0)+1;}finished[lessonKey()]=current;old.completed=finished;try{localStorage.setItem(KEY,JSON.stringify(old));persistQuiz(true)}catch(_){note('Не удалось сохранить результат. Скопируйте его перед выходом.');return}if(lessonIndex+1<courses[level].length){const nextIndex=lessonIndex+1,finishedPercent=Math.round(testCorrect/Math.max(1,quizTargetCount)*100);confirmLessonChange(nextIndex);if(lessonIndex===nextIndex)note('✓ Проверка слов завершена ('+finishedPercent+'%). Вы перешли к следующему уроку.');else note('✓ Урок завершён. Выберите повторение или продолжение обучения.')}else{step=0;save();render();note(Object.keys(courses[level]).every(i=>finished[level+':'+i])?'✓ Все подготовленные уроки этого уровня завершены.':'✓ Урок завершён. В списке уроков выберите следующий без отметки ✓.')}}}
 
 function read(key){try{return JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(_){return {}}}
-function save(){const s=read(KEY);s[level]={lessonIndex,step};if(level==='A1')s.migratedFirstUnit20261121=true;try{localStorage.setItem(KEY,JSON.stringify(s))}catch(_){}}
+function save(){const s=read(KEY);s[level]={lessonIndex,step};if(level==='A1'){s.migratedFirstUnit20261121=true;const stages=s.a1LessonStages&&typeof s.a1LessonStages==='object'&&!Array.isArray(s.a1LessonStages)?s.a1LessonStages:{};stages[String(lessonIndex)]=step;s.a1LessonStages=stages;}try{localStorage.setItem(KEY,JSON.stringify(s))}catch(_){}}
 function say(text,callbacks={}){try{if(window.tanmuhelyActiveTeacherReading){window.tanmuhelyActiveTeacherReading.pause();window.tanmuhelyActiveTeacherReading=null}const u=window.SpeechSynthesisUtterance?new SpeechSynthesisUtterance(text):{text};u.lang='hu-HU';u.rate=.85;u.onstart=callbacks.onstart;u.onend=callbacks.onend;u.onerror=callbacks.onerror;if(window.TanuloTTS?.speak)return window.TanuloTTS.speak(u);speechSynthesis.cancel();speechSynthesis.speak(u);return true}catch(_){return false}}
 function el(tag,txt,cl){const node=document.createElement(tag);if(txt!==undefined)node.textContent=txt;if(cl)node.className=cl;return node}
 function lesson(){return courses[level][lessonIndex]}
@@ -295,6 +324,15 @@ function rows(){const l=lesson(),base=window.MAGYAR_OROSZ_DATA?.[level]||[],resu
 if(level==='A1'&&lessonIndex>=8){
  const wordPosition=new Map(l.words.map((word,i)=>[word.toLocaleLowerCase('hu-HU'),i]));
  result.sort((a,b)=>(wordPosition.get(a.hu.toLocaleLowerCase('hu-HU'))??Infinity)-(wordPosition.get(b.hu.toLocaleLowerCase('hu-HU'))??Infinity));
+ // Historical A1 checkpoint entries store card indices, not word IDs.
+ // Add previously unrepresented textbook words only AFTER existing cards.
+ // These optional cards do not change the taught first-ten test or saved positions.
+ for(const card of l.supplemental||[]){
+  if(!Array.isArray(card)||card.length!==4)continue;
+  const [hu,ru,example,translation]=card;
+  if(!result.some(item=>item.hu.toLocaleLowerCase('hu-HU')===hu.toLocaleLowerCase('hu-HU')))
+   result.push({hu,ru,example,translation});
+ }
 }
 return result}
 function reviewPreviousErrors(){
@@ -567,16 +605,34 @@ function renderReading(){
  };
  $('lessonReadingTranslations').textContent='Показать русский перевод';
  $('lessonReadingQuestion').textContent=reading.q;
- $('lessonReadingFeedback').textContent='Выберите ответ. Проверка проводится сразу.';
- // A kérdés válaszai minden megjelenítéskor más sorrendbe kerülhetnek.
- // Az eredeti válaszazonosító megmarad, ezért a pontozás nem változik.
+ $('lessonReadingFeedback').textContent='Выберите ответ. После первой ошибки перечитайте текст и попробуйте ещё раз.';
+ // Reading comprehension is formative: no disclosure of the answer on the first miss.
+ // Retain original correct indices when displaying randomized answer positions.
+ let readingMistakes=0,readingSolved=false;
  randomOrder(reading.options.map((option,i)=>({option,i}))).forEach(({option,i})=>{
   const button=el('button',option,'integrated-answer');button.type='button';
   button.onclick=()=>{
+    if(readingSolved)return;
     const correct=i===reading.answer;
     const answer=reading.options[reading.answer];
-    highlightAnswerButtons(answers,button,answer);
-    $('lessonReadingFeedback').textContent=(correct?'✓ Верно. ':'✗ Пока неверно. ')+'Правильный ответ: '+answer+(/[.!?]$/.test(answer)?'':'.')+' Вернитесь к тексту, если хотите перечитать его.';
+    if(correct){
+      readingSolved=true;
+      highlightAnswerButtons(answers,button,answer);
+      answers.querySelectorAll('button').forEach(b=>b.disabled=true);
+      $('lessonReadingFeedback').textContent='✓ Верно! Найден правильный ответ.';
+    }else{
+      readingMistakes++;
+      button.classList.add('wrong');
+      button.setAttribute('aria-pressed','true');
+      button.disabled=true;
+      if(readingMistakes===1){
+       $('lessonReadingFeedback').textContent='✗ Пока неверно. Найдите ответ в тексте и попробуйте ещё раз.';
+      }else{
+       readingSolved=true;
+       answers.querySelectorAll('button').forEach(b=>{b.disabled=true;b.classList.toggle('right',b.textContent===answer)});
+       $('lessonReadingFeedback').textContent='Правильный ответ: '+answer+(/[.!?]$/.test(answer)?'':'.')+' Перечитайте предложение, которое подтверждает ответ.';
+      }
+    }
   };
   answers.append(button);
  });
@@ -961,6 +1017,17 @@ function checkComposition(){
  const duplicates=phrases.length-new Set(phrases).size;
  const missingFinalPunctuation=source!==''&&!/[.!?]\s*$/.test(source);
  const nonHungarian=sentences.filter(t=>!/[a-záéíóöőúüű]/i.test(t)||/\p{Script=Cyrillic}/u.test(t));
+ // A full stop after a single word is not by itself evidence of sentence writing.
+ // This is only a structural minimum; genuinely valid one-word replies belong
+ // in dialogue practice, not in the requested multi-sentence composition.
+ const incompleteSentences=level==='A1'?sentences.filter(t=>{
+  const words=t.replace(/[.!?]+$/g,'').trim().split(/\s+/).filter(Boolean);
+  // Short complete Hungarian questions such as "Ki ő?" and "Mi ez?" are valid.
+  // Reject isolated words and one-letter gibberish, not correct short pronouns.
+  const alphabetic=words.filter(word=>/^[a-záéíóöőúüű]+$/i.test(word));
+  const letterCount=alphabetic.join('').length;
+  return alphabetic.length<2||letterCount<3;
+ }):[];
  const beginner=level==='A1'&&lessonIndex===0;
  let unsuitable=[];
  if(beginner){
@@ -971,7 +1038,7 @@ function checkComposition(){
  const questionCount=sentences.filter(t=>t.endsWith('?')).length;
  const answerCount=sentences.filter(t=>/[.!]$/.test(t)).length;
  const requiresQuestions=level==='A1'&&lessonIndex===6;
- compositionChecked=enough&&!duplicates&&!missingFinalPunctuation&&!nonHungarian.length&&!unsuitable.length&&(!requiresQuestions||(questionCount>=2&&answerCount>=2));
+ compositionChecked=enough&&!duplicates&&!missingFinalPunctuation&&!nonHungarian.length&&!incompleteSentences.length&&!unsuitable.length&&(!requiresQuestions||(questionCount>=2&&answerCount>=2));
  stepButton.disabled=!compositionChecked;
  const messages=draftSaved?[]:['Не удалось сохранить текст. Скопируйте его перед выходом.'];
  messages.push('Предложений: '+sentences.length+' / '+minimum+'.');
@@ -979,6 +1046,7 @@ function checkComposition(){
  if(duplicates)messages.push('Есть повторяющиеся предложения. Напишите разные примеры.');
  if(missingFinalPunctuation)messages.push('Поставьте знак конца предложения.');
  if(nonHungarian.length)messages.push('Напишите предложения по-венгерски латинскими буквами.');
+ if(incompleteSentences.length)messages.push('В мини-сочинении нужны предложения как минимум из двух слов. Короткие вопросы вроде «Ki ő?» подходят, отдельное слово с точкой не засчитывается.');
  if(unsuitable.length)messages.push('В этом первом задании используйте образец «Ez egy …» и слово из списка урока. Например: «Ez egy telefon.»');
  if(requiresQuestions&&(questionCount<2||answerCount<2))messages.push('В уроке о вопросах напишите не менее двух вопросов со знаком «?», а также два ответа.');
  const accentHint=compositionAccentHint(source);
@@ -1005,15 +1073,17 @@ function resumeQuiz(){
  if(level==='A1')testOrder=initialTestOrder();
  const saved=read(quizKey)[lessonKey()],w=rows();
  if(!saved||!Array.isArray(saved.order)||!Array.isArray(saved.answers))return;
- // Legacy quizzes had ten questions and no saved count. Resume them at
- // their original length even if a lesson now has a smaller mandatory core.
- const n=saved.count===undefined?Math.min(10,w.length):saved.count;
- const order=saved.order.map(hu=>w.findIndex(r=>r.hu===hu));
- if(!Number.isInteger(n)||n<1||n>Math.min(10,w.length))return;
- if(order.length!==w.length||order.includes(-1)||new Set(order).size!==w.length||
+ // Keep older 10-question quizzes stable, including when new optional
+ // vocabulary was appended. New reduced-core lessons save their own count.
+ const n=saved.count===undefined?Math.min(10,saved.order.length):saved.count;
+ const oldOrder=saved.order.map(hu=>w.findIndex(r=>r.hu===hu));
+ if(!Number.isInteger(n)||n<1||n>Math.min(10,w.length)||saved.order.length<n||saved.order.length>w.length||
+    oldOrder.includes(-1)||new Set(oldOrder).size!==oldOrder.length||
     !Number.isInteger(saved.index)||saved.index<0||saved.index>=n||
     ![saved.index,saved.index+1].includes(saved.answers.length)||
     saved.answers.some(a=>typeof a!=='string')||(saved.done&&saved.answers.length!==n))return;
+ const kept=new Set(oldOrder);
+ const order=[...oldOrder,...w.map((_,i)=>i).filter(i=>!kept.has(i))];
  quizTargetCount=n;testOrder=order;testIndex=saved.index;quizAnswers=saved.answers;
  for(const [i,a] of quizAnswers.entries()){
   const v=w[order[i]];
@@ -1023,8 +1093,8 @@ function resumeQuiz(){
 }
 function showQuizResult(){
  renderErrorSummary();
- const n=quizTargetCount,percent=Math.round(testCorrect/n*100);
- $('integratedAnswerFeedback').textContent='Результат: '+testCorrect+' / '+n+' ('+percent+'%). '+(percent>=90?'Отлично! Вы готовы к следующему уроку.':'Рекомендуем повторить слова и добиться 90%, но это не обязательное условие.');
+ const n=quizTargetCount,percent=Math.round(testCorrect/Math.max(1,n)*100);
+ $('integratedAnswerFeedback').textContent='Результат: '+testCorrect+' / '+n+' ('+percent+'%). '+(percent>=90?'✓ Слова этой проверки усвоены; это не полная оценка знания языка.':'◔ Проверка завершена. Рекомендуем повторить слова до 90%; другие уроки остаются доступными.');
  $('integratedNextQuestion').hidden=true;stepButton.disabled=false;
 }
 function test(){const w=rows(),v=w[testOrder[testIndex]??testIndex%w.length],box=$('integratedQuestion');box.replaceChildren();$('integratedErrorSummary').hidden=true;if(!v)return;const p=el('p',v.hu);p.lang='hu';box.append(p);const seen=new Set([v.ru]);const distractors=level==='A1'?w.slice(0,requiredCardCount()):w;const others=randomOrder(distractors.filter(r=>r.ru!==v.ru)).filter(r=>{if(seen.has(r.ru))return false;seen.add(r.ru);return true}).slice(0,3);const options=randomOrder([v,...others]);for(const candidate of options){const b=el('button',candidate.ru,'integrated-answer');b.type='button';b.onclick=()=>{if(hasAnswered||testCompleted)return;hasAnswered=true;quizAnswers[testIndex]=candidate.ru;persistQuiz();const good=candidate.ru===v.ru;if(good)testCorrect++;else quizMisses.push({hu:v.hu,ru:v.ru,example:v.example,translation:v.translation});$('integratedAnswerFeedback').textContent=good?'✓ Верно! '+v.hu+' — '+v.ru:'✗ Вы выбрали: '+candidate.ru+'. Правильный перевод: '+v.ru+'. Пример: '+v.example+' — '+v.translation+'. Прослушайте и повторите слово.';$('integratedNextQuestion').hidden=false;box.querySelectorAll('button').forEach(btn=>btn.disabled=true);$('integratedStepNext').disabled=true};box.append(b)}$('integratedNextQuestion').hidden=true;$('integratedAnswerFeedback').textContent='Вопрос '+(testIndex+1)+' / '+quizTargetCount;
@@ -1067,6 +1137,9 @@ function renderDialoguePreparation(){
 function stageView(){
  if(step!==2)dialogueRecognition.stop();
  if(step===2)renderDialoguePreparation();
+ const quick=$('integratedQuickSections');
+ if(quick){quick.hidden=level!=='A1';quick.querySelectorAll('[data-preview-section]').forEach(b=>{b.setAttribute('aria-pressed','false');});$('integratedQuickReturn').hidden=true;$('integratedQuickHint').textContent='Просмотр не меняет ваш этап и не заменяет проверку знаний.';}
+ $('integratedStepNext').hidden=false;
  steps.forEach((id,i)=>$(id).hidden=i!==step);
  $('integratedPreviousStep').hidden=step===0;
  $('integratedRouteProgress').textContent='Этап '+(step+1)+' из 6 · '+stepsRu[step];
@@ -1088,6 +1161,86 @@ function stageView(){
  document.querySelector('.lesson-end').hidden=true;
  view.scrollIntoView({block:'start',behavior:'instant'});
 }
+function renderDialogueUnderstanding(){
+ const container=$('integratedDialogueUnderstanding'),choices=$('integratedDialogueUnderstandingOptions');
+ if(!container||!choices)return;
+ container.hidden=level!=='A1';
+ choices.replaceChildren();
+ if(level!=='A1')return;
+ if(!canAssessDialogueSequence()){
+  container.hidden=true;
+  $('integratedDialogueUnderstandingFeedback').textContent='Для этого диалога отдельная проверка перевода недоступна.';
+  return;
+ }
+ const lines=lesson().dialogue,translations=dialogueTranslations[lesson().title];
+ const prompt=lines[1],correct=translations[1];
+ // A language-understanding task should ask about meaning, not merely which
+ // visible dialogue line follows another one.
+ $('integratedDialogueUnderstandingPrompt').textContent='Что означает венгерская реплика «'+prompt+'»?';
+ const feedback=$('integratedDialogueUnderstandingFeedback');
+ const promptNode=$('integratedDialogueUnderstandingPrompt');
+ const translationsOnScreen=Array.from($('integratedDialogue').querySelectorAll('.lesson-dialogue-text > small:last-child'));
+ // Teach first: learners can read the translations and listen before testing.
+ // Starting the check hides those translations, so the answer cannot simply
+ // be copied from the visible line immediately above the question.
+ // Reuse stable controls: rerendering a saved lesson must not add more
+ // "Start" buttons. An unfinished test can also return to learning safely.
+ let begin=$('integratedDialogueUnderstandingBegin');
+ if(!begin){
+  begin=el('button','Начать проверку без подсказок');
+  begin.type='button';begin.id='integratedDialogueUnderstandingBegin';
+  container.insertBefore(begin,promptNode);
+ }
+ let review=$('integratedDialogueUnderstandingReview');
+ if(!review){
+  review=el('button','Вернуться к изучению');
+  review.type='button';review.id='integratedDialogueUnderstandingReview';
+  container.insertBefore(review,promptNode);
+ }
+ const showStudy=()=>{
+  translationsOnScreen.forEach(node=>{node.hidden=false;});
+  promptNode.hidden=true;choices.hidden=true;
+  begin.hidden=dialogueUnderstood;review.hidden=true;
+  feedback.textContent=dialogueUnderstood
+   ?'✓ Вы уже правильно ответили на этот вопрос.'
+   :'Сначала изучите диалог и его перевод. Затем начните проверку без подсказок.';
+ };
+ const startAssessment=()=>{
+  translationsOnScreen.forEach(node=>{node.hidden=true;});
+  promptNode.hidden=false;choices.hidden=false;begin.hidden=true;review.hidden=false;
+  feedback.textContent='Выберите правильный русский перевод. Во время проверки перевод диалога скрыт.';
+ };
+ begin.onclick=startAssessment;
+ review.onclick=showStudy;
+ showStudy();
+ if(dialogueUnderstood){
+  promptNode.hidden=false;choices.hidden=false;
+ }
+ const alternatives=[correct,...randomOrder([...new Set(translations.filter(v=>typeof v==='string'&&v.trim()&&v!==correct))]).slice(0,2)];
+ randomOrder(alternatives).forEach(answer=>{
+  const button=el('button',answer,'integrated-answer');button.type='button';button.lang='ru';
+  button.disabled=dialogueUnderstood;
+  button.onclick=()=>{
+   if(dialogueUnderstood)return;
+   const good=answer===correct;
+   if(good){
+    dialogueUnderstood=true;saveCheckpoint();
+    // After assessment, restore bilingual lines for revision.
+    translationsOnScreen.forEach(node=>{node.hidden=false;});
+    review.hidden=true;
+    choices.querySelectorAll('button').forEach(b=>{
+     b.disabled=true;b.classList.toggle('right',b.textContent===correct);
+    });
+    feedback.textContent='✓ Верно! Значение венгерской реплики определено правильно.';
+    if(step===2)stepButton.disabled=!canAdvance();
+   }else{
+    button.disabled=true;button.classList.add('wrong');
+    button.setAttribute('aria-pressed','true');
+    feedback.textContent='Пока неверно. Прочитайте или прослушайте реплику ещё раз и попробуйте другой перевод.';
+   }
+  };choices.append(button);
+ });
+}
 function render(){dialogueRecognition.stop();$('integratedAdvanceAdvice').hidden=true;note('');const l=lesson();reviewPreviousErrors();
 const prerequisite=$('lessonPrerequisite');
 if(prerequisite){
@@ -1098,7 +1251,7 @@ if(prerequisite){
  };
  prerequisite.hidden=level!=='A2';
  prerequisite.textContent=level==='A2'?'Связь с A1 / Kapcsolat az A1 szinttel. '+bridges[lessonIndex]:'';
-}$('integratedLessonLevel').textContent=level;$('integratedLessonCounter').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length;$('integratedLessonHeading').textContent='Урок '+(lessonIndex+1)+'. '+l.title;$('integratedLessonSelect').replaceChildren();courses[level].forEach((x,i)=>{const finished=read(KEY).completed?.[level+':'+i];const o=el('option',(finished?'✓ ':'')+(i+1)+'. '+x.title);o.value=String(i);$('integratedLessonSelect').append(o)});$('integratedLessonSelect').value=String(lessonIndex);placeReadingAfterTeaching();renderVisual();renderMotion();resetVideo();renderReading();window.TanmuhelyRenderA1LongReadings?.(level,lessonIndex);renderWords();renderA1WordPreview();renderGrammarExamples();window.TanmuhelyRenderErrorCards?.(level,lessonIndex);resetGame();grammarQuestion();$('integratedGrammar').replaceChildren();$('integratedGrammar').append(el('strong',l.grammar[0]),el('p',l.grammar[1]),el('p',l.grammar[2]));const dialog=$('integratedDialogue');dialog.replaceChildren();for(const [i,line] of l.dialogue.entries()){const row=el('div',undefined,'integrated-dialogue-line');const words=el('div',undefined,'lesson-dialogue-text');const female=i%2===0;const speaker=el('small',(female?'Анна':'Петер')+' · озвучка: Габор или синтез','lesson-speaker');speaker.lang='ru';words.append(speaker);const h=el('span',line);h.lang='hu';const translation=el('small',dialogueTranslations[l.title]?.[i]||'');translation.lang='ru';words.append(h,translation);const b=el('button','🔊');b.type='button';b.onclick=()=>{spokenTargetIndex=Array.from(dialog.children).indexOf(row);const source=window.TanuloTTS?.sourceFor?.({text:line,lang:'hu-HU'})||'tts';const played=say(line);$('integratedDialogueFeedback').textContent=played?(source==='gabor'?'Запись Габора. ':source==='pilot'?'Пробная запись Габора. ':'Компьютерный венгерский голос. ')+'Прослушайте и повторите фразу: '+line:'Озвучка недоступна. Проверьте венгерский голос устройства.';note('Для проверки нажмите микрофон или отметьте, что повторили вслух.')};row.append(words,b);dialog.append(row)}cardIndex=0;writeIndex=0;correctWriting=new Set();testIndex=0;testCorrect=0;hasAnswered=false;testCompleted=false;flashcardsOpened=false;grammarReviewed=false;dialoguePractised=false;spokenTargetIndex=0;flippedWords=new Set();checkedBatches=new Set();fastTrackPacks=new Set();a1FastTrackPassed=false;fastTrackWords=[];fastTrackPosition=0;checkBatch=-1;checkStep=0;checkRendered='';quizMisses=[];testOrder=randomOrder(rows().map((_,i)=>i));restoreCheckpoint();cardIndex=resumeA1CardIndex();resumeQuiz();sentencePractice(true);renderFastTrack();$('integratedFlashcard').hidden=false;card();spelling();composition();test();stageView()}
+}$('integratedLessonLevel').textContent=level;$('integratedLessonCounter').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length;$('integratedLessonHeading').textContent='Урок '+(lessonIndex+1)+'. '+l.title;$('integratedLessonSelect').replaceChildren();courses[level].forEach((x,i)=>{const finished=read(KEY).completed?.[level+':'+i];const pct=finished&&Number.isFinite(finished.bestScore)&&Number.isFinite(finished.bestMax)&&finished.bestMax>0&&level==='A1'?Math.round(finished.bestScore/finished.bestMax*100):finished&&Number.isFinite(finished.score)&&Number.isFinite(finished.max)&&finished.max>0?Math.round(finished.score/finished.max*100):null;const mark=pct===null?(finished?'◔ ':''):pct>=90?'✓ ':'◔ ';const suffix=pct===null?'':' · '+pct+'%';const o=el('option',mark+(i+1)+'. '+x.title+suffix);o.value=String(i);$('integratedLessonSelect').append(o)});$('integratedLessonSelect').value=String(lessonIndex);placeReadingAfterTeaching();renderVisual();renderMotion();resetVideo();renderReading();window.TanmuhelyRenderA1LongReadings?.(level,lessonIndex);renderWords();renderA1WordPreview();renderGrammarExamples();window.TanmuhelyRenderErrorCards?.(level,lessonIndex);resetGame();$('integratedGrammar').replaceChildren();$('integratedGrammar').append(el('strong',l.grammar[0]),el('p',l.grammar[1]),el('p',l.grammar[2]));const dialog=$('integratedDialogue');dialog.replaceChildren();for(const [i,line] of l.dialogue.entries()){const row=el('div',undefined,'integrated-dialogue-line');const words=el('div',undefined,'lesson-dialogue-text');const speakerLabel=level==='A1'?(i%2===0?'Собеседник A':'Собеседник B'):(i%2===0?'Анна':'Петер');const speaker=el('small',speakerLabel+' · озвучка: Габор или синтез','lesson-speaker');speaker.lang='ru';words.append(speaker);const h=el('span',line);h.lang='hu';const translation=el('small',dialogueTranslations[l.title]?.[i]||'');translation.lang='ru';words.append(h,translation);const b=el('button','🔊');b.type='button';b.onclick=()=>{spokenTargetIndex=Array.from(dialog.children).indexOf(row);const source=window.TanuloTTS?.sourceFor?.({text:line,lang:'hu-HU'})||'tts';const played=say(line);$('integratedDialogueFeedback').textContent=played?(source==='gabor'?'Запись Габора. ':source==='pilot'?'Пробная запись Габора. ':'Компьютерный венгерский голос. ')+'Прослушайте и повторите фразу: '+line:'Озвучка недоступна. Проверьте венгерский голос устройства.';note('Для проверки нажмите микрофон или отметьте, что повторили вслух.')};row.append(words,b);dialog.append(row)}cardIndex=0;writeIndex=0;correctWriting=new Set();testIndex=0;testCorrect=0;hasAnswered=false;testCompleted=false;flashcardsOpened=false;grammarReviewed=false;dialoguePractised=false;dialogueUnderstood=false;spokenTargetIndex=0;flippedWords=new Set();checkedBatches=new Set();fastTrackPacks=new Set();a1FastTrackPassed=false;fastTrackWords=[];fastTrackPosition=0;checkBatch=-1;checkStep=0;checkRendered='';quizMisses=[];testOrder=randomOrder(rows().map((_,i)=>i));restoreCheckpoint();cardIndex=resumeA1CardIndex();grammarQuestion();renderDialogueUnderstanding();resumeQuiz();sentencePractice(true);renderFastTrack();$('integratedFlashcard').hidden=false;card();spelling();composition();test();stageView()}
 function activeCourseLevel(){return document.querySelector('.welcome .level.active')?.dataset.level||'A1'}
 function refreshLessonStart(){
  const picker=$('lessonStartSelect');if(!picker)return;
@@ -1118,7 +1271,8 @@ function open(mode,requestedIndex=null){
  }
  const choosing=Number.isInteger(requestedIndex)&&requestedIndex>=0&&requestedIndex<courses[level].length;
  lessonIndex=choosing?requestedIndex:Math.max(0,Math.min(courses[level].length-1,Number(saved?.lessonIndex)||0));
- step=choosing||mode==='words'?0:Math.max(0,Math.min(5,Number(saved?.step)||0));
+ const resumed=level==='A1'?stored.a1LessonStages?.[String(lessonIndex)]??(choosing?0:saved?.step):saved?.step;
+ step=mode==='words'?0:Math.max(0,Math.min(5,Number(resumed)||0));
  if(choosing)save(); // An explicit starting lesson must survive reopening the workbook.
  root.classList.remove('study-menu','study-active','study-coach','study-online','study-exam','study-daily');root.classList.add('study-book');
  hub.hidden=true;view.hidden=false;back.hidden=false;render();view.scrollIntoView({block:'start'});
@@ -1126,6 +1280,24 @@ function open(mode,requestedIndex=null){
 let stepButton=$('integratedStepNext');if(!stepButton){stepButton=el('button','Следующий шаг →','lesson-primary');stepButton.type='button';stepButton.id='integratedStepNext';view.insertBefore(stepButton,$('lessonWords'))}
 stepButton.onclick=moveNext;
 $('integratedPreviousStep').onclick=()=>{if(step>0){step--;save();stageView();note('Вы вернулись к предыдущему шагу. Уже проверенные ответы сохранены.') }};
+
+$('integratedQuickSections')?.querySelectorAll('[data-preview-section]').forEach(button=>{
+ button.addEventListener('click',()=>{
+  if(level!=='A1')return;
+  const target=button.dataset.previewSection;
+  if(!['lessonWords','lessonGrammar','lessonDialogue','lessonComposition'].includes(target))return;
+  steps.forEach(id=>$(id).hidden=id!==target);
+  $('integratedStepNext').hidden=true;
+  $('integratedPreviousStep').hidden=true;
+  document.querySelectorAll('.lesson-sections a').forEach(a=>a.hidden=true);
+  $('integratedQuickSections').querySelectorAll('[data-preview-section]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+  $('integratedQuickReturn').hidden=false;
+  $('integratedQuickHint').textContent='Это только просмотр материала. Ваш сохранённый этап: '+stepsRu[step]+'.';
+  $(target).scrollIntoView({block:'start',behavior:'instant'});
+ });
+});
+$('integratedQuickReturn')?.addEventListener('click',()=>stageView());
+
 $('lessonsPrimary')?.addEventListener('click',()=>open('resume'));$('lessonsVocabulary')?.addEventListener('click',()=>open('words'));
 refreshLessonStart();
 document.querySelectorAll('.welcome .level').forEach(button=>button.addEventListener('click',refreshLessonStart));
@@ -1134,27 +1306,45 @@ function completedScore(index){return read(KEY).completed?.[level+':'+index]}
 function reviewAdvice(targetIndex){
  if(targetIndex<=0)return '';
  const prev=completedScore(targetIndex-1);
- if(!prev)return 'Предыдущий урок ещё не завершён. Для уверенного продвижения рекомендуем сначала пройти его и повторить новые слова.';
+ if(!prev)return 'Предыдущий урок ещё не завершён. При желании вы можете повторить его слова, но этот урок доступен прямо сейчас.';
  if(!Number.isFinite(prev.max)||prev.max<=0)return 'Для предыдущего урока нет проверенного результата. Перед продолжением рекомендуем повторить материал.';
- const percent=Math.round(prev.score/prev.max*100);
+ const percent=Math.round((level==='A1'&&Number.isFinite(prev.bestScore)&&Number.isFinite(prev.bestMax)&&prev.bestMax>0?prev.bestScore/prev.bestMax:prev.score/prev.max)*100);
  if(percent>=90)return '';
  const errors=(prev.errors||[]).slice(0,5);
  return 'Результат предыдущего урока — '+percent+'%. Рекомендуем повторить материал'+(errors.length?', особенно: '+errors.join(', '):'')+'. Это рекомендация, а не ограничение.';
 }
 function confirmLessonChange(targetIndex){
+ // A learner may enter ANY lesson directly. Prerequisite review is advisory only.
  if(!Number.isInteger(targetIndex)||targetIndex<0||targetIndex>=courses[level].length)return;
- if(targetIndex===lessonIndex)return;
- const message=reviewAdvice(targetIndex);
- lessonIndex=targetIndex;step=0;save();render();
- note('✓ Урок '+(lessonIndex+1)+' открыт. Предыдущие уроки можно пройти позже.');
- if(!message)return;
+ if(targetIndex===lessonIndex){$('integratedAdvanceAdvice').hidden=true;return;}
+ const advice=reviewAdvice(targetIndex);
+ // Save the current lesson before changing the selected lesson.
+ // Older progress (without a per-lesson map) stays readable.
+ save();
+ const prior=read(KEY);
+ const restored=level==='A1'?prior.a1LessonStages?.[String(targetIndex)]:null;
+ lessonIndex=targetIndex;
+ step=level==='A1'&&Number.isInteger(restored)&&restored>=0&&restored<=5?restored:0;
+ save();
+ render();
  const box=$('integratedAdvanceAdvice');
  box.replaceChildren();
- box.append(el('strong','Необязательная рекомендация'),el('p',message),
-  el('p','Вы уже перешли к выбранному уроку. Возвращаться к предыдущему не требуется.'));
- box.hidden=false;
+ if(advice){
+  box.append(el('strong','Необязательное повторение'),el('p',advice));
+  const dismiss=el('button','Продолжить выбранный урок');
+  dismiss.type='button';
+  dismiss.onclick=()=>{box.hidden=true};
+  box.append(dismiss);
+  box.hidden=false;
+ }else box.hidden=true;
+ note('Урок '+(lessonIndex+1)+' открыт. '+(step>0?'Восстановлен ваш этап: '+stepsRu[step]+'.':'Начните с первого этапа или откройте материалы для просмотра.')+' Предыдущие уроки проходить необязательно.');
 }
-$('integratedLessonSelect').addEventListener('change',e=>confirmLessonChange(Number(e.target.value)));
+$('integratedLessonSelect').addEventListener('change',e=>{
+ const target=Number(e.target.value);
+ confirmLessonChange(target);
+});
+$('integratedLessonPrev').addEventListener('click',()=>confirmLessonChange(lessonIndex-1));
+$('integratedLessonForward').addEventListener('click',()=>confirmLessonChange(lessonIndex+1));
 $('integratedFlashcardOpen').onclick=()=>{cardIndex=0;card();$('integratedFlashcard').hidden=false;note('Повторите карточки. Уже открытые переводы сохраняются в прогрессе урока.')};
 $('integratedCardFlip').onclick=()=>{const node=$('integratedCardRussian');node.hidden=!node.hidden;if(!node.hidden){flippedWords.add(cardIndex);saveCheckpoint();if(step===0&&canAdvance())stepButton.disabled=false;const count=level==='A1'?[...flippedWords].filter(i=>i<requiredCardCount()).length:flippedWords.size;note(level==='A1'&&canAdvance()?'✓ Два блока изучены и проверены. Можно перейти к правилу.':'Открыто переводов: '+count+' / '+requiredCardCount()+(level==='A1'?' · после пяти слов ответьте на два коротких вопроса.':'.'));updateCardProgress()} $('integratedCardFlip').textContent=node.hidden?'Показать перевод':'Скрыть перевод'};
 function nextCardIndex(){
@@ -1209,7 +1399,7 @@ const dialogueLines=()=>lesson().dialogue;
 $('integratedDialogue').addEventListener('click',event=>{
  if(event.target.closest('button'))dialogueRecognition.stop();
 },true);
-$('integratedDialogueRepeat').onclick=()=>{dialogueRecognition.stop();dialoguePractised=true;saveCheckpoint();stepButton.disabled=false;$('integratedDialogueFeedback').textContent='Повторение отмечено по вашей самооценке. Произношение автоматически не проверялось.';};
+$('integratedDialogueRepeat').onclick=()=>{dialogueRecognition.stop();dialoguePractised=true;saveCheckpoint();if(step===2)stepButton.disabled=!canAdvance();$('integratedDialogueFeedback').textContent=level==='A1'?'Повторение отмечено по вашей самооценке. Чтобы продолжить, правильно выберите перевод венгерской реплики. Произношение автоматически не оценивалось.':'Повторение отмечено по вашей самооценке. Произношение автоматически не проверялось.';};
 $('integratedDialogueMic').onclick=()=>{
  if(dialogueRecognition.isActive()){
   dialogueRecognition.stop();

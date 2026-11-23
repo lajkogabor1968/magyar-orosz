@@ -49,9 +49,10 @@ assert.match(lessons, /function highlightAnswerButtons\(box,selected,correctText
 assert.match(lessons, /button\.classList\.toggle\('right',right\)/);
 assert.match(lessons, /button\.classList\.toggle\('wrong',button===selected&&!right\)/);
 assert.match(lessons, /button\.setAttribute\('aria-pressed',String\(button===selected\)\)/);
-assert.match(lessons, /highlightAnswerButtons\(box,btn,c\.a\[c\.ok\]\)/, 'grammar reveals the correct answer');
-assert.match(lessons, /const answer=c\.a\[c\.ok\],end=\/\[\.!\?…\]\$\/\.test\(answer\)\?'':'\.'/,
+assert.match(lessons, /highlightAnswerButtons\(box,btn,answerText\)/, 'grammar highlights the correct choice after success');
+assert.match(lessons, /const good=i===c\.ok,answerText=c\.a\[c\.ok\],ending=\/\[\.!\?…\]\$\/\.test\(answerText\)\?'':'\.'/ ,
   'grammar feedback avoids doubling terminal punctuation');
+assert.match(lessons, /wrongAttempts===1/, 'the first grammar mistake receives a retry prompt');
 assert.match(lessons, /highlightAnswerButtons\(answers,button,answer\)/, 'reading reveals the correct answer');
 assert.match(lessons, /function placeReadingAfterTeaching\(\)/, 'A1 reading order is managed separately');
 assert.match(lessons, /if\(level!=='A1'\)\{\s*if\(moved\)\{original\.append/, 'A2 retains its previous reading position');

@@ -97,9 +97,9 @@ assert.match(courses.A1[4].grammar[1],/Vizet iszom/,
  'The beginner must be told that the first-person drinking pattern is a fixed expression');
 const html=read('index.html');
 for(const script of [
- 'a1-guided-lessons-next.js?v=20261123-a1-card-scaffold2',
- 'a1-guided-lessons-17-20.js?v=20261123-a1-examples1',
- 'a1-guided-lessons-25-28.js?v=20261123-a1-meaning1',
+ 'a1-guided-lessons-next.js?v=20261123-a1-merged1',
+ 'a1-guided-lessons-17-20.js?v=20261123-a1-merged1',
+ 'a1-guided-lessons-25-28.js?v=20261123-a1-merged1',
  'a1-guided-lessons-29-30.js?v=20261123-a1-travel-health1'
 ])assert.ok(html.includes(script),`Browser must refresh corrected A1 material: ${script}`);
 console.log(`PASS: ${courses.A1.length} A1 lessons, ${totalCards} visible cards, no duplicate Russian spelling prompts or early imperatives in required cards.`);

@@ -122,11 +122,11 @@ const checkpointScript=[
 const storage=new Map();
 const restored={
  level:'A1',a1FastTrackPassed:true,fastTrackPacks:new Set([0,1]),flippedWords:new Set(),correctWriting:new Set(),
- checkedBatches:new Set(),grammarReviewed:false,dialoguePractised:false,checkBatch:0,checkStep:0,checkRendered:'',
+ checkedBatches:new Set(),grammarReviewed:false,dialoguePractised:false,dialogueUnderstood:false,checkBatch:0,checkStep:0,checkRendered:'',
  rows:()=>words,lessonKey:()=> 'A1:1',cardChunks:()=>[[0,5],[5,10]],requiredCardCount:()=>10,
  checkpoint:()=>JSON.parse(storage.get('progress')||'{}')['A1:1']||{},
  read:()=>JSON.parse(storage.get('progress')||'{}'),
- checkpointKey:'progress',
+ checkpointKey:'progress',KEY:'progress',
  localStorage:{setItem:(_,value)=>storage.set('progress',value)},
  $:()=>({value:''})
 };

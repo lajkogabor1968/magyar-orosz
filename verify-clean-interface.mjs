@@ -16,7 +16,7 @@ for (const id of [
 }
 
 assert.match(html, /clean-interface\.css\?v=20261123-a1-contrast-audio1/);
-assert.match(html, /lesson-book\.js\?v=20261123-a1-intro-contrast1/);
+assert.match(html, /lesson-book\.js\?v=20261123-a1-merged1/);
 assert.match(html, /writing-feedback\.js\?v=20261123-a1-grammar-hint1/);
 assert.match(html, /a1-guided-lessons-13-16\.js\?v=20261123-a1-contrast1/);
 assert.match(html, /<ol id="integratedStageTrack"[^>]*>(?:<li>[^<]+<\/li>){6}<\/ol>/);

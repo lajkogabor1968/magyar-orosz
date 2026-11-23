@@ -32,8 +32,8 @@ const units={
 ['Otthon vagyok a családommal.','Я дома со своей семьёй.'],
 ['Az anyukám a konyhában van.','Моя мама на кухне.'],
 ['Az apukám a kertben dolgozik.','Мой папа работает в саду.'],
-['Van egy testvérem.','У меня есть брат или сестра.'],
-['A testvérem neve Bence.','Моего брата зовут Бенце.'],
+['Van egy fiútestvérem.','У меня есть брат.'],
+['A fiútestvérem neve Bence.','Моего брата зовут Бенце.'],
 ['Bence tizenöt éves.','Бенце пятнадцать лет.'],
 ['Én húszéves vagyok.','Мне двадцать лет.'],
 ['Délelőtt együtt reggelizünk.','Утром мы завтракаем вместе.'],
@@ -252,7 +252,7 @@ const units={
 ['Tíz percig tanulunk.','Мы учимся десять минут.'],
 ['Anna hangosan számol.','Анна считает вслух.'],
 ['Péter is számol.','Петер тоже считает.'],
-['A tanár azt mondja: nagyon jó!','Учитель говорит: очень хорошо!']
+['A tanár azt mondja: „Nagyon jó!”','Учитель говорит: «Очень хорошо!»']
 ],dialogue:[
 ['Hány könyv van az asztalon?','Сколько книг на столе?'],
 ['Egy könyv van az asztalon.','На столе одна книга.'],
@@ -300,7 +300,7 @@ const readingGuidance={
   ['örülök az új barátomnak','я рад / рада новому другу','-nak показывает, кому или чему радуются; эту фразу пока удобно запомнить целиком.']
  ],
  2:[
-  ['testvérem','мой брат / моя сестра','testvér — брат или сестра; окончание -em показывает принадлежность.'],
+  ['fiútestvérem','мой брат','fiútestvér — брат; -em показывает принадлежность: мой. testvér — брат или сестра.'],
   ['konyhában / kertben','на кухне / в саду','-ban/-ben отвечает на вопрос «где?».'],
   ['kenyeret / sajtot','хлеб / сыр (в роли дополнения)','После «есть» здесь используются формы с винительным окончанием -t; подробное правило будет позже.']
  ],
@@ -317,7 +317,7 @@ const readingGuidance={
  5:[
   ['fél nyolckor','в 7:30','По-венгерски fél nyolc — «половина восьмого», то есть 7:30, а не 8:30.'],
   ['megmosakszom / felöltözöm','умываюсь / одеваюсь','Возвратные действия выражаются формой глагола; пока запомните эти два готовых слова.'],
-  ['busszal / otthonról','на автобусе / из дома','-val/-vel (здесь -szal) означает «на чём?», а -ról — исходное место «откуда?».']
+  ['busszal / otthonról','на автобусе / из дома','busz + -val → busszal: v уподобляется конечному согласному sz. Средство передвижения выражается -val/-vel. Откуда? — otthonról («из дома»).']
  ],
  6:[
   ['szeretnék venni','хотел(а) бы купить','szeretnék — вежливое «хотел(а) бы», venni — «купить».'],
@@ -326,11 +326,11 @@ const readingGuidance={
  ],
  7:[
   ['könyve / telefonja / kulcsa','её книга / телефон / ключ','Окончания показывают, кому принадлежит предмет; здесь вещи принадлежат Анне.'],
-  ['táskájába / táskában','в её сумку / в сумке','-ba указывает направление взгляда «куда?», -ban — место «где?».'],
+  ['táskájába / táskában','в её сумку / в сумке','táskájába — направление «в её сумку», с показателем принадлежности -ja; táskában — местонахождение «в сумке» без указания владельца. Сравните также: táskájában — «в её сумке».'],
   ['elmehet a boltba','может пойти в магазин','mehet — «может идти», -ba в boltba указывает, куда она идёт.']
  ],
  8:[
-  ['Magyarországon / Szegeden','в Венгрии / в Сегеде','С названиями стран и городов часто используются -on/-en/-ön; форму названия лучше запомнить целиком.'],
+  ['Magyarországon / Szegeden','в Венгрии / в Сегеде','Внимание: окончания местоположения зависят от названия. Magyarországon — в Венгрии, Szegeden — в Сегеде, но Oroszországban — в России, Moszkvában — в Москве. Не прибавляйте -on/-en ко всем географическим названиям.'],
   ['Hogy hívják? / Hogy hívnak?','Как вас зовут? / Как тебя зовут?','hívják — вежливая форма обращения, hívnak — неформальный вопрос к знакомому.'],
   ['barátaimmal','с моими друзьями','В одной форме соединяются множественное число, принадлежность «мои» и -val/-vel «с кем?».']
  ],
@@ -341,7 +341,7 @@ const readingGuidance={
  ],
  10:[
   ['két toll / három ceruza','две ручки / три карандаша','После числительных венгерское существительное обычно остаётся в единственном числе.'],
-  ['ceruzát / almát','карандаши / яблоки (как дополнение)','-t обозначает прямое дополнение; a перед этим окончанием превращается в á.'],
+  ['ceruzát / almát','карандаш / яблоко (винительный падеж)','ceruza → ceruzát, alma → almát. Обе венгерские формы единственного числа: окончание -t обозначает прямое дополнение, конечное a удлиняется до á. Множественное число здесь не образуется.'],
   ['tíz percig','десять минут (по длительности)','-ig указывает продолжительность: сколько времени длится действие.']
  ],
  11:[
@@ -410,7 +410,7 @@ window.TanmuhelyRenderA1LongReadings=(level,index)=>{
  details.append(soundButton(data.dialogue.map(line=>line[0]).join(' '),audioStatus,true));
  for(const [hu,ru] of data.dialogue)details.append(readingLine(hu,ru,audioStatus,translations));
  const section=el('div');section.append(el('h4','Проверьте понимание'));
- data.questions.forEach(([question,...rest])=>{const correct=rest.pop();const block=el('div');block.className='a1-reading-check';const prompt=el('p',question);prompt.lang='hu';block.append(prompt);const feedback=el('p');feedback.setAttribute('role','status');feedback.className='a1-reading-feedback';rest.forEach((choice,i)=>{const button=el('button',choice);button.type='button';button.className='integrated-answer';button.onclick=()=>{const good=i===correct;const answer=rest[correct],ending=/[.!?…]$/.test(answer)?'':'.';feedback.textContent=good?'✓ Верно: '+answer+ending:'✗ Правильный ответ: '+answer+ending+' Найдите подтверждение в тексте и попробуйте ещё раз.';block.querySelectorAll('button').forEach(b=>{b.setAttribute('aria-pressed',String(b===button));b.classList.toggle('right',b.textContent===answer);b.classList.toggle('wrong',b===button&&!good)});};block.append(button);});block.append(feedback);section.append(block);});
+ data.questions.forEach(([question,...rest])=>{const correct=rest.pop();const block=el('div');block.className='a1-reading-check';const prompt=el('p',question);prompt.lang='hu';block.append(prompt);const feedback=el('p');feedback.setAttribute('role','status');feedback.className='a1-reading-feedback';let mistakes=0,solved=false;rest.forEach((choice,i)=>{const button=el('button',choice);button.type='button';button.className='integrated-answer';button.onclick=()=>{if(solved)return;const good=i===correct;const answer=rest[correct],ending=/[.!?…]$/.test(answer)?'':'.';if(good){solved=true;feedback.textContent=mistakes?'✓ Верно после повторной попытки: '+answer+ending:'✓ Верно: '+answer+ending;}else{mistakes++;feedback.textContent=mistakes===1?'✗ Пока неверно. Прочитайте текст ещё раз и попробуйте другой ответ.':'✗ Правильный ответ: '+answer+ending+' Найдите подтверждение в тексте.';}block.querySelectorAll('button').forEach((b,n)=>{b.setAttribute('aria-pressed',String(b===button));b.classList.toggle('right',good||mistakes>=2?n===correct:false);b.classList.toggle('wrong',b===button&&!good);if(good||mistakes>=2)b.disabled=true;});if(!good&&mistakes===1)button.disabled=true;if(mistakes>=2)solved=true;};block.append(button);});block.append(feedback);section.append(block);});
  details.append(section);
  anchor.insertAdjacentElement('afterend',details);
 };

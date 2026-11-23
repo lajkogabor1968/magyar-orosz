@@ -58,7 +58,7 @@ assert.deepEqual([...layout.order.slice(8)],[9,8],
 context.level='A2';
 assert.equal(runInNewContext(`${snippets[0]}\nrequiredCardCount()`,context),5,
  'the A2 mandatory vocabulary stays at five cards');
-assert.match(book,/saved\.count===undefined\?Math\.min\(10,w\.length\):saved\.count/,
+assert.match(book,/saved\.count===undefined\?Math\.min\(10,saved\.order\.length\):saved\.count/,
  'older ten-question quizzes still use their original target length');
 
 console.log('PASS: A1 daily lesson needs eight taught words and keeps sétál/mindennap optional at their original card indices.');
