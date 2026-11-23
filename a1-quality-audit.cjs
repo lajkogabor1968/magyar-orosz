@@ -125,6 +125,20 @@ else for(const [key,unit] of Object.entries(extraData.units)){
   warnings.push('Supplement '+key+': missing pre-reading grammar notes');
 }
 
+// Regression: accept short, well-formed beginner questions without treating
+// a single noun with punctuation as an independently written sentence.
+const compositionCode=source.match(/const incompleteSentences=level==='A1'\?sentences\.filter\(t=>\{[\s\S]*?\n \}\):\[\];/)?.[0];
+if(!compositionCode)errors.push('A1: writing minimum checks unavailable');
+else {
+ const sample=['Ki ő?','Mi ez?','Ő az.','Ez jó.','Telefon.','a b.'];
+ const checks=vm.runInNewContext(
+  'const level="A1",sentences='+JSON.stringify(sample)+';'+compositionCode+
+  ';Array.from(incompleteSentences)',{}, {timeout:3000});
+ const expected=['Telefon.','a b.'];
+ if(JSON.stringify(Array.from(checks))!==JSON.stringify(expected))
+  errors.push('A1: short correct questions or single-word writing are misclassified');
+}
+
 console.log('A1 audit: '+all.length+' lessons · '+errors.length+' errors · '+warnings.length+' warnings');
 for(const error of errors)console.error('ERROR '+error);
 for(const warning of warnings)console.warn('WARN '+warning);
