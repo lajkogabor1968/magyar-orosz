@@ -718,7 +718,32 @@ $('lessonSentenceCheck').onclick=()=>{
 };
 function spelling(){const w=rows(),v=w[writeIndex%w.length];$('integratedWritingPrompt').textContent='Напишите по-венгерски: '+v.ru;$('integratedWritingInput').value='';$('integratedWritingFeedback').textContent='';$('integratedWritingProgress').textContent='Верно написано: '+correctWriting.size+' / '+w.length+(level==='A1'&&lessonIndex===0?' · с долгой гласной: '+[...correctWriting].filter(i=>/[áéíóöőúüű]/.test(w[i]?.hu||'')).length+' / 2':'')}
 function spellingCheck(){const v=rows()[writeIndex%rows().length],got=norm($('integratedWritingInput').value),target=norm(v.hu);if(!got){$('integratedWritingFeedback').textContent='Введите слово.';return}const spellingErrors=read(spellingErrorsKey),current=Array.isArray(spellingErrors[lessonKey()])?spellingErrors[lessonKey()]:[];if(got===target){spellingErrors[lessonKey()]=current.filter(hu=>hu!==v.hu);try{localStorage.setItem(spellingErrorsKey,JSON.stringify(spellingErrors))}catch(_){}correctWriting.add(writeIndex);saveCheckpoint();$('integratedWritingFeedback').textContent='✓ Правильно! '+v.hu+' — '+v.ru}else{spellingErrors[lessonKey()]=[...new Set([...current,v.hu])];try{localStorage.setItem(spellingErrorsKey,JSON.stringify(spellingErrors))}catch(_){}const bare=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');const missing=bare(got)===bare(target);const differences=[...target].map((c,i)=>[c,[...got][i]]).filter(([expected,actual])=>expected!==actual&&actual!==undefined).slice(0,3).map(([expected,actual])=>actual+' → '+expected);$('integratedWritingFeedback').textContent=(missing?'Почти верно: проверьте долготу и вид гласной. ':'Есть ошибка в буквах или их порядке. ')+(differences.length?'Обратите внимание: '+differences.join(', ')+'. ':'')+'Правильно: '+v.hu+'. Напишите ещё раз.'}$('integratedWritingProgress').textContent='Верно написано: '+correctWriting.size+' / '+rows().length}
-function composition(){const l=lesson(),key=level+':'+lessonIndex;$('integratedCompositionPrompt').textContent=l.composition[0]+'. '+l.composition[1];$('integratedCompositionHints').textContent='Примеры начала предложений: '+l.composition[2];$('integratedCompositionText').value=read('magyarorosz.lesson-writing.v1')[key]||'';$('integratedCompositionFeedback').textContent='Напишите собственный текст. Он сохранится только в этом браузере.'}
+function composition(){const l=lesson(),key=level+':'+lessonIndex;$('integratedCompositionPrompt').textContent=l.composition[0]+'. '+l.composition[1];$('integratedCompositionHints').textContent='Примеры начала предложений: '+l.composition[2];$('integratedCompositionText').value=read('magyarorosz.lesson-writing.v1')[key]||'';$('integratedCompositionFeedback').textContent='Напишите собственный текст. Он сохранится только в этом браузере.';restoreCompositionChecklist()}
+const compositionChecklistKey='magyarorosz.a1-composition-checklist.v1';
+function compositionChecklistBoxes(){return [...document.querySelectorAll('#integratedCompositionSelfcheck input[data-a1-selfcheck]')];}
+function updateCompositionChecklistLabel(){
+ const boxes=compositionChecklistBoxes(),label=$('integratedCompositionSelfcheckStatus');
+ if(label)label.textContent='Отмечено: '+boxes.filter(box=>box.checked).length+' / '+boxes.length;
+}
+function restoreCompositionChecklist(){
+ const fieldset=$('integratedCompositionSelfcheck');if(!fieldset)return;
+ fieldset.hidden=level!=='A1';
+ const saved=read(compositionChecklistKey)[lessonKey()];
+ const checked=Array.isArray(saved)?saved:[];
+ compositionChecklistBoxes().forEach((box,i)=>{box.checked=checked.includes(i);});
+ updateCompositionChecklistLabel();
+}
+document.querySelectorAll('#integratedCompositionSelfcheck input[data-a1-selfcheck]').forEach(box=>{
+ box.addEventListener('change',()=>{
+  if(level!=='A1')return;
+  const saved=read(compositionChecklistKey);
+  saved[lessonKey()]=compositionChecklistBoxes().flatMap((item,i)=>item.checked?[i]:[]);
+  try{localStorage.setItem(compositionChecklistKey,JSON.stringify(saved));}
+  catch(_){$('integratedCompositionSelfcheckStatus').textContent='Не удалось сохранить самопроверку на этом устройстве.';return;}
+  updateCompositionChecklistLabel();
+ });
+});
+
 function saveComposition(){const s=read('magyarorosz.lesson-writing.v1');s[level+':'+lessonIndex]=$('integratedCompositionText').value;try{localStorage.setItem('magyarorosz.lesson-writing.v1',JSON.stringify(s));$('integratedCompositionFeedback').textContent='✓ Текст сохранён на этом устройстве.';return true}catch(_){$('integratedCompositionFeedback').textContent='Не удалось сохранить. Скопируйте текст вручную.'}}
 function checkComposition(){
  const draftSaved=saveComposition();
