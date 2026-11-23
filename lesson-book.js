@@ -850,21 +850,38 @@ function renderDialogueUnderstanding(){
  // Teach first: learners can read the translations and listen before testing.
  // Starting the check hides those translations, so the answer cannot simply
  // be copied from the visible line immediately above the question.
- const begin=el('button','Начать проверку без подсказок');
- begin.type='button';
- container.insertBefore(begin,promptNode);
+ // Reuse stable controls: rerendering a saved lesson must not add more
+ // "Start" buttons. An unfinished test can also return to learning safely.
+ let begin=$('integratedDialogueUnderstandingBegin');
+ if(!begin){
+  begin=el('button','Начать проверку без подсказок');
+  begin.type='button';begin.id='integratedDialogueUnderstandingBegin';
+  container.insertBefore(begin,promptNode);
+ }
+ let review=$('integratedDialogueUnderstandingReview');
+ if(!review){
+  review=el('button','Вернуться к изучению');
+  review.type='button';review.id='integratedDialogueUnderstandingReview';
+  container.insertBefore(review,promptNode);
+ }
+ const showStudy=()=>{
+  translationsOnScreen.forEach(node=>{node.hidden=false;});
+  promptNode.hidden=true;choices.hidden=true;
+  begin.hidden=dialogueUnderstood;review.hidden=true;
+  feedback.textContent=dialogueUnderstood
+   ?'✓ Вы уже правильно ответили на этот вопрос.'
+   :'Сначала изучите диалог и его перевод. Затем начните проверку без подсказок.';
+ };
  const startAssessment=()=>{
   translationsOnScreen.forEach(node=>{node.hidden=true;});
-  promptNode.hidden=false;choices.hidden=false;begin.hidden=true;
+  promptNode.hidden=false;choices.hidden=false;begin.hidden=true;review.hidden=false;
   feedback.textContent='Выберите правильный русский перевод. Во время проверки перевод диалога скрыт.';
  };
- promptNode.hidden=!dialogueUnderstood;choices.hidden=!dialogueUnderstood;
+ begin.onclick=startAssessment;
+ review.onclick=showStudy;
+ showStudy();
  if(dialogueUnderstood){
-  begin.hidden=true;
-  feedback.textContent='✓ Вы уже правильно ответили на этот вопрос.';
- }else{
-  begin.onclick=startAssessment;
-  feedback.textContent='Сначала изучите диалог и его перевод. Затем начните проверку без подсказок.';
+  promptNode.hidden=false;choices.hidden=false;
  }
  const alternatives=[correct,...randomOrder([...new Set(translations.filter(v=>typeof v==='string'&&v.trim()&&v!==correct))]).slice(0,2)];
  randomOrder(alternatives).forEach(answer=>{
@@ -877,6 +894,7 @@ function renderDialogueUnderstanding(){
     dialogueUnderstood=true;saveCheckpoint();
     // After assessment, restore bilingual lines for revision.
     translationsOnScreen.forEach(node=>{node.hidden=false;});
+    review.hidden=true;
     choices.querySelectorAll('button').forEach(b=>{
      b.disabled=true;b.classList.toggle('right',b.textContent===correct);
     });
