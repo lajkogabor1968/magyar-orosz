@@ -17,7 +17,8 @@
   const levelMenu = document.getElementById('landingLevelMenu');
   function refreshLanding() {
     const level = screen.querySelector('input[name="landingLevel"]:checked').value;
-    document.getElementById('landingChosenLevel').textContent = level;
+    const chosenLabel = document.getElementById('landingChosenLevel');
+    if (chosenLabel) chosenLabel.textContent = level;
     picker.hidden = level !== 'A1';
     let saved = false;
     try {
@@ -25,11 +26,7 @@
     } catch {}
     start.textContent = level === 'A1' ? (saved ? 'Продолжить урок' : 'Начать урок') : 'Открыть курс';
   }
-  levelMenu.addEventListener('change', () => {
-    refreshLanding();
-    levelMenu.open = false;
-    levelMenu.querySelector('summary').focus();
-  });
+  levelMenu.addEventListener('change', refreshLanding);
   picker.addEventListener('click', () => {
     start.click();
     document.getElementById('lessonMenu').open = true;
