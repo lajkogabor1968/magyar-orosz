@@ -19,7 +19,13 @@
     window.scrollTo({top: 0, behavior: 'instant'});
     document.getElementById('landingTitle')?.focus();
   };
-  start.addEventListener('click', showApp);
+  // Open the saved A1 lesson directly, without a second menu click.
+  // Other levels keep their existing route until their courses are ready.
+  start.addEventListener('click', () => {
+    const chosen=screen.querySelector('input[name="landingLevel"]:checked')?.value || 'A1';
+    showApp();
+    if(chosen==='A1')document.getElementById('lessonsPrimary')?.click();
+  });
   const currentLevel = document.querySelector('.welcome .level.active')?.dataset.level;
   const initialChoice = screen.querySelector('input[name="landingLevel"][value="' + currentLevel + '"]');
   if (initialChoice) initialChoice.checked = true;
