@@ -171,8 +171,8 @@
       reading: {
         lines: [
           ['Péter egy étteremben ebédel.', 'Петер обедает в ресторане.'],
-          ['Kérem az étlapot.', 'Меню, пожалуйста.'],
-          ['Kérek egy levest.', 'Мне, пожалуйста, суп.'],
+          ['Péter az étlapot kéri.', 'Петер просит меню.'],
+          ['Péter egy levest kér.', 'Петер заказывает суп.'],
           ['Anna egy salátát szeretne.', 'Анна хотела бы салат.'],
           ['Péter egy süteményt is kér.', 'Петер также просит пирожное.'],
           ['A leves finom.', 'Суп вкусный.'],
