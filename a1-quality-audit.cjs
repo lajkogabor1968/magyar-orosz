@@ -235,6 +235,12 @@ if(!source.includes('hungarianAccentFeedback(got,target)')||
  !source.includes('if(got===target){spellingErrors'))
  errors.push('A1: strict spelling acceptance or sentence feedback regressed');
 
+// The first A1 spelling error should not disclose the whole answer.
+if(!source.includes("level==='A1'&&writingMisses===1")||
+ !source.includes("writingMisses=0;const w=rows()")||
+ !source.includes("writingMisses++;const accentTip"))
+ errors.push('A1: spelling retry or answer-hint gate is missing');
+
 console.log('A1 audit: '+all.length+' lessons · '+errors.length+' errors · '+warnings.length+' warnings');
 for(const error of errors)console.error('ERROR '+error);
 for(const warning of warnings)console.warn('WARN '+warning);
