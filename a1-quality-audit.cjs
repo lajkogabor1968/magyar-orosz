@@ -203,6 +203,17 @@ if(!localBackup.includes('const missing=entries.filter(([k])=>localStorage.getIt
  !localBackup.includes('![1,2].includes(payload.version)'))
  errors.push('A1: file restore may overwrite existing learner progress or reject old exports');
 
+// A1 writing self-review remains an optional, per-lesson checklist. It
+// must not be counted as an automatically certified grammar assessment.
+if(!home.includes('id="integratedCompositionSelfcheck"')||
+ (home.match(/data-a1-selfcheck="/g)||[]).length!==5||
+ !source.includes("const compositionChecklistKey='magyarorosz.a1-composition-checklist.v1'")||
+ !source.includes('restoreCompositionChecklist()')||
+ !source.includes('updateCompositionChecklistLabel()'))
+ errors.push('A1: five-point optional writing checklist is incomplete');
+if(source.includes('compositionChecked=')&&source.match(/compositionChecked=[^;]+/)?.[0].includes('compositionChecklist'))
+ errors.push('A1: optional self-review must not falsely certify writing');
+
 console.log('A1 audit: '+all.length+' lessons · '+errors.length+' errors · '+warnings.length+' warnings');
 for(const error of errors)console.error('ERROR '+error);
 for(const warning of warnings)console.warn('WARN '+warning);
