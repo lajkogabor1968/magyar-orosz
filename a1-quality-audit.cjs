@@ -214,6 +214,27 @@ if(!home.includes('id="integratedCompositionSelfcheck"')||
 if(source.includes('compositionChecked=')&&source.match(/compositionChecked=[^;]+/)?.[0].includes('compositionChecklist'))
  errors.push('A1: optional self-review must not falsely certify writing');
 
+// Word dictation and remembered dialogue sentences must give specific vowel
+// diacritic feedback while keeping strict exact-answer validation.
+const vowelHelper=source.match(/function hungarianAccentFeedback\(attempt,expected\)\{[\s\S]*?\n\}/)?.[0];
+if(!vowelHelper)errors.push('A1: Hungarian accent-specific writing feedback missing');
+else {
+ const feedback=vm.runInNewContext(vowelHelper+';hungarianAccentFeedback',{}, {timeout:3000});
+ for(const [typed,expected,correction] of [
+  ['kor','kór','o → ó'],['tör','tőr','ö → ő'],['ver','vér','e → é'],
+  ['haz','ház','a → á'],['fül','fűl','ü → ű']
+ ]){
+  if(!feedback(typed,expected).includes(correction))
+   errors.push('A1: accent feedback missing correction '+correction);
+ }
+ if(feedback('ház','ház')||feedback('hal','ház'))
+  errors.push('A1: accent feedback mislabels correct words or other errors');
+}
+if(!source.includes('hungarianAccentFeedback(got,target)')||
+ !source.includes('hungarianAccentFeedback(actual,correct)')||
+ !source.includes('if(got===target){spellingErrors'))
+ errors.push('A1: strict spelling acceptance or sentence feedback regressed');
+
 console.log('A1 audit: '+all.length+' lessons · '+errors.length+' errors · '+warnings.length+' warnings');
 for(const error of errors)console.error('ERROR '+error);
 for(const warning of warnings)console.warn('WARN '+warning);
