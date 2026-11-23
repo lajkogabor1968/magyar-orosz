@@ -3,7 +3,7 @@
 const cards=[
 {id:'article',level:'A1',lessons:[0,1,4],title:'Артикли: a/az и egy',wrong:'Ez telefon.',right:'Ez egy telefon.',why:'В русском языке нет артиклей. Здесь перед существительным нужен egy.'},
 {id:'vowels',level:'A1',lessons:[0,3,5],title:'Долгие гласные',wrong:'Ez viz.',right:'Ez víz.',why:'В словарной форме víz пишется с í; но в форме vizet гласная краткая.'},
-{id:'place',level:'A1',lessons:[3,7],title:'Где находится предмет?',wrong:'A kulcs az asztalban van.',right:'A kulcs az asztalon van.',why:'Если ключ лежит сверху, нужен -on (на поверхности). -ban/-ben указывает на местонахождение внутри.'},
+{id:'place',level:'A1',lessons:[3,7],title:'Где находится предмет?',wrong:'A kulcs az asztalban van.',right:'A kulcs az asztalon van.',context:'Переведите ситуацию правильно: «Ключ лежит НА столе». Исходная фраза грамматически возможна, но означает, что ключ находится ВНУТРИ стола.',why:'Если ключ лежит НА столе, нужен -on: az asztalon. Форма az asztalban означает «внутри стола» и не подходит к описанной ситуации.'},
 {id:'harmony',level:'A1',lessons:[3,7],title:'Гармония гласных',wrong:'A kertban vagyok.',right:'A kertben vagyok.',why:'После гласной переднего ряда в kert используется -ben.'},
 {id:'move',level:'A2',lessons:[0,1],title:'Где? Куда?',wrong:'Az iskolában megyek.',right:'Az iskolába megyek.',why:'Hová? (куда?) → iskolába. Hol? (где?) → iskolában.'},
 {id:'past',level:'A2',lessons:[0,2],title:'Прошедшее время',wrong:'Tegnap tanulok.',right:'Tegnap tanultam.',why:'Для события, произошедшего вчера, требуется прошедшее время: tanultam.'},
@@ -34,11 +34,12 @@ window.TanmuhelyRenderErrorCards=function(level,index){
   return (y.wrong-y.correct)-(x.wrong-x.correct);
  });
  const section=node('section',undefined,'lesson-error-cards');section.id='tanmuhelyErrorCards';
- section.append(node('h4','Найдите и исправьте ошибку'));
+ section.append(node('h4','Найдите и исправьте ошибку или неточность'));
  section.append(node('p','Напишите правильное предложение по-венгерски. При ошибке карточка будет предложена снова.'));
  for(const c of selected){
   const card=node('article',undefined,'error-card');
   card.append(node('h4',c.title));
+  if(c.context)card.append(node('p',c.context));
   const wrong=node('p',c.wrong);wrong.lang='hu';card.append(wrong);
   const label=node('label','Исправьте предложение:');const input=node('input');input.type='text';input.lang='hu';input.autocomplete='off';input.spellcheck=false;
   const id='error-answer-'+c.id;input.id=id;label.htmlFor=id;
