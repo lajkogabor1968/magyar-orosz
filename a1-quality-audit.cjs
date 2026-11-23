@@ -147,6 +147,11 @@ if(!source.includes("Что означает венгерская реплика
 // salespeople, teachers and guests also speak in A1 scenarios.
 if(!source.includes("level==='A1'?(i%2===0?'Собеседник A':'Собеседник B')"))
  errors.push('A1: dialogue speakers are still hardcoded as Anna and Péter');
+// Freeze the completed lesson's displayed percentage before the next lesson
+// rendering resets testCorrect to zero.
+if(!source.includes("const finishedPercent=Math.round(testCorrect/")||
+ !source.includes("note('Проверка слов завершена ('+finishedPercent+'%)"))
+ errors.push('A1: next lesson may incorrectly report 0% for the completed quiz');
 // An A1 retake must preserve the best achieved vocabulary score while
 // recording the latest score for review. Existing old result fields remain valid.
 if(!source.includes("current.bestScore=best.score")||
