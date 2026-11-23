@@ -118,6 +118,7 @@
     {
       title: 'Считаем от одного до десяти',
       words: ['egy', 'kettő', 'három', 'négy', 'öt', 'hat', 'hét', 'nyolc', 'kilenc', 'tíz', 'szám', 'alma', 'szék'],
+      examples: {szék: ['Ez egy szék.', 'Это стул.']},
       extra: [
         ['egy', 'один; одна; одно', 'Egy alma van itt.', 'Здесь одно яблоко.'],
         ['kettő', 'два (самостоятельная форма)', 'Egy, kettő, három!', 'Раз, два, три!'],

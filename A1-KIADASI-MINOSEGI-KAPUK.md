@@ -96,6 +96,19 @@ ellenőrzi. **A 13 leckére vonatkozó magas új-szószám figyelmeztetés
 egyelőre megmarad:** a két részre osztás a terhelést mérsékli, de nem
 igazolja, hogy ennyi új szó egy leckében minden kezdőnek megfelelő.
 
+**A1 szókártyák jelentésének célzott felülvizsgálata – 2026. november 23.:**
+az aktuális kártyarenderelővel előállított **468 A1-es kártyát** a
+`verify-a1-card-meaning.mjs` ellenőrzi üres jelentésre, leckén belüli
+azonos orosz írásfeladatra, néhány túl korai múlt idejű alakra és
+felszólításra. Az „ülj le erre a székre” mondat helyett a 11., 19. és 20.
+leckében a `szék` kártyája egyszerű, már tanult bemutató mondatot kapott.
+A 28. leckében a `paradicsomot` önálló kártyája, nyelvtani táblája és
+vizuális összefoglalója immár **egyes számú** alakot jelöl az orosz
+magyarázatban; a „килограмм помидоров” orosz többes fordítás
+csak a teljes mennyiséget jelölő szerkezethez tartozik. Ez a teszt az
+azonosítható regressziókat fogja meg, és **nem jelent teljes orosz
+anyanyelvi stilisztikai és szemantikai lektorálást**.
+
 **Szakmai minták, nem hivatalos átvett szabályok:**
 
 - A [Duolingo saját leírása a kurzuskészítésről](https://blog.duolingo.com/how-duolingo-experts-work-with-ai/): tantervtervezés, tananyag, gyakorlatok, személyre szabás; a tanuló anyanyelvéhez igazítás.

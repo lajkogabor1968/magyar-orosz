@@ -122,6 +122,7 @@
     {
       title: 'На столе или на стуле? -on/-en/-ön',
       words: ['asztal', 'szék', 'lámpa', 'tábla', 'könyv', 'táska', 'ceruza', 'telefon', 'kulcs', 'fal', 'van'],
+      examples: {szék: ['Ez egy szék.', 'Это стул.']},
       extra: [
         ['polc', 'полка', 'A polc nagy.', 'Полка большая.'],
         ['föld', 'земля, поверхность земли', 'A föld vizes.', 'Земля мокрая.'],
@@ -181,6 +182,7 @@
     {
       title: 'В классе: рядом, перед, за, под',
       words: ['iskola', 'tanár', 'diák', 'tábla', 'asztal', 'szék', 'ajtó', 'ablak', 'könyv', 'táska', 'mellett', 'előtt', 'mögött'],
+      examples: {szék: ['Ez egy szék.', 'Это стул.']},
       extra: [
         ['alatt', 'под', 'A táska az asztal alatt van.', 'Сумка находится под столом.'],
         ['tanterem', 'учебный класс; классная комната', 'Ez egy tanterem.', 'Это учебный класс.'],

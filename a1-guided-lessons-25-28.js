@@ -205,7 +205,7 @@
       title: 'На рынке: цена, количество и вежливый выбор',
       words: ['Mennyibe kerül?', 'paradicsomot', 'narancsot', 'összesen', 'piac', 'bolt', 'paradicsom', 'narancs', 'alma', 'olcsó', 'drága', 'pénz', 'fizet', 'jó'],
       extra: [
-        ['paradicsomot', 'помидоры (что? винительный падеж)', 'Egy kiló paradicsomot kérek.', 'Мне, пожалуйста, килограмм помидоров.'],
+        ['paradicsomot', 'помидор (винительный падеж, ед. число)', 'Egy kiló paradicsomot kérek.', 'Мне, пожалуйста, килограмм помидоров.'],
         ['narancsot', 'апельсин (что? винительный падеж)', 'Két narancsot kérek.', 'Мне, пожалуйста, два апельсина.'],
         ['egy kiló paradicsomot', 'килограмм помидоров (в заказе)', 'Egy kiló paradicsomot kérek.', 'Мне, пожалуйста, килограмм помидоров.'],
         ['két narancsot', 'два апельсина (в заказе)', 'Két narancsot kérek.', 'Мне, пожалуйста, два апельсина.'],
@@ -259,7 +259,7 @@
         ['Most fizetek.', 'Сейчас я плачу.', 'Fizet → fizetek: первое лицо, как в знакомом tanulok.']
       ],
       grammarTable: [
-        ['paradicsom → paradicsomot', 'помидоры (что?)', 'соединительная o + -t'],
+        ['paradicsom → paradicsomot', 'помидор → помидор (что?)', 'соединительная o + -t; в венгерском единственное число'],
         ['narancs → narancsot', 'апельсин (что?)', 'соединительная o + -t'],
         ['két narancsot', 'два апельсина', 'после числа единственное число'],
         ['egy kiló paradicsomot', 'килограмм помидоров', 'мера + объект с -t'],
@@ -321,7 +321,7 @@
     {icon:'☕',title:'Вежливо в кафе',subtitle:'Szeretnék — «я хотел(а) бы»',cards:[['☕','szeretnék','я хотел(а) бы'],['🥤','egy pohár vizet','стакан воды'],['🍬','cukor nélkül','без сахара']]},
     {icon:'⚖️',title:'Сколько продуктов?',subtitle:'Hány? и Mennyi?',cards:[['🍎','három almát','три яблока'],['🥛','egy liter tejet','литр молока'],['🧀','fél kiló sajtot','полкило сыра']]},
     {icon:'🍽️',title:'Обед в ресторане',subtitle:'Меню, блюдо и счёт',cards:[['📖','étlap','список блюд'],['🥣','egy levest','суп (заказ)'],['🧾','a számlát','счёт (что?)']]},
-    {icon:'🛒',title:'Покупка на рынке',subtitle:'Цена, количество и вежливость',cards:[['🍅','paradicsomot','помидоры (что?)'],['🍊','két narancsot','два апельсина'],['🧾','összesen','всего']]}
+    {icon:'🛒',title:'Покупка на рынке',subtitle:'Цена, количество и вежливость',cards:[['🍅','paradicsomot','помидор (ед. число, дополнение)'],['🍊','két narancsot','два апельсина'],['🧾','összesen','всего']]}
   ];
 
   window.TanmuhelyA1Units25to28={lessons,dialogueTranslations,checks,visuals};
