@@ -5,7 +5,7 @@
     {
       title: 'Комнаты дома: где находится?',
       words: ['konyha', 'nappali', 'fürdőszoba', 'hálószoba', 'lakás', 'szoba', 'asztal', 'szekrény', 'lámpa', 'ágy', 'ablak'],
-      supplemental: [["nappali","гостиная","A nappaliban van egy lámpа.","В гостиной есть лампа."]],
+      supplemental: [["nappali","гостиная","A nappaliban van egy lámpa.","В гостиной есть лампа."]],
       extra: [
         ['konyhában', 'на кухне', 'A konyhában van egy asztal.', 'На кухне есть стол.'],
         ['nappaliban', 'в гостиной', 'A nappaliban van egy lámpa.', 'В гостиной есть лампа.'],
