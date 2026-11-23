@@ -49,6 +49,25 @@
     return suggestions;
   }
 
+  // These are narrow A1 writing prompts, not a general grammar checker.
+  // Only unequivocal forms explicitly contrasted in lessons 15–16 are
+  // mentioned, and the caller must never turn a suggestion into a score.
+  function suggestBeginnerGrammar(draft, lessonIndex) {
+    const text = normalize(draft);
+    if (lessonIndex === 14) {
+      const subject = '(?:a tanár|az orvos|a ház|a szoba|péter|éva)';
+      const adjective = '(?:kedves|fiatal|magas|alacsony|boldog|szép|jó|rossz|kicsi|nagy|új|régi)';
+      const unnecessaryVan = new RegExp(`(?:^|[.!?]\\s*)${subject}\\s+(?:nem\\s+)?(?:nagyon\\s+)?${adjective}\\s+van(?=\\s*(?:[.!?]|$))`, 'u');
+      if (unnecessaryVan.test(text)) return [
+        'При описании качества в третьем лице настоящего времени не добавляйте van: A tanár kedves. / A ház nagy. Сравните: Én kedves vagyok.'
+      ];
+    }
+    if (lessonIndex === 15 && /\bnem\s+van\b/u.test(text)) return [
+      'Когда говорим, что чего-то нет, используйте nincs: Nincs autóm. Форма Nem van autóm в этом упражнении неверна.'
+    ];
+    return [];
+  }
+
   function checkWord(received, expected) {
     const a = normalize(received), b = normalize(expected);
     if (!a) return {kind: 'empty', hint: 'Введите слово.'};
@@ -137,5 +156,5 @@
     return true;
   }
 
-  window.TanmuhelyWritingFeedback = Object.freeze({checkWord, checkSentence, suggestAccents, insertHungarianLetter});
+  window.TanmuhelyWritingFeedback = Object.freeze({checkWord, checkSentence, suggestAccents, suggestBeginnerGrammar, insertHungarianLetter});
 })();
