@@ -56,7 +56,11 @@ function restoreCheckpoint(){
   }
  }
  checkBatch=-1;checkStep=0;checkRendered='';
- grammarReviewed=!!c.grammar;dialoguePractised=!!c.dialogue;dialogueUnderstood=!!c.dialogueUnderstood;
+ grammarReviewed=!!c.grammar;dialoguePractised=!!c.dialogue;
+ // A fully completed lesson from before this new check must remain completed.
+ // Keep the new objective check for active, incomplete A1 lessons.
+ const legacyFinished=level==='A1'&&read(KEY).completed?.[lessonKey()]!==undefined;
+ dialogueUnderstood=!!c.dialogueUnderstood||(legacyFinished&&!!c.dialogue);
 }
 function randomOrder(items){const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 
@@ -142,7 +146,7 @@ function initialTestOrder(){
 function canAdvance(){
 if(step===0)return level==='A1'?requiredCardsSeen():flippedWords.size>=requiredCardCount();
 if(step===1)return grammarReviewed;
-if(step===2)return dialoguePractised&&(level!=='A1'||dialogueUnderstood);
+if(step===2)return dialoguePractised&&(level!=='A1'||(Array.isArray(lesson().dialogue)&&lesson().dialogue.length<4)||dialogueUnderstood);
 if(step===3)return correctWriting.size>=Math.min(3,rows().length) && (level!=='A1'||lessonIndex!==0||[...correctWriting].filter(i=>/[áéíóöőúüű]/.test(rows()[i]?.hu||'')).length>=2);
 if(step===4)return compositionChecked;
 if(step===5)return testCompleted;
@@ -769,7 +773,9 @@ function renderDialogueUnderstanding(){
  const lines=lesson().dialogue;
  if(!Array.isArray(lines)||lines.length<4){
   container.hidden=true;
-  dialogueUnderstood=true;
+  // A short or missing dialogue cannot be assessed with this sequence question.
+  // Do not record a successful comprehension answer that was never given.
+  $('integratedDialogueUnderstandingFeedback').textContent='Для этого короткого диалога отдельная проверка последовательности недоступна.';
   return;
  }
  $('integratedDialogueUnderstandingPrompt').textContent='Проверка понимания диалога: какая реплика идёт сразу после «'+lines[0]+'»?';
