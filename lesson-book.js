@@ -771,7 +771,7 @@ function completedScore(index){return read(KEY).completed?.[level+':'+index]}
 function reviewAdvice(targetIndex){
  if(targetIndex<=0)return '';
  const prev=completedScore(targetIndex-1);
- if(!prev)return 'Предыдущий урок ещё не завершён. Для уверенного продвижения рекомендуем сначала пройти его и повторить новые слова.';
+ if(!prev)return 'Предыдущий урок ещё не завершён. При желании вы можете повторить его слова, но этот урок доступен прямо сейчас.';
  if(!Number.isFinite(prev.max)||prev.max<=0)return 'Для предыдущего урока нет проверенного результата. Перед продолжением рекомендуем повторить материал.';
  const percent=Math.round(prev.score/prev.max*100);
  if(percent>=90)return '';
@@ -779,22 +779,30 @@ function reviewAdvice(targetIndex){
  return 'Результат предыдущего урока — '+percent+'%. Рекомендуем повторить материал'+(errors.length?', особенно: '+errors.join(', '):'')+'. Это рекомендация, а не ограничение.';
 }
 function confirmLessonChange(targetIndex){
+ // A learner may enter ANY lesson directly. Prerequisite review is advisory only.
  if(!Number.isInteger(targetIndex)||targetIndex<0||targetIndex>=courses[level].length)return;
- const message=reviewAdvice(targetIndex);
- if(!message){lessonIndex=targetIndex;step=0;save();render();return}
+ if(targetIndex===lessonIndex){$('integratedAdvanceAdvice').hidden=true;return;}
+ const advice=reviewAdvice(targetIndex);
+ lessonIndex=targetIndex;
+ step=0;
+ save();
+ render();
  const box=$('integratedAdvanceAdvice');
  box.replaceChildren();
- box.append(el('strong','Рекомендация перед продолжением'),el('p',message));
- const actions=el('div',undefined,'lesson-actions');
- const revise=el('button','Повторить предыдущий урок');
- const proceed=el('button','Продолжить обучение');
- revise.type='button';proceed.type='button';
- revise.onclick=()=>{lessonIndex=targetIndex-1;step=0;save();render();box.hidden=true};
- proceed.onclick=()=>{lessonIndex=targetIndex;step=0;save();render();box.hidden=true};
- actions.append(revise,proceed);box.append(actions);box.hidden=false;
- box.scrollIntoView({block:'nearest'});
+ if(advice){
+  box.append(el('strong','Необязательное повторение'),el('p',advice));
+  const dismiss=el('button','Продолжить выбранный урок');
+  dismiss.type='button';
+  dismiss.onclick=()=>{box.hidden=true};
+  box.append(dismiss);
+  box.hidden=false;
+ }else box.hidden=true;
+ note('Урок '+(lessonIndex+1)+' открыт. Вы можете начать с него без прохождения предыдущих уроков.');
 }
-$('integratedLessonSelect').addEventListener('change',e=>{const target=Number(e.target.value);e.target.value=String(lessonIndex);confirmLessonChange(target)});
+$('integratedLessonSelect').addEventListener('change',e=>{
+ const target=Number(e.target.value);
+ confirmLessonChange(target);
+});
 $('integratedFlashcardOpen').onclick=()=>{cardIndex=0;card();$('integratedFlashcard').hidden=false;note('Повторите карточки. Уже открытые переводы сохраняются в прогрессе урока.')};
 $('integratedCardFlip').onclick=()=>{const node=$('integratedCardRussian');node.hidden=!node.hidden;if(!node.hidden){flippedWords.add(cardIndex);saveCheckpoint();if(step===0&&canAdvance())stepButton.disabled=false;const count=level==='A1'?[...flippedWords].filter(i=>i<requiredCardCount()).length:flippedWords.size;note(level==='A1'&&canAdvance()?'✓ Два блока изучены и проверены. Можно перейти к правилу.':'Открыто переводов: '+count+' / '+requiredCardCount()+(level==='A1'?' · после пяти слов ответьте на два коротких вопроса.':'.'));updateCardProgress()} $('integratedCardFlip').textContent=node.hidden?'Показать перевод':'Скрыть перевод'};
 function nextCardIndex(){
