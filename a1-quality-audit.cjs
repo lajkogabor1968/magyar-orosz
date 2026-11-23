@@ -125,6 +125,10 @@ else for(const [key,unit] of Object.entries(extraData.units)){
   warnings.push('Supplement '+key+': missing pre-reading grammar notes');
 }
 
+// A previously solved grammar question must be rendered only after its checkpoint
+// is restored. Otherwise a completed lesson can show actionable answer buttons.
+if(!source.includes('restoreCheckpoint();grammarQuestion();renderDialogueUnderstanding();'))
+ errors.push('A1: grammar state rendered before restoring saved lesson progress');
 // Regression: accept short, well-formed beginner questions without treating
 // a single noun with punctuation as an independently written sentence.
 const compositionCode=source.match(/const incompleteSentences=level==='A1'\?sentences\.filter\(t=>\{[\s\S]*?\n \}\):\[\];/)?.[0];
