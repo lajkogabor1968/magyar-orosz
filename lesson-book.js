@@ -714,7 +714,11 @@ function checkComposition(){
  // in dialogue practice, not in the requested multi-sentence composition.
  const incompleteSentences=level==='A1'?sentences.filter(t=>{
   const words=t.replace(/[.!?]+$/g,'').trim().split(/\s+/).filter(Boolean);
-  return words.length<2||!words.some(word=>/[a-záéíóöőúüű]{3,}/i.test(word));
+  // Short complete Hungarian questions such as "Ki ő?" and "Mi ez?" are valid.
+  // Reject isolated words and one-letter gibberish, not correct short pronouns.
+  const alphabetic=words.filter(word=>/^[a-záéíóöőúüű]+$/i.test(word));
+  const letterCount=alphabetic.join('').length;
+  return alphabetic.length<2||letterCount<3;
  }):[];
  const beginner=level==='A1'&&lessonIndex===0;
  let unsuitable=[];
@@ -734,7 +738,7 @@ function checkComposition(){
  if(duplicates)messages.push('Есть повторяющиеся предложения. Напишите разные примеры.');
  if(missingFinalPunctuation)messages.push('Поставьте знак конца предложения.');
  if(nonHungarian.length)messages.push('Напишите предложения по-венгерски латинскими буквами.');
- if(incompleteSentences.length)messages.push('В мини-сочинении нужны полные короткие предложения (как минимум два слова, одно из них не короче трёх букв). Отдельное слово с точкой не засчитывается как предложение.');
+ if(incompleteSentences.length)messages.push('В мини-сочинении нужны предложения как минимум из двух слов. Короткие вопросы вроде «Ki ő?» подходят, отдельное слово с точкой не засчитывается.');
  if(unsuitable.length)messages.push('В этом первом задании используйте образец «Ez egy …» и слово из списка урока. Например: «Ez egy telefon.»');
  if(requiresQuestions&&(questionCount<2||answerCount<2))messages.push('В уроке о вопросах напишите не менее двух вопросов со знаком «?», а также два ответа.');
 
