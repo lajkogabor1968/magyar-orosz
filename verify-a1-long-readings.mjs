@@ -25,9 +25,16 @@ runInNewContext(captured,{document,window,SpeechSynthesisUtterance:Utterance});
 
 const units=window.__qaUnits,indices=Object.keys(units).map(Number).sort((a,b)=>a-b);
 assert.deepEqual(indices,[1,2,3,4,5,6,7,8,9,10,11]);
-for(const index of [1,2,3]){
+for(const index of indices){
  assert.equal(window.__qaGuidance[index].length,3,`A1 lesson ${index+1} needs three concise Russian preparation notes`);
  for(const [hu,ru,why] of window.__qaGuidance[index])assert.ok(hu.trim()&&ru.trim()&&why.trim());
+ window.TanmuhelyRenderA1LongReadings('A1',index);
+ const explanation=placed.querySelectorAll('li');
+ assert.equal(explanation.length,3,`A1 lesson ${index+1}: preparation must render before text`);
+ const prep=placed.children.find(child=>child.className==='a1-reading-preparation');
+ assert.ok(prep,'preparation has a dedicated section for visual emphasis');
+ const firstFullAudio=placed.children.findIndex(child=>child.className==='a1-reading-play-all');
+ assert.ok(placed.children.indexOf(prep)<firstFullAudio,'Russian preview comes before audio and first Hungarian sentence');
 }
 for(const index of indices){
  const unit=units[index];
@@ -93,11 +100,11 @@ assert.doesNotMatch(answerFeedback.textContent,/\.\./);
 window.TanmuhelyRenderA1LongReadings('A2',1);
 assert.equal(placed,null,'A2 never receives A1 supplementary content');
 
-assert.match(html,/a1-tematikus-szovegek\.js\?v=20261123-a1-guidance1/);
+assert.match(html,/a1-tematikus-szovegek\.js\?v=20261123-a1-guidance2/);
 assert.match(css,/\.a1-long-reading \.a1-reading-play-line/);
 assert.match(css,/\.a1-reading-preparation/);
 assert.match(css,/@media \(max-width: 700px\)/);
 console.log('PASS: eleven A1 topics, 165 paired sentences, 88 dialogue turns and 22 valid comprehension questions.');
-console.log('PASS: early A1 readings explain nine advanced forms in Russian; no premature past tense in the 11 topic texts.');
+console.log('PASS: all eleven A1 supplementary readings explain 33 potentially unfamiliar forms in Russian before the text; no premature past tense.');
 console.log('PASS: bilingual translations stay hidden; 253 selectable Hungarian audio items + 22 full-reading players use the existing voice engine.');
 console.log('PASS: failed voice playback is never reported as success; comprehension feedback names the correct answer; A2 remains untouched.');

@@ -70,6 +70,18 @@ egyszerű felismeréséhez. A `verify-a1-long-readings.mjs` ezek jelenlétét
 teljes morfológiai szintezés:** minden egyes olvasmány szókincs- és
 nyelvtani előfeltételeit tovább kell vizsgálni.
 
+**A1 olvasmányi előkészítés, második kör – 2026. november 23.:** a maradék
+nyolc kiegészítő témaszöveg (5–12. lecke) is kapott három-három rövid
+orosz nyelvű magyarázatot. Mind a **11 olvasmány előtt összesen 33**
+előzetesen kiemelt szerkezet segíti a megértést; különösen az óra
+kifejezését (`fél nyolckor`), a mozgás és a hely elkülönítését,
+a birtokviszonyokat, a városnevek esetragjait, a számnevek utáni
+egyes számot és a nemzetiség–nyelv különbségét. Egy korábbi, idegenszerű
+orosz mondatfordítást természetesebb alakra cseréltünk. Az automatizált
+teszt már minden olvasmányban ellenőrzi az előkészítés megjelenését
+**még a hang és a szöveg előtt**. Ez olvasási segítség, nem helyettesíti
+a részletes, fokozatos nyelvtani tanítást vagy az anyanyelvi lektorálást.
+
 **Szakmai minták, nem hivatalos átvett szabályok:**
 
 - A [Duolingo saját leírása a kurzuskészítésről](https://blog.duolingo.com/how-duolingo-experts-work-with-ai/): tantervtervezés, tananyag, gyakorlatok, személyre szabás; a tanuló anyanyelvéhez igazítás.
