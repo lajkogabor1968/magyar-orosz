@@ -64,7 +64,12 @@
     if (root.classList.contains('study-active') || root.classList.contains('study-daily')) mode('study-active');
   });
   const start = document.getElementById('landingStart');
-  start?.addEventListener('click', () => mode('study-menu'));
+  // Landing's A1 button opens the guided lesson directly.
+  // Do not overwrite that action with a later menu-mode click listener.
+  start?.addEventListener('click', () => {
+    const level=document.querySelector('#landingScreen input[name="landingLevel"]:checked')?.value||'A1';
+    if(level!=='A1')mode('study-menu');
+  });
   document.querySelector('.landing-back')?.addEventListener('click', () => mode('study-menu'));
   refreshQuickReview();
   mode('study-menu');
