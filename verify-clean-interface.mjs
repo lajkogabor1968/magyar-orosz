@@ -17,6 +17,7 @@ for (const id of [
 
 assert.match(html, /clean-interface\.css\?v=20261123-a1-word-preview1/);
 assert.match(html, /lesson-book\.js\?v=20261123-a1-daily-core8-v1/);
+assert.match(html, /a1-guided-lessons-13-16\.js\?v=20261123-a1-relatives-core8-v1/);
 assert.match(html, /<ol id="integratedStageTrack"[^>]*>(?:<li>[^<]+<\/li>){6}<\/ol>/);
 assert.ok(html.indexOf('id="integratedStepNext"') > html.indexOf('id="lessonExercise"'), 'step action is after current activity');
 assert.ok(html.indexOf('id="integratedStepNext"') < html.indexOf('class="lesson-end"'), 'step action precedes final lesson controls');

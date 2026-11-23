@@ -58,7 +58,7 @@ const knownWords=new Set(context.window.MAGYAR_OROSZ_DATA.A1.map(row=>row[0].toL
 const taught=new Set();
 const allTaught=new Set();
 const titles=new Set();
-let totalNew=0,overloaded=0,familyRequiredNew=0,familyOptionalNew=0,dailyRequiredNew=0,dailyOptionalNew=0;
+let totalNew=0,overloaded=0,familyRequiredNew=0,familyOptionalNew=0,dailyRequiredNew=0,dailyOptionalNew=0,relativesRequiredNew=0,relativesOptionalNew=0;
 
 if(courses.A1.length!==30)fail('A1','LESSON_COUNT',`A várt 30 helyett ${courses.A1.length} lecke szerepel.`);
 if(courses.A2.length!==3)fail('A2','FROZEN_A2','Az A2-es leckék száma módosult.');
@@ -98,6 +98,13 @@ for(const [index,lesson] of courses.A1.entries()){
   const mandatoryText=[...lesson.grammar,...lesson.dialogue,...lesson.reading.lines.map(line=>line[0]),...lesson.composition].join(' ').toLocaleLowerCase('hu-HU');
   if(coreCount!==8||lesson.words[8]!=='sétál'||lesson.words[9]!=='mindennap'||/sétál|mindennap/.test(mandatoryText))
    fail(id,'DAILY_CORE','A napirendlecke nyolc kötelező szava és két opcionális szava nem illeszkedik a tanított mintákhoz.');
+ }
+ if(index===12){
+  relativesRequiredNew=lesson.words.slice(0,coreCount).filter(word=>!taught.has(word.toLocaleLowerCase('hu-HU'))).length;
+  relativesOptionalNew=newWords.length-relativesRequiredNew;
+  const mandatoryText=[...lesson.grammar,...lesson.dialogue,...lesson.reading.lines.map(line=>line[0]),...lesson.composition].join(' ').toLocaleLowerCase('hu-HU');
+  if(coreCount!==8||lesson.words[8]!=='férj'||lesson.words[9]!=='feleség'||lesson.words[10]!=='család'||/férj|feleség/.test(mandatoryText))
+   fail(id,'RELATIVES_CORE','A rokonságlecke opcionális szavai vagy a kötelező minták megváltoztak.');
  }
  totalNew+=newWords.length;
  if(newWords.length>8){
@@ -152,6 +159,7 @@ console.log(`A1 KIADÁS ELŐTTI AUDIT · ${courses.A1.length} lecke · ${totalNe
 console.log(`KRITIKUS: ${blockers.length} · FELÜLVIZSGÁLANDÓ: ${reviews.length} · TÚLTERHELT SZÓKINCSELSŐSÉG: ${overloaded} lecke`);
 console.log(`CSALÁDLECKE PILOT: ${familyRequiredNew} új kötelező szó · ${familyOptionalNew} új, választható szó (eredeti kártyaindexekkel; a 13-as figyelmeztetés továbbra is minden új szót számol).`);
 console.log(`NAPIRANDLECKE PILOT: ${dailyRequiredNew} új kötelező szó · ${dailyOptionalNew} új, választható szó (eredeti kártyaindexekkel).`);
+console.log(`ROKONSÁGLECKE PILOT: ${relativesRequiredNew} új kötelező szó · ${relativesOptionalNew} új, választható szó (eredeti kártyaindexekkel; a család szó ismétlésként megmarad).`);
 for(const issue of blockers)console.log(`HIBA | ${issue.lesson} | ${issue.code} | ${issue.message}`);
 for(const issue of reviews)console.log(`FIGYELMEZTETÉS | ${issue.lesson} | ${issue.code} | ${issue.message}`);
 console.log('Megjegyzés: a strukturális PASS nem jelent hitelesített fordítást vagy igazolt A1-es nyelvtudást.');

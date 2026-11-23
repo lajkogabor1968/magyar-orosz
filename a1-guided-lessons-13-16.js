@@ -6,6 +6,10 @@
     {
       title: 'Родные: кто кому приходится',
       words: ['öcs', 'húg', 'nővér', 'nagymama', 'nagyapa', 'szülő', 'nagyszülő', 'testvér', 'férj', 'feleség', 'család'],
+      // The core teaches basic family members and possession first. The
+      // spouse terms at indices 8–9 remain optional, and the already taught
+      // család stays at its legacy index 10 for revision.
+      coreCount: 8,
       extra: [
         ['húgom', 'моя младшая сестра', 'Éva a húgom.', 'Ева — моя младшая сестра.'],
         ['öcsém', 'мой младший брат', 'Péter az öcsém.', 'Петер — мой младший брат.'],
