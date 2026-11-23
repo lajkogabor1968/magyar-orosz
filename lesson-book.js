@@ -121,14 +121,32 @@ function highlightAnswerButtons(box,selected,correctText){
 function grammarQuestion(){
  const c=checks[lessonKey()],box=$('integratedGrammarOptions');
  box.replaceChildren();$('integratedGrammarQuestion').textContent=c.q;
- $('integratedGrammarFeedback').textContent='Выберите ответ. Вы сразу увидите объяснение.';
- randomOrder(c.a.map((answer,i)=>({answer,i}))).forEach(({answer,i})=>{const btn=el('button',answer,'integrated-answer');btn.type='button';btn.onclick=()=>{
-  const good=i===c.ok;
-  highlightAnswerButtons(box,btn,c.a[c.ok]);
-  const answer=c.a[c.ok],end=/[.!?…]$/.test(answer)?'':'.';
-  $('integratedGrammarFeedback').textContent=(good?'✓ Верно. ':'✗ Правильный ответ: '+answer+end+' ')+c.why;
-  if(good){grammarReviewed=true;saveCheckpoint();stepButton.disabled=false;box.querySelectorAll('button').forEach(button=>button.disabled=true);note('✓ Пример понятен. Продолжайте обучение.')}
- };box.append(btn)})
+ const feedback=$('integratedGrammarFeedback');
+ feedback.textContent=grammarReviewed?'✓ Этот вопрос уже решён правильно.':'Выберите ответ. После ошибки перечитайте правило и попробуйте ещё раз.';
+ let wrongAttempts=0;
+ randomOrder(c.a.map((answer,i)=>({answer,i}))).forEach(({answer,i})=>{
+  const btn=el('button',answer,'integrated-answer');btn.type='button';
+  btn.disabled=grammarReviewed;
+  btn.onclick=()=>{
+   if(grammarReviewed)return;
+   const good=i===c.ok,answerText=c.a[c.ok],ending=/[.!?…]$/.test(answerText)?'':'.';
+   if(good){
+    grammarReviewed=true;saveCheckpoint();if(step===1)stepButton.disabled=!canAdvance();
+    highlightAnswerButtons(box,btn,answerText);
+    feedback.textContent='✓ Верно. '+c.why;
+    box.querySelectorAll('button').forEach(button=>button.disabled=true);
+    note('✓ Правильный ответ подтверждён. Продолжайте обучение.');
+   }else{
+    wrongAttempts++;
+    btn.disabled=true;
+    btn.classList.add('wrong');
+    btn.setAttribute('aria-pressed','true');
+    feedback.textContent=wrongAttempts===1
+     ?'✗ Пока неверно. Ещё раз прочитайте правило и выберите другой ответ.'
+     :'✗ Правильный ответ: '+answerText+ending+' '+c.why+' Для закрепления перечитайте правило и нажмите правильный вариант.';
+   }
+  };box.append(btn);
+ })
 }
 
 function note(message){let node=$('integratedStepStatus');if(!node){node=el('p','','lesson-step-status');node.id='integratedStepStatus';node.setAttribute('role','status');node.setAttribute('aria-live','polite');$('integratedStepNext').after(node)}node.textContent=message}
