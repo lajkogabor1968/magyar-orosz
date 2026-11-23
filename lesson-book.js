@@ -575,7 +575,7 @@ function renderCardCheckpoint(){
  let panel=$('a1CardCheckpoint');
  if(!panel){
   panel=el('section');panel.id='a1CardCheckpoint';panel.className='lesson-card-checkpoint';panel.hidden=true;
-  panel.append(el('h4','Проверьте себя перед следующим блоком'));
+  panel.append(el('h4','Проверьте себя: пять слов'));
   panel.append(el('p','Два коротких вопроса: вспомните венгерское слово по его русскому значению.'));
   const prompt=el('strong');prompt.id='a1CardCheckPrompt';prompt.lang='ru';panel.append(prompt);
   const choices=el('div');choices.id='a1CardCheckOptions';choices.className='lesson-card-check-options';panel.append(choices);
