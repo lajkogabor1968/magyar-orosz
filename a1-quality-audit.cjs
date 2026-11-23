@@ -125,6 +125,10 @@ else for(const [key,unit] of Object.entries(extraData.units)){
   warnings.push('Supplement '+key+': missing pre-reading grammar notes');
 }
 
+// Dialogue turns have roles, but the names Anna/Péter are not universal:
+// salespeople, teachers and guests also speak in A1 scenarios.
+if(!source.includes("level==='A1'?(i%2===0?'Собеседник A':'Собеседник B')"))
+ errors.push('A1: dialogue speakers are still hardcoded as Anna and Péter');
 // A previously solved grammar question must be rendered only after its checkpoint
 // is restored. Otherwise a completed lesson can show actionable answer buttons.
 if(!source.includes('restoreCheckpoint();grammarQuestion();renderDialogueUnderstanding();'))
