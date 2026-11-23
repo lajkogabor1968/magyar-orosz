@@ -473,16 +473,34 @@ function renderReading(){
  };
  $('lessonReadingTranslations').textContent='Показать русский перевод';
  $('lessonReadingQuestion').textContent=reading.q;
- $('lessonReadingFeedback').textContent='Выберите ответ. Проверка проводится сразу.';
- // A kérdés válaszai minden megjelenítéskor más sorrendbe kerülhetnek.
- // Az eredeti válaszazonosító megmarad, ezért a pontozás nem változik.
+ $('lessonReadingFeedback').textContent='Выберите ответ. После первой ошибки перечитайте текст и попробуйте ещё раз.';
+ // Reading comprehension is formative: no disclosure of the answer on the first miss.
+ // Retain original correct indices when displaying randomized answer positions.
+ let readingMistakes=0,readingSolved=false;
  randomOrder(reading.options.map((option,i)=>({option,i}))).forEach(({option,i})=>{
   const button=el('button',option,'integrated-answer');button.type='button';
   button.onclick=()=>{
+    if(readingSolved)return;
     const correct=i===reading.answer;
     const answer=reading.options[reading.answer];
-    highlightAnswerButtons(answers,button,answer);
-    $('lessonReadingFeedback').textContent=(correct?'✓ Верно. ':'✗ Пока неверно. ')+'Правильный ответ: '+answer+(/[.!?]$/.test(answer)?'':'.')+' Вернитесь к тексту, если хотите перечитать его.';
+    if(correct){
+      readingSolved=true;
+      highlightAnswerButtons(answers,button,answer);
+      answers.querySelectorAll('button').forEach(b=>b.disabled=true);
+      $('lessonReadingFeedback').textContent='✓ Верно! Найден правильный ответ.';
+    }else{
+      readingMistakes++;
+      button.classList.add('wrong');
+      button.setAttribute('aria-pressed','true');
+      button.disabled=true;
+      if(readingMistakes===1){
+       $('lessonReadingFeedback').textContent='✗ Пока неверно. Найдите ответ в тексте и попробуйте ещё раз.';
+      }else{
+       readingSolved=true;
+       answers.querySelectorAll('button').forEach(b=>{b.disabled=true;b.classList.toggle('right',b.textContent===answer)});
+       $('lessonReadingFeedback').textContent='Правильный ответ: '+answer+(/[.!?]$/.test(answer)?'':'.')+' Перечитайте предложение, которое подтверждает ответ.';
+      }
+    }
   };
   answers.append(button);
  });
