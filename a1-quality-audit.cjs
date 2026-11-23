@@ -21,7 +21,7 @@ const additions = [
 ];
 
 /* Validate the first eight original lessons as well as appended units. */
-const originalTranslationsMatch=source.match(/const dialogueTranslations=(\{[^\n]+\});\s*const /);
+const originalTranslationsMatch=source.match(/const dialogueTranslations=(\{[^\n]+\});\s*\/\/ Editorial A1 starter correction/);
 if (!originalTranslationsMatch) throw Error('Original dialogue translations not located.');
 const originalTranslations=JSON.parse(originalTranslationsMatch[1]);
 const originalChecksMatch=source.match(/const checks=(\{[\s\S]*?\});\s*\/\/ The continuation/);
