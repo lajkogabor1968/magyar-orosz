@@ -924,7 +924,7 @@ function renderDialogueUnderstanding(){
   };choices.append(button);
  });
 }
-function render(){$('integratedAdvanceAdvice').hidden=true;note('');const l=lesson();reviewPreviousErrors();
+function render(){window.TanuloVoiceCompareReset?.();$('integratedAdvanceAdvice').hidden=true;note('');const l=lesson();reviewPreviousErrors();
 const prerequisite=$('lessonPrerequisite');
 if(prerequisite){
  const bridges={
