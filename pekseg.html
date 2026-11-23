@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>В пекарне · Венгерский A1</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f6f8f4;color:#203e32;font:1.08rem/1.55 system-ui,sans-serif}
+main{max-width:38rem;margin:auto;padding:1.25rem}a{color:#176447}article{background:white;border:1px solid #d9e5dd;border-radius:20px;padding:clamp(1rem,5vw,2.3rem);margin:1rem 0}h1{line-height:1.15;margin:.35rem 0 1rem;font-size:2rem}small{color:#506a59}blockquote{margin:1rem 0;padding:.5rem 1rem;border-left:4px solid #439568}button,input{font:inherit}button{background:#176447;color:white;border:0;border-radius:12px;padding:.7rem 1rem;cursor:pointer;margin:.4rem .25rem .4rem 0}button.secondary{background:#eaf3ed;color:#24573c}input{display:block;width:100%;padding:.7rem;border-radius:10px;border:1px solid #859b8c;margin:.4rem 0}summary{cursor:pointer;padding:.55rem 0;color:#24573c}audio{width:100%}:focus-visible{outline:3px solid #df9a21;outline-offset:3px}p:empty{margin:0}[hidden]{display:none!important}
+</style></head><body><main>
+<a href="index.html">← В мастерскую</a>
+<article><small>A1 · Покупки</small>
+<section id="intro"><h1>В пекарне</h1><p>Закажите выпечку по-венгерски. В конце вы сможете сделать заказ и в кафе.</p>
+<blockquote lang="hu">– Jó napot! Mit adhatok?<br>– Egy kiflit kérek.<br>– Tessék!<br>– Köszönöm!</blockquote>
+<details><summary>Перевод диалога</summary><p>– Добрый день! Что вам дать?<br>– Один рогалик, пожалуйста.<br>– Вот, пожалуйста!<br>– Спасибо!</p></details>
+<p><b lang="hu">kifli → kiflit</b> · После <i lang="hu">kérek</i> название того, что вы просите, получает окончание. Можно начать и с глагола: <i lang="hu">Kérek egy kiflit.</i></p>
+<details><summary>Послушать образец с чаем</summary><p>Повторите первую фразу: <b lang="hu">Kérek egy teát.</b> — Один чай, пожалуйста.</p><audio id="model" controls preload="none"></audio><p id="audioStatus" role="status"></p><small lang="hu">Kérek egy teát. Vizet iszom. Reggel kenyeret eszem.</small></details>
+<button id="start">Попробовать самостоятельно</button></section>
+<section id="task" hidden><small id="progress"></small><h1 id="place" tabindex="-1"></h1><blockquote lang="hu" id="seller"></blockquote><p id="order"></p>
+<form id="form"><label for="answer">Скажите ответ вслух, затем напишите его.</label><input id="answer" lang="hu" autocomplete="off" spellcheck="false" required><button id="check">Проверить</button></form>
+<details id="hint"><summary>Подсказка</summary><p id="hintText"></p></details>
+<p id="feedback" role="status"></p><button id="next" hidden>Дальше</button></section>
+<section id="end" hidden><h1 tabindex="-1">Заказ принят!</h1><p>Вы заказали выпечку и напиток. Завтра попробуйте заказать чай без подсказки.</p><a href="?practice=tea">Открыть задание с чаем</a><p><button id="restart" class="secondary">Повторить урок</button></p></section>
+</article></main><script src="audio/gabor-a1-pilot.js"></script><script src="pekseg.js"></script></body></html>
