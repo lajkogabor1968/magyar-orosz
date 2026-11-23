@@ -21,8 +21,8 @@ assert.match(source,/requiredCardsSeen\(\):flippedWords\.size>=requiredCardCount
 
 const functions=[required,chunks,seen,order,canAdvance,nextCard].join('\n');
 const words=Array.from({length:20},(_,i)=>({hu:`word-${i}`}));
-const make=(level,flippedWords,checked=[],step=0,cardIndex=0,fastTrack=false)=>runInNewContext(`${functions}\n({count:requiredCardCount(),passed:canAdvance(),order:initialTestOrder(),next:nextCardIndex()})`,{
- level,a1FastTrackPassed:fastTrack,flippedWords:new Set(flippedWords),checkedBatches:new Set(checked),cardIndex,step,rows:()=>words,randomOrder:a=>[...a].reverse(),
+const make=(level,flippedWords,checked=[],step=0,cardIndex=0,fastTrack=false,placed=[])=>runInNewContext(`${functions}\n({count:requiredCardCount(),passed:canAdvance(),order:initialTestOrder(),next:nextCardIndex()})`,{
+ level,a1FastTrackPassed:fastTrack,flippedWords:new Set(flippedWords),checkedBatches:new Set(checked),fastTrackPacks:new Set(placed),cardIndex,step,rows:()=>words,randomOrder:a=>[...a].reverse(),
  grammarReviewed:false,dialoguePractised:false,correctWriting:new Set(),lessonIndex:1,
  compositionChecked:false,testCompleted:false
 });
@@ -41,6 +41,12 @@ assert.equal(make('A1',[...allCore.slice(0,9),19]).passed,false,
  'An optional card cannot replace one of the ten taught and assessed cards');
 assert.equal(make('A1',allCore,[0]).passed,false,'The second five-card retrieval check cannot be skipped');
 assert.equal(make('A1',allCore,[0,1]).passed,true);
+assert.equal(make('A1',allCore.slice(5),[1],0,0,false,[0]).passed,true,
+ 'A written placement for the first five and a normal check for the next five together unlock grammar');
+assert.equal(make('A1',allCore.slice(5),[],0,0,false,[0]).passed,false,
+ 'A placed group must never bypass an unchecked group');
+assert.equal(make('A1',[],[],0,5,false,[0]).next,6,
+ 'After placement opens the sixth card, the next action continues within the second group');
 assert.equal(make('A1',[],[],0,0,true).passed,true,'Four verified written words may substitute for the card practice');
 assert.equal(make('A1',[],[],1,0,true).passed,false,'Fast-track does not bypass the grammar lesson');
 const a2=make('A2',[1,4,7,15,19]);

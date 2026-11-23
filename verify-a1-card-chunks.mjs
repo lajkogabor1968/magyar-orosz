@@ -26,7 +26,7 @@ const find=(node,id)=>node.id===id?node:node.children.map(child=>find(child,id))
 let saved=0,lastNote='',routeSaved=0,breaks=0;
 const state={
  level:'A1',flippedWords:new Set([0,1,2,3]),checkedBatches:new Set(),
- a1FastTrackPassed:false,
+ a1FastTrackPassed:false,fastTrackPacks:new Set(),
  checkBatch:-1,checkStep:0,checkRendered:'',cardIndex:4,step:0,
  rows:()=>words,$:id=>find(root,id),el:(...args)=>new Element(...args),
  randomOrder:items=>[...items].reverse(),
@@ -71,14 +71,19 @@ assert.equal(pause.hidden,true,'the five-word break suggestion disappears after 
 assert.equal(state.stepButton.disabled,false,'the next learning stage opens only after both checks');
 assert.match(lastNote,/Оба блока закреплены/);
 assert.equal(saved,3,'both pack completions and the optional break are saved');
+state.flippedWords=new Set();state.checkedBatches=new Set();state.fastTrackPacks=new Set([0]);
+context.show();
+assert.equal(pause.hidden,false,'the break option also works after the first group is placed by writing');
+assert.equal(find(root,'a1CardCheckpoint').hidden,true,'a written placement is not presented as an ordinary retrieval quiz');
 
-const suggested=(level,flipped,checked=[],quick=false)=>runInNewContext(`${required}\n${chunks}\n${resumeIndex}\nresumeA1CardIndex()`,{
- level,a1FastTrackPassed:quick,flippedWords:new Set(flipped),checkedBatches:new Set(checked),rows:()=>words
+const suggested=(level,flipped,checked=[],quick=false,placed=[])=>runInNewContext(`${required}\n${chunks}\n${resumeIndex}\nresumeA1CardIndex()`,{
+ level,a1FastTrackPassed:quick,flippedWords:new Set(flipped),checkedBatches:new Set(checked),fastTrackPacks:new Set(placed),rows:()=>words
 });
 assert.equal(suggested('A1',[]),0,'brand-new A1 begins with the first card');
 assert.equal(suggested('A1',[0,1]),2,'returning after two cards resumes the third');
 assert.equal(suggested('A1',[0,1,2,3,4]),0,'a fully viewed but unchecked group reopens its own quiz');
 assert.equal(suggested('A1',[0,1,2,3,4],[0]),5,'after the first retrieval check resume in the second group');
+assert.equal(suggested('A1',[],[],false,[0]),5,'a group placed by writing reopens at the sixth card without forging flips');
 assert.equal(suggested('A1',[0,1,2,3,4,5,6,7],[0]),8,'second group resumes at its first unseen card');
 assert.equal(suggested('A1',[],[],true),0,'fast-track has no forged card progress to restore');
 assert.equal(suggested('A2',[0,1,2,3,4],[0]),0,'A2 keeps its previous card-start behavior');
@@ -90,6 +95,7 @@ const restore=flipped=>runInNewContext(`${required}\n${chunks}\n${legacy}\nresto
  level:'A1',rows:()=>words,lessonKey:()=> 'A1:2',
  checkpoint:()=>({flipped,written:[],grammar:false,dialogue:false}),
  flippedWords:new Set(),correctWriting:new Set(),checkedBatches:new Set(),
+ fastTrackPacks:new Set(),
  checkBatch:0,checkStep:1,checkRendered:'question',grammarReviewed:false,dialoguePractised:false
 });
 assert.deepEqual([...restore([0,1,2,3,4,5,6,7,8,9])],[0,1],

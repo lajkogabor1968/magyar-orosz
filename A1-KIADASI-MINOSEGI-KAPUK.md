@@ -25,12 +25,12 @@ tananyag-tervezési és ellenőrzési elveiből indultunk ki.
 | 30 A1-es lecke, egyedi sorrend, régi azonosítók | Rendben | A korábbi tanulói eredmények kulcsai érintetlenek. |
 | Szókártyák, orosz magyarázatok, minták, párbeszédek | 30/30 lecke szerkezetileg ellenőrizve | Ez **nem** hitelesíti a fordítások nyelvi helyességét. |
 | Nyelvtani és szövegértési javítókulcs | 30/30 lecke: létező kulcs, nem duplikált választási lehetőségek | A többféleképpen helyes válaszok emberi lektorálása még szükséges. |
-| Tanítás előtti számonkérés kizárása | Az A1-es záróteszt tíz kérdése az első tíz tanított szóra korlátozódik; a kártyák végignézése helyett négy hibátlan írásválaszra épülő, önkéntes gyorsellenőrzés is választható | A négy mintaszó nem igazolja mind a tíz szó tudását. A nyelvtani, beszéd-, írás- és zárófeladat nem ugorható át. |
+| Tanítás előtti számonkérés kizárása | Az A1-es záróteszt tíz kérdése az első tíz bemutatott szóra korlátozódik; az ötszavas csoportok külön-külön, két hibátlan írásválasszal átugorhatók | Két mintaszó nem igazolja mind az öt szó tudását. A nyelvtani, beszéd-, írás- és zárófeladat nem ugorható át. |
 | Teljes automatikus A1-audit | **0 fennmaradó kritikus szerkezeti találat** | A feltárt első leckés magyarázati hiányt javítottuk. |
 | Szókincsterhelés | **13 lecke szakmai felülvizsgálatra jelölve** | 9–13 új alapszókártya; figyelmeztetés, nem automatikus bukás. A 29–30. leckében legfeljebb 8 új kötelező szó szerepel. |
 | Vezetett út / A1-szótár | 199/580 különböző címszó, **34,3%** | Nem tekinthető kész A1-es útvonalnak. |
 | A1-es kezdőlecke szabad kiválasztása | Szimulált állapotteszt sikeres | A 2. vagy későbbi lecke közvetlenül megnyitható, a választás mentődik; valódi mobilos próba még nincs. |
-| Ismert szavak gyors A1-es ellenőrzése | Négy pontos magyar írásválasz két kártyacsoportból; sikertelen próbánál visszatérés a tanításhoz | A gyorsellenőrzés állapota külön mentődik, nem jelöl meg nem nyitott kártyákat; valódi tanulói validálás még hátravan. |
+| Ismert szavak gyors A1-es ellenőrzése | Két pontos magyar írásválasz egy ötszavas csoporthoz; az első csoport sikere a második hibája után is megmarad | A felismert csoport külön mentődik, nem jelöl meg nem nyitott kártyákat; valódi tanulói validálás még hátravan. |
 | Kezdő magyar–orosz kártyaminták | 12 célzottan rögzített mondat–fordítás ellenőrzés a 2., 5., 7. és 10. leckében | Előresiető nyelvtani alakok és félreérthető példák javítva, de ez nem teljes körű anyanyelvi lektorálás. |
 | Független nyelvi és tanulói próba | **Még nem teljesült** | Orosz anyanyelvű lektor és 6–10 valós tanuló szükséges. |
 
@@ -121,6 +121,21 @@ az A2-es tanmenethez nem nyúltunk. A `verify-a1-word-preview.mjs`
 ellenőrzi a három meglévő mondat helyes felületi kezelését és leckeváltáskor
 a tartalom frissítését. Ez még nem valódi mobilos vagy tanulói hatásvizsgálat:
 **a 13 túlterhelt lecke figyelmeztetését továbbra sem oldja fel**.
+
+**Ismert ötszavas blokk külön átugrása – 2026. november 23.:**
+az önkéntes írásos gyorsellenőrzés minden még befejezetlen ötszavas
+csoportból két szót választ. Két pontos, ékezethelyes magyar válasz után
+az adott blokk önállóan átugorható. Ha a következő blokkban hibázik a
+tanuló, az előző sikerét nem veszti el, és később csak a még hiányzó
+blokkot vizsgáljuk. A teljesen új szókincset továbbra is kártyán tanítjuk;
+az elismert csoport **nem** kap hamis kártyamegnyitást vagy hagyományos
+visszakérdezési pontot. Az eddigi lecke- és mentéskulcs változatlan,
+de az A1 ellenőrzőpont-rekord új `a1FastTrackPacks` mezője tárolja a
+részsikereket; a régi, teljes négyválaszos igazolás is érvényben marad.
+A `verify-a1-fast-track.mjs`, `verify-a1-card-chunks.mjs` és
+`verify-a1-teach-before-test.mjs` szimulálja a két csoport kombinációit
+és a visszaállítást. A 13 nagy új-szószámú lecke **tartalmi terhelését ez
+nem szünteti meg**, csak a már ismert anyag fölösleges ismétlését csökkenti.
 
 **A1 szókártyák jelentésének célzott felülvizsgálata – 2026. november 23.:**
 az akkori kártyarenderelővel előállított **468 A1-es kártyát** a
