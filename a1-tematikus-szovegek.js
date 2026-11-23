@@ -32,8 +32,8 @@ const units={
 ['Otthon vagyok a családommal.','Я дома со своей семьёй.'],
 ['Az anyukám a konyhában van.','Моя мама на кухне.'],
 ['Az apukám a kertben dolgozik.','Мой папа работает в саду.'],
-['Van egy testvérem.','У меня есть брат или сестра.'],
-['A testvérem neve Bence.','Моего брата зовут Бенце.'],
+['Van egy fiútestvérem.','У меня есть брат.'],
+['A fiútestvérem neve Bence.','Моего брата зовут Бенце.'],
 ['Bence tizenöt éves.','Бенце пятнадцать лет.'],
 ['Én húszéves vagyok.','Мне двадцать лет.'],
 ['Délelőtt együtt reggelizünk.','Утром мы завтракаем вместе.'],
@@ -252,7 +252,7 @@ const units={
 ['Tíz percig tanulunk.','Мы учимся десять минут.'],
 ['Anna hangosan számol.','Анна считает вслух.'],
 ['Péter is számol.','Петер тоже считает.'],
-['A tanár azt mondja: nagyon jó!','Учитель говорит: очень хорошо!']
+['A tanár azt mondja: „Nagyon jó!”','Учитель говорит: «Очень хорошо!»']
 ],dialogue:[
 ['Hány könyv van az asztalon?','Сколько книг на столе?'],
 ['Egy könyv van az asztalon.','На столе одна книга.'],
@@ -300,7 +300,7 @@ const readingGuidance={
   ['örülök az új barátomnak','я рад / рада новому другу','-nak показывает, кому или чему радуются; эту фразу пока удобно запомнить целиком.']
  ],
  2:[
-  ['testvérem','мой брат / моя сестра','testvér — брат или сестра; окончание -em показывает принадлежность.'],
+  ['fiútestvérem','мой брат','fiútestvér — брат; -em показывает принадлежность: мой. testvér — брат или сестра.'],
   ['konyhában / kertben','на кухне / в саду','-ban/-ben отвечает на вопрос «где?».'],
   ['kenyeret / sajtot','хлеб / сыр (в роли дополнения)','После «есть» здесь используются формы с винительным окончанием -t; подробное правило будет позже.']
  ],
