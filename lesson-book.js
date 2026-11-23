@@ -212,6 +212,17 @@ function grammarQuestion(){
 function note(message){let node=$('integratedStepStatus');if(!node){node=el('p','','lesson-step-status');node.id='integratedStepStatus';node.setAttribute('role','status');node.setAttribute('aria-live','polite');$('integratedStepNext').after(node)}node.textContent=message}
 function requiredCardCount(){return Math.min(level==='A1'?10:5,rows().length)}
 function cardChunks(){const count=requiredCardCount();return count>5?[[0,5],[5,count]]:[[0,count]]}
+function resumeA1CardIndex(){
+ if(level!=='A1'||a1FastTrackPassed)return 0;
+ // Reconstruct the next unfinished position from existing checkpoint fields.
+ // This preserves old saved records without inserting new word indices.
+ for(const [part,[first,last]] of cardChunks().entries()){
+  if(checkedBatches.has(part))continue;
+  for(let index=first;index<last;index++)if(!flippedWords.has(index))return index;
+  return first; // All five were seen but the two-question check is pending.
+ }
+ return 0;
+}
 function requiredCardsSeen(){return (level==='A1'&&a1FastTrackPassed)||Array.from({length:requiredCardCount()},(_,i)=>i).every(i=>flippedWords.has(i))&&cardChunks().every((_,i)=>checkedBatches.has(i))}
 function initialTestOrder(){
  const indices=rows().map((_,i)=>i);
@@ -738,7 +749,13 @@ function renderCardCheckpoint(){
   const choices=el('div');choices.id='a1CardCheckOptions';choices.className='lesson-card-check-options';panel.append(choices);
   const feedback=el('p');feedback.id='a1CardCheckFeedback';feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');panel.append(feedback);
   $('integratedFlashcard').after(panel);
+  const pause=el('button','💾 Перерыв после пяти слов — сохранить и продолжить позже','lesson-break-after-five');
+  pause.id='a1CardBreak';pause.type='button';pause.hidden=true;
+  pause.onclick=()=>{saveCheckpoint();save();back.click()};
+  panel.after(pause);
  }
+ const pause=$('a1CardBreak');
+ pause.hidden=!(level==='A1'&&step===0&&checkedBatches.has(0)&&!checkedBatches.has(1)&&!a1FastTrackPassed);
  if(level!=='A1'||a1FastTrackPassed){panel.hidden=true;return}
  const chunks=cardChunks();
  const eligible=chunks.findIndex(([first,last],i)=>!checkedBatches.has(i)&&[...Array(last-first).keys()].every(offset=>flippedWords.has(first+offset)));
@@ -958,7 +975,7 @@ if(prerequisite){
  };
  prerequisite.hidden=level!=='A2';
  prerequisite.textContent=level==='A2'?'Связь с A1 / Kapcsolat az A1 szinttel. '+bridges[lessonIndex]:'';
-}$('integratedLessonLevel').textContent=level;$('integratedLessonCounter').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length;$('integratedLessonHeading').textContent='Урок '+(lessonIndex+1)+'. '+l.title;$('integratedLessonSelect').replaceChildren();courses[level].forEach((x,i)=>{const finished=read(KEY).completed?.[level+':'+i];const o=el('option',(finished?'✓ ':'')+(i+1)+'. '+x.title);o.value=String(i);$('integratedLessonSelect').append(o)});$('integratedLessonSelect').value=String(lessonIndex);placeReadingAfterTeaching();renderVisual();renderMotion();resetVideo();renderReading();window.TanmuhelyRenderA1LongReadings?.(level,lessonIndex);renderWords();renderGrammarExamples();window.TanmuhelyRenderErrorCards?.(level,lessonIndex);resetGame();grammarQuestion();$('integratedGrammar').replaceChildren();$('integratedGrammar').append(el('strong',l.grammar[0]),el('p',l.grammar[1]),el('p',l.grammar[2]));const dialog=$('integratedDialogue');dialog.replaceChildren();for(const [i,line] of l.dialogue.entries()){const row=el('div',undefined,'integrated-dialogue-line');const words=el('div',undefined,'lesson-dialogue-text');const female=i%2===0;const speaker=el('small',(female?'Анна':'Петер')+' · озвучка: Габор или синтез','lesson-speaker');speaker.lang='ru';words.append(speaker);const h=el('span',line);h.lang='hu';const translation=el('small',dialogueTranslations[l.title]?.[i]||'');translation.lang='ru';words.append(h,translation);const b=el('button','🔊');b.type='button';b.onclick=()=>{spokenTargetIndex=Array.from(dialog.children).indexOf(row);const source=window.TanuloTTS?.sourceFor?.({text:line,lang:'hu-HU'})||'tts';const played=say(line);$('integratedDialogueFeedback').textContent=played?(source==='gabor'?'Запись Габора. ':source==='pilot'?'Пробная запись Габора. ':'Компьютерный венгерский голос. ')+'Прослушайте и повторите фразу: '+line:'Озвучка недоступна. Проверьте венгерский голос устройства.';note('Для проверки нажмите микрофон или отметьте, что повторили вслух.')};row.append(words,b);dialog.append(row)}cardIndex=0;writeIndex=0;correctWriting=new Set();testIndex=0;testCorrect=0;hasAnswered=false;testCompleted=false;flashcardsOpened=false;grammarReviewed=false;dialoguePractised=false;spokenTargetIndex=0;flippedWords=new Set();checkedBatches=new Set();a1FastTrackPassed=false;fastTrackWords=[];fastTrackPosition=0;checkBatch=-1;checkStep=0;checkRendered='';quizMisses=[];testOrder=randomOrder(rows().map((_,i)=>i));restoreCheckpoint();resumeQuiz();sentencePractice(true);renderFastTrack();$('integratedFlashcard').hidden=false;card();spelling();composition();test();stageView()}
+}$('integratedLessonLevel').textContent=level;$('integratedLessonCounter').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length;$('integratedLessonHeading').textContent='Урок '+(lessonIndex+1)+'. '+l.title;$('integratedLessonSelect').replaceChildren();courses[level].forEach((x,i)=>{const finished=read(KEY).completed?.[level+':'+i];const o=el('option',(finished?'✓ ':'')+(i+1)+'. '+x.title);o.value=String(i);$('integratedLessonSelect').append(o)});$('integratedLessonSelect').value=String(lessonIndex);placeReadingAfterTeaching();renderVisual();renderMotion();resetVideo();renderReading();window.TanmuhelyRenderA1LongReadings?.(level,lessonIndex);renderWords();renderGrammarExamples();window.TanmuhelyRenderErrorCards?.(level,lessonIndex);resetGame();grammarQuestion();$('integratedGrammar').replaceChildren();$('integratedGrammar').append(el('strong',l.grammar[0]),el('p',l.grammar[1]),el('p',l.grammar[2]));const dialog=$('integratedDialogue');dialog.replaceChildren();for(const [i,line] of l.dialogue.entries()){const row=el('div',undefined,'integrated-dialogue-line');const words=el('div',undefined,'lesson-dialogue-text');const female=i%2===0;const speaker=el('small',(female?'Анна':'Петер')+' · озвучка: Габор или синтез','lesson-speaker');speaker.lang='ru';words.append(speaker);const h=el('span',line);h.lang='hu';const translation=el('small',dialogueTranslations[l.title]?.[i]||'');translation.lang='ru';words.append(h,translation);const b=el('button','🔊');b.type='button';b.onclick=()=>{spokenTargetIndex=Array.from(dialog.children).indexOf(row);const source=window.TanuloTTS?.sourceFor?.({text:line,lang:'hu-HU'})||'tts';const played=say(line);$('integratedDialogueFeedback').textContent=played?(source==='gabor'?'Запись Габора. ':source==='pilot'?'Пробная запись Габора. ':'Компьютерный венгерский голос. ')+'Прослушайте и повторите фразу: '+line:'Озвучка недоступна. Проверьте венгерский голос устройства.';note('Для проверки нажмите микрофон или отметьте, что повторили вслух.')};row.append(words,b);dialog.append(row)}cardIndex=0;writeIndex=0;correctWriting=new Set();testIndex=0;testCorrect=0;hasAnswered=false;testCompleted=false;flashcardsOpened=false;grammarReviewed=false;dialoguePractised=false;spokenTargetIndex=0;flippedWords=new Set();checkedBatches=new Set();a1FastTrackPassed=false;fastTrackWords=[];fastTrackPosition=0;checkBatch=-1;checkStep=0;checkRendered='';quizMisses=[];testOrder=randomOrder(rows().map((_,i)=>i));restoreCheckpoint();cardIndex=resumeA1CardIndex();resumeQuiz();sentencePractice(true);renderFastTrack();$('integratedFlashcard').hidden=false;card();spelling();composition();test();stageView()}
 function activeCourseLevel(){return document.querySelector('.welcome .level.active')?.dataset.level||'A1'}
 function refreshLessonStart(){
  const picker=$('lessonStartSelect');if(!picker)return;

@@ -58,7 +58,7 @@ for(const level of ['A1','A2']){
 assert.match(workbook,/if\(step===2\)renderDialoguePreparation\(\)/,
  'The Russian explanation must render when the learner reaches the speaking stage');
 assert.match(css,/\.lesson-dialogue-preparation summary/);
-assert.match(html,/clean-interface\.css\?v=20261123-a1-fast-track1/);
+assert.match(html,/clean-interface\.css\?v=20261123-a1-five-word-resume1/);
 console.log(`PASS: ${courses.A1.length} A1 lessons have ${notes} teacher-written Hungarian–Russian explanatory pairs.`);
 console.log('PASS: the explanations are visible before speaking, collapsible, and do not change the A2 route.');
 console.log('NOTE: an independent Russian-language teaching and translation review is still required.');

@@ -99,6 +99,18 @@ ellenőrzi. **A 13 leckére vonatkozó magas új-szószám figyelmeztetés
 egyelőre megmarad:** a két részre osztás a terhelést mérsékli, de nem
 igazolja, hogy ennyi új szó egy leckében minden kezdőnek megfelelő.
 
+**Ötszavas szünet és a megszakított szókártyák folytatása – 2026. november 23.:**
+az első ötszavas egység sikeres rövid ellenőrzése után a tanuló
+választhatja a mentett szünetet. A következő belépéskor a már mentett
+kártyamegnyitások és az ötszavas ellenőrzések alapján jelenik meg az
+első befejezetlen kártya, nem automatikusan az első szó. Ha a soron
+következő ellenőrzés még hiányzik, az ismét elérhető. A korábbi
+ellenőrzőpont-rekordok változatlanul használhatók, új mező nem szükséges.
+A `verify-a1-card-chunks.mjs` szimulálja az önkéntes szünetet, a
+visszatérési pozíciót, a gyorsított ellenőrzést és az A2-es kivételt.
+Ez működési logikai ellenőrzés, nem bizonyított böngészős/mobilos
+használhatóság; **a 13 szókincsterhelési figyelmeztetés megmaradt**.
+
 **A1 szókártyák jelentésének célzott felülvizsgálata – 2026. november 23.:**
 az akkori kártyarenderelővel előállított **468 A1-es kártyát** a
 `verify-a1-card-meaning.mjs` ellenőrzi üres jelentésre, leckén belüli

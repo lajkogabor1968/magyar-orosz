@@ -115,6 +115,8 @@ if(!book.includes('function requiredCardsSeen()')||!book.includes("if(level==='A
  fail('A1','UNTAUGHT_QUIZ_WORD','A záróteszt olyan A1-es szót vagy válaszlehetőséget is kérdezhet, amelynek jelentését előbb nem kellett megismerni.');
 if(!book.includes('function cardChunks()')||!book.includes('function renderCardCheckpoint()')||!book.includes('a1CheckedBatches'))
  fail('A1','OVERLOADED_CARDS','A kötelező A1-es szókártyák nem tanulhatók két ötszavas egységben, külön visszakérdezéssel.');
+if(!book.includes('function resumeA1CardIndex()')||!book.includes('restoreCheckpoint();cardIndex=resumeA1CardIndex()')||!book.includes("pause.id='a1CardBreak'")||!book.includes('checkedBatches.has(0)&&!checkedBatches.has(1)'))
+ fail('A1','FIVE_WORD_RESUME','Az első ötszavas blokk után nincs menthető szünet, vagy újranyitáskor nem áll vissza a befejezetlen kártya.');
 if(!book.includes("const KEY='magyarorosz.lesson-route.v1'")||!book.includes("const checkpointKey='magyarorosz.lesson-checkpoint.v1'"))fail('A1','SAVED_PROGRESS','A korábbi leckék és részfeladatok mentési kulcsa módosult.');
 if(!book.includes('randomOrder(reading.options.map')||!book.includes('randomOrder(c.a.map'))fail('A1','ANSWER_ORDER','A választási lehetőségek sorrendje nem keveredik.');
 if(!/src="lesson-book\.js\?v=[^\"]+"/.test(html))fail('A1','PUBLISHED_SCRIPT','A tanulói oldalon nincs gyorsítótár-verziózott leckemotor.');
