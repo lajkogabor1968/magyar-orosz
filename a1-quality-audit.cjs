@@ -125,6 +125,12 @@ else for(const [key,unit] of Object.entries(extraData.units)){
   warnings.push('Supplement '+key+': missing pre-reading grammar notes');
 }
 
+// Understanding check must test the meaning of Hungarian, not visually copy
+// the next Hungarian dialogue line.
+if(!source.includes("Что означает венгерская реплика")||
+ !source.includes("const prompt=lines[1],correct=translations[1]")||
+ !source.includes("button.lang='ru'"))
+ errors.push('A1: dialogue test is not a Hungarian-to-Russian meaning question');
 // Dialogue turns have roles, but the names Anna/Péter are not universal:
 // salespeople, teachers and guests also speak in A1 scenarios.
 if(!source.includes("level==='A1'?(i%2===0?'Собеседник A':'Собеседник B')"))
