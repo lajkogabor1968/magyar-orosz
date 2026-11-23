@@ -893,7 +893,15 @@ function spellingCheck(){
  $('integratedWritingProgress').textContent='Верно написано: '+correctWriting.size+' / '+w.length
   +(level==='A1'&&lessonIndex===0?' · с долгой гласной: '+[...correctWriting].filter(i=>/[áéíóöőúüű]/.test(w[i]?.hu||'')).length+' / 2':'');
 }
-function composition(){const l=lesson(),key=level+':'+lessonIndex;$('integratedCompositionPrompt').textContent=l.composition[0]+'. '+l.composition[1];$('integratedCompositionHints').textContent='Примеры начала предложений: '+l.composition[2];$('integratedCompositionText').value=read('magyarorosz.lesson-writing.v1')[key]||'';$('integratedCompositionFeedback').textContent='Напишите собственный текст. Он сохранится только в этом браузере.'}
+function compositionAccentHint(value){
+ if(level!=='A1')return '';
+ const l=lesson(),models=[l.composition[2],...l.dialogue,...l.reading.lines.map(line=>line[0]),
+  ...l.preparation.map(line=>line[0]),...rows().map(row=>row.hu)];
+ const suggestions=writingFeedback.suggestAccents(value,models);
+ if(!suggestions.length)return '';
+ return 'Проверьте возможные ошибки в венгерских гласных: '+suggestions.map(s=>'«'+s.received+'» → «'+s.expected+'»').join('; ')+'. Это подсказка по образцам урока, не оценка вашего текста.';
+}
+function composition(){const l=lesson(),key=level+':'+lessonIndex;$('integratedCompositionPrompt').textContent=l.composition[0]+'. '+l.composition[1];$('integratedCompositionHints').textContent='Примеры начала предложений: '+l.composition[2];$('integratedCompositionText').value=read('magyarorosz.lesson-writing.v1')[key]||'';$('integratedCompositionFeedback').textContent='Напишите собственный текст. Он сохранится только в этом браузере. '+compositionAccentHint($('integratedCompositionText').value)}
 function saveComposition(){const s=read('magyarorosz.lesson-writing.v1');s[level+':'+lessonIndex]=$('integratedCompositionText').value;try{localStorage.setItem('magyarorosz.lesson-writing.v1',JSON.stringify(s));$('integratedCompositionFeedback').textContent='✓ Текст сохранён на этом устройстве.';return true}catch(_){$('integratedCompositionFeedback').textContent='Не удалось сохранить. Скопируйте текст вручную.'}}
 function checkComposition(){
  const draftSaved=saveComposition();
@@ -923,6 +931,8 @@ function checkComposition(){
  if(nonHungarian.length)messages.push('Напишите предложения по-венгерски латинскими буквами.');
  if(unsuitable.length)messages.push('В этом первом задании используйте образец «Ez egy …» и слово из списка урока. Например: «Ez egy telefon.»');
  if(requiresQuestions&&(questionCount<2||answerCount<2))messages.push('В уроке о вопросах напишите не менее двух вопросов со знаком «?», а также два ответа.');
+ const accentHint=compositionAccentHint(source);
+ if(accentHint)messages.push(accentHint);
 
  messages.push(compositionChecked?'✓ Формальные условия выполнены. Можно продолжать.':'Исправьте отмеченные пункты и проверьте ещё раз.');
  messages.push('Это проверка формы, а не полная оценка грамматики и содержания.');
@@ -1172,7 +1182,7 @@ $('integratedWritingCheck').onclick=()=>{
 $('integratedWritingNext').onclick=()=>{writeIndex=(writeIndex+1)%rows().length;spelling()};
 $('integratedCompositionSave').onclick=saveComposition;
 $('integratedCompositionCheck').onclick=checkComposition;
-$('integratedCompositionText').addEventListener('input',()=>{const drafts=read('magyarorosz.lesson-writing.v1');drafts[lessonKey()]=$('integratedCompositionText').value;let saved=true;try{localStorage.setItem('magyarorosz.lesson-writing.v1',JSON.stringify(drafts))}catch(_){saved=false}compositionChecked=false;if(step===4)stepButton.disabled=true;$('integratedCompositionFeedback').textContent=saved?'Черновик сохранён на этом устройстве. Проверьте текст ещё раз.':'Не удалось сохранить черновик. Скопируйте текст перед выходом.';});
+$('integratedCompositionText').addEventListener('input',()=>{const drafts=read('magyarorosz.lesson-writing.v1');drafts[lessonKey()]=$('integratedCompositionText').value;let saved=true;try{localStorage.setItem('magyarorosz.lesson-writing.v1',JSON.stringify(drafts))}catch(_){saved=false}compositionChecked=false;if(step===4)stepButton.disabled=true;$('integratedCompositionFeedback').textContent=(saved?'Черновик сохранён на этом устройстве. Проверьте текст ещё раз.':'Не удалось сохранить черновик. Скопируйте текст перед выходом.')+' '+compositionAccentHint($('integratedCompositionText').value);});
 $('integratedNextQuestion').onclick=()=>{if(testIndex+1>=quizTargetCount){testCompleted=true;persistQuiz();showQuizResult();note('Проверка завершена. Вы можете перейти к следующему уроку.');return}testIndex++;hasAnswered=false;persistQuiz();test();stepButton.disabled=true};
 $('integratedNextLesson').onclick=()=>confirmLessonChange(Math.min(courses[level].length-1,lessonIndex+1));
 $('integratedAllWords').onclick=()=>{dialogueRecognition.stop();root.classList.remove('study-book');view.hidden=true;document.querySelector('.tab[data-view="list"]')?.click();root.classList.add('study-active')};

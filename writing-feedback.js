@@ -21,6 +21,34 @@
     return a.flatMap((letter, i) => letter === b[i] ? [] : [`${letter} → ${b[i]}`]);
   };
 
+  // Suggestions for open-ended writing are intentionally non-scoring. A
+  // spelling is suggested only when the current lesson provides exactly one
+  // Hungarian model for that accent-insensitive word; ambiguous pairs are
+  // left alone. Inflected forms must occur explicitly in the teacher models.
+  const hungarianWords = value => String(value ?? '').normalize('NFC')
+    .toLocaleLowerCase('hu-HU').match(/[a-záéíóöőúüű]+/gu) || [];
+  function suggestAccents(draft, modelPhrases) {
+    if (!Array.isArray(modelPhrases)) return [];
+    const models = new Map();
+    for (const phrase of modelPhrases) for (const word of hungarianWords(phrase)) {
+      const key = base(word);
+      if (!models.has(key)) models.set(key, new Set());
+      models.get(key).add(word);
+    }
+    const suggestions = [], seen = new Set();
+    for (const typed of hungarianWords(draft)) {
+      if (seen.has(typed)) continue;
+      seen.add(typed);
+      const options = models.get(base(typed));
+      if (!options || options.size !== 1) continue;
+      const [expected] = options;
+      if (typed === expected || base(expected) === expected) continue;
+      suggestions.push({received: typed, expected});
+      if (suggestions.length === 3) break;
+    }
+    return suggestions;
+  }
+
   function checkWord(received, expected) {
     const a = normalize(received), b = normalize(expected);
     if (!a) return {kind: 'empty', hint: 'Введите слово.'};
@@ -109,5 +137,5 @@
     return true;
   }
 
-  window.TanmuhelyWritingFeedback = Object.freeze({checkWord, checkSentence, insertHungarianLetter});
+  window.TanmuhelyWritingFeedback = Object.freeze({checkWord, checkSentence, suggestAccents, insertHungarianLetter});
 })();

@@ -32,6 +32,7 @@ tananyag-tervezési és ellenőrzési elveiből indultunk ki.
 | 6. A1-lecke csökkentett kötelező anyaga | **8 kötelező + 2 választható, régi indexen** | Az új teszt 8 kérdéses, régi 10 kérdéses mentés változatlan; valós pedagógiai előnyt még nem mértünk. |
 | 13. A1-lecke csökkentett kötelező anyaga | **8 kötelező + 2 új választható szó, és ismétlés** | Az új teszt 8 kérdéses; 18 kártya és a régi 10 kérdéses mentés megmarad. |
 | 14–15. A1-lecke korai szóalak-előkészítése | **5-5 meghallgatható magyar–orosz minta a szókártyák előtt** | Az étteremben, illetve új, nem, nagyon alakokat a tanuló már a kötelező feladatok előtt látja; a valós megértés nem igazolt. |
+| A1 szabad fogalmazás ékezet-visszajelzése | **Legfeljebb 3, egyértelmű lecke-mintához kötött javaslat gépelés közben** | Nem pontozza a szabad szöveget és nem blokkolja a továbbhaladást; valódi tanulói próba még nincs. |
 | Vezetett út / A1-szótár | 199/580 különböző címszó, **34,3%** | Nem tekinthető kész A1-es útvonalnak. |
 | A1-es kezdőlecke szabad kiválasztása | Szimulált állapotteszt sikeres | A 2. vagy későbbi lecke közvetlenül megnyitható, a választás mentődik; valódi mobilos próba még nincs. |
 | Ismert szavak gyors A1-es ellenőrzése | Két pontos magyar írásválasz egy ötszavas csoporthoz; az első csoport sikere a második hibája után is megmarad | A felismert csoport külön mentődik, nem jelöl meg nem nyitott kártyákat; valódi tanulói validálás még hátravan. |
@@ -193,6 +194,20 @@ meg; az eredeti szóindexek, a mentések, a kötelező tesztek és A2
 változatlanok. A `verify-a1-word-preview.mjs` és a kiadási audit
 szimuláltan ellenőrzi a megjelenést, az öt gombot és az A2 kizárását.
 A valódi hangminőség és az orosz anyanyelvű megértés még nem igazolt.
+
+**Szabad fogalmazás: korlátozott, azonnali ékezetsegítség – 2026. november 23.:**
+az A1-es írásfelület saját szövegénél a lecke már ismert magyar
+szavaiból, párbeszédeiből, rövid olvasmányából és tanári mintáiból
+gyűjtünk ékezetes szóalakokat. Gépelés közben például a `haz` → `ház`
+javaslat megjelenhet, ha a lecke egyértelműen tartalmazza a `ház`
+alakot; eltérő, azonos ékezet nélküli alakra visszavezethető
+mintáknál a rendszer **nem találgat**. Egyszerre legfeljebb három,
+oroszul körülírt javaslat látható. Ezek nem automatikus átírások,
+nem grammatikai osztályzatok és nem részei a továbblépés feltételeinek.
+A régi fogalmazásmentési kulcs és az A2-es írásfeladat változatlan.
+A `verify-writing-feedback.mjs` ellenőrzi a bizonytalan alakok
+kizárását, a magyar ékezetek kezelését és a felületi bekötést;
+élő mobilos vagy tanulói eredményességi bizonyíték még nincs.
 
 **A1 szókártyák jelentésének célzott felülvizsgálata – 2026. november 23.:**
 az akkori kártyarenderelővel előállított **468 A1-es kártyát** a
