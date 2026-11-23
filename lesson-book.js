@@ -162,8 +162,11 @@ function initialTestOrder(){
  return [...randomOrder(indices.slice(0,taughtCount)),...randomOrder(indices.slice(taughtCount))];
 }
 function canAssessDialogueSequence(){
- const lines=lesson().dialogue;
- return Array.isArray(lines)&&lines.length>=4&&new Set(lines.slice(1).filter(v=>typeof v==='string'&&v.trim())).size>=2;
+ const lines=lesson().dialogue,translations=dialogueTranslations[lesson().title];
+ return Array.isArray(lines)&&lines.length>=4&&
+  Array.isArray(translations)&&translations.length===lines.length&&
+  typeof translations[1]==='string'&&translations[1].trim()&&
+  new Set(translations.filter(v=>typeof v==='string'&&v.trim())).size>=3;
 }
 function canAdvance(){
 if(step===0)return level==='A1'?requiredCardsSeen():flippedWords.size>=requiredCardCount();
@@ -174,7 +177,7 @@ if(step===4)return compositionChecked;
 if(step===5)return testCompleted;
 return true
 }
-function moveNext(){if(!canAdvance()){note([level==='A1'?'Сначала откройте перевод первых десяти слов на карточках.':'Сначала откройте перевод как минимум пяти разных слов на карточках.','Прочитайте правило и выберите правильный ответ.',level==='A1'?'Отметьте повторение вслух и ответьте на вопрос о продолжении диалога.':'Прослушайте диалог и повторите хотя бы одну реплику вслух.','Сначала правильно напишите не менее трёх слов.','Сначала напишите мини-сочинение и проверьте его структуру.','Сначала ответьте на все вопросы итоговой проверки.'][step]);return}if(step<5){step++;save();stageView()}else{const old=read(KEY);const finished=old.completed||{};finished[lessonKey()]={score:testCorrect,max:Math.min(10,rows().length),errors:quizMisses.map(v=>v.hu),date:new Date().toISOString()};old.completed=finished;try{localStorage.setItem(KEY,JSON.stringify(old));persistQuiz(true)}catch(_){note('Не удалось сохранить результат. Скопируйте его перед выходом.');return}if(lessonIndex+1<courses[level].length){const nextIndex=lessonIndex+1;confirmLessonChange(nextIndex);if(lessonIndex===nextIndex)note('Проверка слов завершена ('+Math.round(testCorrect/Math.max(1,Math.min(10,rows().length))*100)+'%). Вы перешли к следующему уроку.');else note('✓ Урок завершён. Выберите повторение или продолжение обучения.')}else{step=0;save();render();note(Object.keys(courses[level]).every(i=>finished[level+':'+i])?'✓ Все подготовленные уроки этого уровня завершены.':'✓ Урок завершён. В списке уроков выберите следующий без отметки ✓.')}}}
+function moveNext(){if(!canAdvance()){note([level==='A1'?'Сначала откройте перевод первых десяти слов на карточках.':'Сначала откройте перевод как минимум пяти разных слов на карточках.','Прочитайте правило и выберите правильный ответ.',level==='A1'?'Отметьте повторение вслух и правильно выберите русский перевод венгерской реплики.':'Прослушайте диалог и повторите хотя бы одну реплику вслух.','Сначала правильно напишите не менее трёх слов.','Сначала напишите мини-сочинение и проверьте его структуру.','Сначала ответьте на все вопросы итоговой проверки.'][step]);return}if(step<5){step++;save();stageView()}else{const old=read(KEY);const finished=old.completed||{};finished[lessonKey()]={score:testCorrect,max:Math.min(10,rows().length),errors:quizMisses.map(v=>v.hu),date:new Date().toISOString()};old.completed=finished;try{localStorage.setItem(KEY,JSON.stringify(old));persistQuiz(true)}catch(_){note('Не удалось сохранить результат. Скопируйте его перед выходом.');return}if(lessonIndex+1<courses[level].length){const nextIndex=lessonIndex+1;confirmLessonChange(nextIndex);if(lessonIndex===nextIndex)note('Проверка слов завершена ('+Math.round(testCorrect/Math.max(1,Math.min(10,rows().length))*100)+'%). Вы перешли к следующему уроку.');else note('✓ Урок завершён. Выберите повторение или продолжение обучения.')}else{step=0;save();render();note(Object.keys(courses[level]).every(i=>finished[level+':'+i])?'✓ Все подготовленные уроки этого уровня завершены.':'✓ Урок завершён. В списке уроков выберите следующий без отметки ✓.')}}}
 
 function read(key){try{return JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(_){return {}}}
 function save(){const s=read(KEY);s[level]={lessonIndex,step};if(level==='A1'){s.migratedFirstUnit20261121=true;const stages=s.a1LessonStages&&typeof s.a1LessonStages==='object'&&!Array.isArray(s.a1LessonStages)?s.a1LessonStages:{};stages[String(lessonIndex)]=step;s.a1LessonStages=stages;}try{localStorage.setItem(KEY,JSON.stringify(s))}catch(_){}}
@@ -831,40 +834,36 @@ function renderDialogueUnderstanding(){
  container.hidden=level!=='A1';
  choices.replaceChildren();
  if(level!=='A1')return;
- const lines=lesson().dialogue;
  if(!canAssessDialogueSequence()){
   container.hidden=true;
-  // A short or missing dialogue cannot be assessed with this sequence question.
-  // Do not record a successful comprehension answer that was never given.
-  $('integratedDialogueUnderstandingFeedback').textContent='Для этого короткого диалога отдельная проверка последовательности недоступна.';
+  $('integratedDialogueUnderstandingFeedback').textContent='Для этого диалога отдельная проверка перевода недоступна.';
   return;
  }
- $('integratedDialogueUnderstandingPrompt').textContent='Проверка понимания диалога: какая реплика идёт сразу после «'+lines[0]+'»?';
+ const lines=lesson().dialogue,translations=dialogueTranslations[lesson().title];
+ const prompt=lines[1],correct=translations[1];
+ // A language-understanding task should ask about meaning, not merely which
+ // visible dialogue line follows another one.
+ $('integratedDialogueUnderstandingPrompt').textContent='Что означает венгерская реплика «'+prompt+'»?';
  const feedback=$('integratedDialogueUnderstandingFeedback');
- feedback.textContent=dialogueUnderstood?'✓ Вы уже правильно ответили на этот вопрос.':'Выберите следующую реплику. Это проверка понимания последовательности, а не произношения.';
- const alternatives=[...new Set(lines.slice(1).filter(v=>typeof v==='string'))].slice(0,3);
- if(alternatives.length<2){container.hidden=true;dialogueUnderstood=true;return;}
- const correct=lines[1];
- if(!alternatives.includes(correct))alternatives.unshift(correct);
+ feedback.textContent=dialogueUnderstood?'✓ Вы уже правильно ответили на этот вопрос.':'Выберите правильный русский перевод. Это проверка понимания, а не оценка произношения.';
+ const alternatives=[correct,...randomOrder([...new Set(translations.filter(v=>typeof v==='string'&&v.trim()&&v!==correct))]).slice(0,2)];
  randomOrder(alternatives).forEach(answer=>{
-  const button=el('button',answer,'integrated-answer');button.type='button';button.lang='hu';
+  const button=el('button',answer,'integrated-answer');button.type='button';button.lang='ru';
   button.disabled=dialogueUnderstood;
   button.onclick=()=>{
+   if(dialogueUnderstood)return;
    const good=answer===correct;
-   choices.querySelectorAll('button').forEach(b=>{
-    b.classList.toggle('right',b.textContent===correct);
-    b.classList.toggle('wrong',b===button&&!good);
-    b.setAttribute('aria-pressed',String(b===button));
-   });
    if(good){
-    dialogueUnderstood=true;
-    saveCheckpoint();
-    choices.querySelectorAll('button').forEach(b=>b.disabled=true);
-    feedback.textContent='✓ Верно! Вы нашли правильное продолжение диалога.';
+    dialogueUnderstood=true;saveCheckpoint();
+    choices.querySelectorAll('button').forEach(b=>{
+     b.disabled=true;b.classList.toggle('right',b.textContent===correct);
+    });
+    feedback.textContent='✓ Верно! Значение венгерской реплики определено правильно.';
     if(step===2)stepButton.disabled=!canAdvance();
    }else{
-    button.disabled=true;
-    feedback.textContent='Пока неверно. Послушайте диалог ещё раз и попробуйте другой ответ.';
+    button.disabled=true;button.classList.add('wrong');
+    button.setAttribute('aria-pressed','true');
+    feedback.textContent='Пока неверно. Прочитайте или прослушайте реплику ещё раз и попробуйте другой перевод.';
    }
   };choices.append(button);
  });
@@ -998,7 +997,7 @@ $('integratedGrammarMore').onclick=()=>{
 };
 /* A nyelvtani állomás teljesítését a példára épülő helyes válasz igazolja. */
 const dialogueLines=()=>lesson().dialogue;
-$('integratedDialogueRepeat').onclick=()=>{dialoguePractised=true;saveCheckpoint();if(step===2)stepButton.disabled=!canAdvance();$('integratedDialogueFeedback').textContent=level==='A1'?'Повторение отмечено по вашей самооценке, произношение автоматически не проверено. Для продолжения правильно ответьте на вопрос о диалоге.':'Повторение отмечено по вашей самооценке. Произношение автоматически не проверялось.';};
+$('integratedDialogueRepeat').onclick=()=>{dialoguePractised=true;saveCheckpoint();if(step===2)stepButton.disabled=!canAdvance();$('integratedDialogueFeedback').textContent=level==='A1'?'Повторение отмечено по вашей самооценке, произношение автоматически не проверено. Для продолжения правильно выберите перевод венгерской реплики.':'Повторение отмечено по вашей самооценке. Произношение автоматически не проверялось.';};
 $('integratedDialogueMic').onclick=()=>{
  const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
  if(!Recognition){$('integratedDialogueFeedback').textContent='В этом браузере распознавание речи недоступно. Повторите фразу вслух, затем нажмите «Я повторил(а) вслух».';return}
