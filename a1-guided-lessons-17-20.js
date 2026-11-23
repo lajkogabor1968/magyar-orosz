@@ -5,6 +5,7 @@
     {
       title: 'Комнаты дома: где находится?',
       words: ['konyha', 'nappali', 'fürdőszoba', 'hálószoba', 'lakás', 'szoba', 'asztal', 'szekrény', 'lámpa', 'ágy', 'ablak'],
+      supplemental: [["nappali","гостиная","A nappaliban van egy lámpа.","В гостиной есть лампа."]],
       extra: [
         ['konyhában', 'на кухне', 'A konyhában van egy asztal.', 'На кухне есть стол.'],
         ['nappaliban', 'в гостиной', 'A nappaliban van egy lámpa.', 'В гостиной есть лампа.'],
@@ -122,6 +123,7 @@
     {
       title: 'На столе или на стуле? -on/-en/-ön',
       words: ['asztal', 'szék', 'lámpa', 'tábla', 'könyv', 'táska', 'ceruza', 'telefon', 'kulcs', 'fal', 'van'],
+      supplemental: [["fal","стена","A tábla a falon van.","Доска находится на стене."]],
       examples: {szék: ['Ez egy szék.', 'Это стул.']},
       extra: [
         ['polc', 'полка', 'A polc nagy.', 'Полка большая.'],
@@ -182,6 +184,7 @@
     {
       title: 'В классе: рядом, перед, за, под',
       words: ['iskola', 'tanár', 'diák', 'tábla', 'asztal', 'szék', 'ajtó', 'ablak', 'könyv', 'táska', 'mellett', 'előtt', 'mögött'],
+      supplemental: [["mellett","рядом с","Az ajtó mellett van.","Находится рядом с дверью."],["mögött","за; позади","Az ajtó mögött van.","Находится за дверью."]],
       examples: {szék: ['Ez egy szék.', 'Это стул.']},
       extra: [
         ['alatt', 'под', 'A táska az asztal alatt van.', 'Сумка находится под столом.'],
