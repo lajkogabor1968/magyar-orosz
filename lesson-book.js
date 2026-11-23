@@ -31,6 +31,10 @@ improveA1Foundations();
 // full vocabulary; these are teaching-specific bilingual sentence pairs.
 function improveEarlyA1CardExamples(){
  const greetings=courses.A1[1];
+ // Family lesson: eight essential words teach the first family introduction.
+ // barát and testvér stay at their original indices as optional extension;
+ // earlier saved card and writing records must keep the same meaning.
+ courses.A1[2].coreCount=8;
  greetings.examples={...greetings.examples,
   'én':['Én jól vagyok.','У меня всё хорошо.'],
   'te':['Te hogy vagy?','А ты как?'],
@@ -211,7 +215,8 @@ function grammarQuestion(){
 }
 
 function note(message){let node=$('integratedStepStatus');if(!node){node=el('p','','lesson-step-status');node.id='integratedStepStatus';node.setAttribute('role','status');node.setAttribute('aria-live','polite');$('integratedStepNext').after(node)}node.textContent=message}
-function requiredCardCount(){return Math.min(level==='A1'?10:5,rows().length)}
+function requiredCardCount(){return Math.min(level==='A1'?(lesson().coreCount||10):5,rows().length)}
+function quizQuestionCount(){return level==='A1'?requiredCardCount():Math.min(10,rows().length)}
 function cardChunks(){const count=requiredCardCount();return count>5?[[0,5],[5,count]]:[[0,count]]}
 function resumeA1CardIndex(){
  if(level!=='A1'||a1FastTrackPassed)return 0;
@@ -242,7 +247,7 @@ if(step===4)return compositionChecked;
 if(step===5)return testCompleted;
 return true
 }
-function moveNext(){if(!canAdvance()){note([level==='A1'?'Сначала изучите две группы по пять карточек или пройдите необязательную короткую проверку знакомых слов.':'Сначала откройте перевод как минимум пяти разных слов на карточках.','Прочитайте правило и выберите правильный ответ.','Прослушайте диалог и повторите хотя бы одну реплику вслух.','Сначала правильно напишите не менее трёх слов.','Сначала напишите мини-сочинение и проверьте его структуру.','Сначала ответьте на все вопросы итоговой проверки.'][step]);return}if(step<5){step++;save();stageView()}else{const old=read(KEY);const finished=old.completed||{};finished[lessonKey()]={score:testCorrect,max:Math.min(10,rows().length),errors:quizMisses.map(v=>v.hu),date:new Date().toISOString()};old.completed=finished;try{localStorage.setItem(KEY,JSON.stringify(old));persistQuiz(true)}catch(_){note('Не удалось сохранить результат. Скопируйте его перед выходом.');return}if(lessonIndex+1<courses[level].length){const nextIndex=lessonIndex+1;confirmLessonChange(nextIndex);if(lessonIndex===nextIndex)note('✓ Урок завершён. Вы перешли к следующему.');else note('✓ Урок завершён. Выберите повторение или продолжение обучения.')}else{step=0;save();render();note(Object.keys(courses[level]).every(i=>finished[level+':'+i])?'✓ Все подготовленные уроки этого уровня завершены.':'✓ Урок завершён. В списке уроков выберите следующий без отметки ✓.')}}}
+function moveNext(){if(!canAdvance()){note([level==='A1'?'Сначала изучите две группы обязательных карточек или пройдите необязательную короткую проверку знакомых слов.':'Сначала откройте перевод как минимум пяти разных слов на карточках.','Прочитайте правило и выберите правильный ответ.','Прослушайте диалог и повторите хотя бы одну реплику вслух.','Сначала правильно напишите не менее трёх слов.','Сначала напишите мини-сочинение и проверьте его структуру.','Сначала ответьте на все вопросы итоговой проверки.'][step]);return}if(step<5){step++;save();stageView()}else{const old=read(KEY);const finished=old.completed||{};finished[lessonKey()]={score:testCorrect,max:quizTargetCount,errors:quizMisses.map(v=>v.hu),date:new Date().toISOString()};old.completed=finished;try{localStorage.setItem(KEY,JSON.stringify(old));persistQuiz(true)}catch(_){note('Не удалось сохранить результат. Скопируйте его перед выходом.');return}if(lessonIndex+1<courses[level].length){const nextIndex=lessonIndex+1;confirmLessonChange(nextIndex);if(lessonIndex===nextIndex)note('✓ Урок завершён. Вы перешли к следующему.');else note('✓ Урок завершён. Выберите повторение или продолжение обучения.')}else{step=0;save();render();note(Object.keys(courses[level]).every(i=>finished[level+':'+i])?'✓ Все подготовленные уроки этого уровня завершены.':'✓ Урок завершён. В списке уроков выберите следующий без отметки ✓.')}}}
 
 function read(key){try{return JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(_){return {}}}
 function save(){const s=read(KEY);s[level]={lessonIndex,step};if(level==='A1')s.migratedFirstUnit20261121=true;try{localStorage.setItem(KEY,JSON.stringify(s))}catch(_){}}
@@ -743,7 +748,7 @@ function renderFastTrack(){
  $('a1FastTrackStart').hidden=a1FastTrackPassed||cardChunks().every((_,i)=>checkedBatches.has(i)||fastTrackPacks.has(i));
  $('a1FastTrackFeedback').textContent=a1FastTrackPassed
   ? '✓ Обе группы проверены письменно. Можно перейти к правилу, но все карточки доступны для повторения.'
-  : fastTrackPacks.size?'✓ Проверено письменно: '+fastTrackPacks.size+' из '+cardChunks().length+' блоков. Остальные можно выучить или проверить.':'Проверка добровольная. Без неё можно пройти две обычные группы по пять карточек.';
+  : fastTrackPacks.size?'✓ Проверено письменно: '+fastTrackPacks.size+' из '+cardChunks().length+' блоков. Остальные можно выучить или проверить.':'Проверка добровольная. Без неё можно пройти все обязательные карточки двумя короткими группами.';
 }
 function updateCardProgress(){
  const flash=$('integratedFlashcard');let meter=flash.querySelector('.lesson-card-mastery');
@@ -810,6 +815,7 @@ function renderCardCheckpoint(){
  if(checkRendered===token&&!panel.hidden)return;
  checkRendered=token;panel.hidden=false;
  const [first,last]=chunks[eligible],wordIndex=Math.min(last-1,first+(checkStep===0?1:3));
+ panel.querySelector('h4').textContent='Проверьте себя: '+(last-first)+' '+(last-first===3?'слова':'слов');
  const target=rows()[wordIndex],choices=$('a1CardCheckOptions');
  $('a1CardCheckPrompt').textContent='Блок '+(eligible+1)+' · Вопрос '+(checkStep+1)+' из 2. Как по-венгерски: «'+target.ru+'»?';
  $('a1CardCheckFeedback').textContent='Выберите одно из трёх слов.';
@@ -919,24 +925,29 @@ function checkComposition(){
  if(compositionChecked)note('Проверка формы завершена. Содержание можно обсудить с преподавателем.');
 }
 const quizKey='magyarorosz.lesson-quiz.v1';
-let quizAnswers=[];
+let quizAnswers=[],quizTargetCount=0;
 function persistQuiz(clear=false){
  const records=read(quizKey);
  if(clear)delete records[lessonKey()];
- else records[lessonKey()]={order:testOrder.map(i=>rows()[i].hu),answers:quizAnswers,index:testIndex,done:testCompleted};
+ else records[lessonKey()]={order:testOrder.map(i=>rows()[i].hu),answers:quizAnswers,index:testIndex,done:testCompleted,count:quizTargetCount};
  try{localStorage.setItem(quizKey,JSON.stringify(records))}catch(_){}
 }
 function resumeQuiz(){
  quizAnswers=[];
+ quizTargetCount=quizQuestionCount();
  if(level==='A1')testOrder=initialTestOrder();
  const saved=read(quizKey)[lessonKey()],w=rows();
  if(!saved||!Array.isArray(saved.order)||!Array.isArray(saved.answers))return;
- const order=saved.order.map(hu=>w.findIndex(r=>r.hu===hu)),n=Math.min(10,w.length);
+ // Legacy quizzes had ten questions and no saved count. Resume them at
+ // their original length even if a lesson now has a smaller mandatory core.
+ const n=saved.count===undefined?Math.min(10,w.length):saved.count;
+ const order=saved.order.map(hu=>w.findIndex(r=>r.hu===hu));
+ if(!Number.isInteger(n)||n<1||n>Math.min(10,w.length))return;
  if(order.length!==w.length||order.includes(-1)||new Set(order).size!==w.length||
     !Number.isInteger(saved.index)||saved.index<0||saved.index>=n||
     ![saved.index,saved.index+1].includes(saved.answers.length)||
     saved.answers.some(a=>typeof a!=='string')||(saved.done&&saved.answers.length!==n))return;
- testOrder=order;testIndex=saved.index;quizAnswers=saved.answers;
+ quizTargetCount=n;testOrder=order;testIndex=saved.index;quizAnswers=saved.answers;
  for(const [i,a] of quizAnswers.entries()){
   const v=w[order[i]];
   if(a===v.ru)testCorrect++;else quizMisses.push(v);
@@ -945,11 +956,11 @@ function resumeQuiz(){
 }
 function showQuizResult(){
  renderErrorSummary();
- const n=Math.min(10,rows().length),percent=Math.round(testCorrect/n*100);
+ const n=quizTargetCount,percent=Math.round(testCorrect/n*100);
  $('integratedAnswerFeedback').textContent='Результат: '+testCorrect+' / '+n+' ('+percent+'%). '+(percent>=90?'Отлично! Вы готовы к следующему уроку.':'Рекомендуем повторить слова и добиться 90%, но это не обязательное условие.');
  $('integratedNextQuestion').hidden=true;stepButton.disabled=false;
 }
-function test(){const w=rows(),v=w[testOrder[testIndex]??testIndex%w.length],box=$('integratedQuestion');box.replaceChildren();$('integratedErrorSummary').hidden=true;if(!v)return;const p=el('p',v.hu);p.lang='hu';box.append(p);const seen=new Set([v.ru]);const distractors=level==='A1'?w.slice(0,requiredCardCount()):w;const others=randomOrder(distractors.filter(r=>r.ru!==v.ru)).filter(r=>{if(seen.has(r.ru))return false;seen.add(r.ru);return true}).slice(0,3);const options=randomOrder([v,...others]);for(const candidate of options){const b=el('button',candidate.ru,'integrated-answer');b.type='button';b.onclick=()=>{if(hasAnswered||testCompleted)return;hasAnswered=true;quizAnswers[testIndex]=candidate.ru;persistQuiz();const good=candidate.ru===v.ru;if(good)testCorrect++;else quizMisses.push({hu:v.hu,ru:v.ru,example:v.example,translation:v.translation});$('integratedAnswerFeedback').textContent=good?'✓ Верно! '+v.hu+' — '+v.ru:'✗ Вы выбрали: '+candidate.ru+'. Правильный перевод: '+v.ru+'. Пример: '+v.example+' — '+v.translation+'. Прослушайте и повторите слово.';$('integratedNextQuestion').hidden=false;box.querySelectorAll('button').forEach(btn=>btn.disabled=true);$('integratedStepNext').disabled=true};box.append(b)}$('integratedNextQuestion').hidden=true;$('integratedAnswerFeedback').textContent='Вопрос '+(testIndex+1)+' / '+Math.min(10,w.length);
+function test(){const w=rows(),v=w[testOrder[testIndex]??testIndex%w.length],box=$('integratedQuestion');box.replaceChildren();$('integratedErrorSummary').hidden=true;if(!v)return;const p=el('p',v.hu);p.lang='hu';box.append(p);const seen=new Set([v.ru]);const distractors=level==='A1'?w.slice(0,requiredCardCount()):w;const others=randomOrder(distractors.filter(r=>r.ru!==v.ru)).filter(r=>{if(seen.has(r.ru))return false;seen.add(r.ru);return true}).slice(0,3);const options=randomOrder([v,...others]);for(const candidate of options){const b=el('button',candidate.ru,'integrated-answer');b.type='button';b.onclick=()=>{if(hasAnswered||testCompleted)return;hasAnswered=true;quizAnswers[testIndex]=candidate.ru;persistQuiz();const good=candidate.ru===v.ru;if(good)testCorrect++;else quizMisses.push({hu:v.hu,ru:v.ru,example:v.example,translation:v.translation});$('integratedAnswerFeedback').textContent=good?'✓ Верно! '+v.hu+' — '+v.ru:'✗ Вы выбрали: '+candidate.ru+'. Правильный перевод: '+v.ru+'. Пример: '+v.example+' — '+v.translation+'. Прослушайте и повторите слово.';$('integratedNextQuestion').hidden=false;box.querySelectorAll('button').forEach(btn=>btn.disabled=true);$('integratedStepNext').disabled=true};box.append(b)}$('integratedNextQuestion').hidden=true;$('integratedAnswerFeedback').textContent='Вопрос '+(testIndex+1)+' / '+quizTargetCount;
  if(hasAnswered){
   box.querySelectorAll('button').forEach(b=>b.disabled=true);
   const a=quizAnswers[testIndex];
@@ -1157,7 +1168,7 @@ $('integratedWritingNext').onclick=()=>{writeIndex=(writeIndex+1)%rows().length;
 $('integratedCompositionSave').onclick=saveComposition;
 $('integratedCompositionCheck').onclick=checkComposition;
 $('integratedCompositionText').addEventListener('input',()=>{const drafts=read('magyarorosz.lesson-writing.v1');drafts[lessonKey()]=$('integratedCompositionText').value;let saved=true;try{localStorage.setItem('magyarorosz.lesson-writing.v1',JSON.stringify(drafts))}catch(_){saved=false}compositionChecked=false;if(step===4)stepButton.disabled=true;$('integratedCompositionFeedback').textContent=saved?'Черновик сохранён на этом устройстве. Проверьте текст ещё раз.':'Не удалось сохранить черновик. Скопируйте текст перед выходом.';});
-$('integratedNextQuestion').onclick=()=>{if(testIndex+1>=Math.min(10,rows().length)){testCompleted=true;persistQuiz();showQuizResult();note('Проверка завершена. Вы можете перейти к следующему уроку.');return}testIndex++;hasAnswered=false;persistQuiz();test();stepButton.disabled=true};
+$('integratedNextQuestion').onclick=()=>{if(testIndex+1>=quizTargetCount){testCompleted=true;persistQuiz();showQuizResult();note('Проверка завершена. Вы можете перейти к следующему уроку.');return}testIndex++;hasAnswered=false;persistQuiz();test();stepButton.disabled=true};
 $('integratedNextLesson').onclick=()=>confirmLessonChange(Math.min(courses[level].length-1,lessonIndex+1));
 $('integratedAllWords').onclick=()=>{dialogueRecognition.stop();root.classList.remove('study-book');view.hidden=true;document.querySelector('.tab[data-view="list"]')?.click();root.classList.add('study-active')};
 // Make Hungarian letters available everywhere the beginner writes: word,

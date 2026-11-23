@@ -58,7 +58,7 @@ const knownWords=new Set(context.window.MAGYAR_OROSZ_DATA.A1.map(row=>row[0].toL
 const taught=new Set();
 const allTaught=new Set();
 const titles=new Set();
-let totalNew=0,overloaded=0;
+let totalNew=0,overloaded=0,familyRequiredNew=0,familyOptionalNew=0;
 
 if(courses.A1.length!==30)fail('A1','LESSON_COUNT',`A várt 30 helyett ${courses.A1.length} lecke szerepel.`);
 if(courses.A2.length!==3)fail('A2','FROZEN_A2','Az A2-es leckék száma módosult.');
@@ -70,6 +70,9 @@ for(const [index,lesson] of courses.A1.entries()){
  if(!lesson.title||titles.has(lesson.title))fail(id,'TITLE','Üres vagy ismétlődő leckecím.');
  titles.add(lesson.title);
  if(!Array.isArray(lesson.words)||lesson.words.length<5||lesson.words.length>20)fail(id,'WORD_LOAD','A szókártyák száma nincs 5 és 20 között.');
+ const coreCount=lesson.coreCount??Math.min(10,lesson.words.length);
+ if(!Number.isInteger(coreCount)||coreCount<5||coreCount>Math.min(10,lesson.words.length))
+  fail(id,'CORE_COUNT','A kötelező szókártyák száma nem ellenőrizhető vagy kívül esik az 5–10 közötti tartományon.');
  if(!unique(lesson.words))fail(id,'DUPLICATE_WORD','Azonos szó kétszer szerepel az egy leckén belüli szókártyalistában.');
  const extras=new Map((lesson.extra||[]).map(row=>[String(row[0]).toLocaleLowerCase('hu-HU'),row]));
  if(extras.size!==(lesson.extra||[]).length)fail(id,'DUPLICATE_EXTRA','Az új kifejezés többször szerepel a leckében.');
@@ -83,6 +86,12 @@ for(const [index,lesson] of courses.A1.entries()){
   if(row.length!==4||row.some(value=>typeof value!=='string'||!value.trim()))fail(id,'EXTRA_TRANSLATION','Hiányos magyar–orosz szókártya vagy példamondat.');
  }
  const newWords=lesson.words.filter(word=>!taught.has(word.toLocaleLowerCase('hu-HU')));
+ if(index===2){
+  familyRequiredNew=lesson.words.slice(0,coreCount).filter(word=>!taught.has(word.toLocaleLowerCase('hu-HU'))).length;
+  familyOptionalNew=newWords.length-familyRequiredNew;
+  if(coreCount!==8||lesson.words[8]!=='barát'||lesson.words[9]!=='testvér')
+   fail(id,'FAMILY_CORE','A családlecke kötelező nyolc szava vagy a két eredeti helyű opcionális szó megváltozott.');
+ }
  totalNew+=newWords.length;
  if(newWords.length>8){
   overloaded++;
@@ -121,6 +130,8 @@ if(!book.includes('function resumeA1CardIndex()')||!book.includes('restoreCheckp
  fail('A1','FIVE_WORD_RESUME','Az első ötszavas blokk után nincs menthető szünet, vagy újranyitáskor nem áll vissza a befejezetlen kártya.');
 if(!book.includes('a1FastTrackPacks:[...fastTrackPacks]')||!book.includes('fastTrackPacks.add(part)')||!book.includes('fastTrackPacks.has(i)||(checkedBatches.has(i)'))
  fail('A1','PARTIAL_KNOWN_WORDS','Az ismert ötszavas csoport nem ugorható át külön, vagy a részleges ellenőrzés nincs biztonságosan mentve.');
+if(!book.includes('function quizQuestionCount()')||!book.includes('quizTargetCount=quizQuestionCount()')||!book.includes('saved.count===undefined?Math.min(10,w.length):saved.count')||!book.includes('max:quizTargetCount'))
+ fail('A1','LEGACY_QUIZ_LENGTH','A csökkentett kötelező szóanyag zárótesztje vagy a régi tízkérdéses teszt mentése nem biztonságos.');
 if(!book.includes("const KEY='magyarorosz.lesson-route.v1'")||!book.includes("const checkpointKey='magyarorosz.lesson-checkpoint.v1'"))fail('A1','SAVED_PROGRESS','A korábbi leckék és részfeladatok mentési kulcsa módosult.');
 if(!book.includes('randomOrder(reading.options.map')||!book.includes('randomOrder(c.a.map'))fail('A1','ANSWER_ORDER','A választási lehetőségek sorrendje nem keveredik.');
 if(!/src="lesson-book\.js\?v=[^\"]+"/.test(html))fail('A1','PUBLISHED_SCRIPT','A tanulói oldalon nincs gyorsítótár-verziózott leckemotor.');
@@ -132,6 +143,7 @@ flag('A1','HUMAN_REVIEW','A teljes magyar–orosz nyelvi helyességet, a több e
 
 console.log(`A1 KIADÁS ELŐTTI AUDIT · ${courses.A1.length} lecke · ${totalNew} első alkalommal előforduló alapszókártya · ${allTaught.size} különböző szó/kifejezés az extrákkal`);
 console.log(`KRITIKUS: ${blockers.length} · FELÜLVIZSGÁLANDÓ: ${reviews.length} · TÚLTERHELT SZÓKINCSELSŐSÉG: ${overloaded} lecke`);
+console.log(`CSALÁDLECKE PILOT: ${familyRequiredNew} új kötelező szó · ${familyOptionalNew} új, választható szó (eredeti kártyaindexekkel; a 13-as figyelmeztetés továbbra is minden új szót számol).`);
 for(const issue of blockers)console.log(`HIBA | ${issue.lesson} | ${issue.code} | ${issue.message}`);
 for(const issue of reviews)console.log(`FIGYELMEZTETÉS | ${issue.lesson} | ${issue.code} | ${issue.message}`);
 console.log('Megjegyzés: a strukturális PASS nem jelent hitelesített fordítást vagy igazolt A1-es nyelvtudást.');

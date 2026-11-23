@@ -20,6 +20,7 @@ class Element {
  after(item){const index=this.parent.children.indexOf(this);item.parent=this.parent;this.parent.children.splice(index+1,0,item)}
  replaceChildren(...items){this.children=[];this.append(...items)}
  setAttribute(key,value){(this.attributes??={})[key]=value}
+ querySelector(selector){return this.children.find(child=>child.tag===selector)}
 }
 const root=new Element('main'),flash=new Element('section');flash.id='integratedFlashcard';root.append(flash);
 const find=(node,id)=>node.id===id?node:node.children.map(child=>find(child,id)).find(Boolean);
@@ -28,7 +29,7 @@ const state={
  level:'A1',flippedWords:new Set([0,1,2,3]),checkedBatches:new Set(),
  a1FastTrackPassed:false,fastTrackPacks:new Set(),
  checkBatch:-1,checkStep:0,checkRendered:'',cardIndex:4,step:0,
- rows:()=>words,$:id=>find(root,id),el:(...args)=>new Element(...args),
+ rows:()=>words,lesson:()=>({}),$:id=>find(root,id),el:(...args)=>new Element(...args),
  randomOrder:items=>[...items].reverse(),
  saveCheckpoint:()=>{saved++},
  save:()=>{routeSaved++},back:{click:()=>{breaks++}},
@@ -77,7 +78,7 @@ assert.equal(pause.hidden,false,'the break option also works after the first gro
 assert.equal(find(root,'a1CardCheckpoint').hidden,true,'a written placement is not presented as an ordinary retrieval quiz');
 
 const suggested=(level,flipped,checked=[],quick=false,placed=[])=>runInNewContext(`${required}\n${chunks}\n${resumeIndex}\nresumeA1CardIndex()`,{
- level,a1FastTrackPassed:quick,flippedWords:new Set(flipped),checkedBatches:new Set(checked),fastTrackPacks:new Set(placed),rows:()=>words
+ level,a1FastTrackPassed:quick,flippedWords:new Set(flipped),checkedBatches:new Set(checked),fastTrackPacks:new Set(placed),rows:()=>words,lesson:()=>({})
 });
 assert.equal(suggested('A1',[]),0,'brand-new A1 begins with the first card');
 assert.equal(suggested('A1',[0,1]),2,'returning after two cards resumes the third');
@@ -92,7 +93,7 @@ assert.match(source,/restoreCheckpoint\(\);cardIndex=resumeA1CardIndex\(\);resum
 
 const legacy=extract(/function restoreCheckpoint\(\)\{[\s\S]*?\n\}/);
 const restore=flipped=>runInNewContext(`${required}\n${chunks}\n${legacy}\nrestoreCheckpoint();([...checkedBatches])`,{
- level:'A1',rows:()=>words,lessonKey:()=> 'A1:2',
+ level:'A1',rows:()=>words,lesson:()=>({}),lessonKey:()=> 'A1:2',
  checkpoint:()=>({flipped,written:[],grammar:false,dialogue:false}),
  flippedWords:new Set(),correctWriting:new Set(),checkedBatches:new Set(),
  fastTrackPacks:new Set(),

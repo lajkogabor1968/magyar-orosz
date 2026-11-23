@@ -30,7 +30,7 @@ let checkpointSaved=0,routeSaved=0,renderedStep=-1,announced='',renderedCards=0;
 const state={
  level:'A1',step:0,lessonIndex:0,flippedWords:new Set(),checkedBatches:new Set(),
  a1FastTrackPassed:false,fastTrackPacks:new Set(),fastTrackWords:[],fastTrackPosition:0,grammarReviewed:false,cardIndex:0,
- rows:()=>words,el:(...args)=>new Element(...args),$:lookup,
+ rows:()=>words,lesson:()=>({}),el:(...args)=>new Element(...args),$:lookup,
  writingFeedback:spelling,randomOrder:list=>[...list],
  saveCheckpoint:()=>{checkpointSaved++},save:()=>{routeSaved++},
  stageView:()=>{renderedStep=state.step},note:message=>{announced=message},card:()=>{renderedCards++}

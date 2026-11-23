@@ -25,9 +25,10 @@ tananyag-tervezési és ellenőrzési elveiből indultunk ki.
 | 30 A1-es lecke, egyedi sorrend, régi azonosítók | Rendben | A korábbi tanulói eredmények kulcsai érintetlenek. |
 | Szókártyák, orosz magyarázatok, minták, párbeszédek | 30/30 lecke szerkezetileg ellenőrizve | Ez **nem** hitelesíti a fordítások nyelvi helyességét. |
 | Nyelvtani és szövegértési javítókulcs | 30/30 lecke: létező kulcs, nem duplikált választási lehetőségek | A többféleképpen helyes válaszok emberi lektorálása még szükséges. |
-| Tanítás előtti számonkérés kizárása | Az A1-es záróteszt tíz kérdése az első tíz bemutatott szóra korlátozódik; az ötszavas csoportok külön-külön, két hibátlan írásválasszal átugorhatók | Két mintaszó nem igazolja mind az öt szó tudását. A nyelvtani, beszéd-, írás- és zárófeladat nem ugorható át. |
+| Tanítás előtti számonkérés kizárása | Az A1-es záróteszt csak az adott leckében kötelezőnek jelölt, előre bemutatott szavakat kérdezi (általában 10, a 3. leckében 8); a tanulási csoportok külön-külön, két hibátlan írásválasszal átugorhatók | Két mintaszó nem igazolja a teljes csoport tudását. A nyelvtani, beszéd-, írás- és zárófeladat nem ugorható át. |
 | Teljes automatikus A1-audit | **0 fennmaradó kritikus szerkezeti találat** | A feltárt első leckés magyarázati hiányt javítottuk. |
 | Szókincsterhelés | **13 lecke szakmai felülvizsgálatra jelölve** | 9–13 új alapszókártya; figyelmeztetés, nem automatikus bukás. A 29–30. leckében legfeljebb 8 új kötelező szó szerepel. |
+| 3. A1-lecke csökkentett kötelező anyaga | **8 kötelező + 2 választható, régi indexen** | Az összes új szószám alapú 13 figyelmeztetés változatlan; valós pedagógiai előnyt még nem mértünk. |
 | Vezetett út / A1-szótár | 199/580 különböző címszó, **34,3%** | Nem tekinthető kész A1-es útvonalnak. |
 | A1-es kezdőlecke szabad kiválasztása | Szimulált állapotteszt sikeres | A 2. vagy későbbi lecke közvetlenül megnyitható, a választás mentődik; valódi mobilos próba még nincs. |
 | Ismert szavak gyors A1-es ellenőrzése | Két pontos magyar írásválasz egy ötszavas csoporthoz; az első csoport sikere a második hibája után is megmarad | A felismert csoport külön mentődik, nem jelöl meg nem nyitott kártyákat; valódi tanulói validálás még hátravan. |
@@ -136,6 +137,19 @@ A `verify-a1-fast-track.mjs`, `verify-a1-card-chunks.mjs` és
 `verify-a1-teach-before-test.mjs` szimulálja a két csoport kombinációit
 és a visszaállítást. A 13 nagy új-szószámú lecke **tartalmi terhelését ez
 nem szünteti meg**, csak a már ismert anyag fölösleges ismétlését csökkenti.
+
+**Családlecke nyolc kötelező szóval – 2026. november 23.:**
+az A1/3 családbemutató témájában az első nyolc szó a kötelező rész,
+a `barát` és `testvér` szabadon gyakorolható kilencedik–tizedik kártya.
+Így az új tanuló két, **5+3 szavas** egységet tanul és nyolc kérdésből
+áll a zárótesztje. A kártyák eredeti indexe, a korábban megírt válaszok
+és a leckeazonosító nem változott. Az új teszt mentett kérdésszáma 8,
+de a régi rekordok számmező nélkül **10 kérdésesnek számítanak**, így
+a folyamatban levő korábbi teszt sem rövidül le utólag. A
+`verify-a1-family-core.mjs` teszteli a két kötelező blokkot, a teljes
+régi szósorrendet és az új/régi tesztmentések együttes kezelését.
+Ez pedagógiai próba, és önmagában nem jelenti a 13 teljes új-szószám
+alapú figyelmeztetés megszűnését vagy a valós tanulói eredmény igazolását.
 
 **A1 szókártyák jelentésének célzott felülvizsgálata – 2026. november 23.:**
 az akkori kártyarenderelővel előállított **468 A1-es kártyát** a

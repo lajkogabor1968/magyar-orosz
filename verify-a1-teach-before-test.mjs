@@ -22,7 +22,7 @@ assert.match(source,/requiredCardsSeen\(\):flippedWords\.size>=requiredCardCount
 const functions=[required,chunks,seen,order,canAdvance,nextCard].join('\n');
 const words=Array.from({length:20},(_,i)=>({hu:`word-${i}`}));
 const make=(level,flippedWords,checked=[],step=0,cardIndex=0,fastTrack=false,placed=[])=>runInNewContext(`${functions}\n({count:requiredCardCount(),passed:canAdvance(),order:initialTestOrder(),next:nextCardIndex()})`,{
- level,a1FastTrackPassed:fastTrack,flippedWords:new Set(flippedWords),checkedBatches:new Set(checked),fastTrackPacks:new Set(placed),cardIndex,step,rows:()=>words,randomOrder:a=>[...a].reverse(),
+ level,a1FastTrackPassed:fastTrack,flippedWords:new Set(flippedWords),checkedBatches:new Set(checked),fastTrackPacks:new Set(placed),cardIndex,step,rows:()=>words,lesson:()=>({}),randomOrder:a=>[...a].reverse(),
  grammarReviewed:false,dialoguePractised:false,correctWriting:new Set(),lessonIndex:1,
  compositionChecked:false,testCompleted:false
 });
