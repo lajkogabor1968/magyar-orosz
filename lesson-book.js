@@ -202,6 +202,15 @@ function rows(){const l=lesson(),base=window.MAGYAR_OROSZ_DATA?.[level]||[],resu
 if(level==='A1'&&lessonIndex>=8){
  const wordPosition=new Map(l.words.map((word,i)=>[word.toLocaleLowerCase('hu-HU'),i]));
  result.sort((a,b)=>(wordPosition.get(a.hu.toLocaleLowerCase('hu-HU'))??Infinity)-(wordPosition.get(b.hu.toLocaleLowerCase('hu-HU'))??Infinity));
+ // Historical A1 checkpoint entries store card indices, not word IDs.
+ // Add previously unrepresented textbook words only AFTER existing cards.
+ // These optional cards do not change the taught first-ten test or saved positions.
+ for(const card of l.supplemental||[]){
+  if(!Array.isArray(card)||card.length!==4)continue;
+  const [hu,ru,example,translation]=card;
+  if(!result.some(item=>item.hu.toLocaleLowerCase('hu-HU')===hu.toLocaleLowerCase('hu-HU')))
+   result.push({hu,ru,example,translation});
+ }
 }
 return result}
 function reviewPreviousErrors(){
