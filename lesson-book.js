@@ -785,8 +785,30 @@ function renderErrorSummary(){
  for(const missed of quizMisses){const row=el('div',undefined,'lesson-error-row');const description=el('span',missed.hu+' — '+missed.ru);const speakButton=el('button','🔊 Слушать');speakButton.type='button';speakButton.setAttribute('aria-label','Прослушать '+missed.hu);speakButton.onclick=()=>say(missed.hu);row.append(description,speakButton);box.append(row)}
  box.append(el('p','Прослушайте ошибочные слова ещё раз. При необходимости вернитесь к разделу «Слова».'))
 }
+function renderDialoguePreparation(){
+ const dialogue=$('integratedDialogue'),prepared=lesson().preparation||[];
+ let panel=$('lessonDialoguePreparation');
+ if(!panel){panel=el('details',undefined,'lesson-dialogue-preparation');panel.id='lessonDialoguePreparation';dialogue.before(panel)}
+ panel.replaceChildren();
+ panel.hidden=level!=='A1'||prepared.length===0;
+ if(panel.hidden)return;
+ panel.open=true;
+ const summary=el('summary','Перед диалогом: сначала разберём знакомые образцы');
+ const explanation=el('p','Прочитайте венгерскую фразу и русский перевод. Короткое объяснение поможет понять форму слова перед прослушиванием.');
+ const list=el('ul');
+ for(const [hu,ru,note] of prepared){
+  if(!hu?.trim()||!ru?.trim()||!note?.trim())continue;
+  const item=el('li');
+  const phrase=el('strong',hu);phrase.lang='hu';
+  const translation=el('span',ru);translation.lang='ru';
+  const detail=el('small',note);detail.lang='ru';
+  item.append(phrase,translation,detail);list.append(item);
+ }
+ panel.append(summary,explanation,list);
+}
 function stageView(){
  if(step!==2)dialogueRecognition.stop();
+ if(step===2)renderDialoguePreparation();
  steps.forEach((id,i)=>$(id).hidden=i!==step);
  $('integratedPreviousStep').hidden=step===0;
  $('integratedRouteProgress').textContent='Этап '+(step+1)+' из 6 · '+stepsRu[step];
@@ -935,7 +957,28 @@ $('integratedCompositionText').addEventListener('input',()=>{const drafts=read('
 $('integratedNextQuestion').onclick=()=>{if(testIndex+1>=Math.min(10,rows().length)){testCompleted=true;persistQuiz();showQuizResult();note('Проверка завершена. Вы можете перейти к следующему уроку.');return}testIndex++;hasAnswered=false;persistQuiz();test();stepButton.disabled=true};
 $('integratedNextLesson').onclick=()=>confirmLessonChange(Math.min(courses[level].length-1,lessonIndex+1));
 $('integratedAllWords').onclick=()=>{dialogueRecognition.stop();root.classList.remove('study-book');view.hidden=true;document.querySelector('.tab[data-view="list"]')?.click();root.classList.add('study-active')};
-const accentBox=$('integratedAccentKeys');for(const letter of 'áéíóöőúüű'){const b=el('button',letter);b.type='button';b.onclick=()=>{const input=$('integratedWritingInput');const start=input.selectionStart??input.value.length,end=input.selectionEnd??start;input.value=input.value.slice(0,start)+letter+input.value.slice(end);input.focus();input.setSelectionRange(start+1,start+1)};accentBox.append(b)}
+// Make Hungarian letters available everywhere the beginner writes: word,
+// model sentence, previous mistake, and free composition. Keep the caret and
+// dispatch an input event so autosave and re-checking work normally.
+for(const [containerId,inputId] of [
+ ['integratedAccentKeys','integratedWritingInput'],
+ ['lessonSentenceAccentKeys','lessonSentenceInput'],
+ ['lessonReviewAccentKeys','lessonReviewInput'],
+ ['integratedCompositionAccentKeys','integratedCompositionText']
+]){
+ const input=$(inputId);if(!input)continue;
+ let accentBox=$(containerId);
+ if(!accentBox){accentBox=el('div',undefined,'lesson-actions lesson-accent-keys');accentBox.id=containerId;input.after(accentBox)}
+ accentBox.setAttribute('role','group');
+ accentBox.setAttribute('aria-label','Вставить венгерскую букву с диакритическим знаком');
+ accentBox.replaceChildren();
+ for(const letter of 'áéíóöőúüű'){
+  const button=el('button',letter);button.type='button';button.lang='hu';
+  button.setAttribute('aria-label','Вставить '+letter);
+  button.onclick=()=>writingFeedback.insertHungarianLetter(input,letter);
+  accentBox.append(button);
+ }
+}
 back.addEventListener('click',()=>{dialogueRecognition.stop();view.hidden=true;root.classList.remove('study-book')});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)dialogueRecognition.stop()});
 window.addEventListener('pagehide',()=>dialogueRecognition.stop());

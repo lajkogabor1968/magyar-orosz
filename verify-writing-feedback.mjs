@@ -7,7 +7,7 @@ const html = readFileSync(new URL('./index.html', import.meta.url), 'utf8');
 const workbook = readFileSync(new URL('./lesson-book.js', import.meta.url), 'utf8');
 const sandbox = {window: {}};
 runInNewContext(source, sandbox, {filename: 'writing-feedback.js'});
-const {checkWord, checkSentence} = sandbox.window.TanmuhelyWritingFeedback;
+const {checkWord, checkSentence, insertHungarianLetter} = sandbox.window.TanmuhelyWritingFeedback;
 
 const wordCases = [
   ['metró', 'metró', 'correct'],
@@ -58,6 +58,31 @@ for (const [received, expected, kind] of sentenceCases) {
 assert.match(checkSentence('Ez telefon.', 'Ez egy telefon.').hint, /«egy»/);
 assert.match(checkSentence('Ez egy radio.', 'Ez egy rádió.').hint, /o → ó/);
 
+class InputEvent {
+  constructor(type,options){this.type=type;this.bubbles=options.bubbles}
+}
+const events=[];
+const fakeInput={
+  value:'metro',selectionStart:4,selectionEnd:5,focused:false,
+  ownerDocument:{defaultView:{Event:InputEvent}},
+  focus(){this.focused=true},
+  setSelectionRange(start,end){this.selectionStart=start;this.selectionEnd=end},
+  dispatchEvent(event){events.push(event)}
+};
+assert.equal(insertHungarianLetter(fakeInput,'ó'),true);
+assert.equal(fakeInput.value,'metró');
+assert.equal(fakeInput.selectionStart,5);
+assert.equal(fakeInput.selectionEnd,5);
+assert.equal(fakeInput.focused,true);
+assert.equal(events.length,1);
+assert.equal(events[0].type,'input');
+assert.equal(events[0].bubbles,true,'Autosave and draft-invalidation listeners must run after insertion');
+fakeInput.value='szep';fakeInput.selectionStart=2;fakeInput.selectionEnd=3;
+assert.equal(insertHungarianLetter(fakeInput,'é'),true);
+assert.equal(fakeInput.value,'szép');
+assert.equal(insertHungarianLetter(fakeInput,'x'),false,'Non-Hungarian button labels must be rejected');
+assert.equal(fakeInput.value,'szép');
+
 const writingScript = html.indexOf('src="writing-feedback.js?');
 const lessonScript = html.indexOf('src="lesson-book.js?');
 assert.ok(writingScript >= 0 && lessonScript > writingScript,
@@ -67,6 +92,10 @@ assert.match(workbook, /writingFeedback\.checkSentence\(got,target\)/);
 assert.match(workbook, /writingFeedback\.checkWord\(received,expected\)/);
 assert.match(workbook, /correctWriting\.add\(writeIndex\);saveCheckpoint\(\)/,
   'Correct writing must continue to use the existing checkpoint IDs.');
+for(const id of ['integratedAccentKeys','lessonSentenceAccentKeys','lessonReviewAccentKeys','integratedCompositionAccentKeys'])
+  assert.ok(workbook.includes(id),`Missing accent keyboard: ${id}`);
+assert.match(workbook,/writingFeedback\.insertHungarianLetter\(input,letter\)/);
 console.log(`PASS: ${wordCases.length} word and ${sentenceCases.length} model-sentence comparisons.`);
+console.log('PASS: four accent keyboards preserve selection, dispatch an input event, and reject invalid characters.');
 console.log('PASS: the workbook uses the new explanatory feedback in all three writing checks without changing saved IDs.');
 console.log('NOTE: comparisons assess a known model, not open-ended Hungarian grammar or pronunciation.');

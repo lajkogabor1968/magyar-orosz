@@ -95,5 +95,19 @@
     return {kind: 'other', hint: 'Есть отличия от образца. Проверьте слова, порядок слов и венгерские гласные.'};
   }
 
-  window.TanmuhelyWritingFeedback = Object.freeze({checkWord, checkSentence});
+  function insertHungarianLetter(input, letter) {
+    if (!input || typeof input.value !== 'string' ||
+        typeof letter !== 'string' || letter.length !== 1 || !'áéíóöőúüű'.includes(letter)) return false;
+    const start = Number.isInteger(input.selectionStart) ? input.selectionStart : input.value.length;
+    const end = Number.isInteger(input.selectionEnd) ? input.selectionEnd : start;
+    const first = Math.min(start, end), last = Math.max(start, end);
+    input.value = input.value.slice(0, first) + letter + input.value.slice(last);
+    input.focus?.();
+    input.setSelectionRange?.(first + 1, first + 1);
+    const EventType = input.ownerDocument?.defaultView?.Event;
+    if (EventType && input.dispatchEvent) input.dispatchEvent(new EventType('input', {bubbles: true}));
+    return true;
+  }
+
+  window.TanmuhelyWritingFeedback = Object.freeze({checkWord, checkSentence, insertHungarianLetter});
 })();
