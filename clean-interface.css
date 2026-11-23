@@ -372,3 +372,28 @@ html.study-book .masthead .logo p { display: none; }
 .lesson-card-mastery[open] > summary::before { content: "▾"; }
 .lesson-card-mastery-count { margin-inline-start: auto; }
 .lesson-card-mastery:not([open]) { margin-bottom: .5rem; }
+
+/* Keep every utterance and its translation together, even at large text sizes. */
+#integratedDialogue .integrated-dialogue-line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2.875rem;
+  align-items: center;
+  column-gap: clamp(.5rem, 2vw, 1rem);
+  padding-block: .875rem;
+}
+.lesson-dialogue-text {
+  display: grid;
+  gap: .2rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
+}
+.lesson-dialogue-text .lesson-speaker { font-size: .8rem; font-weight: 650; color: #4d655b; }
+.lesson-dialogue-text [lang="hu"] { font-size: 1.12rem; font-weight: 650; color: #183d32; }
+.lesson-dialogue-text small[lang="ru"]:last-child { font-size: 1rem; color: #486256; }
+#integratedDialogue .integrated-dialogue-line > button {
+  justify-self: end;
+  width: 2.875rem;
+  min-height: 2.875rem;
+  padding: .35rem;
+}
