@@ -125,6 +125,11 @@ else for(const [key,unit] of Object.entries(extraData.units)){
   warnings.push('Supplement '+key+': missing pre-reading grammar notes');
 }
 
+// The translation must be shown while learning but hidden at assessment time.
+if(!source.includes("container.insertBefore(begin,promptNode)")||
+ !source.includes("translationsOnScreen.forEach(node=>{node.hidden=true;})")||
+ !source.includes("translationsOnScreen.forEach(node=>{node.hidden=false;})"))
+ errors.push('A1: dialogue answer is visible during its meaning check');
 // Understanding check must test the meaning of Hungarian, not visually copy
 // the next Hungarian dialogue line.
 if(!source.includes("Что означает венгерская реплика")||
