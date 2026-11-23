@@ -161,10 +161,14 @@ function initialTestOrder(){
  // remain accessible for optional learning; old in-progress quizzes resume.
  return [...randomOrder(indices.slice(0,taughtCount)),...randomOrder(indices.slice(taughtCount))];
 }
+function canAssessDialogueSequence(){
+ const lines=lesson().dialogue;
+ return Array.isArray(lines)&&lines.length>=4&&new Set(lines.slice(1).filter(v=>typeof v==='string'&&v.trim())).size>=2;
+}
 function canAdvance(){
 if(step===0)return level==='A1'?requiredCardsSeen():flippedWords.size>=requiredCardCount();
 if(step===1)return grammarReviewed;
-if(step===2)return dialoguePractised&&(level!=='A1'||(Array.isArray(lesson().dialogue)&&lesson().dialogue.length<4)||dialogueUnderstood);
+if(step===2)return dialoguePractised&&(level!=='A1'||!canAssessDialogueSequence()||dialogueUnderstood);
 if(step===3)return correctWriting.size>=Math.min(3,rows().length) && (level!=='A1'||lessonIndex!==0||[...correctWriting].filter(i=>/[áéíóöőúüű]/.test(rows()[i]?.hu||'')).length>=2);
 if(step===4)return compositionChecked;
 if(step===5)return testCompleted;
@@ -789,7 +793,7 @@ function renderDialogueUnderstanding(){
  choices.replaceChildren();
  if(level!=='A1')return;
  const lines=lesson().dialogue;
- if(!Array.isArray(lines)||lines.length<4){
+ if(!canAssessDialogueSequence()){
   container.hidden=true;
   // A short or missing dialogue cannot be assessed with this sequence question.
   // Do not record a successful comprehension answer that was never given.
