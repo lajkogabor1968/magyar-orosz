@@ -144,6 +144,12 @@ if(shoppingUnits){
  Object.assign(dialogueTranslations,shoppingUnits.dialogueTranslations);
  Object.assign(checks,shoppingUnits.checks);
 }
+const travelHealthUnits=window.TanmuhelyA1Units29to30;
+if(travelHealthUnits){
+ courses.A1.push(...travelHealthUnits.lessons);
+ Object.assign(dialogueTranslations,travelHealthUnits.dialogueTranslations);
+ Object.assign(checks,travelHealthUnits.checks);
+}
 function lessonKey(){return level+':'+lessonIndex}
 function highlightAnswerButtons(box,selected,correctText){
  for(const button of box.querySelectorAll('button')){
@@ -301,6 +307,7 @@ if(familyAndWorkUnits)chapterVisuals.A1.push(...familyAndWorkUnits.visuals);
 if(locationUnits)chapterVisuals.A1.push(...locationUnits.visuals);
 if(actionUnits)chapterVisuals.A1.push(...actionUnits.visuals);
 if(shoppingUnits)chapterVisuals.A1.push(...shoppingUnits.visuals);
+if(travelHealthUnits)chapterVisuals.A1.push(...travelHealthUnits.visuals);
 function renderVisual(){
  const box=$('lessonVisual');if(!box)return;
  box.replaceChildren();
@@ -841,11 +848,37 @@ if(prerequisite){
  prerequisite.hidden=level!=='A2';
  prerequisite.textContent=level==='A2'?'Связь с A1 / Kapcsolat az A1 szinttel. '+bridges[lessonIndex]:'';
 }$('integratedLessonLevel').textContent=level;$('integratedLessonCounter').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length;$('integratedLessonHeading').textContent='Урок '+(lessonIndex+1)+'. '+l.title;$('integratedLessonSelect').replaceChildren();courses[level].forEach((x,i)=>{const finished=read(KEY).completed?.[level+':'+i];const o=el('option',(finished?'✓ ':'')+(i+1)+'. '+x.title);o.value=String(i);$('integratedLessonSelect').append(o)});$('integratedLessonSelect').value=String(lessonIndex);placeReadingAfterTeaching();renderVisual();renderMotion();resetVideo();renderReading();window.TanmuhelyRenderA1LongReadings?.(level,lessonIndex);renderWords();renderGrammarExamples();window.TanmuhelyRenderErrorCards?.(level,lessonIndex);resetGame();grammarQuestion();$('integratedGrammar').replaceChildren();$('integratedGrammar').append(el('strong',l.grammar[0]),el('p',l.grammar[1]),el('p',l.grammar[2]));const dialog=$('integratedDialogue');dialog.replaceChildren();for(const [i,line] of l.dialogue.entries()){const row=el('div',undefined,'integrated-dialogue-line');const words=el('div',undefined,'lesson-dialogue-text');const female=i%2===0;const speaker=el('small',(female?'Анна':'Петер')+' · озвучка: Габор или синтез','lesson-speaker');speaker.lang='ru';words.append(speaker);const h=el('span',line);h.lang='hu';const translation=el('small',dialogueTranslations[l.title]?.[i]||'');translation.lang='ru';words.append(h,translation);const b=el('button','🔊');b.type='button';b.onclick=()=>{spokenTargetIndex=Array.from(dialog.children).indexOf(row);const source=window.TanuloTTS?.sourceFor?.({text:line,lang:'hu-HU'})||'tts';const played=say(line);$('integratedDialogueFeedback').textContent=played?(source==='gabor'?'Запись Габора. ':source==='pilot'?'Пробная запись Габора. ':'Компьютерный венгерский голос. ')+'Прослушайте и повторите фразу: '+line:'Озвучка недоступна. Проверьте венгерский голос устройства.';note('Для проверки нажмите микрофон или отметьте, что повторили вслух.')};row.append(words,b);dialog.append(row)}cardIndex=0;writeIndex=0;correctWriting=new Set();testIndex=0;testCorrect=0;hasAnswered=false;testCompleted=false;flashcardsOpened=false;grammarReviewed=false;dialoguePractised=false;spokenTargetIndex=0;flippedWords=new Set();checkedBatches=new Set();checkBatch=-1;checkStep=0;checkRendered='';quizMisses=[];testOrder=randomOrder(rows().map((_,i)=>i));restoreCheckpoint();resumeQuiz();sentencePractice(true);$('integratedFlashcard').hidden=false;card();spelling();composition();test();stageView()}
-function open(mode){level=document.querySelector('.welcome .level.active')?.dataset.level||'A1';if(!courses[level]){document.querySelector('[data-hub-view="steps"]')?.click();return}const stored=read(KEY),saved=stored[level];if(level==='A1'&&saved&&!stored.migratedFirstUnit20261121){saved.lessonIndex=Math.max(0,Number(saved.lessonIndex)||0)+(Number(saved.lessonIndex)>0?1:0);stored.migratedFirstUnit20261121=true;try{localStorage.setItem(KEY,JSON.stringify(stored))}catch(_){}}lessonIndex=Math.max(0,Math.min(courses[level].length-1,Number(saved?.lessonIndex)||0));step=mode==='words'?0:Math.max(0,Math.min(5,Number(saved?.step)||0));root.classList.remove('study-menu','study-active','study-coach','study-online','study-exam','study-daily');root.classList.add('study-book');hub.hidden=true;view.hidden=false;back.hidden=false;render();view.scrollIntoView({block:'start'});}
+function activeCourseLevel(){return document.querySelector('.welcome .level.active')?.dataset.level||'A1'}
+function refreshLessonStart(){
+ const picker=$('lessonStartSelect');if(!picker)return;
+ const selected=activeCourseLevel(),current=courses[selected]||courses.A1;
+ const saved=read(KEY)[selected];
+ const preferred=Math.max(0,Math.min(current.length-1,Number(saved?.lessonIndex)||0));
+ picker.replaceChildren();
+ current.forEach((item,i)=>{const done=read(KEY).completed?.[selected+':'+i];const option=el('option',(done?'✓ ':'')+(i+1)+'. '+item.title);option.value=String(i);picker.append(option)});
+ picker.value=String(preferred);
+}
+function open(mode,requestedIndex=null){
+ level=activeCourseLevel();if(!courses[level]){document.querySelector('[data-hub-view="steps"]')?.click();return}
+ const stored=read(KEY),saved=stored[level];
+ if(level==='A1'&&saved&&!stored.migratedFirstUnit20261121){
+  saved.lessonIndex=Math.max(0,Number(saved.lessonIndex)||0)+(Number(saved.lessonIndex)>0?1:0);
+  stored.migratedFirstUnit20261121=true;try{localStorage.setItem(KEY,JSON.stringify(stored))}catch(_){}
+ }
+ const choosing=Number.isInteger(requestedIndex)&&requestedIndex>=0&&requestedIndex<courses[level].length;
+ lessonIndex=choosing?requestedIndex:Math.max(0,Math.min(courses[level].length-1,Number(saved?.lessonIndex)||0));
+ step=choosing||mode==='words'?0:Math.max(0,Math.min(5,Number(saved?.step)||0));
+ if(choosing)save(); // An explicit starting lesson must survive reopening the workbook.
+ root.classList.remove('study-menu','study-active','study-coach','study-online','study-exam','study-daily');root.classList.add('study-book');
+ hub.hidden=true;view.hidden=false;back.hidden=false;render();view.scrollIntoView({block:'start'});
+}
 let stepButton=$('integratedStepNext');if(!stepButton){stepButton=el('button','Следующий шаг →','lesson-primary');stepButton.type='button';stepButton.id='integratedStepNext';view.insertBefore(stepButton,$('lessonWords'))}
 stepButton.onclick=moveNext;
 $('integratedPreviousStep').onclick=()=>{if(step>0){step--;save();stageView();note('Вы вернулись к предыдущему шагу. Уже проверенные ответы сохранены.') }};
 $('lessonsPrimary')?.addEventListener('click',()=>open('resume'));$('lessonsVocabulary')?.addEventListener('click',()=>open('words'));
+refreshLessonStart();
+document.querySelectorAll('.welcome .level').forEach(button=>button.addEventListener('click',refreshLessonStart));
+$('lessonStartSelected')?.addEventListener('click',()=>open('words',Number($('lessonStartSelect').value)));
 function completedScore(index){return read(KEY).completed?.[level+':'+index]}
 function reviewAdvice(targetIndex){
  if(targetIndex<=0)return '';
@@ -859,21 +892,18 @@ function reviewAdvice(targetIndex){
 }
 function confirmLessonChange(targetIndex){
  if(!Number.isInteger(targetIndex)||targetIndex<0||targetIndex>=courses[level].length)return;
+ if(targetIndex===lessonIndex)return;
  const message=reviewAdvice(targetIndex);
- if(!message){lessonIndex=targetIndex;step=0;save();render();return}
+ lessonIndex=targetIndex;step=0;save();render();
+ note('✓ Урок '+(lessonIndex+1)+' открыт. Предыдущие уроки можно пройти позже.');
+ if(!message)return;
  const box=$('integratedAdvanceAdvice');
  box.replaceChildren();
- box.append(el('strong','Рекомендация перед продолжением'),el('p',message));
- const actions=el('div',undefined,'lesson-actions');
- const revise=el('button','Повторить предыдущий урок');
- const proceed=el('button','Продолжить обучение');
- revise.type='button';proceed.type='button';
- revise.onclick=()=>{lessonIndex=targetIndex-1;step=0;save();render();box.hidden=true};
- proceed.onclick=()=>{lessonIndex=targetIndex;step=0;save();render();box.hidden=true};
- actions.append(revise,proceed);box.append(actions);box.hidden=false;
- box.scrollIntoView({block:'nearest'});
+ box.append(el('strong','Необязательная рекомендация'),el('p',message),
+  el('p','Вы уже перешли к выбранному уроку. Возвращаться к предыдущему не требуется.'));
+ box.hidden=false;
 }
-$('integratedLessonSelect').addEventListener('change',e=>{const target=Number(e.target.value);e.target.value=String(lessonIndex);confirmLessonChange(target)});
+$('integratedLessonSelect').addEventListener('change',e=>confirmLessonChange(Number(e.target.value)));
 $('integratedFlashcardOpen').onclick=()=>{cardIndex=0;card();$('integratedFlashcard').hidden=false;note('Повторите карточки. Уже открытые переводы сохраняются в прогрессе урока.')};
 $('integratedCardFlip').onclick=()=>{const node=$('integratedCardRussian');node.hidden=!node.hidden;if(!node.hidden){flippedWords.add(cardIndex);saveCheckpoint();if(step===0&&canAdvance())stepButton.disabled=false;const count=level==='A1'?[...flippedWords].filter(i=>i<requiredCardCount()).length:flippedWords.size;note(level==='A1'&&canAdvance()?'✓ Два блока изучены и проверены. Можно перейти к правилу.':'Открыто переводов: '+count+' / '+requiredCardCount()+(level==='A1'?' · после пяти слов ответьте на два коротких вопроса.':'.'));updateCardProgress()} $('integratedCardFlip').textContent=node.hidden?'Показать перевод':'Скрыть перевод'};
 function nextCardIndex(){
@@ -979,7 +1009,7 @@ for(const [containerId,inputId] of [
   accentBox.append(button);
  }
 }
-back.addEventListener('click',()=>{dialogueRecognition.stop();view.hidden=true;root.classList.remove('study-book')});
+back.addEventListener('click',()=>{dialogueRecognition.stop();view.hidden=true;root.classList.remove('study-book');refreshLessonStart()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)dialogueRecognition.stop()});
 window.addEventListener('pagehide',()=>dialogueRecognition.stop());
 /* Non-destructive review deep links: ?review=1&level=A1&lesson=1&section=dialogue

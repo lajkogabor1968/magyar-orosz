@@ -12,7 +12,8 @@ const context={window:{}};
 for(const name of [
  'data.js','ecl-vocab.js','a1-guided-lessons-next.js',
  'a1-guided-lessons-13-16.js','a1-guided-lessons-17-20.js',
- 'a1-guided-lessons-21-24.js','a1-guided-lessons-25-28.js'
+ 'a1-guided-lessons-21-24.js','a1-guided-lessons-25-28.js',
+ 'a1-guided-lessons-29-30.js'
 ])runInNewContext(read(name),context,{filename:name});
 
 const book=read('lesson-book.js');
@@ -23,13 +24,14 @@ const courses=JSON.parse(json);
 const extensions=[
  context.window.TanmuhelyA1Continuation,context.window.TanmuhelyA1Units13to16,
  context.window.TanmuhelyA1Units17to20,context.window.TanmuhelyA1Units21to24,
- context.window.TanmuhelyA1Units25to28
+ context.window.TanmuhelyA1Units25to28,
+ context.window.TanmuhelyA1Units29to30
 ];
 for(const extension of extensions){
  assert.ok(extension?.lessons,'A1 lesson extension missing');
  courses.A1.push(...extension.lessons);
 }
-assert.equal(courses.A1.length,28);
+assert.equal(courses.A1.length,30);
 assert.equal(courses.A2.length,3,'A2 course stays unchanged');
 const rendered=courses.A1.map((lesson,lessonIndex)=>runInNewContext(`${rowsFn};rows()`,{
  window:context.window,level:'A1',lessonIndex,lesson:()=>lesson
@@ -71,7 +73,8 @@ const html=read('index.html');
 for(const script of [
  'a1-guided-lessons-next.js?v=20261123-a1-examples1',
  'a1-guided-lessons-17-20.js?v=20261123-a1-examples1',
- 'a1-guided-lessons-25-28.js?v=20261123-a1-meaning1'
+ 'a1-guided-lessons-25-28.js?v=20261123-a1-meaning1',
+ 'a1-guided-lessons-29-30.js?v=20261123-a1-travel-health1'
 ])assert.ok(html.includes(script),`Browser must refresh corrected A1 material: ${script}`);
 console.log(`PASS: ${courses.A1.length} A1 lessons, ${totalCards} visible cards, no duplicate Russian spelling prompts or early imperatives in required cards.`);
 console.log('PASS: three chair examples use a beginner sentence; the Hungarian singular tomato form is translated as singular in the card, table and visual.');

@@ -159,6 +159,14 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
 .lesson-select { display: flex; gap: 8px; align-items: center; margin: 10px 0 15px; }
 .lesson-select label { color: #496d60; font-size: 14px; font-weight: 750; }
 .lesson-select select { min-width: 0; flex: 1; min-height: 47px; padding: 10px 35px 10px 15px; border: 2px solid #dce9e1; border-radius: 13px; background: #fafdfa; color: #31594c; cursor: pointer; }
+.lesson-choice-help { margin: -7px 0 18px; font-size: 14px; color: #47715e; line-height: 1.45; }
+.lesson-start-picker { margin: 0 0 25px; padding: 20px; background: #f0f9f3; border: 1px solid #cce8d8; border-radius: 19px; }
+.lesson-start-picker > label { display: block; margin-bottom: 9px; font-weight: 850; color: #174d38; }
+.lesson-start-controls { display: flex; gap: 10px; align-items: stretch; }
+.lesson-start-controls select { flex: 1; min-width: 0; min-height: 48px; border: 2px solid #b7d8c5; border-radius: 11px; padding: 9px 11px; background: #fff; color: #184a37; }
+.lesson-start-controls button { min-height: 48px; padding: 9px 16px; border-radius: 11px; color: #fff; background: #157956; font-weight: 800; }
+.lesson-start-picker p { margin: 10px 0 0; color: #416954; font-size: 14px; }
+@media(max-width:600px){.lesson-start-controls { flex-direction: column; }.lesson-start-controls select,.lesson-start-controls button { width: 100%; }}
 .lesson-sections { display: none; }
 .lesson-back-step { margin: 0 0 12px; min-height: 44px; }
 .lesson-part { padding: 0; margin: 15px 0 25px; border: 0; border-radius: 0; background: transparent; }

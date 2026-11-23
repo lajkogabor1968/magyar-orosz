@@ -11,7 +11,8 @@ const book=read('lesson-book.js');
 const html=read('index.html');
 const context={window:{}};
 const unitScripts=['data.js','ecl-vocab.js','a1-guided-lessons-next.js','a1-guided-lessons-13-16.js',
- 'a1-guided-lessons-17-20.js','a1-guided-lessons-21-24.js','a1-guided-lessons-25-28.js'];
+ 'a1-guided-lessons-17-20.js','a1-guided-lessons-21-24.js',
+ 'a1-guided-lessons-25-28.js','a1-guided-lessons-29-30.js'];
 for(const name of unitScripts)runInNewContext(read(name),context,{filename:name});
 
 const coursesText=book.match(/const courses=(\{[\s\S]*?\});\nconst dialogueTranslations=/)?.[1];
@@ -26,7 +27,8 @@ const extensions=[
  context.window.TanmuhelyA1Units13to16,
  context.window.TanmuhelyA1Units17to20,
  context.window.TanmuhelyA1Units21to24,
- context.window.TanmuhelyA1Units25to28
+ context.window.TanmuhelyA1Units25to28,
+ context.window.TanmuhelyA1Units29to30
 ];
 for(const extension of extensions){
  if(!extension)throw Error('Hiányzó A1-es leckecsokor.');
@@ -55,7 +57,7 @@ const allTaught=new Set();
 const titles=new Set();
 let totalNew=0,overloaded=0;
 
-if(courses.A1.length!==28)fail('A1','LESSON_COUNT',`A várt 28 helyett ${courses.A1.length} lecke szerepel.`);
+if(courses.A1.length!==30)fail('A1','LESSON_COUNT',`A várt 30 helyett ${courses.A1.length} lecke szerepel.`);
 if(courses.A2.length!==3)fail('A2','FROZEN_A2','Az A2-es leckék száma módosult.');
 const rowFn=book.match(/function rows\(\)\{[\s\S]*?\nreturn result\}/)?.[0];
 if(!rowFn)fail('A1','CARD_RENDERER','A szókártyák előállító függvénye nem ellenőrizhető.');

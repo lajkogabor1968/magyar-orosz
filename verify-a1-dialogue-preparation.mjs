@@ -9,13 +9,14 @@ assert.ok(courses?.A1,'A1 course data must be available');
 const window={};
 for(const file of [
  'a1-guided-lessons-next.js','a1-guided-lessons-13-16.js','a1-guided-lessons-17-20.js',
- 'a1-guided-lessons-21-24.js','a1-guided-lessons-25-28.js'
+ 'a1-guided-lessons-21-24.js','a1-guided-lessons-25-28.js',
+ 'a1-guided-lessons-29-30.js'
 ])runInNewContext(read(file),{window});
 for(const name of [
  'TanmuhelyA1Continuation','TanmuhelyA1Units13to16','TanmuhelyA1Units17to20',
- 'TanmuhelyA1Units21to24','TanmuhelyA1Units25to28'
+ 'TanmuhelyA1Units21to24','TanmuhelyA1Units25to28','TanmuhelyA1Units29to30'
 ])courses.A1.push(...window[name].lessons);
-assert.equal(courses.A1.length,28);
+assert.equal(courses.A1.length,30);
 
 let notes=0;
 for(const [index,lesson] of courses.A1.entries()){

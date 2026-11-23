@@ -1,18 +1,18 @@
 # A1 minőségi kapuk – Magyar–orosz Tanműhely
 
-Állapot: 2026. november 22.  A cél egy kezdőt önállóan tanító, ellenőrizhető, orosz anyanyelvűek számára készített magyar nyelvtanfolyam. Ez belső fejlesztési terv, nem kiadási tanúsítvány.
+Állapot: 2026. november 23. A cél egy kezdőt önállóan tanító, ellenőrizhető, orosz anyanyelvűek számára készített magyar nyelvtanfolyam. Ez belső fejlesztési terv, nem kiadási tanúsítvány.
 
 ## Jelenlegi, automatizáltan mérhető kiindulás
 
 - A1 szókincstár: 600 bejegyzés, 580 különböző magyar címszó.
-- A1 vezetett tanulási út: **28 lecke**, 341 különböző tanított szó vagy kifejezés; 173 címszó szerepel az A1-szótárban (**29,8%-os címszólefedettség**). A 9–12. lecke a személyes adatokat, országokat, nyelveket és az 1–20-as számokat, a 13–16. lecke a családi viszonyokat, foglalkozásokat, tulajdonságokat és a birtokos alakokat, a 17–20. lecke a helyviszonyokat, a 21–24. lecke a jelen idejű igeragozást, szeret + főnévi igenév szerkezetet, időpontokat és a tárgyrag alapjait, a 25–28. lecke az udvarias kérést, a mennyiségeket, az éttermi rendelést és a piaci vásárlást tanítja.
+- A1 vezetett tanulási út: **30 lecke**, 373 különböző tanított szó vagy kifejezés; 199 címszó szerepel az A1-szótárban (**34,3%-os címszólefedettség**). A 9–12. lecke a személyes adatokat, országokat, nyelveket és az 1–20-as számokat, a 13–16. lecke a családi viszonyokat, foglalkozásokat, tulajdonságokat és a birtokos alakokat, a 17–20. lecke a helyviszonyokat, a 21–24. lecke a jelen idejű igeragozást, szeret + főnévi igenév szerkezetet, időpontokat és a tárgyrag alapjait, a 25–28. lecke az udvarias kérést, a mennyiségeket, az éttermi rendelést és a piaci vásárlást, a 29–30. lecke az útbaigazítást és az alapvető közérzet-kifejezéseket tanítja.
 - A1 nyelvtan: 10 tanító fejezet, 66 feladat.
 - A2 vezetett tanulási út: 3 lecke, 25 különböző szó vagy kifejezés; az A1-es szókincs ismétlése szándékos.
 - A szókincstár, az önálló nyelvtani modul, az ECL-gyakorlók és a kiegészítő szövegértések több anyagot tartalmaznak, mint a vezetett leckeút. A fenti arány **csak a vezetett leckék szókincslefedettsége**, nem az alkalmazás teljes szókincse.
 
 A mérés megismételhető: `node magyar-orosz/verify-guided-coverage.mjs`.
 
-## Duolingo-mintájú, megismételhető A1-audit – 2026. november 22.
+## Duolingo-mintájú, megismételhető A1-audit – frissítve 2026. november 23-án
 
 Futtatás a repó gyökeréből: `node magyar-orosz/audit-a1-release.mjs`. Ezt a
 korábbi 14 célzott technikai ellenőrzéssel és a
@@ -22,13 +22,14 @@ tananyag-tervezési és ellenőrzési elveiből indultunk ki.
 
 | Ellenőrzési kapu | Megfigyelt eredmény | Értelmezés |
 | --- | --- | --- |
-| 28 A1-es lecke, egyedi sorrend, régi azonosítók | Rendben | A korábbi tanulói eredmények kulcsai érintetlenek. |
-| Szókártyák, orosz magyarázatok, minták, párbeszédek | 28/28 lecke szerkezetileg ellenőrizve | Ez **nem** hitelesíti a fordítások nyelvi helyességét. |
-| Nyelvtani és szövegértési javítókulcs | 28/28 lecke: létező kulcs, nem duplikált választási lehetőségek | A többféleképpen helyes válaszok emberi lektorálása még szükséges. |
+| 30 A1-es lecke, egyedi sorrend, régi azonosítók | Rendben | A korábbi tanulói eredmények kulcsai érintetlenek. |
+| Szókártyák, orosz magyarázatok, minták, párbeszédek | 30/30 lecke szerkezetileg ellenőrizve | Ez **nem** hitelesíti a fordítások nyelvi helyességét. |
+| Nyelvtani és szövegértési javítókulcs | 30/30 lecke: létező kulcs, nem duplikált választási lehetőségek | A többféleképpen helyes válaszok emberi lektorálása még szükséges. |
 | Tanítás előtti számonkérés kizárása | Az újonnan indított A1-es záróteszt 10 kérdése csak a kötelezően átnézett első 10 kártyából kerülhet ki | A többi kártya külön, szabadon tanulható; a régi folyamatban lévő tesztek sorrendje megmarad. |
 | Teljes automatikus A1-audit | **0 fennmaradó kritikus szerkezeti találat** | A feltárt első leckés magyarázati hiányt javítottuk. |
-| Szókincsterhelés | **13 lecke szakmai felülvizsgálatra jelölve** | 9–13 új alapszókártya; figyelmeztetés, nem automatikus bukás. |
-| Vezetett út / A1-szótár | 173/580 különböző címszó, **29,8%** | Nem tekinthető kész A1-es útvonalnak. |
+| Szókincsterhelés | **13 lecke szakmai felülvizsgálatra jelölve** | 9–13 új alapszókártya; figyelmeztetés, nem automatikus bukás. A 29–30. leckében legfeljebb 8 új kötelező szó szerepel. |
+| Vezetett út / A1-szótár | 199/580 különböző címszó, **34,3%** | Nem tekinthető kész A1-es útvonalnak. |
+| A1-es kezdőlecke szabad kiválasztása | Szimulált állapotteszt sikeres | A 2. vagy későbbi lecke közvetlenül megnyitható, a választás mentődik; valódi mobilos próba még nincs. |
 | Független nyelvi és tanulói próba | **Még nem teljesült** | Orosz anyanyelvű lektor és 6–10 valós tanuló szükséges. |
 
 Az első körben megoldott pedagógiai hiba: az 1. lecke immár külön elmagyarázza,
@@ -82,7 +83,7 @@ teszt már minden olvasmányban ellenőrzi az előkészítés megjelenését
 **még a hang és a szöveg előtt**. Ez olvasási segítség, nem helyettesíti
 a részletes, fokozatos nyelvtani tanítást vagy az anyanyelvi lektorálást.
 
-**A1 szókártya-terhelés csökkentése – 2026. november 23.:** a 28 A1-es
+**A1 szókártya-terhelés csökkentése – 2026. november 23.:** az első 28 A1-es
 vezetett lecke tíz kötelező szókártyáját két, egymás után nyíló, ötszavas
 tanulási egységre bontottuk. Minden ötödik kártya után két rövid,
 orosz jelentésből magyar szót felismerő kérdés segíti az aktív felidézést;
@@ -97,7 +98,7 @@ egyelőre megmarad:** a két részre osztás a terhelést mérsékli, de nem
 igazolja, hogy ennyi új szó egy leckében minden kezdőnek megfelelő.
 
 **A1 szókártyák jelentésének célzott felülvizsgálata – 2026. november 23.:**
-az aktuális kártyarenderelővel előállított **468 A1-es kártyát** a
+az akkori kártyarenderelővel előállított **468 A1-es kártyát** a
 `verify-a1-card-meaning.mjs` ellenőrzi üres jelentésre, leckén belüli
 azonos orosz írásfeladatra, néhány túl korai múlt idejű alakra és
 felszólításra. Az „ülj le erre a székre” mondat helyett a 11., 19. és 20.
@@ -127,7 +128,7 @@ anyanyelvi stilisztikai és szemantikai lektorálást**.
 
 ## Javasolt A1-es bővítési rend
 
-Megmaradnak az eredeti nyolc lecke és eredményazonosítóik; a 9–12. lecke `A1:8`–`A1:11`, a 13–16. lecke `A1:12`–`A1:15`, a 17–20. lecke `A1:16`–`A1:19`, a 21–24. lecke `A1:20`–`A1:23`, a 25–28. lecke `A1:24`–`A1:27` azonosítóval készült el. A további új leckék ezek után kerülnek, amíg nincs stabil, tartós tanulóazonosító-alapú átrendezés.
+Megmaradnak az eredeti nyolc lecke és eredményazonosítóik; a 9–12. lecke `A1:8`–`A1:11`, a 13–16. lecke `A1:12`–`A1:15`, a 17–20. lecke `A1:16`–`A1:19`, a 21–24. lecke `A1:20`–`A1:23`, a 25–28. lecke `A1:24`–`A1:27`, a 29–30. lecke `A1:28`–`A1:29` azonosítóval készült el. A további új leckék ezek után kerülnek, amíg nincs stabil, tartós tanulóazonosító-alapú átrendezés.
 
 | Egység | Tanulási cél | Nyelvtani alap |
 | --- | --- | --- |
@@ -136,9 +137,10 @@ Megmaradnak az eredeti nyolc lecke és eredményazonosítóik; a 9–12. lecke `
 | A1/17–20 | **Elkészült:** otthon, iskola, környezet, helyviszonyok | hol? hová?, -ban/-ben, -ba/-be, -on/-en/-ön, mellett/előtt/mögött/alatt |
 | A1/21–24 | **Elkészült:** mindennapi igék, szabadidős tevékenységek, időpontok, vásárlás | jelen idejű alanyi ragozás, szeret + főnévi igenév, tagadás, -kor, alapvető tárgyeset |
 | A1/25–28 | **Elkészült:** kávézó, élelmiszermennyiségek, éttermi rendelés és piaci vásárlás | szeretnék, hány?/mennyi?, mértékegységek, kérek/kérem, tárgyrag megerősítése |
-| A1/29–32 | Város, utazás, útbaigazítás | helyviszonyok, rögzült útbaigazító formulák |
+| A1/29–30 | **Elkészült:** útbaigazítás, tömegközlekedés, egyszerű közérzet és segítségkérés | hol van?, jobbra/balra, gyalog, fej → fejem, torok → torkom |
+| A1/31–32 | Tervezett: város, utazás további helyzetei | egyszerű útbaigazító formulák és ismétlés |
 | A1/33–36 | Szabadidő, időjárás, tervek | alapvető igekötők és jövőre utalás |
-| A1/37–40 | Egyszerű egészségügyi helyzetek, hétköznapi problémák | egyszerű kell/lehet minták, rövid kérdés–válasz |
+| A1/37–40 | Összetettebb hétköznapi problémák | egyszerű kell/lehet minták, rövid kérdés–válasz |
 | A1/41–... | Ismétlés, hiányzó szócikkek, szintzáró gyakorlás | saját hibák célzott újratanítása |
 
 A **nem elkészültnek jelölt** egységek egyelőre tervek. A pontos szószám-elosztást a meglévő 600 szócikk témacsoportos, orosz nyelvű lektorálása után rögzítjük.
