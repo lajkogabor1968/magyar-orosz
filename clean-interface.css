@@ -261,6 +261,25 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
 .lesson-end { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
 .lesson-end[hidden] { display: none !important; }
 
+/* Optional A1 topic readings: genuinely playable, but compact until requested. */
+.a1-long-reading { margin: 18px 0 25px; border: 1px solid #d4e6da; border-radius: 19px; background: #f8fcf9; padding: 0 18px; }
+.a1-long-reading > summary { cursor: pointer; padding: 18px 0; font-weight: 800; font-size: 16px; color: #195f47; line-height: 1.5; }
+.a1-long-reading[open] > summary { border-bottom: 1px solid #deebe2; margin-bottom: 14px; }
+.a1-long-reading h4 { color: #194936; font-size: 19px; margin: 17px 0 8px; }
+.a1-long-reading > p { color: #567464; font-size: 15px; line-height: 1.55; }
+.a1-long-reading > .a1-long-reading-audio-status { color: #2b7758; font-size: 14px; font-weight: 700; }
+.a1-long-reading .lesson-reading-line { padding: 13px 0; border-bottom: 1px solid #deebe2; }
+.a1-long-reading .lesson-reading-pair p { color: #234d3b; overflow-wrap: anywhere; }
+.a1-long-reading .lesson-reading-pair p[lang="ru"] { color: #5b7363; font-size: 15px; margin-top: 6px; }
+.a1-long-reading .a1-reading-play-all, .a1-long-reading .a1-reading-translate { min-height: 46px; background: #eaf7ee !important; border: 2px solid #cce5d4 !important; border-radius: 12px; color: #185b43 !important; font-weight: 750; margin: 8px 8px 12px 0; }
+.a1-long-reading .a1-reading-play-line { flex-shrink: 0; width: 48px; height: 48px; min-width: 48px; padding: 6px; background: #eaf7ee !important; border: 2px solid #cfe6d6 !important; border-radius: 13px; font-size: 17px; }
+.a1-reading-check { padding: 17px; margin: 14px 0; background: #fff; border: 1px solid #dce9e0; border-radius: 16px; }
+.a1-reading-check > p:first-child { color: #204d3a; font-weight: 750; font-size: 17px; }
+.a1-reading-check .integrated-answer { display: block; width: 100%; min-height: 48px; margin: 8px 0; padding: 11px 14px; text-align: left; border: 2px solid #d9e8de; border-radius: 12px; background: #fff; color: #26533e; }
+.a1-reading-check .integrated-answer.right { background: #e0f7e6; border-color: #46a86d; color: #165636; }
+.a1-reading-check .integrated-answer.wrong { background: #fff0ee; border-color: #cf8984; color: #852f31; }
+.a1-reading-feedback { font-size: 15px; font-weight: 700; line-height: 1.5; color: #2c684e; }
+
 @media (max-width: 700px) {
   .landing-content { max-width: 500px; }
   .landing-intro { display: block; text-align: center; margin-bottom: 28px; }
@@ -299,6 +318,9 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
   .lesson-reference summary { align-items: flex-start; padding: 15px; }
   .lesson-flashcard .lesson-actions button { flex: 1 1 42%; }
   .lesson-continue-bar { padding: 8px; border-radius: 15px; }
+  .a1-long-reading { padding: 0 13px; }
+  .a1-long-reading > summary { padding: 16px 0; }
+  .a1-reading-check { padding: 13px; }
 }
 @media (max-width: 390px) {
   .lesson-stage-track li { font-size: 0; }

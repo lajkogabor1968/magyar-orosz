@@ -292,6 +292,31 @@ const units={
 
 };
 const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
+function playHungarian(text,status){
+ try{
+  const utterance=window.SpeechSynthesisUtterance?new SpeechSynthesisUtterance(text):{text};
+  utterance.lang='hu-HU';utterance.rate=.85;
+  // The shared audio engine plays an approved Gábor recording first, then
+  // falls back to device Hungarian TTS. Keep playback in the user click.
+  const started=window.TanuloTTS?.speak?.(utterance);
+  status.textContent=started?'Озвучивание запущено. Если звука нет, проверьте венгерский голос устройства.':'Озвучка недоступна. Проверьте настройки венгерского голоса или откройте страницу в Chrome.';
+ }catch(_){status.textContent='Озвучка недоступна. Попробуйте браузер Chrome и проверьте настройки речи.'}
+}
+function soundButton(text,status,full=false){
+ const button=el('button',full?'🔊 Прослушать целиком':'🔊');button.type='button';
+ button.className=full?'a1-reading-play-all':'a1-reading-play-line';
+ button.setAttribute('aria-label',(full?'Прослушать целиком: ':'Прослушать: ')+text);
+ button.onclick=()=>playHungarian(text,status);
+ return button;
+}
+function readingLine(hu,ru,status,translations){
+ const row=el('div');row.className='lesson-reading-line a1-long-reading-line';
+ const pair=el('div');pair.className='lesson-reading-pair';
+ const hungarian=el('p',hu);hungarian.lang='hu';
+ const russian=el('p',ru);russian.lang='ru';russian.hidden=true;
+ translations.push(russian);pair.append(hungarian,russian);
+ row.append(pair,soundButton(hu,status));return row;
+}
 window.TanmuhelyRenderA1LongReadings=(level,index)=>{
  document.getElementById('a1LongReading')?.remove();
  if(level!=='A1'||!units[index])return;
@@ -299,15 +324,19 @@ window.TanmuhelyRenderA1LongReadings=(level,index)=>{
  if(!anchor)return;
  const details=el('details');details.id='a1LongReading';details.className='a1-long-reading';
  const sum=el('summary','Дополнительный текст и диалог · 15 предложений');details.append(sum);
- details.append(el('h4',data.title),el('p','Прочитайте венгерский текст. Нажмите «Перевод», чтобы проверить понимание.'));
+ details.append(el('h4',data.title),el('p','Сначала слушайте венгерский текст, затем читайте. Перевод можно открыть для проверки понимания.'));
+ const audioStatus=el('p');audioStatus.className='a1-long-reading-audio-status';audioStatus.setAttribute('role','status');audioStatus.setAttribute('aria-live','polite');
+ details.append(soundButton(data.lines.map(line=>line[0]).join(' '),audioStatus,true),audioStatus);
  const toggle=el('button','Показать перевод');toggle.type='button';
+ toggle.className='a1-reading-translate';
  const translations=[];const body=el('div');
- for(const [hu,ru] of data.lines){const row=el('div');row.className='lesson-reading-pair';const p=el('p',hu);p.lang='hu';const t=el('p',ru);t.lang='ru';t.hidden=true;translations.push(t);row.append(p,t);body.append(row);}
+ for(const [hu,ru] of data.lines)body.append(readingLine(hu,ru,audioStatus,translations));
  toggle.onclick=()=>{const open=translations[0]?.hidden;translations.forEach(n=>n.hidden=!open);toggle.textContent=open?'Скрыть перевод':'Показать перевод';};
  details.append(toggle,body,el('h4','Диалог · Párbeszéd'));
- for(const [hu,ru] of data.dialogue){const row=el('div');row.className='lesson-reading-pair';const p=el('p',hu);p.lang='hu';const t=el('p',ru);t.lang='ru';t.hidden=true;translations.push(t);row.append(p,t);details.append(row);}
+ details.append(soundButton(data.dialogue.map(line=>line[0]).join(' '),audioStatus,true));
+ for(const [hu,ru] of data.dialogue)details.append(readingLine(hu,ru,audioStatus,translations));
  const section=el('div');section.append(el('h4','Проверьте понимание'));
- data.questions.forEach(([question,...rest])=>{const correct=rest.pop();const block=el('div');block.className='a1-reading-check';const prompt=el('p',question);prompt.lang='hu';block.append(prompt);const feedback=el('p');feedback.setAttribute('role','status');rest.forEach((choice,i)=>{const button=el('button',choice);button.type='button';button.className='integrated-answer';button.onclick=()=>{feedback.textContent=i===correct?'✓ Верно.':'✗ Попробуйте ещё раз.';block.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));};block.append(button);});block.append(feedback);section.append(block);});
+ data.questions.forEach(([question,...rest])=>{const correct=rest.pop();const block=el('div');block.className='a1-reading-check';const prompt=el('p',question);prompt.lang='hu';block.append(prompt);const feedback=el('p');feedback.setAttribute('role','status');feedback.className='a1-reading-feedback';rest.forEach((choice,i)=>{const button=el('button',choice);button.type='button';button.className='integrated-answer';button.onclick=()=>{const good=i===correct;feedback.textContent=good?'✓ Верно: '+rest[correct]+'.':'✗ Правильный ответ: '+rest[correct]+'. Найдите подтверждение в тексте и попробуйте ещё раз.';block.querySelectorAll('button').forEach(b=>{b.setAttribute('aria-pressed',String(b===button));b.classList.toggle('right',b.textContent===rest[correct]);b.classList.toggle('wrong',b===button&&!good)});};block.append(button);});block.append(feedback);section.append(block);});
  details.append(section);
  anchor.insertAdjacentElement('afterend',details);
 };

@@ -47,6 +47,17 @@ betűlista alatt. Nem változtak a mentési kulcsok, a kötelező szókártyák 
 az A2 anyagai. A statikus regressziótesztek átmentek; **valós tanulói és
 mobilos eszközteszt nélkül még nem tekinthető véglegesen igazoltnak a UX**.
 
+**2026. november 23., A1-es olvasási és kiejtési kapu:** a 2–12. leckéhez
+elkészült 11 választható, egyenként 15 magyar–orosz mondatpárból és 8 rövid
+párbeszédfordulóból álló témaszöveg. A kiegészítő anyagok most soronként és
+egészben is megszólaltathatók a közös hangmotoron keresztül: jóváhagyott
+Gábor-felvétel, egyébként magyar géphang. A magyar szövegtől külön
+kapcsolható az orosz fordítás, a szövegértési hibajelzés pedig megmutatja a
+helyes választ. A `verify-a1-long-readings.mjs` ellenőrzi a 165 mondatpárt,
+a 88 párbeszédfordulót, a 22 ellenőrzőkérdést, a lejátszógombok bekötését
+és az A2 kizárását. **A valódi androidos hangzás és a kétnyelvű lektorálás
+külön ellenőrzési kapu marad; a teszt a megszólaltatást nem hallgatja meg.**
+
 **Szakmai minták, nem hivatalos átvett szabályok:**
 
 - A [Duolingo saját leírása a kurzuskészítésről](https://blog.duolingo.com/how-duolingo-experts-work-with-ai/): tantervtervezés, tananyag, gyakorlatok, személyre szabás; a tanuló anyanyelvéhez igazítás.
