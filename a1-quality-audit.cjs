@@ -241,6 +241,23 @@ if(!source.includes("level==='A1'&&writingMisses===1")||
  !source.includes("writingMisses++;const accentTip"))
  errors.push('A1: spelling retry or answer-hint gate is missing');
 
+// Continue must open the saved guided A1 lesson, not bounce back to the hub.
+const studySource=fs.readFileSync(path.join(dir,'study.js'),'utf8');
+if(!landing.includes("if(chosen==='A1')document.getElementById('lessonsPrimary')?.click()")||
+ !studySource.includes("if(level!=='A1')mode('study-menu')"))
+ errors.push('A1: Continue button may return to menu instead of resumed lesson');
+// Optional modules remain available, but are collapsed for beginners.
+if(!home.includes('<details class="study-secondary-options"')||
+ !home.includes('id="lessonsVocabulary"')||
+ !home.includes('data-hub-view="contrast"')||
+ !home.includes('data-hub-view="communication"'))
+ errors.push('A1: main learning path or optional module navigation missing');
+// The first dictation error must give a hint without revealing the target.
+if(!source.includes("level==='A1'&&writingMisses===1")||
+ !source.includes("writingMisses=0;const w=rows()")||
+ !source.includes("writingMisses++;const accentTip"))
+ errors.push('A1: spelling retry or answer-hint gate is missing');
+
 console.log('A1 audit: '+all.length+' lessons · '+errors.length+' errors · '+warnings.length+' warnings');
 for(const error of errors)console.error('ERROR '+error);
 for(const warning of warnings)console.warn('WARN '+warning);
