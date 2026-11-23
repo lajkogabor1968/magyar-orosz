@@ -607,6 +607,28 @@ function renderGrammarExamples(){
  }
  table.append(body);
  target.append(heading,table);
+ const exercises=level==='A1'?lesson().contrastPractice||[]:[];
+ if(!exercises.length)return;
+ const practice=el('section',undefined,'lesson-contrast-practice');
+ practice.append(el('h4','Попробуйте сами — Mondatválasztás'),el('p','Дополнительная тренировка. Выберите точную венгерскую фразу. Ответ и объяснение появятся сразу; результат не влияет на переход к следующему шагу.'));
+ for(const [number,exercise] of exercises.entries()){
+  const card=el('div',undefined,'lesson-contrast-card');
+  card.append(el('small','Фраза '+(number+1)+' из '+exercises.length),el('strong',exercise.ru));
+  const options=el('div',undefined,'lesson-answer-options');
+  const feedback=el('p','','lesson-contrast-feedback');feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');
+  for(const {answer,index} of randomOrder(exercise.answers.map((answer,index)=>({answer,index})))){
+   const button=el('button',answer,'integrated-answer');button.type='button';button.lang='hu';
+   button.onclick=()=>{
+    const good=index===exercise.correct,expected=exercise.answers[exercise.correct];
+    highlightAnswerButtons(options,button,expected);
+    feedback.textContent=(good?'✓ Верно. ':'✗ Правильный ответ: '+expected+' ')+exercise.explanation;
+    if(good)for(const choice of options.querySelectorAll('button'))choice.disabled=true;
+   };
+   options.append(button);
+  }
+  card.append(options,feedback);practice.append(card);
+ }
+ target.append(practice);
 }
 function renderWords(){
  const box=$('integratedWords'),phrases=$('integratedPhrases'),expressions=$('integratedExpressions');box.replaceChildren();phrases.replaceChildren();expressions.replaceChildren();

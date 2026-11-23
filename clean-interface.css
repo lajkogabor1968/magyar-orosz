@@ -300,6 +300,14 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
 .lesson-grammar-examples { margin: 20px 0; }
 .lesson-grammar-table { min-width: 450px; }
 .lesson-grammar-table th { background: #e8f6ed; }
+.lesson-contrast-practice { display: grid; gap: 14px; margin-top: 23px; }
+.lesson-contrast-practice > h4 { color: #215d44; margin: 0; font-size: 19px; }
+.lesson-contrast-practice > p { color: #4d6a59; margin: 0 0 3px; line-height: 1.55; }
+.lesson-contrast-card { padding: clamp(14px, 3vw, 20px); background: #f3faf5; border: 1px solid #cae7d5; border-radius: 17px; }
+.lesson-contrast-card > small { display: block; color: #3e7860; font-weight: 750; margin-bottom: 7px; }
+.lesson-contrast-card > strong { display: block; color: #174c39; font-size: 17px; margin-bottom: 12px; }
+.lesson-contrast-card .integrated-answer { min-height: 48px; }
+.lesson-contrast-feedback { min-height: 1.3em; margin: 12px 0 0; color: #245e46; line-height: 1.5; }
 .lesson-continue-bar { padding: 14px; border: 1px solid #dbe9df; background: #fff; border-radius: 20px; box-shadow: 0 8px 22px #163e2b0a; margin: 24px 0 8px; }
 .lesson-continue-bar:has(#integratedStepNext:not(:disabled)) { position: sticky; bottom: max(9px,env(safe-area-inset-bottom)); z-index: 20; }
 .lesson-continue-bar .lesson-primary { width: 100%; margin: 0; border: 2px solid #198565 !important; border-bottom: 5px solid #12664e !important; background: #198565 !important; color: #fff !important; border-radius: 14px; min-height: 56px; font-size: 18px; }

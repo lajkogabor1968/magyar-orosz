@@ -134,6 +134,11 @@
       // All five prepared phrases are needed early to introduce új, nem and
       // nagyon, even though those cards occur after the mandatory first ten.
       wordPreviewCount: 5,
+      contrastPractice: [
+        {ru: 'Учитель приветливый.', answers: ['A tanár kedves.', 'A tanár kedves van.', 'A tanár kedves vagyok.'], correct: 0, explanation: 'В настоящем времени с он / она прилагательное-сказуемое употребляется без van. Vagyok — форма для «я».',},
+        {ru: 'Учитель невысокий.', answers: ['A tanár nem magas.', 'A tanár nincs magas.', 'A tanár nem magas van.'], correct: 0, explanation: 'Nem ставится перед прилагательным magas. Nincs обозначает отсутствие, а не качество человека.',},
+        {ru: 'Я молодой / молодая.', answers: ['Fiatal vagyok.', 'Fiatal van.', 'Fiatal vagy.'], correct: 0, explanation: 'С «я» нужна форма vagyok; vagy относится к «ты». Без связки прилагательное употребляется в третьем лице.',}
+      ],
       extra: [
         ['Milyen?', 'какой? какая? какое?', 'Milyen a tanár?', 'Какой учитель? / Какой он, учитель?'],
         ['kedves tanár', 'добрый / приветливый учитель', 'Ez egy kedves tanár.', 'Это приветливый учитель.'],
@@ -189,6 +194,14 @@
     {
       title: 'У меня есть — у меня нет',
       words: ['van', 'könyv', 'táska', 'autó', 'testvér', 'barát', 'telefon', 'kulcs', 'család', 'nem'],
+      // The fourth listening model explicitly introduces nincs before the
+      // lesson uses it in dialogue, reading and obligatory free writing.
+      wordPreviewCount: 5,
+      contrastPractice: [
+        {ru: 'У меня есть книга.', answers: ['Van egy könyvem.', 'Nincs könyvem.', 'Van egy könyved.'], correct: 0, explanation: 'Van сообщает о наличии. Könyvem — моя книга; könyved — твоя книга.',},
+        {ru: 'У меня нет машины.', answers: ['Nincs autóm.', 'Nem van autóm.', 'Nincs autód.'], correct: 0, explanation: 'Nincs — отрицательная форма наличия. Autóm — моя машина; autód — твоя машина. Здесь не говорим nem van.',},
+        {ru: 'У тебя есть книга?', answers: ['Van könyved?', 'Van könyvem?', 'Nincs könyved?'], correct: 0, explanation: 'Van + könyved? спрашивает о наличии книги у собеседника. -ed передаёт «твоя».',}
+      ],
       extra: [
         ['nincs', 'нет; отсутствует', 'Nincs autóm.', 'У меня нет машины.'],
         ['könyvem', 'моя книга', 'Van egy könyvem.', 'У меня есть книга.'],

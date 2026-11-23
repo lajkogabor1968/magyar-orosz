@@ -15,10 +15,10 @@ for (const id of [
   assert.equal(occurrence(html, `id="${id}"`), 1, `${id} must occur once`);
 }
 
-assert.match(html, /clean-interface\.css\?v=20261123-a1-word-preview1/);
-assert.match(html, /lesson-book\.js\?v=20261123-a1-grammar-hint1/);
+assert.match(html, /clean-interface\.css\?v=20261123-a1-contrast1/);
+assert.match(html, /lesson-book\.js\?v=20261123-a1-contrast1/);
 assert.match(html, /writing-feedback\.js\?v=20261123-a1-grammar-hint1/);
-assert.match(html, /a1-guided-lessons-13-16\.js\?v=20261123-a1-preteach5-v1/);
+assert.match(html, /a1-guided-lessons-13-16\.js\?v=20261123-a1-contrast1/);
 assert.match(html, /<ol id="integratedStageTrack"[^>]*>(?:<li>[^<]+<\/li>){6}<\/ol>/);
 assert.ok(html.indexOf('id="integratedStepNext"') > html.indexOf('id="lessonExercise"'), 'step action is after current activity');
 assert.ok(html.indexOf('id="integratedStepNext"') < html.indexOf('class="lesson-end"'), 'step action precedes final lesson controls');
@@ -37,6 +37,7 @@ assert.match(lessons, /cardIndex<core\?'Блок '/, 'mandatory A1 cards identif
 assert.match(css, /\.lesson-card-mastery-bar/);
 assert.match(css, /\.lesson-card-checkpoint/,'retrieval challenge is clear and touch-friendly');
 assert.match(css, /\.lesson-card-packs/,'both smaller word blocks appear in the progress meter');
+assert.match(css, /\.lesson-contrast-practice/,'short A1 contrast exercises have a dedicated layout');
 assert.match(css, /\.alphabet-starter-letter/);
 assert.match(lessons, /item\.setAttribute\('aria-current','step'\)/, 'current stage is announced to screen readers');
 assert.match(lessons, /view\.scrollIntoView\(\{block:'start',behavior:'instant'\}\)/, 'next stage returns to its heading');
