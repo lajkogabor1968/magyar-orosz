@@ -59,6 +59,27 @@ for (const [filename, exportName] of additions) {
  }
 }
 if (all.length!==28) errors.push('Expected 28 A1 lessons, found '+all.length);
+// Every advertised A1 lesson word must actually be present on some study card.
+// Supplemental words are added after the old card order to protect old checkpoints.
+const dictionarySandbox={window:{}};
+vm.runInNewContext(fs.readFileSync(path.join(dir,'data.js'),'utf8'),dictionarySandbox,
+ {filename:'data.js',timeout:3000});
+const knownWords=new Set((dictionarySandbox.window.MAGYAR_OROSZ_DATA?.A1||[])
+ .map(row=>String(row[0]).toLocaleLowerCase('hu-HU')));
+for(const [index,lesson] of all.entries()){
+ const extraWords=new Set((lesson.extra||[]).map(row=>String(row[0]).toLocaleLowerCase('hu-HU')));
+ const supplementaryWords=new Set();
+ for(const row of lesson.supplemental||[]){
+  if(!Array.isArray(row)||row.length!==4||row.some(x=>typeof x!=='string'||!x.trim()))
+   errors.push('A1:'+index+': invalid supplemental vocabulary row');
+  else supplementaryWords.add(row[0].toLocaleLowerCase('hu-HU'));
+ }
+ for(const word of lesson.words||[]){
+  const normalized=String(word).toLocaleLowerCase('hu-HU');
+  if(!knownWords.has(normalized)&&!extraWords.has(normalized)&&!supplementaryWords.has(normalized))
+   errors.push('A1:'+index+': vocabulary card missing for '+word);
+ }
+}
 all.forEach((lesson,index)=>{
  const id='A1:'+(index);
  if (!lesson.title||!Array.isArray(lesson.words)||!lesson.words.length)
