@@ -189,7 +189,7 @@ if(!home.includes('<small>Начальный</small>')||!home.includes('<small>�
  errors.push('UI: inconsistent Russian level labels');
 if(!localVoice.includes('window.TanuloVoiceCompareReset=reset')||
  !localVoice.includes('if(ownGeneration!==generation)')||
- !book.includes('window.TanuloVoiceCompareReset?.();'))
+ !source.includes('window.TanuloVoiceCompareReset?.();'))
  errors.push('A1: local voice recording is not cleared on lesson changes');
 if(!localVoice.includes('navigator.mediaDevices.getUserMedia({audio:true})')||
  !localVoice.includes('new MediaRecorder(stream')||
