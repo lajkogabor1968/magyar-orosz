@@ -87,7 +87,16 @@
       <button type="button" id="lessonSentenceCheck">Сравнить с образцом</button>
       <p role="status" id="lessonSentenceFeedback"></p>
     </fieldset></section>
-<section id="lessonComposition" class="lesson-part"><h3>8. Мини-сочинение</h3><p id="integratedCompositionPrompt"></p><p id="integratedCompositionHints"></p><label for="integratedCompositionText">Напишите небольшой текст по-венгерски:</label><textarea id="integratedCompositionText" rows="7" lang="hu" spellcheck="false" placeholder="Írjon magyarul..."></textarea><div class="lesson-actions"><button type="button" id="integratedCompositionSave">Сохранить текст</button><button type="button" id="integratedCompositionCheck">Проверить структуру</button></div><p id="integratedCompositionFeedback" role="status" aria-live="polite"></p><p class="muted">Проверка отмечает объём, знаки и некоторые орфографические особенности, но не подтверждает грамматическую правильность всего текста.</p></section>
+<section id="lessonComposition" class="lesson-part"><h3>8. Мини-сочинение</h3><p id="integratedCompositionPrompt"></p><p id="integratedCompositionHints"></p><label for="integratedCompositionText">Напишите небольшой текст по-венгерски:</label><textarea id="integratedCompositionText" rows="7" lang="hu" spellcheck="false" placeholder="Írjon magyarul..."></textarea><div class="lesson-actions"><button type="button" id="integratedCompositionSave">Сохранить текст</button><button type="button" id="integratedCompositionCheck">Проверить структуру</button></div><fieldset id="integratedCompositionSelfcheck" lang="ru">
+ <legend>Проверьте свою работу: 5 шагов</legend>
+ <p class="muted">Отмечайте только то, что действительно проверили. Это самопроверка, она не заменяет преподавателя и не влияет на баллы.</p>
+ <label><input type="checkbox" data-a1-selfcheck="0"> Я написал(а) нужное количество разных предложений.</label>
+ <label><input type="checkbox" data-a1-selfcheck="1"> Все предложения относятся к теме задания.</label>
+ <label><input type="checkbox" data-a1-selfcheck="2"> Я сверил(а) порядок слов и формы по примерам урока.</label>
+ <label><input type="checkbox" data-a1-selfcheck="3"> Я проверил(а) венгерские буквы и долгие гласные (á, é, ő, ű).</label>
+ <label><input type="checkbox" data-a1-selfcheck="4"> Я прочитал(а) текст вслух и поставил(а) знаки препинания.</label>
+ <p id="integratedCompositionSelfcheckStatus" role="status" aria-live="polite">Отмечено: 0 / 5</p>
+</fieldset><p id="integratedCompositionFeedback" role="status" aria-live="polite"></p><p class="muted">Проверка отмечает объём, знаки и некоторые орфографические особенности, но не подтверждает грамматическую правильность всего текста.</p></section>
 <section id="lessonExercise" class="lesson-part"><h3>9. Проверьте себя</h3><p>Выберите правильный перевод венгерского слова.</p><div id="integratedQuestion"></div><p id="integratedAnswerFeedback" role="status" aria-live="polite"></p>
   <div id="integratedErrorSummary" class="lesson-error-summary" aria-live="polite" hidden></div><button type="button" id="integratedNextQuestion" hidden>Следующий вопрос →</button></section>
   <div class="lesson-continue-bar"><button type="button" id="integratedStepNext" class="lesson-primary" disabled>Следующий шаг</button></div>
