@@ -695,11 +695,17 @@ function resumeQuiz(){
  if(level==='A1')testOrder=initialTestOrder();
  const saved=read(quizKey)[lessonKey()],w=rows();
  if(!saved||!Array.isArray(saved.order)||!Array.isArray(saved.answers))return;
- const order=saved.order.map(hu=>w.findIndex(r=>r.hu===hu)),n=Math.min(10,w.length);
- if(order.length!==w.length||order.includes(-1)||new Set(order).size!==w.length||
+ // Keep the earlier ten-question quiz stable if new vocabulary was appended.
+ // Never silently reinterpret an old shorter quiz as a longer one.
+ const oldOrder=saved.order.map(hu=>w.findIndex(r=>r.hu===hu));
+ const n=Math.min(10,w.length),oldN=Math.min(10,saved.order.length);
+ if(!saved.order.length||saved.order.length>w.length||oldOrder.includes(-1)||
+    new Set(oldOrder).size!==oldOrder.length||oldN!==n||
     !Number.isInteger(saved.index)||saved.index<0||saved.index>=n||
     ![saved.index,saved.index+1].includes(saved.answers.length)||
     saved.answers.some(a=>typeof a!=='string')||(saved.done&&saved.answers.length!==n))return;
+ const kept=new Set(oldOrder);
+ const order=[...oldOrder,...w.map((_,i)=>i).filter(i=>!kept.has(i))];
  testOrder=order;testIndex=saved.index;quizAnswers=saved.answers;
  for(const [i,a] of quizAnswers.entries()){
   const v=w[order[i]];
