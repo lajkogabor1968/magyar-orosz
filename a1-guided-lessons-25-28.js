@@ -39,8 +39,8 @@
       reading: {
         lines: [
           ['Anna egy kávézóban van.', 'Анна в кафе.'],
-          ['Szeretnék egy teát.', 'Я хотел(а) бы чай.'],
-          ['Cukor nélkül, kérem.', 'Без сахара, пожалуйста.'],
+          ['Anna egy teát szeretne.', 'Анна хотела бы чай.'],
+          ['Cukor nélkül kéri.', 'Она просит чай без сахара.'],
           ['Péter egy kávét szeretne.', 'Петер хотел бы кофе.'],
           ['Anna egy pohár vizet is kér.', 'Анна просит ещё стакан воды.'],
           ['Köszönöm szépen!', 'Большое спасибо!']
@@ -239,9 +239,9 @@
       reading: {
         lines: [
           ['Anna a piacon van.', 'Анна на рынке.'],
-          ['Szeretnék egy kiló paradicsomot.', 'Я хотела бы килограмм помидоров.'],
+          ['Anna egy kiló paradicsomot szeretne.', 'Анна хотела бы килограмм помидоров.'],
           ['A paradicsom ezer forint.', 'Помидоры стоят тысячу форинтов.'],
-          ['Két narancsot is kérek.', 'Мне, пожалуйста, ещё два апельсина.'],
+          ['Két narancsot is kér.', 'Она просит ещё два апельсина.'],
           ['A két narancs is ezer forint.', 'Два апельсина тоже стоят тысячу форинтов.'],
           ['Összesen kétezer forint.', 'Всего две тысячи форинтов.'],
           ['Anna fizet, és elköszön.', 'Анна платит и прощается.']
