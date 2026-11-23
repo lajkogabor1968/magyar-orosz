@@ -82,6 +82,20 @@ teszt már minden olvasmányban ellenőrzi az előkészítés megjelenését
 **még a hang és a szöveg előtt**. Ez olvasási segítség, nem helyettesíti
 a részletes, fokozatos nyelvtani tanítást vagy az anyanyelvi lektorálást.
 
+**A1 szókártya-terhelés csökkentése – 2026. november 23.:** a 28 A1-es
+vezetett lecke tíz kötelező szókártyáját két, egymás után nyíló, ötszavas
+tanulási egységre bontottuk. Minden ötödik kártya után két rövid,
+orosz jelentésből magyar szót felismerő kérdés segíti az aktív felidézést;
+helyes válaszok után nyílik a következő egység, illetve a nyelvtani lépés.
+A válaszokat az eddigi leckénkénti ellenőrzőpont-kulcs új, A1-re korlátozott
+mezőjében tároljuk, a korábbi befejezett vagy már megnyitott kártyákhoz
+pedig visszafelé kompatibilis elismerés tartozik. A2-höz nem nyúltunk.
+A `verify-a1-card-chunks.mjs` a megjelenést, a hibás és jó válaszokat,
+a két blokkon átmenő tanulási kaput és a régi mentések visszaállítását
+ellenőrzi. **A 13 leckére vonatkozó magas új-szószám figyelmeztetés
+egyelőre megmarad:** a két részre osztás a terhelést mérsékli, de nem
+igazolja, hogy ennyi új szó egy leckében minden kezdőnek megfelelő.
+
 **Szakmai minták, nem hivatalos átvett szabályok:**
 
 - A [Duolingo saját leírása a kurzuskészítésről](https://blog.duolingo.com/how-duolingo-experts-work-with-ai/): tantervtervezés, tananyag, gyakorlatok, személyre szabás; a tanuló anyanyelvéhez igazítás.

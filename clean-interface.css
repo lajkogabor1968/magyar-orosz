@@ -221,6 +221,19 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
 .lesson-card-mastery-bar::-webkit-progress-value { background: #279d73; border-radius: 999px; }
 .lesson-card-mastery-bar::-moz-progress-bar { background: #279d73; border-radius: 999px; }
 .lesson-card-mastery.is-complete .lesson-card-mastery-count { color: #125e43; }
+.lesson-card-packs { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; margin-top: 13px; }
+.lesson-card-pack { background: #fff; border: 1px solid #d2e7d8; border-radius: 12px; padding: 10px 12px; display: grid; gap: 5px; }
+.lesson-flashcard .lesson-card-pack strong { display: block; font-size: 15px; margin: 0; color: #225e45; line-height: 1.4; }
+.lesson-card-pack span { color: #46725a; font-size: 14px; font-weight: 700; }
+.lesson-card-pack progress { width: 100%; height: 8px; accent-color: #259974; }
+.lesson-card-pack.is-complete { background: #e4f5e8; border-color: #8cccaa; }
+.lesson-card-checkpoint { background: #eff9f2; border: 2px solid #b8dfc7; border-radius: 17px; margin: 14px 0 21px; padding: clamp(16px,3vw,24px); }
+.lesson-card-checkpoint h4 { color: #205b43; font-size: 19px; margin: 0 0 7px; }
+.lesson-card-checkpoint > p { font-size: 16px; line-height: 1.5; color: #426b55; margin: 8px 0; }
+.lesson-card-checkpoint > strong { display: block; color: #184e38; font-size: 18px; line-height: 1.5; margin: 15px 0; }
+.lesson-card-check-options { display: flex; flex-wrap: wrap; gap: 9px; }
+.lesson-card-check-options .integrated-answer { flex: 1 1 135px; font-size: 17px; min-height: 48px; }
+.lesson-card-checkpoint #a1CardCheckFeedback { min-height: 1.5em; }
 #integratedCardPosition { display: block; color: #476d5a; font-size: 14px; font-weight: 750; }
 .lesson-alphabet { padding: 20px 22px; background: #f7fbf8; border: 1px solid #dbe9df; border-radius: 19px; margin: 19px 0 23px; }
 .lesson-alphabet h3 { margin: 0 0 7px; font-size: 21px; color: #194c3a; }
@@ -236,6 +249,7 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
 .alphabet-full .alphabet-letter { min-height: 66px; color: #185b47; border-radius: 12px; }
 .alphabet-full .alphabet-letter small { color: #537362; font-size: 12px; }
 #integratedFlashcardOpen { font-size: 14px; }
+@media (max-width: 440px) { .lesson-card-packs { grid-template-columns: minmax(0,1fr); } }
 .lesson-reference { border: 1px solid #dce9e1; background: #fcfefd; border-radius: 17px; margin: 18px 0 22px; }
 .lesson-reference summary { display: flex; justify-content: space-between; align-items: center; gap: 10px; cursor: pointer; padding: 19px; font-size: 16px; font-weight: 750; color: #1b644c; list-style: none; }
 .lesson-reference summary::-webkit-details-marker { display: none; }

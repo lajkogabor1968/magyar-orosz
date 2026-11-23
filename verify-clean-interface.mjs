@@ -15,7 +15,8 @@ for (const id of [
   assert.equal(occurrence(html, `id="${id}"`), 1, `${id} must occur once`);
 }
 
-assert.match(html, /clean-interface\.css\?v=20261123-a1-guidance1/);
+assert.match(html, /clean-interface\.css\?v=20261123-a1-two-packs1/);
+assert.match(html, /lesson-book\.js\?v=20261123-a1-two-packs1/);
 assert.match(html, /<ol id="integratedStageTrack"[^>]*>(?:<li>[^<]+<\/li>){6}<\/ol>/);
 assert.ok(html.indexOf('id="integratedStepNext"') > html.indexOf('id="lessonExercise"'), 'step action is after current activity');
 assert.ok(html.indexOf('id="integratedStepNext"') < html.indexOf('class="lesson-end"'), 'step action precedes final lesson controls');
@@ -29,9 +30,11 @@ for (const id of ['integratedWords', 'integratedPhrases', 'integratedExpressions
 assert.match(lessons, /document\.querySelector\('#lessonWords \.lesson-reference'\)\.before\(section\)/, 'A1 alphabet remains before the optional reference');
 assert.match(lessons, /details=el\('details',undefined,'alphabet-full'\)/, 'the 44-letter reference is collapsed by default');
 assert.match(lessons, /for\(const letter of \['a','á','e','é'\]\)/, 'essential beginner vowels are always visible and playable');
-assert.match(lessons, /meter\.querySelector\('progress'\)\.value=count/, 'visible card progress is synchronized to existing saved flips');
-assert.match(lessons, /cardIndex<core\?'Обязательное слово '/, 'mandatory versus optional cards have a plain-language label');
+assert.match(lessons, /meter\.querySelector\('\.lesson-card-mastery-bar'\)\.value=count/, 'visible card progress is synchronized to existing saved flips');
+assert.match(lessons, /cardIndex<core\?'Блок '/, 'mandatory A1 cards identify their five-word pack');
 assert.match(css, /\.lesson-card-mastery-bar/);
+assert.match(css, /\.lesson-card-checkpoint/,'retrieval challenge is clear and touch-friendly');
+assert.match(css, /\.lesson-card-packs/,'both smaller word blocks appear in the progress meter');
 assert.match(css, /\.alphabet-starter-letter/);
 assert.match(lessons, /item\.setAttribute\('aria-current','step'\)/, 'current stage is announced to screen readers');
 assert.match(lessons, /view\.scrollIntoView\(\{block:'start',behavior:'instant'\}\)/, 'next stage returns to its heading');
