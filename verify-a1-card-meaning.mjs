@@ -31,6 +31,9 @@ for(const extension of extensions){
  assert.ok(extension?.lessons,'A1 lesson extension missing');
  courses.A1.push(...extension.lessons);
 }
+const corrections=book.match(/function improveEarlyA1CardExamples\(\)\{[\s\S]*?\n\}/)?.[0];
+assert.ok(corrections,'Beginner-specific example overrides must remain loaded');
+runInNewContext(`(function(courses){${corrections}; improveEarlyA1CardExamples()})`)(courses);
 assert.equal(courses.A1.length,30);
 assert.equal(courses.A2.length,3,'A2 course stays unchanged');
 const rendered=courses.A1.map((lesson,lessonIndex)=>runInNewContext(`${rowsFn};rows()`,{
@@ -69,13 +72,37 @@ assert.match(market.grammarTable[0][1],/помидор → помидор/);
 assert.match(extensions[4].visuals[3].cards[0][2],/ед\. число/);
 assert.match(market.grammar[1],/существительное остаётся в единственном числе/,
  'The Russian learner must still see the contrast with a plural Russian quantity phrase');
+const earlySamples=[
+ [1,'én','Én jól vagyok.','У меня всё хорошо.'],
+ [1,'te','Te hogy vagy?','А ты как?'],
+ [1,'ő','Ő magyar.','Он — венгр / она — венгерка.'],
+ [1,'vagy','Te jól vagy.','У тебя всё хорошо.'],
+ [1,'ki','Ki ő?','Кто он / она?'],
+ [4,'víz','Vizet kérek.','Мне воды, пожалуйста.'],
+ [4,'tea','Teát kérek.','Мне чай, пожалуйста.'],
+ [4,'tej','Tejet kérek.','Мне молока, пожалуйста.'],
+ [4,'tojás','Tojást kérek.','Мне яйцо, пожалуйста.'],
+ [6,'lakik','Anna itt lakik.','Анна живёт здесь.'],
+ [9,'angol','Anna angol.','Анна — англичанка.'],
+ [9,'francia','Anna francia.','Анна — француженка.']
+];
+for(const [index,hu,example,translation] of earlySamples){
+ const card=rendered[index].find(x=>x.hu===hu);
+ assert.deepEqual([card?.example,card?.translation],[example,translation],
+  `A1 lesson ${index+1}: ${hu} must use a taught, correctly translated beginner example`);
+}
+assert.match(courses.A1[1].grammar[1],/magyarul beszél/,
+ 'The beginner must be taught that magyarul means "in Hungarian" before using the phrase');
+assert.match(courses.A1[4].grammar[1],/Vizet iszom/,
+ 'The beginner must be told that the first-person drinking pattern is a fixed expression');
 const html=read('index.html');
 for(const script of [
- 'a1-guided-lessons-next.js?v=20261123-a1-examples1',
+ 'a1-guided-lessons-next.js?v=20261123-a1-card-scaffold2',
  'a1-guided-lessons-17-20.js?v=20261123-a1-examples1',
  'a1-guided-lessons-25-28.js?v=20261123-a1-meaning1',
  'a1-guided-lessons-29-30.js?v=20261123-a1-travel-health1'
 ])assert.ok(html.includes(script),`Browser must refresh corrected A1 material: ${script}`);
 console.log(`PASS: ${courses.A1.length} A1 lessons, ${totalCards} visible cards, no duplicate Russian spelling prompts or early imperatives in required cards.`);
 console.log('PASS: three chair examples use a beginner sentence; the Hungarian singular tomato form is translated as singular in the card, table and visual.');
+console.log('PASS: 12 beginner sample translations and staged grammar explanations are explicitly verified.');
 console.log('NOTE: a bilingual human reviewer is still required for semantic and stylistic assurance.');

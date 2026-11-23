@@ -31,6 +31,7 @@ tananyag-tervezési és ellenőrzési elveiből indultunk ki.
 | Vezetett út / A1-szótár | 199/580 különböző címszó, **34,3%** | Nem tekinthető kész A1-es útvonalnak. |
 | A1-es kezdőlecke szabad kiválasztása | Szimulált állapotteszt sikeres | A 2. vagy későbbi lecke közvetlenül megnyitható, a választás mentődik; valódi mobilos próba még nincs. |
 | Ismert szavak gyors A1-es ellenőrzése | Négy pontos magyar írásválasz két kártyacsoportból; sikertelen próbánál visszatérés a tanításhoz | A gyorsellenőrzés állapota külön mentődik, nem jelöl meg nem nyitott kártyákat; valódi tanulói validálás még hátravan. |
+| Kezdő magyar–orosz kártyaminták | 12 célzottan rögzített mondat–fordítás ellenőrzés a 2., 5., 7. és 10. leckében | Előresiető nyelvtani alakok és félreérthető példák javítva, de ez nem teljes körű anyanyelvi lektorálás. |
 | Független nyelvi és tanulói próba | **Még nem teljesült** | Orosz anyanyelvű lektor és 6–10 valós tanuló szükséges. |
 
 Az első körben megoldott pedagógiai hiba: az 1. lecke immár külön elmagyarázza,

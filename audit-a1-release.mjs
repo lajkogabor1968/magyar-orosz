@@ -44,6 +44,9 @@ if(firstLessonCorrections){
  const setup=runInNewContext(`(function(courses){${firstLessonCorrections}; improveA1Foundations()})`);
  setup(courses);
 }
+const earlyExampleCorrections=book.match(/function improveEarlyA1CardExamples\(\)\{[\s\S]*?\n\}/)?.[0];
+if(!earlyExampleCorrections)throw Error('Hiányoznak a kezdő kártyák tanári példamondatai.');
+runInNewContext(`(function(courses){${earlyExampleCorrections}; improveEarlyA1CardExamples()})`)(courses);
 
 const blockers=[];
 const reviews=[];

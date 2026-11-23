@@ -59,6 +59,10 @@
     {
       title: 'Страны и языки',
       words: ['Magyarország', 'Franciaország', 'Németország', 'Olaszország', 'ország', 'nyelv', 'magyar', 'angol', 'francia', 'német', 'beszél'],
+      examples: {
+        angol: ['Anna angol.', 'Анна — англичанка.'],
+        francia: ['Anna francia.', 'Анна — француженка.']
+      },
       extra: [
         ['Oroszország', 'Россия', 'Ez Oroszország.', 'Это Россия.'],
         ['orosz', 'русский; русская', 'Anna orosz.', 'Анна — русская.'],

@@ -26,6 +26,41 @@ function improveA1Foundations(){
  beginner.preparation[1][2]='Ez — это; egy — неопределённый артикль перед исчисляемым существительным. В русском языке артиклей нет: не переводите egy автоматически как «один».';
 }
 improveA1Foundations();
+// In the first A1 lessons, keep mandatory word-card examples within already
+// explained constructions. Later dictionary examples remain available in the
+// full vocabulary; these are teaching-specific bilingual sentence pairs.
+function improveEarlyA1CardExamples(){
+ const greetings=courses.A1[1];
+ greetings.examples={...greetings.examples,
+  'én':['Én jól vagyok.','У меня всё хорошо.'],
+  'te':['Te hogy vagy?','А ты как?'],
+  'ő':['Ő magyar.','Он — венгр / она — венгерка.'],
+  'igen':['Igen, jól vagyok.','Да, у меня всё хорошо.'],
+  'nem':['Nem, köszönöm.','Нет, спасибо.'],
+  'magyar':['Magyar vagyok.','Я венгр / венгерка.'],
+  'beszél':['Anna magyarul beszél.','Анна говорит по-венгерски.']
+ };
+ greetings.senses={...greetings.senses,
+  'vagy':['форма глагола lenni (ты)','Te jól vagy.','У тебя всё хорошо.'],
+  'ki':['кто?','Ki ő?','Кто он / она?']
+ };
+ greetings.grammar[1]+=' Magyar — «венгр / венгерка; венгерский», Magyar vagyok. — «Я венгр / венгерка». Готовое слово magyarul означает «по-венгерски»: Anna magyarul beszél. — «Анна говорит по-венгерски». Более подробное спряжение beszél изучим позже.';
+ const food=courses.A1[4];
+ food.examples={...food.examples,
+  'víz':['Vizet kérek.','Мне воды, пожалуйста.'],
+  'tea':['Teát kérek.','Мне чай, пожалуйста.'],
+  'kávé':['Kávét kérek.','Мне кофе, пожалуйста.'],
+  'tej':['Tejet kérek.','Мне молока, пожалуйста.'],
+  'sajt':['Ez sajt.','Это сыр.'],
+  'tojás':['Tojást kérek.','Мне яйцо, пожалуйста.']
+ };
+ food.grammar[1]+=' Запоминаем готовые сочетания: Vizet iszom. — «Я пью воду»; A gyerek almát eszik. — «Ребёнок ест яблоко». Подробное спряжение этих глаголов будет позже.';
+ const questions=courses.A1[6];
+ questions.examples={...questions.examples,
+  'lakik':['Anna itt lakik.','Анна живёт здесь.']
+ };
+}
+improveEarlyA1CardExamples();
 // Extend existing course word lists only after the entire textbook is defined.
 window.TanmuhelyLinkQuizletLessons?.(courses);
 window.TanmuhelyEnrichA1A2?.(courses);
