@@ -699,6 +699,19 @@ function card(){
  updateCardProgress();
 }
 function norm(s){return String(s).normalize('NFC').toLocaleLowerCase('hu-HU').trim().replace(/[.!?]+$/,'').replace(/\s+/g,' ')}
+// Hungarian vowels can differ by length AND quality (a/á, e/é, ö/ő, ü/ű).
+// Never accept an accentless form as correct merely because base letters match.
+function hungarianAccentFeedback(attempt,expected){
+ const strip=value=>String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+ if(strip(attempt)!==strip(expected)||attempt===expected)return '';
+ const from=[...attempt],to=[...expected],edits=[];
+ for(let i=0;i<Math.min(from.length,to.length);i++){
+  if(from[i]!==to[i])edits.push(from[i]+' → '+to[i]);
+ }
+ return 'Почти верно: различается долгота или качество венгерских гласных. '+
+  (edits.length?'Исправьте: '+edits.slice(0,4).join(', ')+'. ':'')+
+  'Знаки á, é, í, ó, ö, ő, ú, ü, ű важны для значения слова.';
+}
 function sentencePractice(reset=false){
  const ui=$('lessonSentencePractice');
  ui.hidden=correctWriting.size<Math.min(3,rows().length);
@@ -714,10 +727,14 @@ function sentencePractice(reset=false){
 $('lessonSentenceInput').addEventListener('input',saveCheckpoint);
 $('lessonSentenceCheck').onclick=()=>{
  const target=$('lessonSentenceTarget').textContent,got=$('lessonSentenceInput').value;
- $('lessonSentenceFeedback').textContent=norm(got)===norm(target)?'✓ Слова и диакритические знаки совпадают с образцом.':'Сравните свою запись с образцом: '+target;
+ const actual=norm(got),correct=norm(target);
+ $('lessonSentenceFeedback').textContent=actual===correct
+  ?'✓ Слова и диакритические знаки совпадают с образцом.'
+  :(hungarianAccentFeedback(actual,correct)||'Сравните порядок букв и слов с образцом. ')+
+   'Правильно: '+target;
 };
 function spelling(){const w=rows(),v=w[writeIndex%w.length];$('integratedWritingPrompt').textContent='Напишите по-венгерски: '+v.ru;$('integratedWritingInput').value='';$('integratedWritingFeedback').textContent='';$('integratedWritingProgress').textContent='Верно написано: '+correctWriting.size+' / '+w.length+(level==='A1'&&lessonIndex===0?' · с долгой гласной: '+[...correctWriting].filter(i=>/[áéíóöőúüű]/.test(w[i]?.hu||'')).length+' / 2':'')}
-function spellingCheck(){const v=rows()[writeIndex%rows().length],got=norm($('integratedWritingInput').value),target=norm(v.hu);if(!got){$('integratedWritingFeedback').textContent='Введите слово.';return}const spellingErrors=read(spellingErrorsKey),current=Array.isArray(spellingErrors[lessonKey()])?spellingErrors[lessonKey()]:[];if(got===target){spellingErrors[lessonKey()]=current.filter(hu=>hu!==v.hu);try{localStorage.setItem(spellingErrorsKey,JSON.stringify(spellingErrors))}catch(_){}correctWriting.add(writeIndex);saveCheckpoint();$('integratedWritingFeedback').textContent='✓ Правильно! '+v.hu+' — '+v.ru}else{spellingErrors[lessonKey()]=[...new Set([...current,v.hu])];try{localStorage.setItem(spellingErrorsKey,JSON.stringify(spellingErrors))}catch(_){}const bare=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');const missing=bare(got)===bare(target);const differences=[...target].map((c,i)=>[c,[...got][i]]).filter(([expected,actual])=>expected!==actual&&actual!==undefined).slice(0,3).map(([expected,actual])=>actual+' → '+expected);$('integratedWritingFeedback').textContent=(missing?'Почти верно: проверьте долготу и вид гласной. ':'Есть ошибка в буквах или их порядке. ')+(differences.length?'Обратите внимание: '+differences.join(', ')+'. ':'')+'Правильно: '+v.hu+'. Напишите ещё раз.'}$('integratedWritingProgress').textContent='Верно написано: '+correctWriting.size+' / '+rows().length}
+function spellingCheck(){const v=rows()[writeIndex%rows().length],got=norm($('integratedWritingInput').value),target=norm(v.hu);if(!got){$('integratedWritingFeedback').textContent='Введите слово.';return}const spellingErrors=read(spellingErrorsKey),current=Array.isArray(spellingErrors[lessonKey()])?spellingErrors[lessonKey()]:[];if(got===target){spellingErrors[lessonKey()]=current.filter(hu=>hu!==v.hu);try{localStorage.setItem(spellingErrorsKey,JSON.stringify(spellingErrors))}catch(_){}correctWriting.add(writeIndex);saveCheckpoint();$('integratedWritingFeedback').textContent='✓ Правильно! '+v.hu+' — '+v.ru}else{spellingErrors[lessonKey()]=[...new Set([...current,v.hu])];try{localStorage.setItem(spellingErrorsKey,JSON.stringify(spellingErrors))}catch(_){}const accentTip=hungarianAccentFeedback(got,target);$('integratedWritingFeedback').textContent=(accentTip||'Есть ошибка в буквах или их порядке. ')+'Правильно: '+v.hu+'. Напишите ещё раз.'}$('integratedWritingProgress').textContent='Верно написано: '+correctWriting.size+' / '+rows().length}
 function composition(){const l=lesson(),key=level+':'+lessonIndex;$('integratedCompositionPrompt').textContent=l.composition[0]+'. '+l.composition[1];$('integratedCompositionHints').textContent='Примеры начала предложений: '+l.composition[2];$('integratedCompositionText').value=read('magyarorosz.lesson-writing.v1')[key]||'';$('integratedCompositionFeedback').textContent='Напишите собственный текст. Он сохранится только в этом браузере.';restoreCompositionChecklist()}
 const compositionChecklistKey='magyarorosz.a1-composition-checklist.v1';
 function compositionChecklistBoxes(){return [...document.querySelectorAll('#integratedCompositionSelfcheck input[data-a1-selfcheck]')];}
