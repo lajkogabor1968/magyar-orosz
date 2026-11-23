@@ -147,6 +147,13 @@ if(!source.includes("Что означает венгерская реплика
 // salespeople, teachers and guests also speak in A1 scenarios.
 if(!source.includes("level==='A1'?(i%2===0?'Собеседник A':'Собеседник B')"))
  errors.push('A1: dialogue speakers are still hardcoded as Anna and Péter');
+// An A1 retake must preserve the best achieved vocabulary score while
+// recording the latest score for review. Existing old result fields remain valid.
+if(!source.includes("current.bestScore=best.score")||
+ !source.includes("current.bestMax=best.max")||
+ !source.includes("current.attempts=")||
+ !source.includes("finished[lessonKey()]=current"))
+ errors.push('A1: best score may be overwritten by a weaker retake');
 // A previously solved grammar question must be rendered only after its checkpoint
 // is restored. Otherwise a completed lesson can show actionable answer buttons.
 if(!source.includes('restoreCheckpoint();grammarQuestion();renderDialogueUnderstanding();'))
