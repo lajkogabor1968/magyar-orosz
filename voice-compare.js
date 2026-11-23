@@ -9,6 +9,17 @@
  const replay=document.getElementById('integratedVoiceRecordPlayback');
  const player=document.getElementById('integratedVoiceRecordAudio');
  const feedback=document.getElementById('integratedVoiceRecordStatus');
+ const phoneticsStatus=document.getElementById('phoneticsStatus');
+ document.querySelectorAll('[data-pronounce]').forEach(button=>{
+  button.addEventListener('click',()=>{
+   const word=button.dataset.pronounce;
+   if(!word)return;
+   const played=window.TanuloTTS?.speak?.({text:word,lang:'hu-HU',rate:0.8});
+   if(phoneticsStatus)phoneticsStatus.textContent=played
+    ?'Прослушайте венгерское произношение и повторите: '+word
+    :'Венгерская озвучка недоступна. Проверьте языковые настройки устройства.';
+  });
+ });
  if(!start||!stop||!replay||!player||!feedback)return;
  const supported=!!(navigator.mediaDevices?.getUserMedia&&window.MediaRecorder);
  let recorder=null,stream=null,chunks=[],timer=null,url=null;
