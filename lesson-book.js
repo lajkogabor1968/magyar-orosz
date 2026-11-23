@@ -730,6 +730,9 @@ function renderErrorSummary(){
  box.append(el('p','Прослушайте ошибочные слова ещё раз. При необходимости вернитесь к разделу «Слова».'))
 }
 function stageView(){
+ const quick=$('integratedQuickSections');
+ if(quick){quick.hidden=level!=='A1';quick.querySelectorAll('[data-preview-section]').forEach(b=>{b.setAttribute('aria-pressed','false');});$('integratedQuickReturn').hidden=true;$('integratedQuickHint').textContent='Просмотр не меняет ваш этап и не заменяет проверку знаний.';}
+ $('integratedStepNext').hidden=false;
  steps.forEach((id,i)=>$(id).hidden=i!==step);
  $('integratedPreviousStep').hidden=step===0;
  $('integratedRouteProgress').textContent='Этап '+(step+1)+' из 6 · '+stepsRu[step];
@@ -766,6 +769,24 @@ function open(mode){level=document.querySelector('.welcome .level.active')?.data
 let stepButton=$('integratedStepNext');if(!stepButton){stepButton=el('button','Следующий шаг →','lesson-primary');stepButton.type='button';stepButton.id='integratedStepNext';view.insertBefore(stepButton,$('lessonWords'))}
 stepButton.onclick=moveNext;
 $('integratedPreviousStep').onclick=()=>{if(step>0){step--;save();stageView();note('Вы вернулись к предыдущему шагу. Уже проверенные ответы сохранены.') }};
+
+$('integratedQuickSections')?.querySelectorAll('[data-preview-section]').forEach(button=>{
+ button.addEventListener('click',()=>{
+  if(level!=='A1')return;
+  const target=button.dataset.previewSection;
+  if(!['lessonWords','lessonGrammar','lessonDialogue','lessonComposition'].includes(target))return;
+  steps.forEach(id=>$(id).hidden=id!==target);
+  $('integratedStepNext').hidden=true;
+  $('integratedPreviousStep').hidden=true;
+  document.querySelectorAll('.lesson-sections a').forEach(a=>a.hidden=true);
+  $('integratedQuickSections').querySelectorAll('[data-preview-section]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+  $('integratedQuickReturn').hidden=false;
+  $('integratedQuickHint').textContent='Это только просмотр материала. Ваш сохранённый этап: '+stepsRu[step]+'.';
+  $(target).scrollIntoView({block:'start',behavior:'instant'});
+ });
+});
+$('integratedQuickReturn')?.addEventListener('click',()=>stageView());
+
 $('lessonsPrimary')?.addEventListener('click',()=>open('resume'));$('lessonsVocabulary')?.addEventListener('click',()=>open('words'));
 function completedScore(index){return read(KEY).completed?.[level+':'+index]}
 function reviewAdvice(targetIndex){
