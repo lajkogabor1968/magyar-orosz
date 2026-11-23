@@ -367,3 +367,8 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
 #lessonMenu .lesson-select { display: block; }
 #lessonMenu .lesson-free-navigation { margin-top: .5rem; }
 html.study-book .masthead .logo p { display: none; }
+.lesson-card-mastery > summary { cursor: pointer; min-height: 44px; }
+.lesson-card-mastery-heading::before { content: "▸"; color: #38644e; }
+.lesson-card-mastery[open] > summary::before { content: "▾"; }
+.lesson-card-mastery-count { margin-inline-start: auto; }
+.lesson-card-mastery:not([open]) { margin-bottom: .5rem; }

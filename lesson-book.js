@@ -544,6 +544,7 @@ function placeReadingAfterTeaching(){
  if(compositionHeading)compositionHeading.textContent=level==='A1'?'Теперь напишите свой текст — Írás':'8. Мини-сочинение';
  const moved=$('a1ReadingPractice');
  if(level!=='A1'){
+  $('lessonWords').prepend(original);
   if(moved){original.append(...Array.from(moved.childNodes));moved.remove()}
   return;
  }
@@ -555,6 +556,7 @@ function placeReadingAfterTeaching(){
  panel.id='a1ReadingPractice';
  if(!moved)panel.append(heading,actions,lines,check);
  writing.prepend(panel);
+ $('integratedFlashcardOpen').after(original);
 }
 function renderGrammarExamples(){
  const target=$('integratedGrammarExamples');
@@ -612,9 +614,9 @@ function updateCardProgress(){
  const flash=$('integratedFlashcard');let meter=flash.querySelector('.lesson-card-mastery');
  if(level!=='A1'){meter?.remove();const old=$('a1CardCheckpoint');if(old)old.hidden=true;return}
  if(!meter){
-  meter=el('div',undefined,'lesson-card-mastery');
-  const head=el('div',undefined,'lesson-card-mastery-heading');
-  head.append(el('strong','Переводы для итоговой проверки'),el('span','0 / 10','lesson-card-mastery-count'));
+  meter=el('details',undefined,'lesson-card-mastery');
+  const head=el('summary',undefined,'lesson-card-mastery-heading');
+  head.append(el('strong','Открыто переводов'),el('span','0 / 10','lesson-card-mastery-count'));
   const bar=el('progress',undefined,'lesson-card-mastery-bar');bar.max=requiredCardCount();
   bar.setAttribute('aria-label','Открыто переводов из обязательных слов');
   const packs=el('div',undefined,'lesson-card-packs');
@@ -686,6 +688,17 @@ function renderCardCheckpoint(){
   };
   choices.append(button);
  }
+}
+function resumeWordCard(){
+ if(level!=='A1')return 0;
+ for(const [block,[first,last]] of cardChunks().entries()){
+  if(checkedBatches.has(block))continue;
+  for(let index=first;index<last;index++){
+   if(!flippedWords.has(index))return index;
+  }
+  return last-1;
+ }
+ return 0;
 }
 function card(){
  const w=rows(),v=w[cardIndex%w.length];if(!v)return;
@@ -880,9 +893,10 @@ function stageView(){
  });
  document.querySelectorAll('.lesson-sections a').forEach((a,i)=>{a.hidden=i!==step;a.textContent=(i+1)+'. '+stepsRu[i]});
  const vocabularyIntro=level==='A1'
-  ? (lessonIndex===0?'Слушайте слова, изучайте венгерские буквы и откройте перевод первых ':'Изучите слова и откройте перевод первых ')+requiredCardCount()+' карточек.'
+  ? 'Послушайте слово и откройте перевод. После каждых пяти слов ответьте на два вопроса.'
   : 'Изучите слова и откройте перевод пяти разных карточек.';
  const cardHint=$('integratedFlashcard')?.previousElementSibling;
+ if(cardHint)cardHint.hidden=level==='A1';
  if(cardHint)cardHint.textContent=level==='A1'?'Послушайте и откройте перевод первых '+requiredCardCount()+' слов: именно они войдут в итоговую проверку. Остальные карточки доступны для дополнительного изучения.':'Послушайте слово, вспомните значение и откройте перевод пяти разных карточек.';
  $('integratedLessonIntro').textContent=[vocabularyIntro,'Прочитайте правило по-русски и ответьте на один вопрос.','Послушайте реплику и повторите её вслух.','Напишите правильно три разных слова; в первом уроке минимум два с долгой гласной.',level==='A1'?'Сначала прочитайте и прослушайте текст, ответьте на вопрос по содержанию. Затем напишите свой текст по образцу.':'Напишите небольшой текст по образцу и проверьте его структуру.','Ответьте на вопросы и узнайте результат сразу.'][step];
  $('integratedStepNext').textContent=step===5?'Завершить урок':'Следующий шаг';
@@ -980,7 +994,7 @@ if(prerequisite){
  };
  prerequisite.hidden=level!=='A2';
  prerequisite.textContent=level==='A2'?'Связь с A1 / Kapcsolat az A1 szinttel. '+bridges[lessonIndex]:'';
-}$('integratedLessonLevel').textContent=level;$('integratedLessonCounter').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length;$('integratedLessonHeading').textContent='Урок '+(lessonIndex+1)+'. '+l.title;$('integratedLessonSelect').replaceChildren();courses[level].forEach((x,i)=>{const finished=read(KEY).completed?.[level+':'+i];const pct=finished&&Number.isFinite(finished.bestScore)&&Number.isFinite(finished.bestMax)&&finished.bestMax>0&&level==='A1'?Math.round(finished.bestScore/finished.bestMax*100):finished&&Number.isFinite(finished.score)&&Number.isFinite(finished.max)&&finished.max>0?Math.round(finished.score/finished.max*100):null;const mark=pct===null?(finished?'◔ ':''):pct>=90?'✓ ':'◔ ';const suffix=pct===null?'':' · '+pct+'%';const o=el('option',mark+(i+1)+'. '+x.title+suffix);o.value=String(i);$('integratedLessonSelect').append(o)});$('integratedLessonSelect').value=String(lessonIndex);$('integratedLessonPrev').disabled=lessonIndex===0;$('integratedLessonForward').disabled=lessonIndex>=courses[level].length-1;$('integratedLessonChoiceHint').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length+'. ✓ — лучший результат от 90%; ◔ — выполнено, но стоит повторить. Любой урок доступен сразу.';placeReadingAfterTeaching();renderVisual();renderMotion();resetVideo();renderReading();window.TanmuhelyRenderA1LongReadings?.(level,lessonIndex);renderWords();renderGrammarExamples();window.TanmuhelyRenderErrorCards?.(level,lessonIndex);resetGame();$('integratedGrammar').replaceChildren();$('integratedGrammar').append(el('strong',l.grammar[0]),el('p',l.grammar[1]),el('p',l.grammar[2]));const dialog=$('integratedDialogue');dialog.replaceChildren();for(const [i,line] of l.dialogue.entries()){const row=el('div',undefined,'integrated-dialogue-line');const words=el('div',undefined,'lesson-dialogue-text');const speakerLabel=level==='A1'?(i%2===0?'Собеседник A':'Собеседник B'):(i%2===0?'Анна':'Петер');const speaker=el('small',speakerLabel+' · озвучка: Габор или синтез','lesson-speaker');speaker.lang='ru';words.append(speaker);const h=el('span',line);h.lang='hu';const translation=el('small',dialogueTranslations[l.title]?.[i]||'');translation.lang='ru';words.append(h,translation);const b=el('button','🔊');b.type='button';b.onclick=()=>{spokenTargetIndex=Array.from(dialog.children).indexOf(row);const source=window.TanuloTTS?.sourceFor?.({text:line,lang:'hu-HU'})||'tts';const played=say(line);$('integratedDialogueFeedback').textContent=played?(source==='gabor'?'Запись Габора. ':source==='pilot'?'Пробная запись Габора. ':'Компьютерный венгерский голос. ')+'Прослушайте и повторите фразу: '+line:'Озвучка недоступна. Проверьте венгерский голос устройства.';note('Для проверки нажмите микрофон или отметьте, что повторили вслух.')};row.append(words,b);dialog.append(row)}cardIndex=0;writeIndex=0;writingMisses=0;correctWriting=new Set();testIndex=0;testCorrect=0;hasAnswered=false;testCompleted=false;flashcardsOpened=false;grammarReviewed=false;dialoguePractised=false;dialogueUnderstood=false;spokenTargetIndex=0;flippedWords=new Set();checkedBatches=new Set();checkBatch=-1;checkStep=0;checkRendered='';quizMisses=[];testOrder=randomOrder(rows().map((_,i)=>i));restoreCheckpoint();grammarQuestion();renderDialogueUnderstanding();resumeQuiz();sentencePractice(true);$('integratedFlashcard').hidden=false;card();spelling();composition();test();stageView()}
+}$('integratedLessonLevel').textContent=level;$('integratedLessonCounter').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length;$('integratedLessonHeading').textContent='Урок '+(lessonIndex+1)+'. '+l.title;$('integratedLessonSelect').replaceChildren();courses[level].forEach((x,i)=>{const finished=read(KEY).completed?.[level+':'+i];const pct=finished&&Number.isFinite(finished.bestScore)&&Number.isFinite(finished.bestMax)&&finished.bestMax>0&&level==='A1'?Math.round(finished.bestScore/finished.bestMax*100):finished&&Number.isFinite(finished.score)&&Number.isFinite(finished.max)&&finished.max>0?Math.round(finished.score/finished.max*100):null;const mark=pct===null?(finished?'◔ ':''):pct>=90?'✓ ':'◔ ';const suffix=pct===null?'':' · '+pct+'%';const o=el('option',mark+(i+1)+'. '+x.title+suffix);o.value=String(i);$('integratedLessonSelect').append(o)});$('integratedLessonSelect').value=String(lessonIndex);$('integratedLessonPrev').disabled=lessonIndex===0;$('integratedLessonForward').disabled=lessonIndex>=courses[level].length-1;$('integratedLessonChoiceHint').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length+'. ✓ — лучший результат от 90%; ◔ — выполнено, но стоит повторить. Любой урок доступен сразу.';placeReadingAfterTeaching();renderVisual();renderMotion();resetVideo();renderReading();window.TanmuhelyRenderA1LongReadings?.(level,lessonIndex);renderWords();renderGrammarExamples();window.TanmuhelyRenderErrorCards?.(level,lessonIndex);resetGame();$('integratedGrammar').replaceChildren();$('integratedGrammar').append(el('strong',l.grammar[0]),el('p',l.grammar[1]),el('p',l.grammar[2]));const dialog=$('integratedDialogue');dialog.replaceChildren();for(const [i,line] of l.dialogue.entries()){const row=el('div',undefined,'integrated-dialogue-line');const words=el('div',undefined,'lesson-dialogue-text');const speakerLabel=level==='A1'?(i%2===0?'Собеседник A':'Собеседник B'):(i%2===0?'Анна':'Петер');const speaker=el('small',speakerLabel+' · озвучка: Габор или синтез','lesson-speaker');speaker.lang='ru';words.append(speaker);const h=el('span',line);h.lang='hu';const translation=el('small',dialogueTranslations[l.title]?.[i]||'');translation.lang='ru';words.append(h,translation);const b=el('button','🔊');b.type='button';b.onclick=()=>{spokenTargetIndex=Array.from(dialog.children).indexOf(row);const source=window.TanuloTTS?.sourceFor?.({text:line,lang:'hu-HU'})||'tts';const played=say(line);$('integratedDialogueFeedback').textContent=played?(source==='gabor'?'Запись Габора. ':source==='pilot'?'Пробная запись Габора. ':'Компьютерный венгерский голос. ')+'Прослушайте и повторите фразу: '+line:'Озвучка недоступна. Проверьте венгерский голос устройства.';note('Для проверки нажмите микрофон или отметьте, что повторили вслух.')};row.append(words,b);dialog.append(row)}cardIndex=0;writeIndex=0;writingMisses=0;correctWriting=new Set();testIndex=0;testCorrect=0;hasAnswered=false;testCompleted=false;flashcardsOpened=false;grammarReviewed=false;dialoguePractised=false;dialogueUnderstood=false;spokenTargetIndex=0;flippedWords=new Set();checkedBatches=new Set();checkBatch=-1;checkStep=0;checkRendered='';quizMisses=[];testOrder=randomOrder(rows().map((_,i)=>i));restoreCheckpoint();cardIndex=resumeWordCard();grammarQuestion();renderDialogueUnderstanding();resumeQuiz();sentencePractice(true);$('integratedFlashcard').hidden=false;card();spelling();composition();test();stageView()}
 function open(mode){level=document.querySelector('.welcome .level.active')?.dataset.level||'A1';if(!courses[level]){document.querySelector('[data-hub-view="steps"]')?.click();return}const stored=read(KEY),saved=stored[level];if(level==='A1'&&saved&&!stored.migratedFirstUnit20261121){saved.lessonIndex=Math.max(0,Number(saved.lessonIndex)||0)+(Number(saved.lessonIndex)>0?1:0);stored.migratedFirstUnit20261121=true;try{localStorage.setItem(KEY,JSON.stringify(stored))}catch(_){}}lessonIndex=Math.max(0,Math.min(courses[level].length-1,Number(saved?.lessonIndex)||0));step=mode==='words'?0:Math.max(0,Math.min(5,Number(level==='A1'?(stored.a1LessonStages?.[String(lessonIndex)]??saved?.step):saved?.step)||0));root.classList.remove('study-menu','study-active','study-coach','study-online','study-exam','study-daily');root.classList.add('study-book');hub.hidden=true;view.hidden=false;back.hidden=false;render();view.scrollIntoView({block:'start'});}
 let stepButton=$('integratedStepNext');if(!stepButton){stepButton=el('button','Следующий шаг →','lesson-primary');stepButton.type='button';stepButton.id='integratedStepNext';view.insertBefore(stepButton,$('lessonWords'))}
 stepButton.onclick=moveNext;

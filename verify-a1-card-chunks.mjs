@@ -65,7 +65,7 @@ assert.equal(saved,2,'each pack completion is saved');
 
 const legacy=extract(/function restoreCheckpoint\(\)\{[\s\S]*?\n\}/);
 const restore=flipped=>runInNewContext(`${required}\n${chunks}\n${legacy}\nrestoreCheckpoint();([...checkedBatches])`,{
- level:'A1',rows:()=>words,lessonKey:()=> 'A1:2',
+ level:'A1',rows:()=>words,lessonKey:()=> 'A1:2',KEY:'route',read:()=>({}),dialogueUnderstood:false,
  checkpoint:()=>({flipped,written:[],grammar:false,dialogue:false}),
  flippedWords:new Set(),correctWriting:new Set(),checkedBatches:new Set(),
  checkBatch:0,checkStep:1,checkRendered:'question',grammarReviewed:false,dialoguePractised:false
@@ -77,3 +77,14 @@ assert.deepEqual([...restore([0,1,2,3,4,5,6])],[0],
 console.log('PASS: A1 retrieval checks appear only after each five-card pack and require two correct answers.');
 console.log('PASS: wrong choices offer feedback; the second pack and next stage remain gated.');
 console.log('PASS: saved legacy word progress resumes without a new lesson ID; A2 is unchanged.');
+
+const resumeWord=extract(/function resumeWordCard\(\)\{[\s\S]*?\n\}/);
+const resume=(seen,checked)=>runInNewContext([required,chunks,resumeWord,'resumeWordCard()'].join('\n'),{
+ level:'A1',rows:()=>words,flippedWords:new Set(seen),checkedBatches:new Set(checked)
+});
+assert.equal(resume([],[]),0);
+assert.equal(resume([0,1,3],[]),2);
+assert.equal(resume([0,1,2,3,4],[]),4);
+assert.equal(resume([0,1,2,3,4,5,6],[0]),7);
+assert.equal(resume([0,1,2,3,4,5,6,7,8,9],[0,1]),0);
+console.log('PASS: returning learners resume at an unopened card or the pending check.');
