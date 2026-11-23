@@ -242,6 +242,17 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
 .lesson-card-check-options { display: flex; flex-wrap: wrap; gap: 9px; }
 .lesson-card-check-options .integrated-answer { flex: 1 1 135px; font-size: 17px; min-height: 48px; }
 .lesson-card-checkpoint #a1CardCheckFeedback { min-height: 1.5em; }
+.lesson-fast-track { margin: 18px 0 22px; padding: clamp(17px,3vw,22px); border: 2px solid #b8ddc9; border-radius: 18px; background: #f1fbf4; }
+.lesson-fast-track h4 { margin: 0 0 7px; font-size: 20px; color: #1b5c42; }
+.lesson-fast-track > p { margin: 7px 0 13px; line-height: 1.5; color: #426954; }
+.lesson-fast-track button { min-height: 47px; border-radius: 12px; background: #177856; color: #fff; font-weight: 800; }
+.lesson-fast-track-task { display: grid; gap: 10px; max-width: 470px; }
+.lesson-fast-track-task label { color: #194e38; font-weight: 750; }
+.lesson-fast-track-task input { min-height: 47px; padding: 9px 12px; border: 2px solid #acd5bb; border-radius: 11px; background: #fff; color: #1b4434; font-size: 18px; }
+.lesson-fast-track-accents { display: flex; gap: 5px; flex-wrap: wrap; }
+.lesson-fast-track .lesson-fast-track-accents button { min-width: 39px; min-height: 41px; padding: 4px; color: #175a40; background: #fff; border: 1px solid #9fcab0; font-size: 19px; font-weight: 800; }
+.lesson-fast-track-task button { justify-self: start; }
+.lesson-fast-track #a1FastTrackFeedback { min-height: 1.5em; font-size: 15px; font-weight: 650; }
 #integratedCardPosition { display: block; color: #476d5a; font-size: 14px; font-weight: 750; }
 .lesson-alphabet { padding: 20px 22px; background: #f7fbf8; border: 1px solid #dbe9df; border-radius: 19px; margin: 19px 0 23px; }
 .lesson-alphabet h3 { margin: 0 0 7px; font-size: 21px; color: #194c3a; }

@@ -25,11 +25,12 @@ tananyag-tervezési és ellenőrzési elveiből indultunk ki.
 | 30 A1-es lecke, egyedi sorrend, régi azonosítók | Rendben | A korábbi tanulói eredmények kulcsai érintetlenek. |
 | Szókártyák, orosz magyarázatok, minták, párbeszédek | 30/30 lecke szerkezetileg ellenőrizve | Ez **nem** hitelesíti a fordítások nyelvi helyességét. |
 | Nyelvtani és szövegértési javítókulcs | 30/30 lecke: létező kulcs, nem duplikált választási lehetőségek | A többféleképpen helyes válaszok emberi lektorálása még szükséges. |
-| Tanítás előtti számonkérés kizárása | Az újonnan indított A1-es záróteszt 10 kérdése csak a kötelezően átnézett első 10 kártyából kerülhet ki | A többi kártya külön, szabadon tanulható; a régi folyamatban lévő tesztek sorrendje megmarad. |
+| Tanítás előtti számonkérés kizárása | Az A1-es záróteszt tíz kérdése az első tíz tanított szóra korlátozódik; a kártyák végignézése helyett négy hibátlan írásválaszra épülő, önkéntes gyorsellenőrzés is választható | A négy mintaszó nem igazolja mind a tíz szó tudását. A nyelvtani, beszéd-, írás- és zárófeladat nem ugorható át. |
 | Teljes automatikus A1-audit | **0 fennmaradó kritikus szerkezeti találat** | A feltárt első leckés magyarázati hiányt javítottuk. |
 | Szókincsterhelés | **13 lecke szakmai felülvizsgálatra jelölve** | 9–13 új alapszókártya; figyelmeztetés, nem automatikus bukás. A 29–30. leckében legfeljebb 8 új kötelező szó szerepel. |
 | Vezetett út / A1-szótár | 199/580 különböző címszó, **34,3%** | Nem tekinthető kész A1-es útvonalnak. |
 | A1-es kezdőlecke szabad kiválasztása | Szimulált állapotteszt sikeres | A 2. vagy későbbi lecke közvetlenül megnyitható, a választás mentődik; valódi mobilos próba még nincs. |
+| Ismert szavak gyors A1-es ellenőrzése | Négy pontos magyar írásválasz két kártyacsoportból; sikertelen próbánál visszatérés a tanításhoz | A gyorsellenőrzés állapota külön mentődik, nem jelöl meg nem nyitott kártyákat; valódi tanulói validálás még hátravan. |
 | Független nyelvi és tanulói próba | **Még nem teljesült** | Orosz anyanyelvű lektor és 6–10 valós tanuló szükséges. |
 
 Az első körben megoldott pedagógiai hiba: az 1. lecke immár külön elmagyarázza,

@@ -30,6 +30,7 @@ improveA1Foundations();
 window.TanmuhelyLinkQuizletLessons?.(courses);
 window.TanmuhelyEnrichA1A2?.(courses);
 let level='A1',lessonIndex=0,step=0,cardIndex=0,writeIndex=0,correctWriting=new Set(),testIndex=0,testCorrect=0,hasAnswered=false,testCompleted=false,compositionChecked=false,flashcardsOpened=false,grammarReviewed=false,dialoguePractised=false,spokenTargetIndex=0,flippedWords=new Set(),checkedBatches=new Set(),checkBatch=-1,checkStep=0,checkRendered='',testOrder=[],quizMisses=[];
+let a1FastTrackPassed=false,fastTrackWords=[],fastTrackPosition=0;
 const steps=['lessonWords','lessonGrammar','lessonDialogue','lessonWriting','lessonComposition','lessonExercise'];
 const stepsRu=['Слова','Грамматика','Разговор','Письмо','Мини-сочинение','Проверка'];
 const checkpointKey='magyarorosz.lesson-checkpoint.v1';
@@ -75,7 +76,7 @@ const dialogueRecognition=window.TanmuhelyDialogueRecognition.create({
 function checkpoint(){return read(checkpointKey)[lessonKey()]||{}}
 function saveCheckpoint(){
  const old=read(checkpointKey);
- old[lessonKey()]={flipped:[...flippedWords],written:[...correctWriting],grammar:grammarReviewed,dialogue:dialoguePractised,sentence:$('lessonSentenceInput').value,...(level==='A1'?{a1CheckedBatches:[...checkedBatches]}:{})};
+ old[lessonKey()]={flipped:[...flippedWords],written:[...correctWriting],grammar:grammarReviewed,dialogue:dialoguePractised,sentence:$('lessonSentenceInput').value,...(level==='A1'?{a1CheckedBatches:[...checkedBatches],a1FastTrackPassed}:{})};
  try{localStorage.setItem(checkpointKey,JSON.stringify(old))}catch(_){}
 }
 function restoreCheckpoint(){
@@ -85,6 +86,7 @@ function restoreCheckpoint(){
  flippedWords=new Set(restoreIndices(c.flipped).filter(i=>Number.isInteger(i)&&i>=0&&i<rows().length));
  correctWriting=new Set(restoreIndices(c.written).filter(i=>Number.isInteger(i)&&i>=0&&i<rows().length));
  checkedBatches=new Set((c.a1CheckedBatches||[]).filter(i=>Number.isInteger(i)&&i>=0&&i<cardChunks().length));
+ a1FastTrackPassed=level==='A1'&&c.a1FastTrackPassed===true;
  // Old A1 checkpoints already contain reviewed cards. Do not erase or force
  // those learners to repeat work completed before the two-part revision.
  if(level==='A1'&&!Array.isArray(c.a1CheckedBatches)){
@@ -175,7 +177,7 @@ function grammarQuestion(){
 function note(message){let node=$('integratedStepStatus');if(!node){node=el('p','','lesson-step-status');node.id='integratedStepStatus';node.setAttribute('role','status');node.setAttribute('aria-live','polite');$('integratedStepNext').after(node)}node.textContent=message}
 function requiredCardCount(){return Math.min(level==='A1'?10:5,rows().length)}
 function cardChunks(){const count=requiredCardCount();return count>5?[[0,5],[5,count]]:[[0,count]]}
-function requiredCardsSeen(){return Array.from({length:requiredCardCount()},(_,i)=>i).every(i=>flippedWords.has(i))&&cardChunks().every((_,i)=>checkedBatches.has(i))}
+function requiredCardsSeen(){return (level==='A1'&&a1FastTrackPassed)||Array.from({length:requiredCardCount()},(_,i)=>i).every(i=>flippedWords.has(i))&&cardChunks().every((_,i)=>checkedBatches.has(i))}
 function initialTestOrder(){
  const indices=rows().map((_,i)=>i);
  if(level!=='A1')return randomOrder(indices);
@@ -193,7 +195,7 @@ if(step===4)return compositionChecked;
 if(step===5)return testCompleted;
 return true
 }
-function moveNext(){if(!canAdvance()){note([level==='A1'?'Сначала откройте перевод первых десяти слов на карточках.':'Сначала откройте перевод как минимум пяти разных слов на карточках.','Прочитайте правило и выберите правильный ответ.','Прослушайте диалог и повторите хотя бы одну реплику вслух.','Сначала правильно напишите не менее трёх слов.','Сначала напишите мини-сочинение и проверьте его структуру.','Сначала ответьте на все вопросы итоговой проверки.'][step]);return}if(step<5){step++;save();stageView()}else{const old=read(KEY);const finished=old.completed||{};finished[lessonKey()]={score:testCorrect,max:Math.min(10,rows().length),errors:quizMisses.map(v=>v.hu),date:new Date().toISOString()};old.completed=finished;try{localStorage.setItem(KEY,JSON.stringify(old));persistQuiz(true)}catch(_){note('Не удалось сохранить результат. Скопируйте его перед выходом.');return}if(lessonIndex+1<courses[level].length){const nextIndex=lessonIndex+1;confirmLessonChange(nextIndex);if(lessonIndex===nextIndex)note('✓ Урок завершён. Вы перешли к следующему.');else note('✓ Урок завершён. Выберите повторение или продолжение обучения.')}else{step=0;save();render();note(Object.keys(courses[level]).every(i=>finished[level+':'+i])?'✓ Все подготовленные уроки этого уровня завершены.':'✓ Урок завершён. В списке уроков выберите следующий без отметки ✓.')}}}
+function moveNext(){if(!canAdvance()){note([level==='A1'?'Сначала изучите две группы по пять карточек или пройдите необязательную короткую проверку знакомых слов.':'Сначала откройте перевод как минимум пяти разных слов на карточках.','Прочитайте правило и выберите правильный ответ.','Прослушайте диалог и повторите хотя бы одну реплику вслух.','Сначала правильно напишите не менее трёх слов.','Сначала напишите мини-сочинение и проверьте его структуру.','Сначала ответьте на все вопросы итоговой проверки.'][step]);return}if(step<5){step++;save();stageView()}else{const old=read(KEY);const finished=old.completed||{};finished[lessonKey()]={score:testCorrect,max:Math.min(10,rows().length),errors:quizMisses.map(v=>v.hu),date:new Date().toISOString()};old.completed=finished;try{localStorage.setItem(KEY,JSON.stringify(old));persistQuiz(true)}catch(_){note('Не удалось сохранить результат. Скопируйте его перед выходом.');return}if(lessonIndex+1<courses[level].length){const nextIndex=lessonIndex+1;confirmLessonChange(nextIndex);if(lessonIndex===nextIndex)note('✓ Урок завершён. Вы перешли к следующему.');else note('✓ Урок завершён. Выберите повторение или продолжение обучения.')}else{step=0;save();render();note(Object.keys(courses[level]).every(i=>finished[level+':'+i])?'✓ Все подготовленные уроки этого уровня завершены.':'✓ Урок завершён. В списке уроков выберите следующий без отметки ✓.')}}}
 
 function read(key){try{return JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(_){return {}}}
 function save(){const s=read(KEY);s[level]={lessonIndex,step};if(level==='A1')s.migratedFirstUnit20261121=true;try{localStorage.setItem(KEY,JSON.stringify(s))}catch(_){}}
@@ -581,6 +583,77 @@ function renderWords(){
  }
  renderAlphabet()
 }
+function fastTrackTargets(){
+ // Two short, written recall items from each five-card pack. These are
+ // placement checks, not a claim that the remaining six words are mastered.
+ return cardChunks().flatMap(([first,last])=>
+  randomOrder(Array.from({length:last-first},(_,i)=>first+i)).slice(0,2));
+}
+function showFastTrackPrompt(){
+ const word=rows()[fastTrackWords[fastTrackPosition]];
+ if(!word)return;
+ $('a1FastTrackPrompt').textContent='Слово '+(fastTrackPosition+1)+' из '+fastTrackWords.length+'. Напишите по-венгерски: «'+word.ru+'»';
+ $('a1FastTrackInput').value='';
+ $('a1FastTrackFeedback').textContent='Нужны правильные венгерские буквы, в том числе ударения и долгие гласные.';
+ $('a1FastTrackInput').focus?.();
+}
+function checkFastTrack(){
+ if(level!=='A1'||a1FastTrackPassed||!fastTrackWords.length)return;
+ const word=rows()[fastTrackWords[fastTrackPosition]];
+ if(!word)return;
+ const result=writingFeedback.checkWord($('a1FastTrackInput').value,word.hu);
+ if(result.kind==='empty'){$('a1FastTrackFeedback').textContent=result.hint;return}
+ if(result.kind!=='correct'){
+  fastTrackWords=[];fastTrackPosition=0;
+  $('a1FastTrackTask').hidden=true;
+  $('a1FastTrackStart').hidden=false;
+  $('a1FastTrackFeedback').textContent=result.hint+' Образец: '+word.hu+'. Можно изучить карточки или попробовать быструю проверку ещё раз.';
+  return;
+ }
+ fastTrackPosition++;
+ if(fastTrackPosition<fastTrackWords.length){showFastTrackPrompt();return}
+ a1FastTrackPassed=true;fastTrackWords=[];fastTrackPosition=0;
+ saveCheckpoint(); // Do not forge flipped cards or batch-review results.
+ step=1;save();renderFastTrack();stageView();
+ note('✓ Четыре слова написаны верно. Карточки можно пропустить; правило, речь, письмо и итоговая проверка остаются обязательными.');
+}
+function renderFastTrack(){
+ let panel=$('a1FastTrack');
+ if(!panel){
+  panel=el('section',undefined,'lesson-fast-track');panel.id='a1FastTrack';
+  panel.append(el('h4','Уже знаете слова?'));
+  panel.append(el('p','Необязательная быстрая проверка: напишите четыре слова по-русским подсказкам. Если всё верно, можно сразу перейти к правилу. Это не оценка знания всего словаря.'));
+  const start=el('button','Знаю слова · проверить и пропустить карточки');start.id='a1FastTrackStart';start.type='button';
+  start.onclick=()=>{
+   fastTrackWords=fastTrackTargets();fastTrackPosition=0;
+   start.hidden=true;$('a1FastTrackTask').hidden=false;showFastTrackPrompt();
+  };
+  panel.append(start);
+  const task=el('div',undefined,'lesson-fast-track-task');task.id='a1FastTrackTask';task.hidden=true;
+  const label=el('label');label.id='a1FastTrackPrompt';label.htmlFor='a1FastTrackInput';
+  const input=el('input');input.id='a1FastTrackInput';input.type='text';input.lang='hu';input.autocomplete='off';input.spellcheck=false;
+  input.setAttribute('autocapitalize','off');input.onkeydown=event=>{if(event.key==='Enter'){event.preventDefault();checkFastTrack()}};
+  const accents=el('div',undefined,'lesson-fast-track-accents');accents.id='a1FastTrackAccentKeys';
+  accents.setAttribute('aria-label','Вставить венгерскую букву с диакритическим знаком');
+  for(const letter of 'áéíóöőúüű'){
+   const key=el('button',letter);key.type='button';key.lang='hu';key.setAttribute('aria-label','Вставить '+letter);
+   key.onclick=()=>writingFeedback.insertHungarianLetter(input,letter);accents.append(key);
+  }
+  const submit=el('button','Проверить написание');submit.type='button';submit.onclick=checkFastTrack;
+  task.append(label,input,accents,submit);panel.append(task);
+  const feedback=el('p','Если слова знакомы, попробуйте проверку. Если нет — изучайте карточки.');
+  feedback.id='a1FastTrackFeedback';feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');panel.append(feedback);
+  // Keep the paragraph immediately before the flashcard intact: stageView()
+  // uses that paragraph for the normal ten-card learning instructions.
+  $('integratedFlashcard').previousElementSibling.before(panel);
+ }
+ panel.hidden=level!=='A1';if(panel.hidden)return;
+ $('a1FastTrackTask').hidden=true;
+ $('a1FastTrackStart').hidden=a1FastTrackPassed;
+ $('a1FastTrackFeedback').textContent=a1FastTrackPassed
+  ? '✓ Короткая проверка пройдена. Можно перейти к правилу, но все карточки доступны для повторения.'
+  : 'Проверка добровольная. Без неё можно пройти две обычные группы по пять карточек.';
+}
 function updateCardProgress(){
  const flash=$('integratedFlashcard');let meter=flash.querySelector('.lesson-card-mastery');
  if(level!=='A1'){meter?.remove();const old=$('a1CardCheckpoint');if(old)old.hidden=true;return}
@@ -602,6 +675,9 @@ function updateCardProgress(){
   meter.append(head,bar,packs);flash.prepend(meter);
  }
  const count=[...flippedWords].filter(i=>i<requiredCardCount()).length;
+ meter.querySelector('.lesson-card-mastery-heading strong').textContent=a1FastTrackPassed
+  ? '✓ Быстрая проверка пройдена; карточки необязательны'
+  : 'Переводы для итоговой проверки';
  meter.querySelector('.lesson-card-mastery-count').textContent=count+' / '+requiredCardCount();
  meter.querySelector('.lesson-card-mastery-bar').max=requiredCardCount();
  meter.querySelector('.lesson-card-mastery-bar').value=count;
@@ -628,7 +704,7 @@ function renderCardCheckpoint(){
   const feedback=el('p');feedback.id='a1CardCheckFeedback';feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');panel.append(feedback);
   $('integratedFlashcard').after(panel);
  }
- if(level!=='A1'){panel.hidden=true;return}
+ if(level!=='A1'||a1FastTrackPassed){panel.hidden=true;return}
  const chunks=cardChunks();
  const eligible=chunks.findIndex(([first,last],i)=>!checkedBatches.has(i)&&[...Array(last-first).keys()].every(offset=>flippedWords.has(first+offset)));
  if(eligible<0){panel.hidden=true;return}
@@ -827,10 +903,10 @@ function stageView(){
  });
  document.querySelectorAll('.lesson-sections a').forEach((a,i)=>{a.hidden=i!==step;a.textContent=(i+1)+'. '+stepsRu[i]});
  const vocabularyIntro=level==='A1'
-  ? (lessonIndex===0?'Слушайте слова, изучайте венгерские буквы и откройте перевод первых ':'Изучите слова и откройте перевод первых ')+requiredCardCount()+' карточек.'
+  ? (a1FastTrackPassed?'Вы прошли короткую проверку: карточки можно повторить по желанию.':(lessonIndex===0?'Слушайте слова, изучайте венгерские буквы и откройте перевод первых ':'Изучите слова и откройте перевод первых ')+requiredCardCount()+' карточек или пройдите быструю проверку.')
   : 'Изучите слова и откройте перевод пяти разных карточек.';
  const cardHint=$('integratedFlashcard')?.previousElementSibling;
- if(cardHint)cardHint.textContent=level==='A1'?'Послушайте и откройте перевод первых '+requiredCardCount()+' слов: именно они войдут в итоговую проверку. Остальные карточки доступны для дополнительного изучения.':'Послушайте слово, вспомните значение и откройте перевод пяти разных карточек.';
+ if(cardHint)cardHint.textContent=level==='A1'?'Послушайте и откройте перевод первых '+requiredCardCount()+' слов или пройдите быструю проверку знакомых слов. Итоговая проверка остаётся обязательной.':'Послушайте слово, вспомните значение и откройте перевод пяти разных карточек.';
  $('integratedLessonIntro').textContent=[vocabularyIntro,'Прочитайте правило по-русски и ответьте на один вопрос.','Послушайте реплику и повторите её вслух.','Напишите правильно три разных слова; в первом уроке минимум два с долгой гласной.',level==='A1'?'Сначала прочитайте и прослушайте текст, ответьте на вопрос по содержанию. Затем напишите свой текст по образцу.':'Напишите небольшой текст по образцу и проверьте его структуру.','Ответьте на вопросы и узнайте результат сразу.'][step];
  $('integratedStepNext').textContent=step===5?'Завершить урок':'Следующий шаг';
  $('integratedStepNext').disabled=!canAdvance();
@@ -847,7 +923,7 @@ if(prerequisite){
  };
  prerequisite.hidden=level!=='A2';
  prerequisite.textContent=level==='A2'?'Связь с A1 / Kapcsolat az A1 szinttel. '+bridges[lessonIndex]:'';
-}$('integratedLessonLevel').textContent=level;$('integratedLessonCounter').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length;$('integratedLessonHeading').textContent='Урок '+(lessonIndex+1)+'. '+l.title;$('integratedLessonSelect').replaceChildren();courses[level].forEach((x,i)=>{const finished=read(KEY).completed?.[level+':'+i];const o=el('option',(finished?'✓ ':'')+(i+1)+'. '+x.title);o.value=String(i);$('integratedLessonSelect').append(o)});$('integratedLessonSelect').value=String(lessonIndex);placeReadingAfterTeaching();renderVisual();renderMotion();resetVideo();renderReading();window.TanmuhelyRenderA1LongReadings?.(level,lessonIndex);renderWords();renderGrammarExamples();window.TanmuhelyRenderErrorCards?.(level,lessonIndex);resetGame();grammarQuestion();$('integratedGrammar').replaceChildren();$('integratedGrammar').append(el('strong',l.grammar[0]),el('p',l.grammar[1]),el('p',l.grammar[2]));const dialog=$('integratedDialogue');dialog.replaceChildren();for(const [i,line] of l.dialogue.entries()){const row=el('div',undefined,'integrated-dialogue-line');const words=el('div',undefined,'lesson-dialogue-text');const female=i%2===0;const speaker=el('small',(female?'Анна':'Петер')+' · озвучка: Габор или синтез','lesson-speaker');speaker.lang='ru';words.append(speaker);const h=el('span',line);h.lang='hu';const translation=el('small',dialogueTranslations[l.title]?.[i]||'');translation.lang='ru';words.append(h,translation);const b=el('button','🔊');b.type='button';b.onclick=()=>{spokenTargetIndex=Array.from(dialog.children).indexOf(row);const source=window.TanuloTTS?.sourceFor?.({text:line,lang:'hu-HU'})||'tts';const played=say(line);$('integratedDialogueFeedback').textContent=played?(source==='gabor'?'Запись Габора. ':source==='pilot'?'Пробная запись Габора. ':'Компьютерный венгерский голос. ')+'Прослушайте и повторите фразу: '+line:'Озвучка недоступна. Проверьте венгерский голос устройства.';note('Для проверки нажмите микрофон или отметьте, что повторили вслух.')};row.append(words,b);dialog.append(row)}cardIndex=0;writeIndex=0;correctWriting=new Set();testIndex=0;testCorrect=0;hasAnswered=false;testCompleted=false;flashcardsOpened=false;grammarReviewed=false;dialoguePractised=false;spokenTargetIndex=0;flippedWords=new Set();checkedBatches=new Set();checkBatch=-1;checkStep=0;checkRendered='';quizMisses=[];testOrder=randomOrder(rows().map((_,i)=>i));restoreCheckpoint();resumeQuiz();sentencePractice(true);$('integratedFlashcard').hidden=false;card();spelling();composition();test();stageView()}
+}$('integratedLessonLevel').textContent=level;$('integratedLessonCounter').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length;$('integratedLessonHeading').textContent='Урок '+(lessonIndex+1)+'. '+l.title;$('integratedLessonSelect').replaceChildren();courses[level].forEach((x,i)=>{const finished=read(KEY).completed?.[level+':'+i];const o=el('option',(finished?'✓ ':'')+(i+1)+'. '+x.title);o.value=String(i);$('integratedLessonSelect').append(o)});$('integratedLessonSelect').value=String(lessonIndex);placeReadingAfterTeaching();renderVisual();renderMotion();resetVideo();renderReading();window.TanmuhelyRenderA1LongReadings?.(level,lessonIndex);renderWords();renderGrammarExamples();window.TanmuhelyRenderErrorCards?.(level,lessonIndex);resetGame();grammarQuestion();$('integratedGrammar').replaceChildren();$('integratedGrammar').append(el('strong',l.grammar[0]),el('p',l.grammar[1]),el('p',l.grammar[2]));const dialog=$('integratedDialogue');dialog.replaceChildren();for(const [i,line] of l.dialogue.entries()){const row=el('div',undefined,'integrated-dialogue-line');const words=el('div',undefined,'lesson-dialogue-text');const female=i%2===0;const speaker=el('small',(female?'Анна':'Петер')+' · озвучка: Габор или синтез','lesson-speaker');speaker.lang='ru';words.append(speaker);const h=el('span',line);h.lang='hu';const translation=el('small',dialogueTranslations[l.title]?.[i]||'');translation.lang='ru';words.append(h,translation);const b=el('button','🔊');b.type='button';b.onclick=()=>{spokenTargetIndex=Array.from(dialog.children).indexOf(row);const source=window.TanuloTTS?.sourceFor?.({text:line,lang:'hu-HU'})||'tts';const played=say(line);$('integratedDialogueFeedback').textContent=played?(source==='gabor'?'Запись Габора. ':source==='pilot'?'Пробная запись Габора. ':'Компьютерный венгерский голос. ')+'Прослушайте и повторите фразу: '+line:'Озвучка недоступна. Проверьте венгерский голос устройства.';note('Для проверки нажмите микрофон или отметьте, что повторили вслух.')};row.append(words,b);dialog.append(row)}cardIndex=0;writeIndex=0;correctWriting=new Set();testIndex=0;testCorrect=0;hasAnswered=false;testCompleted=false;flashcardsOpened=false;grammarReviewed=false;dialoguePractised=false;spokenTargetIndex=0;flippedWords=new Set();checkedBatches=new Set();a1FastTrackPassed=false;fastTrackWords=[];fastTrackPosition=0;checkBatch=-1;checkStep=0;checkRendered='';quizMisses=[];testOrder=randomOrder(rows().map((_,i)=>i));restoreCheckpoint();resumeQuiz();sentencePractice(true);renderFastTrack();$('integratedFlashcard').hidden=false;card();spelling();composition();test();stageView()}
 function activeCourseLevel(){return document.querySelector('.welcome .level.active')?.dataset.level||'A1'}
 function refreshLessonStart(){
  const picker=$('lessonStartSelect');if(!picker)return;

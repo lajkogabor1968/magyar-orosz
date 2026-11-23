@@ -21,8 +21,8 @@ assert.match(source,/requiredCardsSeen\(\):flippedWords\.size>=requiredCardCount
 
 const functions=[required,chunks,seen,order,canAdvance,nextCard].join('\n');
 const words=Array.from({length:20},(_,i)=>({hu:`word-${i}`}));
-const make=(level,flippedWords,checked=[],step=0,cardIndex=0)=>runInNewContext(`${functions}\n({count:requiredCardCount(),passed:canAdvance(),order:initialTestOrder(),next:nextCardIndex()})`,{
- level,flippedWords:new Set(flippedWords),checkedBatches:new Set(checked),cardIndex,step,rows:()=>words,randomOrder:a=>[...a].reverse(),
+const make=(level,flippedWords,checked=[],step=0,cardIndex=0,fastTrack=false)=>runInNewContext(`${functions}\n({count:requiredCardCount(),passed:canAdvance(),order:initialTestOrder(),next:nextCardIndex()})`,{
+ level,a1FastTrackPassed:fastTrack,flippedWords:new Set(flippedWords),checkedBatches:new Set(checked),cardIndex,step,rows:()=>words,randomOrder:a=>[...a].reverse(),
  grammarReviewed:false,dialoguePractised:false,correctWriting:new Set(),lessonIndex:1,
  compositionChecked:false,testCompleted:false
 });
@@ -41,14 +41,17 @@ assert.equal(make('A1',[...allCore.slice(0,9),19]).passed,false,
  'An optional card cannot replace one of the ten taught and assessed cards');
 assert.equal(make('A1',allCore,[0]).passed,false,'The second five-card retrieval check cannot be skipped');
 assert.equal(make('A1',allCore,[0,1]).passed,true);
+assert.equal(make('A1',[],[],0,0,true).passed,true,'Four verified written words may substitute for the card practice');
+assert.equal(make('A1',[],[],1,0,true).passed,false,'Fast-track does not bypass the grammar lesson');
 const a2=make('A2',[1,4,7,15,19]);
 assert.equal(a2.count,5,'A2 keeps its previous five-card rule');
 assert.equal(a2.passed,true,'A2 can still advance with any five known cards');
+assert.equal(make('A2',[],[],0,0,true).passed,false,'A1 fast-track cannot bypass the A2 teaching gate');
 assert.deepEqual([...a2.order],[...Array(20).keys()].reverse(),'A2 random ordering stays unchanged');
 
 assert.match(source,/a1CheckedBatches:\[\.\.\.checkedBatches\]/,'Two-part checkpoints are saved with the old per-lesson keys');
 assert.match(source,/!Array\.isArray\(c\.a1CheckedBatches\)/,'Old saved card progress still works after the change');
 assert.match(source,/Вопрос '\+\(checkStep\+1\)\+' из 2/,'Both packs contain two Russian-to-Hungarian retrieval questions');
-console.log('PASS: A1 words unlock in two five-card packs; each pack requires a two-question self-check before advancement.');
+console.log('PASS: A1 words unlock via two checked five-card packs or a separately verified optional four-word placement.');
 console.log('PASS: A1 quiz asks only 10 previously shown cards; optional cards are not required.');
 console.log('PASS: all old quiz IDs/orders remain resumable; A2 study gates are unchanged.');

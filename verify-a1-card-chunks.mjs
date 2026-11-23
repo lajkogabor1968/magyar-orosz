@@ -25,6 +25,7 @@ const find=(node,id)=>node.id===id?node:node.children.map(child=>find(child,id))
 let saved=0,lastNote='';
 const state={
  level:'A1',flippedWords:new Set([0,1,2,3]),checkedBatches:new Set(),
+ a1FastTrackPassed:false,
  checkBatch:-1,checkStep:0,checkRendered:'',cardIndex:4,step:0,
  rows:()=>words,$:id=>find(root,id),el:(...args)=>new Element(...args),
  randomOrder:items=>[...items].reverse(),
