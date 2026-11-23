@@ -177,6 +177,28 @@ else {
   errors.push('A1: short correct questions or single-word writing are misclassified');
 }
 
+// A1 entrypoint, private recording, phonetics and safe import regressions.
+const home=fs.readFileSync(path.join(dir,'index.html'),'utf8');
+const landing=fs.readFileSync(path.join(dir,'landing.js'),'utf8');
+const localVoice=fs.readFileSync(path.join(dir,'voice-compare.js'),'utf8');
+const localBackup=fs.readFileSync(path.join(dir,'progress-backup.js'),'utf8');
+if(!landing.includes("if(chosen==='A1')document.getElementById('lessonsPrimary')?.click()"))
+ errors.push('A1: landing no longer opens the guided lesson directly');
+if(!home.includes('<small>Начальный</small>')||!home.includes('<small>Выше среднего</small>')||
+ home.includes('<small>Продвинутый</small>'))
+ errors.push('UI: inconsistent Russian level labels');
+if(!localVoice.includes('navigator.mediaDevices.getUserMedia({audio:true})')||
+ !localVoice.includes('new MediaRecorder(stream')||
+ !home.includes('id="integratedVoiceRecordPlayback"'))
+ errors.push('A1: local pronunciation recording fallback missing');
+if(!home.includes('data-pronounce="kor"')||!home.includes('data-pronounce="kór"')||
+ !home.includes('data-pronounce="tör"')||!home.includes('data-pronounce="tőr"'))
+ errors.push('A1: beginner vowel pair exercises missing');
+if(!localBackup.includes('const missing=entries.filter(([k])=>localStorage.getItem(k)===null)')||
+ !localBackup.includes('version:2,exportedAt:')||
+ !localBackup.includes('![1,2].includes(payload.version)'))
+ errors.push('A1: file restore may overwrite existing learner progress or reject old exports');
+
 console.log('A1 audit: '+all.length+' lessons · '+errors.length+' errors · '+warnings.length+' warnings');
 for(const error of errors)console.error('ERROR '+error);
 for(const warning of warnings)console.warn('WARN '+warning);
