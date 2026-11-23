@@ -350,3 +350,13 @@ html.study-menu:not(.study-advanced-open) .study-pricing{display:none!important}
 .lesson-quick-hint{flex-basis:100%;margin:0;font-size:.88rem}
 #integratedQuickReturn{border-color:#246e60;background:#e1f1eb;font-weight:700}
 @media(max-width:600px){.lesson-quick-sections{gap:.35rem}.lesson-quick-sections button{flex:1 1 42%}}
+
+/* A1: one visible learning route; optional study materials stay discoverable. */
+.study-hub-options > .study-secondary-options { grid-column: 1 / -1; width: 100%; }
+.study-secondary-options { border: 1px solid #ccddd6; border-radius: 14px; padding: 12px 16px; background: #fbfcfa; }
+.study-secondary-options > summary { cursor: pointer; font-weight: 650; color: #24564d; line-height: 1.5; }
+.study-secondary-options > summary:focus-visible { outline: 3px solid #146b5b; outline-offset: 3px; }
+.study-secondary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 14px; }
+.study-secondary-grid > button { min-height: 65px; padding: 12px; text-align: left; border-radius: 10px; border: 1px solid #cddfd9; background: white; color: #173b3b; cursor: pointer; }
+.study-secondary-grid > button > strong, .study-secondary-grid > button > span { display: block; }
+.study-secondary-grid > button > span { font-size: .875rem; margin-top: 4px; }
