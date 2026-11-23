@@ -73,11 +73,16 @@ toggle.onclick();assert.ok(russian.every(item=>item.hidden),'translations can be
 const choices=buttons.filter(button=>button.className==='integrated-answer');
 assert.equal(choices.length,6);
 choices[1].onclick();
-assert.match(placed.querySelectorAll('p').find(item=>item.className==='a1-reading-feedback').textContent,/Правильный ответ: В школе\./);
+const answerFeedback=placed.querySelectorAll('p').find(item=>item.className==='a1-reading-feedback');
+assert.match(answerFeedback.textContent,/Правильный ответ: В школе\./);
+assert.doesNotMatch(answerFeedback.textContent,/\.\./,'a correct answer ending with a period must not gain another');
+choices[0].onclick();
+assert.match(answerFeedback.textContent,/✓ Верно: В школе\./);
+assert.doesNotMatch(answerFeedback.textContent,/\.\./);
 window.TanmuhelyRenderA1LongReadings('A2',1);
 assert.equal(placed,null,'A2 never receives A1 supplementary content');
 
-assert.match(html,/a1-tematikus-szovegek\.js\?v=20261123-a1-audio2/);
+assert.match(html,/a1-tematikus-szovegek\.js\?v=20261123-a1-audio3/);
 assert.match(css,/\.a1-long-reading \.a1-reading-play-line/);
 assert.match(css,/@media \(max-width: 700px\)/);
 console.log('PASS: eleven A1 topics, 165 paired sentences, 88 dialogue turns and 22 valid comprehension questions.');
