@@ -58,6 +58,18 @@ a 88 párbeszédfordulót, a 22 ellenőrzőkérdést, a lejátszógombok beköt�
 és az A2 kizárását. **A valódi androidos hangzás és a kétnyelvű lektorálás
 külön ellenőrzési kapu marad; a teszt a megszólaltatást nem hallgatja meg.**
 
+**A1 nyelvtani előfeltételek – 2026. november 23.:** a 10. lecke
+országokról és nyelvekről szóló kiegészítő szövegében négy múlt idejű alakot
+(`jött`, `jöttem`, `jöttél`) jelen idejű, a lecke előzetesen tanított
+szókincsével kifejezhető mondatokra cseréltünk, a hozzájuk tartozó orosz
+fordításokkal és szövegértési kérdéssel együtt. A 2–4. lecke választható
+olvasmányához összesen kilenc rövid, orosz nyelvű előkészítő magyarázat
+került: a hely- és irányjelölés, a birtoklás, a tárgyeset és a részeshatározó
+egyszerű felismeréséhez. A `verify-a1-long-readings.mjs` ezek jelenlétét
+és a korai, magyarázat nélküli múlt idő kizárását is figyeli. **Ez még nem
+teljes morfológiai szintezés:** minden egyes olvasmány szókincs- és
+nyelvtani előfeltételeit tovább kell vizsgálni.
+
 **Szakmai minták, nem hivatalos átvett szabályok:**
 
 - A [Duolingo saját leírása a kurzuskészítésről](https://blog.duolingo.com/how-duolingo-experts-work-with-ai/): tantervtervezés, tananyag, gyakorlatok, személyre szabás; a tanuló anyanyelvéhez igazítás.

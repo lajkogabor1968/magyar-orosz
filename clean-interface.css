@@ -267,6 +267,13 @@ html.study-book .study-back { background: transparent !important; border: 0 !imp
 .a1-long-reading[open] > summary { border-bottom: 1px solid #deebe2; margin-bottom: 14px; }
 .a1-long-reading h4 { color: #194936; font-size: 19px; margin: 17px 0 8px; }
 .a1-long-reading > p { color: #567464; font-size: 15px; line-height: 1.55; }
+.a1-reading-preparation { background: #eaf7ef; border: 1px solid #cce4d4; border-radius: 14px; padding: 14px 16px; margin: 17px 0 13px; }
+.a1-reading-preparation h5 { margin: 0 0 9px; font-size: 16px; color: #195b43; }
+.a1-reading-preparation ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 11px; }
+.a1-reading-preparation li { display: grid; gap: 3px; padding-bottom: 9px; border-bottom: 1px solid #d4e9db; line-height: 1.5; }
+.a1-reading-preparation li:last-child { border-bottom: none; padding-bottom: 0; }
+.a1-reading-preparation strong { color: #175a40; font-size: 16px; }
+.a1-reading-preparation span { color: #426c56; font-size: 15px; }
 .a1-long-reading > .a1-long-reading-audio-status { color: #2b7758; font-size: 14px; font-weight: 700; }
 .a1-long-reading .lesson-reading-line { padding: 13px 0; border-bottom: 1px solid #deebe2; }
 .a1-long-reading .lesson-reading-pair p { color: #234d3b; overflow-wrap: anywhere; }

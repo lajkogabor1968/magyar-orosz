@@ -216,26 +216,26 @@ const units={
 ['A tanár neve Péter.','Учителя зовут Петер.'],
 ['Péter magyar.','Петер венгр.'],
 ['A csoportban Anna is tanul.','В группе учится и Анна.'],
-['Anna Oroszországból jött.','Анна приехала из России.'],
+['Anna orosz.','Анна русская.'],
 ['Anna oroszul beszél.','Анна говорит по-русски.'],
 ['Magyarul még keveset beszél.','По-венгерски она пока говорит мало.'],
 ['Éva magyar és angolul is beszél.','Эва венгерка и также говорит по-английски.'],
-['Thomas Németországból jött.','Томас приехал из Германии.'],
+['Thomas német.','Томас немец.'],
 ['Ő németül beszél.','Он говорит по-немецки.'],
 ['A diákok együtt tanulnak.','Ученики учатся вместе.'],
 ['Új magyar szavakat írnak.','Они записывают новые венгерские слова.'],
 ['Péter lassan beszél.','Петер говорит медленно.'],
 ['Mindenki örül az új órának.','Все рады новому уроку.']
 ],dialogue:[
-['Szia! Honnan jöttél?','Привет! Откуда ты приехал?'],
-['Oroszországból. És te?','Из России. А ты?'],
-['Németországból jöttem.','Я приехал из Германии.'],
+['Szia! Orosz vagy?','Привет! Ты русская?'],
+['Igen, orosz vagyok. És te?','Да, я русская. А ты?'],
+['Német vagyok.','Я немец.'],
 ['Beszélsz magyarul?','Ты говоришь по-венгерски?'],
 ['Igen, egy kicsit.','Да, немного.'],
 ['És angolul?','А по-английски?'],
 ['Igen, angolul is beszélek.','Да, по-английски я тоже говорю.'],
 ['Beszéljünk magyarul!','Давай говорить по-венгерски!']
-],questions:[['Honnan jött Thomas?','Из Германии.','Из Венгрии.','Из России.',0],['Milyen nyelven beszél Anna?','По-русски.','По-испански.','По-итальянски.',0]]}
+],questions:[['Thomas német vagy magyar?','Немец.','Венгр.','Русский.',0],['Milyen nyelven beszél Anna?','По-русски.','По-испански.','По-итальянски.',0]]}
 
 ,10:{title:'Числа от одного до десяти',lines:[
 ['Ma a magyarórán számolunk.','Сегодня на уроке венгерского мы считаем.'],
@@ -291,6 +291,25 @@ const units={
 ],questions:[['Hány éves Anna?','Шестнадцать.','Восемнадцать.','Двадцать.',1],['Hány pohár van az asztalon?','Одиннадцать.','Двенадцать.','Тринадцать.',0]]}
 
 };
+// These optional readings deliberately contain a few forms from later A1
+// lessons. Explain them in Russian before the learner reads or self-checks.
+const readingGuidance={
+ 1:[
+  ['iskolába / iskolában','в школу / в школе','-ba показывает направление «куда?», -ban — место «где?».'],
+  ['a nevemet','моё имя (как дополнение)','В выражении «спрашивает моё имя» слово получает окончание; пока запомните форму целиком.'],
+  ['örülök az új barátomnak','я рад / рада новому другу','-nak показывает, кому или чему радуются; эту фразу пока удобно запомнить целиком.']
+ ],
+ 2:[
+  ['testvérem','мой брат / моя сестра','testvér — брат или сестра; окончание -em показывает принадлежность.'],
+  ['konyhában / kertben','на кухне / в саду','-ban/-ben отвечает на вопрос «где?».'],
+  ['kenyeret / sajtot','хлеб / сыр (в роли дополнения)','После «есть» здесь используются формы с винительным окончанием -t; подробное правило будет позже.']
+ ],
+ 3:[
+  ['asztalon / ágyon','на столе / на кровати','-on указывает на расположение на поверхности.'],
+  ['táskámban / szobámban','в моей сумке / в моей комнате','В этих формах сочетаются «мой/моя» и обозначение места «в».'],
+  ['kulcsom','мой ключ','kulcs — ключ, -om показывает принадлежность: мой.']
+ ]
+};
 const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
 function playHungarian(text,status){
  try{
@@ -329,6 +348,17 @@ window.TanmuhelyRenderA1LongReadings=(level,index)=>{
  const details=el('details');details.id='a1LongReading';details.className='a1-long-reading';
  const sum=el('summary','Дополнительный текст и диалог · 15 предложений');details.append(sum);
  details.append(el('h4',data.title),el('p','Сначала слушайте венгерский текст, затем читайте. Перевод можно открыть для проверки понимания.'));
+ if(readingGuidance[index]){
+  const prep=el('section');prep.className='a1-reading-preparation';
+  prep.append(el('h5','Перед чтением: три полезные формы'));
+  const list=el('ul');
+  for(const [hu,ru,why] of readingGuidance[index]){
+   const item=el('li');const word=el('strong',hu);word.lang='hu';
+   const translation=el('span',ru+' — '+why);translation.lang='ru';
+   item.append(word,translation);list.append(item);
+  }
+  prep.append(list);details.append(prep);
+ }
  const audioStatus=el('p');audioStatus.className='a1-long-reading-audio-status';audioStatus.setAttribute('role','status');audioStatus.setAttribute('aria-live','polite');
  details.append(soundButton(data.lines.map(line=>line[0]).join(' '),audioStatus,true),audioStatus);
  const toggle=el('button','Показать перевод');toggle.type='button';
