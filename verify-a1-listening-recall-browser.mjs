@@ -34,25 +34,29 @@ async function listen(rate = 1) {
   const audio = el('listeningAudio');
   await audio.evaluate(async (player,rate) => { player.playbackRate=rate; await player.play(); },rate);
   await page.waitForFunction(() => document.getElementById('listeningAudio').ended, null, {timeout:9000});
-  assert.ok(await audio.evaluate(player => player.duration > 3 && player.duration < 7));
+  assert.ok(await audio.evaluate(player => player.duration > 3 && player.duration < 35));
 }
 
 try {
   await fixed('2026-11-24'); await go();
   const lessons = await page.evaluate(() => window.TanmuhelyA1Conversations);
   const clips = await page.evaluate(() => window.TanmuhelyListening.items);
-  assert.equal(lessons.length,28); assert.equal(clips.length,8);
+  assert.equal(lessons.length,28); assert.equal(clips.length,28);
   const options = el('listeningOptions').getByRole('button');
   for (const [index,clip] of clips.entries()) {
     await click('landingChooseLesson');
     await page.locator('#catalogMode label').filter({hasText:'На слух'}).click();
-    assert.equal(await page.locator('#courseCatalogList button').count(),8);
+    assert.equal(await page.locator('#courseCatalogList button').count(),28);
     await page.locator('#courseCatalogList button').nth(index).click();
     assert.equal(await el('listeningTitle').innerText(),clip.title);
     assert.equal(await page.locator('#listeningTranscript p').isVisible(),false);
     assert.equal(await options.count(),3);
     assert.equal(await options.first().isDisabled(),true);
     assert.ok(await el('listeningAudio').evaluate(player => player.src.includes('/audio/a1-listening/')));
+    await click('listeningSlow');
+    assert.equal(await el('listeningAudio').evaluate(p => p.playbackRate), 0.8);
+    await click('listeningSlow');
+    assert.equal(await el('listeningAudio').evaluate(p => p.playbackRate), 1);
     await listen(index===0 ? 1 : 3);
     for (const question of clip.questions) {
       assert.equal(await el('listeningQuestion').innerText(),question.ask);
@@ -61,7 +65,7 @@ try {
     assert.match(await el('listeningScore').innerText(),/на слух, до открытия текста: 2/);
     await esc();
   }
-  assert.equal(Object.keys(await stored(listenKey)).length,8);
+  assert.equal(Object.keys(await stored(listenKey)).length,28);
   await go('listen=ital');
   await listen(2);
   await chooseListening('Чай.');
@@ -76,7 +80,18 @@ try {
   });
   await page.waitForFunction(() => document.getElementById('listeningStatus').textContent.includes('не загрузилась'));
   await page.locator('#listeningTranscript summary').click();
-  await chooseListening('Кофе.');
+  await el('listeningOptions').getByRole('button',{name:'Кофе.',exact:true}).click();
+  await page.evaluate(() => {
+    const AudioElement = window.Audio;
+    window.Audio = class extends AudioElement {
+      constructor(...args) { super(...args); window.testCuePlayer = this; }
+    };
+  });
+  await click('listeningCue');
+  await page.waitForFunction(() => window.testCuePlayer?.currentTime > 0.05);
+  assert.match(await page.evaluate(() => window.testCuePlayer.src), /audio\/a1-piper\//);
+  await click('listeningNext');
+  assert.equal(await el('listeningCue').isVisible(),false);
   await chooseListening('Хлеб.');
   const mixed = (await stored(listenKey)).ital;
   assert.deepEqual(mixed.last,{correct:1,audio:0,text:2}); assert.equal(mixed.best,2);
@@ -93,7 +108,7 @@ try {
   assert.equal((await stored(recallKey)).ital.due,'2026-11-25');
   await esc(); await fixed('2026-11-25'); await go();
   assert.equal(await el('homeConversationKind').innerText(),'Повторение на сегодня');
-  await click('homeConversation'); await recallSubmit('EGY KÁVÉT KÉREK!'.normalize('NFD'));
+  await click('landingChooseLesson'); await click('homeConversation'); await recallSubmit('EGY KÁVÉT KÉREK!'.normalize('NFD'));
   let record = (await stored(recallKey)).ital;
   assert.equal(record.due,'2026-11-28'); assert.equal(record.lastIndependent,true);
   await go('recall=ital'); await recallSubmit('Egy kávét kérek.');
@@ -157,10 +172,10 @@ try {
   await go('review=1&level=A1&lesson=4&section=dialogue');
   await click('lessonListenOnly'); assert.equal(await el('listeningTitle').innerText(),'Напиток и завтрак');
   await esc(); assert.deepEqual(await stored(routeKey),before);
-  await go('review=1&level=A1&lesson=11&section=dialogue'); assert.equal(await el('lessonListenOnly').isVisible(),false);
+  await go('review=1&level=A1&lesson=11&section=dialogue'); assert.equal(await el('lessonListenOnly').isVisible(),true);
   await go('review=1&level=A2&lesson=0&section=dialogue'); assert.equal(await el('lessonListenOnly').isVisible(),false);
   assert.deepEqual(errors,[]);
-  console.log('PASS: 8 decoded recordings, 16 listening questions, audio-only scoring, 28 full-sentence tasks, 1/3/7-day review and 28 saved five-word breaks.');
+  console.log('PASS: 28 decoded recordings, 56 listening questions, audio-only scoring, 28 full-sentence tasks, 1/3/7-day review and 28 saved five-word breaks.');
 } finally {
   await browser.close();
 }

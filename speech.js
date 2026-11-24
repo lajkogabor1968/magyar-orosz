@@ -108,20 +108,31 @@
       ? source : null;
   }
 
+  function a1ClipFor(utterance) {
+    if (!window.TanuloA1Audio || !String(utterance.lang || 'hu-HU').toLowerCase().startsWith('hu')) return null;
+    const level = document.querySelector('.welcome .level.active')?.dataset.level;
+    if (level && level !== 'A1' && !document.querySelector('#conversationDialog[open], #a1RecallDialog[open], #a1ListeningDialog[open]')) return null;
+    const phrase = String(utterance.text).normalize('NFC').replace(/\s+/g, ' ').trim();
+    const url = window.TanuloA1Audio[phrase];
+    return typeof url === 'string' ? url : null;
+  }
+
   function sourceFor(utterance) {
     if (approvedClipFor(utterance)) return 'gabor';
     if (pilotClipFor(utterance)) return 'pilot';
+    if (a1ClipFor(utterance)) return 'piper';
     return available ? 'tts' : 'unavailable';
   }
 
-  function speak(utterance, skipRecording = false) {
+  function speak(utterance, skipRecording = false, skipPiper = skipRecording) {
     if (!utterance || !String(utterance.text || '').trim()) return false;
     const lang = String(utterance.lang || 'hu-HU').toLowerCase();
     // Legacy MP3s without Gábor approval must not be presented as his voice.
     // The optional, labelled Gábor trial is kept for ?voicepilot=1 reviews.
     const approvedClip = skipRecording ? null : approvedClipFor(utterance);
     const pilotClip = !skipRecording && !approvedClip ? pilotClipFor(utterance) : null;
-    const clip = approvedClip || pilotClip;
+    const syntheticClip = !skipPiper && a1ClipFor(utterance);
+    const clip = approvedClip || pilotClip || syntheticClip;
     if (clip) {
       cancel();
       const token = generation;
@@ -131,7 +142,7 @@
       player.playbackRate = Math.max(0.5, Math.min(2, Number(utterance.rate) || 1));
       player.onplaying = event => {
         if (token !== generation) return;
-        message(pilotClip
+        if (approvedClip || pilotClip) message(pilotClip
           ?'Звучит пробная запись голоса Габора. / Gábor kísérleti hangpróbája szól.'
           :'Звучит запись голосом Габора. / Gábor saját felvétele szól.');
         if (typeof utterance.onstart === 'function') utterance.onstart(event);
@@ -149,9 +160,11 @@
         player.onended = null;
         player.pause();
         activeAudio = null;
-        if (available) {
-          message('Запись Габора недоступна. Пробуем венгерский компьютерный голос. / Gábor felvétele nem érhető el. Magyar géphanggal próbálkozunk.');
-          speak(utterance, true);
+        if (!skipRecording && (approvedClip || pilotClip) && syntheticClip) {
+          speak(utterance, true, false);
+        } else if (available) {
+          message('Запись недоступна. Пробуем венгерский компьютерный голос. / A felvétel nem érhető el. A készülék magyar géphangjával próbálkozunk.');
+          speak(utterance, true, true);
         } else {
           message('Запись недоступна. Устройство не поддерживает синтез речи. / Az MP3 nem játszható le, és ezen a készüléken nincs beszédszintézis.');
           if (typeof utterance.onerror === 'function') utterance.onerror(event);
@@ -183,13 +196,11 @@
 
     function next() {
       if (token !== generation) return;
-      const u = parts.length === 1 ? utterance : new SpeechSynthesisUtterance(parts[index]);
-      if (parts.length > 1) {
-        u.lang = utterance.lang;
-        u.rate = utterance.rate;
-        u.pitch = utterance.pitch;
-        u.volume = utterance.volume;
-      }
+      const u = new SpeechSynthesisUtterance(parts[index]);
+      u.lang = utterance.lang || 'hu-HU';
+      u.rate = utterance.rate ?? 1;
+      u.pitch = utterance.pitch ?? 1;
+      u.volume = utterance.volume ?? 1;
       if (selectedVoice) u.voice = selectedVoice;
       let started = false;
       let finished = false;

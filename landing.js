@@ -19,7 +19,7 @@
   description.style.cssText = 'display:block;line-height:1.45;font-size:.95rem;font-weight:500';
   $('homeConversationAction').before(description);
   const layout = document.createElement('style');
-  layout.textContent = '.course-deck:has(#homeConversation[hidden]){grid-template-columns:minmax(0,1fr)} #homeConversation:not([hidden]){align-self:start;display:flex;flex-direction:column;align-items:flex-start;gap:.65rem;padding:1.25rem} #homeConversation .conversation-invite-action{margin-top:0;padding:.65rem .9rem;background:#164b40;color:white;border-radius:.7rem} #homeConversationQuestion{max-width:100%}';
+  layout.textContent = '.course-deck{grid-template-columns:minmax(0,1fr)} #homeConversation:not([hidden]){align-self:start;display:flex;flex-direction:column;align-items:flex-start;gap:.65rem;padding:1.25rem} #homeConversation .conversation-invite-action{margin-top:0;padding:.65rem .9rem;background:#164b40;color:white;border-radius:.7rem} #homeConversationQuestion{max-width:100%}';
   document.head.append(layout);
 
   function showApp() {
@@ -110,6 +110,7 @@
       currentIndex = items.findIndex(item => item.id === window.TanmuhelyA1Conversations[course.index]?.id);
       if (currentIndex < 0) currentIndex = Math.max(0, items.findIndex(item => scores[item.id]?.best !== item.questions.length));
     }
+    invite.hidden = level !== 'A1' || listening || !recommendRecall;
     $('courseCatalogTitle').textContent = (listening ? 'Аудирование ' : conversations ? 'Диалоги ' : 'Уроки ') + level;
     const list = $('courseCatalogList');
     list.replaceChildren();
@@ -178,6 +179,7 @@
   picker.addEventListener('click', () => openCatalog());
   catalog.querySelector('.dialog-close').onclick = () => catalog.close();
   $('homeConversation').onclick = () => {
+    if (catalog.open) catalog.close();
     const index = recommendedIndex;
     if (recommendRecall) window.TanmuhelyRecall.open(index, () => enterLesson(index));
     else launchConversation(index);

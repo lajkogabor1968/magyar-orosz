@@ -532,3 +532,7 @@ html:has(.course-dialog[open]) { overflow: hidden; }
 #lessonListenOnly { margin-top: .75rem; }
 #a1PackPause[hidden], #lessonListenOnly[hidden], .skill-practice [hidden] { display: none !important; }
 #catalogMode { flex-wrap: wrap; }
+
+.listening-tools { display: flex; flex-wrap: wrap; gap: .5rem; margin: .5rem 0; }
+.listening-tools button { min-height: 44px; }
+#listeningSlow[aria-pressed="true"] { background: #175b53; color: white; }
