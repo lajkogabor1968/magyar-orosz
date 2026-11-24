@@ -39,5 +39,5 @@
     return shuffle(options, random);
   }
 
-  window.MagyarOroszQuizOptions = Object.freeze({ buildOptions });
+  window.MagyarOroszQuizOptions = Object.freeze({ buildOptions, shuffle });
 })();

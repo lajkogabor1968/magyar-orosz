@@ -10,7 +10,12 @@
   if (!hub || !back || !extra || !more) return;
   function refreshQuickReview() {
     if (!quick) return;
-    const isA1 = document.querySelector('.welcome .level.active')?.dataset.level === 'A1';
+    const level = document.querySelector('.welcome .level.active')?.dataset.level;
+    const guided = level === 'A1' || level === 'A2';
+    const course = document.querySelector('#lessonsPrimary .hub-course-copy');
+    course.querySelector('strong').textContent = guided ? 'Начать или продолжить уроки' : 'Диалоги ' + level;
+    course.querySelector('span').textContent = guided ? 'Слова, правила, речь и практика' : 'Читать, слушать и отвечать на вопросы';
+    const isA1 = level === 'A1';
     quick.hidden = !isA1;
     if (!isA1) return;
     const progress = document.getElementById('a1DailyOverall')?.textContent || '';
@@ -62,13 +67,6 @@
   back.addEventListener('click', () => mode('study-menu'));
   document.addEventListener('tanulo:viewchange', () => {
     if (root.classList.contains('study-active') || root.classList.contains('study-daily')) mode('study-active');
-  });
-  const start = document.getElementById('landingStart');
-  // Landing's A1 button opens the guided lesson directly.
-  // Do not overwrite that action with a later menu-mode click listener.
-  start?.addEventListener('click', () => {
-    const level=document.querySelector('#landingScreen input[name="landingLevel"]:checked')?.value||'A1';
-    if(level!=='A1')mode('study-menu');
   });
   document.querySelector('.landing-back')?.addEventListener('click', () => mode('study-menu'));
   refreshQuickReview();

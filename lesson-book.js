@@ -196,8 +196,23 @@ if(level==='A1'){
 }
 finished[lessonKey()]=current;old.completed=finished;try{localStorage.setItem(KEY,JSON.stringify(old));persistQuiz(true)}catch(_){note('Не удалось сохранить результат. Скопируйте его перед выходом.');return}if(lessonIndex+1<courses[level].length){const nextIndex=lessonIndex+1;const finishedPercent=Math.round(testCorrect/Math.max(1,Math.min(10,rows().length))*100);confirmLessonChange(nextIndex);if(lessonIndex===nextIndex)note('Проверка слов завершена ('+finishedPercent+'%). Вы перешли к следующему уроку.');else note('✓ Урок завершён. Выберите повторение или продолжение обучения.')}else{step=0;save();render();note(Object.keys(courses[level]).every(i=>finished[level+':'+i])?'✓ Все подготовленные уроки этого уровня завершены.':'✓ Урок завершён. В списке уроков выберите следующий без отметки ✓.')}}}
 
-function read(key){try{return JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(_){return {}}}
-function save(){const s=read(KEY);s[level]={lessonIndex,step};if(level==='A1'){s.migratedFirstUnit20261121=true;const stages=s.a1LessonStages&&typeof s.a1LessonStages==='object'&&!Array.isArray(s.a1LessonStages)?s.a1LessonStages:{};stages[String(lessonIndex)]=step;s.a1LessonStages=stages;}try{localStorage.setItem(KEY,JSON.stringify(s))}catch(_){}}
+function read(key){
+ try{
+  const data=JSON.parse(localStorage.getItem(key));
+  return data&&typeof data==='object'&&!Array.isArray(data)?data:{};
+ }catch(_){return {}}
+}
+const stageKeys={A1:'a1LessonStages',A2:'a2LessonStages'};
+function save(){
+ const state=read(KEY);
+ state[level]={lessonIndex,step};
+ if(level==='A1')state.migratedFirstUnit20261121=true;
+ const key=stageKeys[level];
+ const stages=state[key];
+ if(!stages||typeof stages!=='object'||Array.isArray(stages))state[key]={};
+ state[key][lessonIndex]=step;
+ try{localStorage.setItem(KEY,JSON.stringify(state))}catch(_){}
+}
 function say(text,callbacks={}){try{if(window.tanmuhelyActiveTeacherReading){window.tanmuhelyActiveTeacherReading.pause();window.tanmuhelyActiveTeacherReading=null}const u=window.SpeechSynthesisUtterance?new SpeechSynthesisUtterance(text):{text};u.lang='hu-HU';u.rate=.85;u.onstart=callbacks.onstart;u.onend=callbacks.onend;u.onerror=callbacks.onerror;if(window.TanuloTTS?.speak)return window.TanuloTTS.speak(u);speechSynthesis.cancel();speechSynthesis.speak(u);return true}catch(_){return false}}
 function el(tag,txt,cl){const node=document.createElement(tag);if(txt!==undefined)node.textContent=txt;if(cl)node.className=cl;return node}
 function lesson(){return courses[level][lessonIndex]}
@@ -541,7 +556,7 @@ function placeReadingAfterTeaching(){
  const writing=$('lessonComposition');
  if(!original||!writing)return;
  const compositionHeading=writing.querySelector(':scope > h3');
- if(compositionHeading)compositionHeading.textContent=level==='A1'?'Теперь напишите свой текст — Írás':'8. Мини-сочинение';
+ if(compositionHeading)compositionHeading.textContent=level==='A1'?'Теперь напишите свой текст':'Мини-сочинение';
  const moved=$('a1ReadingPractice');
  if(level!=='A1'){
   $('lessonWords').prepend(original);
@@ -704,12 +719,13 @@ function card(){
  const w=rows(),v=w[cardIndex%w.length];if(!v)return;
  const core=requiredCardCount();
  $('integratedCardPosition').textContent=level==='A1'
-  ? (cardIndex<core?'Блок '+(cardIndex<5?1:2)+' · Обязательное слово '+(cardIndex+1)+' из '+core:'Дополнительно · '+(cardIndex-core+1)+' из '+(w.length-core))
+  ? (cardIndex<core?'Блок '+(cardIndex<5?1:2)+' · Слово '+(cardIndex%5+1)+' из '+Math.min(5,core):'Дополнительно · '+(cardIndex-core+1)+' из '+(w.length-core))
   : (cardIndex+1)+' / '+w.length;
  $('integratedCardHungarian').textContent=v.hu;
  $('integratedCardRussian').textContent=v.ru;
  $('integratedCardRussian').hidden=true;
  $('integratedCardFlip').textContent='Показать перевод';
+ $('integratedCardFlip').setAttribute('aria-expanded','false');
  updateCardProgress();
 }
 function norm(s){return String(s).normalize('NFC').toLocaleLowerCase('hu-HU').trim().replace(/[.!?]+$/,'').replace(/\s+/g,' ')}
@@ -985,6 +1001,13 @@ function renderDialogueUnderstanding(){
  });
 }
 function render(){window.TanuloVoiceCompareReset?.();$('integratedAdvanceAdvice').hidden=true;note('');const l=lesson();reviewPreviousErrors();
+const conversation=level==='A1'?window.TanmuhelyA1Conversations?.[lessonIndex]:null;
+ const practiceButton=$('lessonConversation');
+ practiceButton.hidden=!conversation;
+ if(conversation){
+  practiceButton.textContent='Разыграть диалог · '+conversation.title;
+  practiceButton.onclick=()=>window.TanmuhelyConversation.open(lessonIndex);
+ }
 const prerequisite=$('lessonPrerequisite');
 if(prerequisite){
  const bridges={
@@ -994,7 +1017,7 @@ if(prerequisite){
  };
  prerequisite.hidden=level!=='A2';
  prerequisite.textContent=level==='A2'?'Связь с A1 / Kapcsolat az A1 szinttel. '+bridges[lessonIndex]:'';
-}$('integratedLessonLevel').textContent=level;$('integratedLessonCounter').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length;$('integratedLessonHeading').textContent='Урок '+(lessonIndex+1)+'. '+l.title;$('integratedLessonSelect').replaceChildren();courses[level].forEach((x,i)=>{const finished=read(KEY).completed?.[level+':'+i];const pct=finished&&Number.isFinite(finished.bestScore)&&Number.isFinite(finished.bestMax)&&finished.bestMax>0&&level==='A1'?Math.round(finished.bestScore/finished.bestMax*100):finished&&Number.isFinite(finished.score)&&Number.isFinite(finished.max)&&finished.max>0?Math.round(finished.score/finished.max*100):null;const mark=pct===null?(finished?'◔ ':''):pct>=90?'✓ ':'◔ ';const suffix=pct===null?'':' · '+pct+'%';const o=el('option',mark+(i+1)+'. '+x.title+suffix);o.value=String(i);$('integratedLessonSelect').append(o)});$('integratedLessonSelect').value=String(lessonIndex);$('integratedLessonPrev').disabled=lessonIndex===0;$('integratedLessonForward').disabled=lessonIndex>=courses[level].length-1;$('integratedLessonChoiceHint').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length+'. ✓ — лучший результат от 90%; ◔ — выполнено, но стоит повторить. Любой урок доступен сразу.';placeReadingAfterTeaching();renderVisual();renderMotion();resetVideo();renderReading();window.TanmuhelyRenderA1LongReadings?.(level,lessonIndex);renderWords();renderGrammarExamples();window.TanmuhelyRenderErrorCards?.(level,lessonIndex);resetGame();$('integratedGrammar').replaceChildren();$('integratedGrammar').append(el('strong',l.grammar[0]),el('p',l.grammar[1]),el('p',l.grammar[2]));const dialog=$('integratedDialogue');dialog.replaceChildren();for(const [i,line] of l.dialogue.entries()){const row=el('div',undefined,'integrated-dialogue-line');const words=el('div',undefined,'lesson-dialogue-text');const speakerLabel=level==='A1'?(i%2===0?'Собеседник A':'Собеседник B'):(i%2===0?'Анна':'Петер');
+}$('integratedLessonLevel').textContent=level;$('integratedLessonCounter').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length;$('integratedLessonHeading').textContent=l.title;$('integratedLessonSelect').replaceChildren();courses[level].forEach((x,i)=>{const finished=read(KEY).completed?.[level+':'+i];const pct=finished&&Number.isFinite(finished.bestScore)&&Number.isFinite(finished.bestMax)&&finished.bestMax>0&&level==='A1'?Math.round(finished.bestScore/finished.bestMax*100):finished&&Number.isFinite(finished.score)&&Number.isFinite(finished.max)&&finished.max>0?Math.round(finished.score/finished.max*100):null;const mark=pct===null?(finished?'◔ ':''):pct>=90?'✓ ':'◔ ';const suffix=pct===null?'':' · '+pct+'%';const o=el('option',mark+(i+1)+'. '+x.title+suffix);o.value=String(i);$('integratedLessonSelect').append(o)});$('integratedLessonSelect').value=String(lessonIndex);$('integratedLessonPrev').disabled=lessonIndex===0;$('integratedLessonForward').disabled=lessonIndex>=courses[level].length-1;$('integratedLessonChoiceHint').textContent='Урок '+(lessonIndex+1)+' из '+courses[level].length+'. ✓ — лучший результат от 90%; ◔ — выполнено, но стоит повторить. Любой урок доступен сразу.';placeReadingAfterTeaching();renderVisual();renderMotion();resetVideo();renderReading();window.TanmuhelyRenderA1LongReadings?.(level,lessonIndex);renderWords();renderGrammarExamples();window.TanmuhelyRenderErrorCards?.(level,lessonIndex);resetGame();$('integratedGrammar').replaceChildren();$('integratedGrammar').append(el('strong',l.grammar[0]),el('p',l.grammar[1]),el('p',l.grammar[2]));const dialog=$('integratedDialogue');dialog.replaceChildren();for(const [i,line] of l.dialogue.entries()){const row=el('div',undefined,'integrated-dialogue-line');const words=el('div',undefined,'lesson-dialogue-text');const speakerLabel=level==='A1'?(i%2===0?'Собеседник A':'Собеседник B'):(i%2===0?'Анна':'Петер');
  const speaker=el('small',speakerLabel,'lesson-speaker');
  speaker.lang='ru';
  const h=el('span',line);h.lang='hu';
@@ -1006,7 +1029,54 @@ if(prerequisite){
  const b=el('button','🔊');b.type='button';
  b.setAttribute('aria-label','Прослушать реплику '+(i+1)+': '+line);
  b.onclick=()=>{spokenTargetIndex=Array.from(dialog.children).indexOf(row);const source=window.TanuloTTS?.sourceFor?.({text:line,lang:'hu-HU'})||'tts';const played=say(line);$('integratedDialogueFeedback').textContent=played?(source==='gabor'?'Запись Габора. ':source==='pilot'?'Пробная запись Габора. ':'Компьютерный венгерский голос. ')+'Прослушайте и повторите фразу: '+line:'Озвучка недоступна. Проверьте венгерский голос устройства.';note('Для проверки нажмите микрофон или отметьте, что повторили вслух.')};row.append(words,b);dialog.append(row)}cardIndex=0;writeIndex=0;writingMisses=0;correctWriting=new Set();testIndex=0;testCorrect=0;hasAnswered=false;testCompleted=false;flashcardsOpened=false;grammarReviewed=false;dialoguePractised=false;dialogueUnderstood=false;spokenTargetIndex=0;flippedWords=new Set();checkedBatches=new Set();checkBatch=-1;checkStep=0;checkRendered='';quizMisses=[];testOrder=randomOrder(rows().map((_,i)=>i));restoreCheckpoint();cardIndex=resumeWordCard();grammarQuestion();renderDialogueUnderstanding();resumeQuiz();sentencePractice(true);$('integratedFlashcard').hidden=false;card();spelling();composition();test();stageView()}
-function open(mode){level=document.querySelector('.welcome .level.active')?.dataset.level||'A1';if(!courses[level]){document.querySelector('[data-hub-view="steps"]')?.click();return}const stored=read(KEY),saved=stored[level];if(level==='A1'&&saved&&!stored.migratedFirstUnit20261121){saved.lessonIndex=Math.max(0,Number(saved.lessonIndex)||0)+(Number(saved.lessonIndex)>0?1:0);stored.migratedFirstUnit20261121=true;try{localStorage.setItem(KEY,JSON.stringify(stored))}catch(_){}}lessonIndex=Math.max(0,Math.min(courses[level].length-1,Number(saved?.lessonIndex)||0));step=mode==='words'?0:Math.max(0,Math.min(5,Number(level==='A1'?(stored.a1LessonStages?.[String(lessonIndex)]??saved?.step):saved?.step)||0));root.classList.remove('study-menu','study-active','study-coach','study-online','study-exam','study-daily');root.classList.add('study-book');hub.hidden=true;view.hidden=false;back.hidden=false;render();view.scrollIntoView({block:'start'});}
+function validStep(value){
+ const number=Number(value);
+ return Number.isInteger(number)&&number>=0&&number<steps.length?number:0;
+}
+function routePosition(courseLevel,state){
+ const saved=state[courseLevel];
+ let index=Number(saved?.lessonIndex);
+ if(!Number.isInteger(index)||index<0)index=0;
+ // Older A1 routes predate the introductory unit. Previewing never migrates a save.
+ if(courseLevel==='A1'&&index>0&&!state.migratedFirstUnit20261121)index++;
+ index=Math.min(index,courses[courseLevel].length-1);
+ return {index,step:validStep(state[stageKeys[courseLevel]]?.[index]??saved?.step),started:!!saved};
+}
+function overview(courseLevel){
+ if(!courses[courseLevel])return null;
+ const state=read(KEY);
+ const route=routePosition(courseLevel,state);
+ const lessons=courses[courseLevel].map((unit,index)=>({
+  title:unit.title,completed:!!state.completed?.[courseLevel+':'+index]
+ }));
+ return {...route,stageName:stepsRu[route.step],lessons};
+}
+function open(mode,targetIndex){
+ level=document.querySelector('.welcome .level.active')?.dataset.level||'A1';
+ if(!courses[level]){
+  if(mode==='words')document.querySelector('[data-hub-view="cards"]')?.click();
+  else if(level==='B1'||level==='B2')location.assign(level.toLowerCase()+'.html');
+  return;
+ }
+ const state=read(KEY),route=routePosition(level,state);
+ lessonIndex=route.index;
+ step=route.step;
+ if(Number.isInteger(targetIndex)&&targetIndex>=0&&targetIndex<courses[level].length&&targetIndex!==lessonIndex){
+  if(route.started)save();
+  lessonIndex=targetIndex;
+  step=validStep(state[stageKeys[level]]?.[targetIndex]);
+ }
+ if(mode==='grammar')step=1;
+ if(mode==='words')step=0;
+ else save();
+ root.classList.remove('study-menu','study-active','study-coach','study-online','study-exam','study-daily');
+ root.classList.add('study-book');hub.hidden=true;view.hidden=false;back.hidden=false;
+ $('lessonMenu').open=false;
+ render();
+ $('integratedLessonHeading').focus({preventScroll:true});
+ view.scrollIntoView({block:'start'});
+}
+window.TanuloWorkbook={overview,openLesson:index=>open('resume',index)};
 let stepButton=$('integratedStepNext');if(!stepButton){stepButton=el('button','Следующий шаг →','lesson-primary');stepButton.type='button';stepButton.id='integratedStepNext';view.insertBefore(stepButton,$('lessonWords'))}
 stepButton.onclick=moveNext;
 $('integratedPreviousStep').onclick=()=>{if(step>0){step--;save();stageView();note('Вы вернулись к предыдущему шагу. Уже проверенные ответы сохранены.') }};
@@ -1033,7 +1103,7 @@ function completedScore(index){return read(KEY).completed?.[level+':'+index]}
 function reviewAdvice(targetIndex){
  if(targetIndex<=0)return '';
  const prev=completedScore(targetIndex-1);
- if(!prev)return 'Предыдущий урок ещё не завершён. При желании вы можете повторить его слова, но этот урок доступен прямо сейчас.';
+ if(!prev)return '';
  if(!Number.isFinite(prev.max)||prev.max<=0)return 'Для предыдущего урока нет проверенного результата. Перед продолжением рекомендуем повторить материал.';
  const percent=Math.round((level==='A1'&&Number.isFinite(prev.bestScore)&&Number.isFinite(prev.bestMax)&&prev.bestMax>0?prev.bestScore/prev.bestMax:prev.score/prev.max)*100);
  if(percent>=90)return '';
@@ -1049,9 +1119,9 @@ function confirmLessonChange(targetIndex){
  // Older progress (without a per-lesson map) stays readable.
  save();
  const prior=read(KEY);
- const restored=level==='A1'?prior.a1LessonStages?.[String(targetIndex)]:null;
+ const restored=prior[stageKeys[level]]?.[targetIndex];
  lessonIndex=targetIndex;
- step=level==='A1'&&Number.isInteger(restored)&&restored>=0&&restored<=5?restored:0;
+ step=validStep(restored);
  save();
  render();
  const box=$('integratedAdvanceAdvice');
@@ -1073,7 +1143,7 @@ $('integratedLessonSelect').addEventListener('change',e=>{
 $('integratedLessonPrev').addEventListener('click',()=>confirmLessonChange(lessonIndex-1));
 $('integratedLessonForward').addEventListener('click',()=>confirmLessonChange(lessonIndex+1));
 $('integratedFlashcardOpen').onclick=()=>{cardIndex=0;card();$('integratedFlashcard').hidden=false;note('Повторите карточки. Уже открытые переводы сохраняются в прогрессе урока.')};
-$('integratedCardFlip').onclick=()=>{const node=$('integratedCardRussian');node.hidden=!node.hidden;if(!node.hidden){flippedWords.add(cardIndex);saveCheckpoint();if(step===0&&canAdvance())stepButton.disabled=false;const count=level==='A1'?[...flippedWords].filter(i=>i<requiredCardCount()).length:flippedWords.size;note(level==='A1'&&canAdvance()?'✓ Два блока изучены и проверены. Можно перейти к правилу.':'Открыто переводов: '+count+' / '+requiredCardCount()+(level==='A1'?' · после пяти слов ответьте на два коротких вопроса.':'.'));updateCardProgress()} $('integratedCardFlip').textContent=node.hidden?'Показать перевод':'Скрыть перевод'};
+$('integratedCardFlip').onclick=()=>{const node=$('integratedCardRussian');node.hidden=!node.hidden;$('integratedCardFlip').setAttribute('aria-expanded',String(!node.hidden));if(!node.hidden){flippedWords.add(cardIndex);saveCheckpoint();if(step===0&&canAdvance())stepButton.disabled=false;const count=level==='A1'?[...flippedWords].filter(i=>i<requiredCardCount()).length:flippedWords.size;note(level==='A1'&&canAdvance()?'✓ Два блока изучены и проверены. Можно перейти к правилу.':'Открыто переводов: '+count+' / '+requiredCardCount()+(level==='A1'?' · после пяти слов ответьте на два коротких вопроса.':'.'));updateCardProgress()} $('integratedCardFlip').textContent=node.hidden?'Показать перевод':'Скрыть перевод'};
 function nextCardIndex(){
  const total=rows().length;
  if(level!=='A1')return(cardIndex+1)%total;
@@ -1180,16 +1250,14 @@ if(reviewParams.get('review')==='1'){
     requestAnimationFrame(()=>part?.scrollIntoView({block:'start'}));
   }
 }
-const returnParams=new URLSearchParams(location.search);
-if(returnParams.get('workbook')==='1'&&reviewParams.get('review')!=='1'){
- const requestedLevel=returnParams.get('level');
- const requestedLesson=Number(returnParams.get('lesson'));
- if(['A1','A2'].includes(requestedLevel)&&Number.isInteger(requestedLesson)){
+if(reviewParams.get('workbook')==='1'&&reviewParams.get('review')!=='1'){
+ const requestedLevel=reviewParams.get('level');
+ const raw=reviewParams.get('lesson');
+ const requestedLesson=raw===null?NaN:Number(raw);
+ if(['A1','A2'].includes(requestedLevel)&&Number.isInteger(requestedLesson)&&
+    requestedLesson>=0&&requestedLesson<courses[requestedLevel].length){
   document.querySelector('.welcome .level[data-level="'+requestedLevel+'"]')?.click();
-  level=requestedLevel;
-  const stored=read(KEY);stored[requestedLevel]={lessonIndex:requestedLesson,step:1};
-  try{localStorage.setItem(KEY,JSON.stringify(stored))}catch(_){}
-  open('resume');
+  open('grammar',requestedLesson);
  }
 }
 })();
