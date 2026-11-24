@@ -27,7 +27,7 @@ Az A1–A2 leckékben és a fő tanulási útvonalon az első választás **Gáb
 
 Az engedélyezett hangok jegyzéke (`audio/dialogue-manifest.js` → `TanuloApprovedGaborManifest`) jelenleg szándékosan **üres**: még nincs olyan Gábor-hangból készült állandó felvétel, amelynek eredetét és tartalmát ellenőriztük, és amelynek közzétételét jóváhagyták. Később kizárólag az `audio/gabor/a1/` és `audio/gabor/a2/` alatti jóváhagyott MP3/WAV/OGG kerülhet a jegyzékbe. Az eredeti hangmintát nem tesszük a nyilvános GitHub-repozitóriumba. A külön jelölt, külső helyen tárolt Gábor-próbaolvasmányok csak kísérleti hangok, nem számítanak állandóan rendelkezésre álló felvételeknek. A pontszámok és korábbi tanulói eredménykulcsok nem változnak.
 
-Hangbiztonsági szerkezeti ellenőrzés: `node magyar-orosz/verify-gabor-voice.mjs`. A hangminőség és a tényleges Android-lejátszás később külön, valódi hangfájlokkal ellenőrizendő.
+Hangbiztonsági szerkezeti ellenőrzés: `node verify-gabor-voice.mjs`. A hangminőség és a tényleges Android-lejátszás később külön, valódi hangfájlokkal ellenőrizendő.
 
 ### A1–A2 – Bővített nyelvtani tananyag
 
@@ -47,7 +47,7 @@ A nyelvtani tankönyvi rész elsődleges mintája a felhasználó által feltöl
 
 **Nyelvtani minőségjavítás:** A magyar helyesírás szabályai (AkH.) 44. pontja alapján a beírásos felszólító feladatok a köznyelvben helyes rövid és hosszabb alakokat is elfogadják (pl. `kérj`/`kérjél`, `írd`/`írjad`), és javításkor az összes elfogadott alak megjelenik. A feleletválasztós lehetőségek minden próbálkozásnál kevert sorrendben jelennek meg, így nem tanulható meg egy állandó helyesválasz-pozíció. Egy korábbi létige-feladatot a témához igazítottunk. A nyelvtani modul korábbi helyi pontszámainak kulcsai és a fejezetek régi indexei megmaradtak. Hivatalos szabályforrás: [AkH. 44. pont](https://helyesiras.mta.hu/helyesiras/default/akh).
 
-Szerkezeti ellenőrzés: `node magyar-orosz/verify-nyelvtan.mjs`. A tanulói nézet böngészős ellenőrzéséhez: `node magyar-orosz/verify-nyelvtan-browser.mjs` (Playwright és futtatható Chromium szükséges). A korábbi kontrasztív modul és saját pontszámai a külön [korábbi nyelvtani oldalon](kontrasztiv-nyelvtan.html) továbbra is elérhetők.
+Szerkezeti ellenőrzés: `node verify-nyelvtan.mjs`. A tanulói nézet böngészős ellenőrzéséhez: `node verify-nyelvtan-browser.mjs` (Playwright és futtatható Chromium szükséges). A korábbi kontrasztív modul és saját pontszámai a külön [korábbi nyelvtani oldalon](kontrasztiv-nyelvtan.html) továbbra is elérhetők.
 
 ### A1–A2 – Kiegészítő videós gyakorlás
 
@@ -59,12 +59,12 @@ Az [A2-es olvasásmodul](a2-olvasas.html) négy teljesen saját készítésű, r
 
 Minden olvasmányhoz 6 igaz–hamis állítás, 3 feleletválasztós kérdés, 1 mondatkiegészítés, magyar–orosz szószedet, 2 rövid, szöveg alapján megválaszolandó kérdés és 1 saját mondatos válasz tartozik. A 40 automatikusan ellenőrizhető kérdésnél a javítás visszakereshető bizonyító mondatot mutat. Emellett 6 teljesen új rövid üzenetet 8 témacímhez kell párosítani; 2 cím fölösleges. Az önálló szövegalkotás és rövid válasz nem kap gépi pontszámot, helyette mintaválasz látható. Az elért legjobb pontszámokat külön, új böngészős kulcsok alatt tároljuk, a meglévő eredményekhez nem nyúlunk.
 
-Automatikus szerkezeti teszt: `node magyar-orosz/verify-a2-olvasas.mjs`. A szövegeket továbbra is ajánlott tanári és orosz anyanyelvű lektorral ellenőrizni tanulói kiadás előtt.
+Automatikus szerkezeti teszt: `node verify-a2-olvasas.mjs`. A szövegeket továbbra is ajánlott tanári és orosz anyanyelvű lektorral ellenőrizni tanulói kiadás előtt.
 
 
 ### A2 – Íráskészség gyakorlása
 
-Az [A2-es írásmodul](a2-iras.html) négy önálló, hétköznapi íráshelyzetet kínál: üzenet a szomszédnak, tanfolyami bejegyzés, munkahelyi üzenet és baráti meghívás. A tanuló kb. 50 szót ír, négy tartalmi pont alapján dolgozik, láthatja a szószámot, és saját maga ellenőrizheti a feladat teljesítését. A program a magyar szöveget nem pontozza automatikusan, nem tárolja és nem küldi el; mintamegoldást ad az összehasonlításhoz. A feladatok tartalma nem a mintaként kapott ECL-feladatlapok átirata. Automatikus ellenőrzés: `node magyar-orosz/verify-a2-iras.mjs`.
+Az [A2-es írásmodul](a2-iras.html) négy önálló, hétköznapi íráshelyzetet kínál: üzenet a szomszédnak, tanfolyami bejegyzés, munkahelyi üzenet és baráti meghívás. A tanuló kb. 50 szót ír, négy tartalmi pont alapján dolgozik, láthatja a szószámot, és saját maga ellenőrizheti a feladat teljesítését. A program a magyar szöveget nem pontozza automatikusan, nem tárolja és nem küldi el; mintamegoldást ad az összehasonlításhoz. A feladatok tartalma nem a mintaként kapott ECL-feladatlapok átirata. Automatikus ellenőrzés: `node verify-a2-iras.mjs`.
 
 ### B1 – Ügyintézés Magyarországon (B2-es folytatással)
 
@@ -82,21 +82,21 @@ A [gyakorlati párbeszédmodulban](ecl.html?lesson=18) kilenc, orosz anyanyelvű
 
 Mind a kilenc lecke magyar párbeszédet, kapcsolható orosz mondatfordításokat, nyitható kétnyelvű szószedetet, három szövegértési és egy nyelvtani feladatot, hallott szövegértést, szóbeli feladatot, két nyelven megfogalmazott óvatossági megjegyzést és hivatalos forráslinkeket tartalmaz. A hivatali szabályok változhatnak, és az egyes külföldi állampolgárok helyzete eltérő lehet: **a tananyag nyelvgyakorlás, nem személyre szabott jogi, pénzügyi vagy társadalombiztosítási tanácsadás**. A korábbi 17 ECL-lecke és a tanulói pontszámok érintetlenek. A korábbi hat ügyintézési lecke azonosítója és tartalma is megmaradt, csak a szintbesorolása változott B1-re.
 
-Automatikus ellenőrzés: `node magyar-orosz/verify-ugyintezes.mjs`. A magyar–orosz fordításokat a nyilvános kiadás előtt orosz anyanyelvű lektorral is érdemes átnézetni.
+Automatikus ellenőrzés: `node verify-ugyintezes.mjs`. A magyar–orosz fordításokat a nyilvános kiadás előtt orosz anyanyelvű lektorral is érdemes átnézetni.
 
-A feleletválasztós tesztben azonos magyar címszóhoz vagy példamondathoz tartozó másik helyes orosz fordítást a program már nem kínál fel hibás válaszként. Ez nem pótolja a szemantikailag egyenértékű, de eltérően megfogalmazott fordítások nyelvi ellenőrzését. Automatikus regressziós teszt: `node magyar-orosz/verify-quiz-options.mjs`.
+A feleletválasztós tesztben azonos magyar címszóhoz vagy példamondathoz tartozó másik helyes orosz fordítást a program már nem kínál fel hibás válaszként. Ez nem pótolja a szemantikailag egyenértékű, de eltérően megfogalmazott fordítások nyelvi ellenőrzését. Automatikus regressziós teszt: `node verify-quiz-options.mjs`.
 
 ## Indítás
 
-A teljes `magyar-orosz` mappát (az audiofájlokkal és a modulokkal együtt) kell kiszolgálni. A `index.html`-t egyszerű webszerverrel vagy a GitHub Pages-en lehet megnyitni.
+A tároló gyökérkönyvtárát (az audiofájlokkal és a modulokkal együtt) kell kiszolgálni. Az `index.html`-t egyszerű webszerverrel vagy a GitHub Pages-en lehet megnyitni.
 
-## GitHub Pages – meglévő alkalmazás
+## GitHub Pages
 
-Az alkalmazás a `lajkogabor1968/abece-kaland` GitHub-repozitórium `magyar-orosz/` mappájában él. A meglévő nyilvános cím:
+Az önálló tároló a `lajkogabor1968/magyar-orosz`. A tanulói kezdőoldal és a telepítési ág gyökere a `main` ágban található.
 
-https://lajkogabor1968.github.io/abece-kaland/magyar-orosz/
+https://lajkogabor1968.github.io/magyar-orosz/
 
-A fejlesztés **nem hoz létre külön alkalmazást vagy repositoryt**. A tanulói adatok az egyes böngészőkben maradnak.
+A 2026. november 24. előtti hivatkozások a régi `/abece-kaland/magyar-orosz/` útvonalat használják. A tanulói haladást az alkalmazás a böngészőben tárolja.
 
 Az Android/Play Áruház és a fenntartható bevétel felé vezető, külön minőségi kapukat tartalmazó terv: [`FEJLESZTESI-UTITERV.md`](FEJLESZTESI-UTITERV.md). **Jelenleg még nincs telepíthető Android-alkalmazás vagy fizetési funkció.**
 
@@ -104,9 +104,9 @@ Az Android/Play Áruház és a fenntartható bevétel felé vezető, külön min
 
 A szókincs részben az eredeti, felhasználó által megadott Excel-fájlból származik, de azóta bővült, és nyelvi ellenőrzés alatt áll. A javítások nyilvántartását a `KER-szokincs-audit.md` tartalmazza. A változtatások során a szócikkek sorrendjét meg kell őrizni, mert az eredmények helyi azonosítói a szintből és a sorszámból képződnek. Teljes körű, orosz anyanyelvű lektorálás még nem történt.
 
-Automatikus A1-adatellenőrzés a teljes repository gyökeréből: `node magyar-orosz/verify-a1.mjs`. Ez a szószámokat, a rekordok szerkezetét, a tanulói azonosítók állandóságát és a magyar MP3-hivatkozásokat vizsgálja. A tényleges nyelvi pontosságot és a telefonos hangélményt nem tudja tanúsítani.
+Automatikus A1-adatellenőrzés a teljes repository gyökeréből: `node verify-a1.mjs`. Ez a szószámokat, a rekordok szerkezetét, a tanulói azonosítók állandóságát és a magyar MP3-hivatkozásokat vizsgálja. A tényleges nyelvi pontosságot és a telefonos hangélményt nem tudja tanúsítani.
 
-Az A2 szókincs **mind az 1200 bejegyzésének első körös, tételes nyelvi felülvizsgálata** 2026-11-21-én lezárult (10 adag, összesen 931 javított szócikk). A2:912-nél egy bizonyított címszó-helyesírási hibát is javítottunk (`vegetariánus` → `vegetáriánus`), változatlan szócikkindexszel. Az A2 szerkezeti és sablon-ellenőrzése: `node magyar-orosz/verify-a2.mjs`. Az első kör teljesítése **nem** jelent kész, orosz anyanyelvű lektorálással hitelesített szókincset: a második, keresztellenőrző nyelvi kör, a hanganyag és a tanulói próba még szükséges.
+Az A2 szókincs **mind az 1200 bejegyzésének első körös, tételes nyelvi felülvizsgálata** 2026-11-21-én lezárult (10 adag, összesen 931 javított szócikk). A2:912-nél egy bizonyított címszó-helyesírási hibát is javítottunk (`vegetariánus` → `vegetáriánus`), változatlan szócikkindexszel. Az A2 szerkezeti és sablon-ellenőrzése: `node verify-a2.mjs`. Az első kör teljesítése **nem** jelent kész, orosz anyanyelvű lektorálással hitelesített szókincset: a második, keresztellenőrző nyelvi kör, a hanganyag és a tanulói próba még szükséges.
 
 ## Magyar nyelvű felolvasás
 A szólistában a hangszóró a magyar szót, a beszéd ikon a magyar példamondatot olvassa fel. A mondatgyakorlás magyar mondatot és magyar hangot használ; a válaszlehetőségek orosz fordítások. A tanulókártyákon a „Magyar kiejtés” gomb mindig a magyar oldalt olvassa fel, még akkor is, ha az orosz fordítás látható. Az `audio/hu-manifest.js` jelenleg 57 magyar hangfájlra hivatkozik; a többi kifejezés a készülék beszédszintézisét igényelheti.
@@ -115,46 +115,46 @@ A szólistában a hangszóró a magyar szót, a beszéd ikon a magyar példamond
 
 A kiegészítő szövegértési és nyelvtani modul válaszkeverése valódi Fisher–Yates-keverést használ. A vezetett leckék mini-szövegértési válaszai is változó sorrendben jelennek meg úgy, hogy a helyes megoldás azonosítója megmarad. Az A2-es múlt idejű feladat kétértelmű mondatát pontosítottuk; a nyelvtani eredményjelző szintenként számol, a korábbi eredménykulcsok módosítása nélkül.
 
-Regressziós teszt: `node magyar-orosz/verify-quiz-integrity.mjs`. A vezetett leckék teljes szókincslefedettségét a `node magyar-orosz/verify-guided-coverage.mjs` méri. A **28 A1-es vezetett lecke** jelenleg az 580 különböző A1-szótári címszóból 173-at tanít közvetlenül (29,8%); az alkalmazás többi modulja ennél több szót kínál. A széles körű kiadás előtti pedagógiai és technikai feltételek: [`A1-KIADASI-MINOSEGI-KAPUK.md`](A1-KIADASI-MINOSEGI-KAPUK.md).
+Regressziós teszt: `node verify-quiz-integrity.mjs`. A vezetett leckék teljes szókincslefedettségét a `node verify-guided-coverage.mjs` méri. A **28 A1-es vezetett lecke** jelenleg az 580 különböző A1-szótári címszóból 173-at tanít közvetlenül (29,8%); az alkalmazás többi modulja ennél több szót kínál. A széles körű kiadás előtti pedagógiai és technikai feltételek: [`A1-KIADASI-MINOSEGI-KAPUK.md`](A1-KIADASI-MINOSEGI-KAPUK.md).
 
 ### Új A1-es vezetett leckék (9–12.)
 
 A meglevő nyolc lecke sorrendjét és mentett pontjait megtartva négy új, hatlépéses lecke készült: **név, foglalkozás és lakóhely**; **országok és nyelvek**; **számok 1–10**; **számok 11–20 és bemutatkozás**. Mindegyikhez kétnyelvű szókártyák, orosz nyelvű nyelvtani magyarázat, saját példatábla, párbeszéd, rövid olvasmány és ellenőrzőkérdés, írásos gyakorlat, valamint külön teszt tartozik. A nyelvtani és olvasmánykérdések válaszai a helyes megoldás megőrzésével keverednek. A személyes adatoknál fiktív nevet és lakóhelyet is szabad használni, valós címet nem kérünk.
 
-Az új leckék külön tartalomfájlban találhatók: `a1-guided-lessons-next.js`. Szerkezeti teszt: `node magyar-orosz/verify-a1-guided-extension.mjs`. A magyar–orosz fordítások és a tényleges készülékhangok orosz anyanyelvi és eszközös próbája továbbra is szükséges a széles körű kiadás előtt.
+Az új leckék külön tartalomfájlban találhatók: `a1-guided-lessons-next.js`. Szerkezeti teszt: `node verify-a1-guided-extension.mjs`. A magyar–orosz fordítások és a tényleges készülékhangok orosz anyanyelvi és eszközös próbája továbbra is szükséges a széles körű kiadás előtt.
 
 ### Új A1-es vezetett leckék (13–16.)
 
 Újabb négy leckével folytatódik az A1-es út: **rokonok és családi kapcsolatok** (húgom, öcsém, nővérem, nagymamám), **foglalkozás és munkahely** (tanár vagyok, dolgozom/dolgozol/dolgozik), **tulajdonságok** (kedves tanár / a tanár kedves, nem, nagyon), valamint **egyszerű birtoklás és hiány** (könyvem/könyved, táskám/táskád, van/nincs). Mindegyik orosz nyelvű nyelvtani magyarázatot, példatáblázatot, kétnyelvű szókártyákat, párbeszédet, rövid olvasmányt, önálló írásfeladatot és javítással kísért ellenőrzést tartalmaz. A 3. családlecke ismétlése helyett új, magyarázott alakokat vezetünk be.
 
-Az új tartalom külön fájlban marad: `a1-guided-lessons-13-16.js`, így a megelőző leckék és az eredmények kulcsai változatlanok. Szerkezeti és tananyagintegrációs ellenőrzés: `node magyar-orosz/verify-a1-units-13-16.mjs`. Az A1-es szint még nem teljes, az anyanyelvi lektorálás és a valós tanulói próba továbbra is minőségi kapu.
+Az új tartalom külön fájlban marad: `a1-guided-lessons-13-16.js`, így a megelőző leckék és az eredmények kulcsai változatlanok. Szerkezeti és tananyagintegrációs ellenőrzés: `node verify-a1-units-13-16.mjs`. Az A1-es szint még nem teljes, az anyanyelvi lektorálás és a valós tanulói próba továbbra is minőségi kapu.
 
 ### Új A1-es vezetett leckék (17–20.)
 
 Az újabb négy lecke az **otthoni helyiségek** neveit és -ban/-ben alakjait, a **hely és irány** különbségét (*hol? — hová?*, *iskolában — iskolába*), a **felszíni helyragokat** (*asztalon, széken, földön*), valamint a **különírt helyviszonyjelölő szavakat** (*mellett, előtt, mögött, alatt*) tanítja. A feladatok otthoni és iskolai helyzeteket követnek, és minden új szerkezethez orosz nyelvű magyarázat, példatáblázat, párbeszéd, olvasmány, szövegértés és önálló írás tartozik.
 
-A korábbi 16 lecke és az eredménykulcsok megmaradtak. Új forrásfájl: `a1-guided-lessons-17-20.js`. Tananyagi és technikai ellenőrzés: `node magyar-orosz/verify-a1-units-17-20.mjs`. A négy lecke egyikében sincs húsznál több szókártya. A hangok és a magyar–orosz szövegek emberi, anyanyelvi ellenőrzése a széles körű kiadás előtt továbbra is szükséges.
+A korábbi 16 lecke és az eredménykulcsok megmaradtak. Új forrásfájl: `a1-guided-lessons-17-20.js`. Tananyagi és technikai ellenőrzés: `node verify-a1-units-17-20.mjs`. A négy lecke egyikében sincs húsznál több szókártya. A hangok és a magyar–orosz szövegek emberi, anyanyelvi ellenőrzése a széles körű kiadás előtt továbbra is szükséges.
 
 ### Letisztult, mobilbarát felület (2026. november 22.)
 
 A nyitóképernyő saját magyar–orosz beszédbuborékos és könyves arculatot, nagy szintválasztó elemeket és egy elsődleges indítógombot kapott. A tanulási menüben a fő tanfolyami útvonal kiemelt, a kiegészítő eszközök változatlanul elérhetők. A vezetett leckékben hatállomásos, akadálymentesen jelölt haladássáv jelenik meg, és a továbblépés a feladat után található. A hosszú szó-, mondat- és kifejezésjegyzék lenyitható segédanyag, de a legelső lecke ábécéje továbbra is közvetlenül látható. A megjelenés új stíluslapja: `clean-interface.css`.
 
-Az arculatváltás nem módosítja a szótárat, a tanulói pontozást, a helyi mentési kulcsokat vagy a hangválasztást. Az automatikus ellenőrzés: `node magyar-orosz/verify-clean-interface.mjs`. A telefonos kézi használhatósági teszt a publikálás után külön szükséges.
+Az arculatváltás nem módosítja a szótárat, a tanulói pontozást, a helyi mentési kulcsokat vagy a hangválasztást. Az automatikus ellenőrzés: `node verify-clean-interface.mjs`. A telefonos kézi használhatósági teszt a publikálás után külön szükséges.
 
 ### Napi rövid gyakorlás és érthetőbb javítás (2026. november 22.)
 
 Az A1-es tanulási menüben külön, azonnal elérhető a **napi rövid gyakorlás**: 5 szókérdés, 5 mondatkérdés és 3 hangos gyakorlómondat. A napi részfeladatok állapota a menüben is látható. A szó- és mondatkérdések elsősorban a korábban elrontott vagy esedékes kifejezésekből válogatnak; a súlyozott kiválasztás csökkenti, hogy sok hibánál mindig ugyanaz az öt tétel következzen. A megoldás után a helyes választ és magyar–orosz példamondatot mutatjuk. A vezetett lecke nyelvtani és olvasmánykérdéseinél színes helyes/hibás jelzés és pontosabb javító visszajelzés segít.
 
-Megmaradtak a régi pontszámok, hibák, ütemezett ismétlések és mentési kulcsok; az A2 menübe nem került át az A1-es napi gomb. Új regressziós teszt: `node magyar-orosz/verify-a1-quick-review.mjs`. A három hangos mondat teljesítése önbevalláson alapul, nem automatikus kiejtésértékelés. A tényleges mobilos tanulói próba és a nyelvi lektorálás továbbra is hátravan.
+Megmaradtak a régi pontszámok, hibák, ütemezett ismétlések és mentési kulcsok; az A2 menübe nem került át az A1-es napi gomb. Új regressziós teszt: `node verify-a1-quick-review.mjs`. A három hangos mondat teljesítése önbevalláson alapul, nem automatikus kiejtésértékelés. A tényleges mobilos tanulói próba és a nyelvi lektorálás továbbra is hátravan.
 
 ### Új A1-es vezetett leckék (21–24.)
 
 A további négy hatlépéses lecke az orosz anyanyelvű kezdőt a mindennapi cselekvések felé vezeti: **jelen idejű alanyi igeragozás** (*tanulok/tanulsz/tanul*, *olvasok/olvasol*, *dolgozom/dolgozol/dolgozik*); **szeret + főnévi igenév, tagadás és kérdés** (*szeretek olvasni*, *nem szeretek főzni*); **napok és egész órák időpontjai** (*hétfőn*, *nyolckor*); valamint **egyszerű vásárlási mondatok és a -t tárgyrag** (*kérek egy almát*, *tejet*, *kenyeret*). Az orosz magyarázatok külön jelzik a szabályoktól eltérő vagy megjegyzendő szóalakokat. Mindegyikhez ragozási vagy grammatikai tábla, példamondatok, 20-nál nem több szókártya, magyar–orosz párbeszéd, olvasmány, ötmondatos írásfeladat és javítókulcs tartozik.
 
-Új tartalom: `a1-guided-lessons-21-24.js`. Ellenőrzés: `node magyar-orosz/verify-a1-units-21-24.mjs`. A korábbi `A1:0`–`A1:19` és az A2 eredményazonosítók változatlanok. A vezetett A1-es út lefedettsége ezzel 148/580 címszóra (25,5%) nőtt; **ez még nem teljes A1-es kurzus**. Az új leckék teljes tanári hangfelvételei, orosz anyanyelvi lektorálása és valós tanulói próbája a széles körű kiadás előtt szükséges.
+Új tartalom: `a1-guided-lessons-21-24.js`. Ellenőrzés: `node verify-a1-units-21-24.mjs`. A korábbi `A1:0`–`A1:19` és az A2 eredményazonosítók változatlanok. A vezetett A1-es út lefedettsége ezzel 148/580 címszóra (25,5%) nőtt; **ez még nem teljes A1-es kurzus**. Az új leckék teljes tanári hangfelvételei, orosz anyanyelvi lektorálása és valós tanulói próbája a széles körű kiadás előtt szükséges.
 
 ### Új A1-es vezetett leckék (25–28.)
 
 A következő négy lecke valós vásárlási és étkezési helyzetekben gyakoroltatja a már tanult szókincset. A 25. lecke a **szeretnék / szeretnél / szeretne** udvarias kérést különíti el a **szeretek** szerkezettől. A 26. lecke a **Hány? / Mennyi?**, a darabszám, a **fél kiló, egy liter, két üveg** és a tárgyragos terméknevek kapcsolatát tanítja. A 27. lecke éttermi rendelésnél világosan szembeállítja a **kérek egy levest** és **kérem a számlát** kifejezéseket. A 28. lecke piaci párbeszédben ismétli az árakat, mennyiségeket, udvarias kéréseket és a vásárlás lezárását. A kétértelmű vagy rendhagyó alakokat külön orosz magyarázat és példa kíséri.
 
-Mindegyik lecke 6 állomásból áll, legfeljebb 20 kétnyelvű szókártyával, ragozási vagy szerkezeti táblázattal, párbeszéddel, olvasmánnyal, írásfeladattal és magyarázatos javítókulccsal. Új forrásfájl: `a1-guided-lessons-25-28.js`; ellenőrzés: `node magyar-orosz/verify-a1-units-25-28.mjs`. Az eredeti `A1:0`–`A1:23` és az A2 mentési kulcsok nem változnak. A vezetett A1-es út most 28 lecke, 341 különböző tanított szó vagy kifejezés, közülük 173 egyezik az A1-szótár címszavaival (29,8%). Ez nem A1-szintzáró minősítés: a hangfelvételek és az orosz anyanyelvi ellenőrzés továbbra is hiányzik az új szövegeknél.
+Mindegyik lecke 6 állomásból áll, legfeljebb 20 kétnyelvű szókártyával, ragozási vagy szerkezeti táblázattal, párbeszéddel, olvasmánnyal, írásfeladattal és magyarázatos javítókulccsal. Új forrásfájl: `a1-guided-lessons-25-28.js`; ellenőrzés: `node verify-a1-units-25-28.mjs`. Az eredeti `A1:0`–`A1:23` és az A2 mentési kulcsok nem változnak. A vezetett A1-es út most 28 lecke, 341 különböző tanított szó vagy kifejezés, közülük 173 egyezik az A1-szótár címszavaival (29,8%). Ez nem A1-szintzáró minősítés: a hangfelvételek és az orosz anyanyelvi ellenőrzés továbbra is hiányzik az új szövegeknél.

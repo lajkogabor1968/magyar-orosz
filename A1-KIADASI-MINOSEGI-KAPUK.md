@@ -10,13 +10,13 @@
 - A2 vezetett tanulási út: 3 lecke, 25 különböző szó vagy kifejezés; az A1-es szókincs ismétlése szándékos.
 - A szókincstár, az önálló nyelvtani modul, az ECL-gyakorlók és a kiegészítő szövegértések több anyagot tartalmaznak, mint a vezetett leckeút. A fenti arány **csak a vezetett leckék szókincslefedettsége**, nem az alkalmazás teljes szókincse.
 
-A mérés megismételhető: `node magyar-orosz/verify-guided-coverage.mjs`.
+A mérés megismételhető: `node verify-guided-coverage.mjs`.
 
 ## Duolingo-mintájú, megismételhető A1-audit – 2026. november 22.
 
-Futtatás a repó gyökeréből: `node magyar-orosz/audit-a1-release.mjs`. Ezt a
+Futtatás a repó gyökeréből: `node audit-a1-release.mjs`. Ezt a
 korábbi 14 célzott technikai ellenőrzéssel és a
-`node magyar-orosz/verify-a1-teach-before-test.mjs` biztonsági teszttel együtt futtattuk. A keretrendszer
+`node verify-a1-teach-before-test.mjs` biztonsági teszttel együtt futtattuk. A keretrendszer
 **nem** a Duolingo nem nyilvános belső tesztjeinek másolata: annak közzétett
 tananyag-tervezési és ellenőrzési elveiből indultunk ki.
 

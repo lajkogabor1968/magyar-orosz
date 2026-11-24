@@ -126,7 +126,7 @@ A szókincset a készségleírásokhoz rendeljük: A1: személyes alapadatok és
 - **Néhány célzott példa:** `A1:41` – „Bocsánat, késtem.” / „Извините за опоздание.” (nemtől független); `A1:119` – „Kártyával fizetek.” / „Я плачу картой.” (egyértelmű fizetési helyzet); `A1:415` – „A testvérem neve Anna.” / „Мою сестру зовут Анна.” (a magyar *testvér* nemsemlegességének figyelembevétele).
 - **Tudatosan nem lezárt esetek:** a `nap`, `ruha`, `testvér`, `dinnye`, `földszint` és `helyjegy` szó jelentésének/használatának vizuális, tanulói vagy orosz anyanyelvű kontrollja továbbra is indokolt; részletes lista a változásnaplóban.
 - **Stabilitás:** az eredeti címszó, az azonosító és a sorrend egyetlen tételnél sem változott. A1 600, A2 1200, B1 431, B2 14; az A2–B2 tartalom és a tanulói eredménykezelés változatlan.
-- **Automatikus minőségi kapu:** `node magyar-orosz/verify-a1.mjs` ellenőrzi a négymezős rekordokat, a szintek elemszámát, az A1-azonosítók sorrendjének lenyomatát, valamint a magyar MP3-fájlokat. A teszt zöld, de két *korábbi* felvétel szövegkulcsa még elavult: „Ez egy amerikai ember.” és „Ez egy angol ember.” Az új mondatokhoz hangot kell újragenerálni, nem szabad a régi hangot más szöveghez hozzárendelni. A tananyag és a hanglejátszás telefonos, anyanyelvi tesztje még hátravan.
+- **Automatikus minőségi kapu:** `node verify-a1.mjs` ellenőrzi a négymezős rekordokat, a szintek elemszámát, az A1-azonosítók sorrendjének lenyomatát, valamint a magyar MP3-fájlokat. A teszt zöld, de két *korábbi* felvétel szövegkulcsa még elavult: „Ez egy amerikai ember.” és „Ez egy angol ember.” Az új mondatokhoz hangot kell újragenerálni, nem szabad a régi hangot más szöveghez hozzárendelni. A tananyag és a hanglejátszás telefonos, anyanyelvi tesztje még hátravan.
 - **Hangállomány külön diagnosztika:** a manifestben hivatkozott mind az 57 MP3 fájl olvasható, a dekódolási/fejlécellenőrzés sikeres; a lejátszási hossz 0,65–2,53 másodperc. A mappában egy további, egyelőre nem hivatkozott `audio/hu/a1-005-w.mp3` fájl található. Hangos meghallgatásos ellenőrzés nélkül nem társítottuk hozzá automatikusan a feltételezett címszót.
 
 **Szakmai korlát:** a két belső ellenőrzési kör nem igazol 100%-os nyelvi hibamentességet. Az A1-et külső orosz anyanyelvű lektorálás és valódi próbatanulói teszt nélkül továbbra sem nevezzük véglegesnek. Csak ezek után következhet A2-szintű fejlesztés.
@@ -139,7 +139,7 @@ Az A2-fejlesztés a felhasználó új döntése alapján megkezdődött. A szint
 - **110 pontosított szócikk** jelentése, magyar példamondata és/vagy orosz fordítása szerepel az `a2-audit-2026-11-20-part1.json` naplóban. A többi 11 ellenőrzött bejegyzés változatlan maradt.
 - **Kiinduló probléma:** 793/1200 A2-es példamondat jelöltként szerepelt egy szélesebb, sablonokat kereső előszűrőben (például „Ez a bevásárol.”, „Ő ezt mondja: »ahol«.”, „Ő divatosan dolgozik.”). Ezek közül nem mind szükségképpen hibás, de jelentős részük pedagógiailag értéktelen vagy hibás.
 - **Az első adag eredménye:** a szélesebb előszűrő szerint 99-ről 3-ra csökkent a mintamondat-találatok száma az első 121 bejegyzésben. A 3 fennmaradó találat valójában értelmes, összetett mondat; az előszűrő álpozitív eredménye.
-- **Szigorúbb technikai ellenőrzés:** `node magyar-orosz/verify-a2.mjs` a 600/1200/431/14 elemszámot, a négymezős adatokat, az A2-sorrendet, az első 121 szócikk egyértelmű semmitmondó sablonjait ellenőrzi. A szigorúbb mintákból az első adagban 0 maradt; **a további 1079 A2-es bejegyzésben még legalább 552 egyértelmű sablon** vár javításra. Ez nem az összes lehetséges nyelvi hiba száma.
+- **Szigorúbb technikai ellenőrzés:** `node verify-a2.mjs` a 600/1200/431/14 elemszámot, a négymezős adatokat, az A2-sorrendet, az első 121 szócikk egyértelmű semmitmondó sablonjait ellenőrzi. A szigorúbb mintákból az első adagban 0 maradt; **a további 1079 A2-es bejegyzésben még legalább 552 egyértelmű sablon** vár javításra. Ez nem az összes lehetséges nyelvi hiba száma.
 - **Megőrzés:** címszavak, azonosítók és sorrend változatlan; az A1/B1/B2 szókincs, a korábbi tanulói eredmények és a meglévő A2-es párbeszédek feladatai nem módosultak.
 
 | A2-szintű cél | Példamondat a javított anyagból | Orosz megfelelő |
@@ -187,7 +187,7 @@ Az A2-fejlesztés a felhasználó új döntése alapján megkezdődött. A szint
 | Címzetthez irányulás | Este hozzátok megyünk vacsorára. | Вечером мы придём к вам на ужин. |
 | Pénzváltás | Tudna felváltani egy húszezrest? | Можете разменять купюру в двадцать тысяч форинтов? |
 
-**Automatikus kapu:** `node magyar-orosz/verify-a2.mjs` az első 361 szócikkben **0 egyértelmű, üres sablont** talált, és ellenőrizte a rekordokat, a szószámokat és a címszavak sorrendjét. A fennmaradó 839 bejegyzésben **397 további sablonjelölt** maradt, amelyek még nem teljes körűen ellenőrzöttek; az automatikus szűrés nem helyettesíti az anyanyelvi ellenőrzést. **Következő adag:** `A2:361`–`A2:480`.
+**Automatikus kapu:** `node verify-a2.mjs` az első 361 szócikkben **0 egyértelmű, üres sablont** talált, és ellenőrizte a rekordokat, a szószámokat és a címszavak sorrendjét. A fennmaradó 839 bejegyzésben **397 további sablonjelölt** maradt, amelyek még nem teljes körűen ellenőrzöttek; az automatikus szűrés nem helyettesíti az anyanyelvi ellenőrzést. **Következő adag:** `A2:361`–`A2:480`.
 
 ## A2 nyelvi és pedagógiai fejlesztés – 4. adag (2026-11-20)
 
@@ -223,7 +223,7 @@ Az A2-fejlesztés a felhasználó új döntése alapján megkezdődött. A szint
 | Mennyiségi kiegészítés | Még egy pohár vizet kérek. | Мне ещё один стакан воды, пожалуйста. |
 | Időbeli viszony | Még mindig dolgozom. | Я всё ещё работаю. |
 
-**Automatikus ellenőrzés:** `node magyar-orosz/verify-a2.mjs` az első 601 bejegyzésben **0 egyértelmű sablonhibát** talált; a maradék 599-ben **265 sablonjelölt** van. Ez a heurisztika nem a teljes nyelvi hibaszám. Orosz anyanyelvi kontroll, többjelentésű szavak második körös ellenőrzése és tanulói próbateszt továbbra is szükséges. **Következő adag:** `A2:601`–`A2:720`.
+**Automatikus ellenőrzés:** `node verify-a2.mjs` az első 601 bejegyzésben **0 egyértelmű sablonhibát** talált; a maradék 599-ben **265 sablonjelölt** van. Ez a heurisztika nem a teljes nyelvi hibaszám. Orosz anyanyelvi kontroll, többjelentésű szavak második körös ellenőrzése és tanulói próbateszt továbbra is szükséges. **Következő adag:** `A2:601`–`A2:720`.
 
 ## A2 nyelvi és pedagógiai fejlesztés – 6. adag (2026-11-20)
 

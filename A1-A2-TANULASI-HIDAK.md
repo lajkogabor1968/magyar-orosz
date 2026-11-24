@@ -62,10 +62,10 @@ bevezetése után lehet majd biztonságosan újrarendezni a tanulási útvonalat
 
 ## Ellenőrzés és fennmaradó feladat
 
-- node magyar-orosz/verify-nyelvtan.mjs: teljes körű szerkezeti vizsgálat,
+- node verify-nyelvtan.mjs: teljes körű szerkezeti vizsgálat,
   címfordítások, 340 orosz feladatutasítás, 35 tankönyvi fejezet, 44 előfeltétel,
   feladatkulcsok és régi témaazonosítók ellenőrzése.
-- node magyar-orosz/verify-nyelvtan-browser.mjs: a tanulói felület,
+- node verify-nyelvtan-browser.mjs: a tanulói felület,
   pontozás, haladásmegőrzés, orosz címsorok és a kezdőképernyő böngészős ellenőrzése
   Playwright és Chromium megléte esetén.
 - Az orosz magyarázatokat és a magyar példamondatokat a fizetős,
