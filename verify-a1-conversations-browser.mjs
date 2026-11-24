@@ -37,7 +37,7 @@ try {
 
   for (const [index, scene] of data.entries()) {
     await click('landingChooseLesson');
-    await page.locator('#catalogMode label').filter({hasText:'Короткие диалоги'}).click();
+    await page.locator('#catalogMode label').filter({hasText:'Диалоги'}).click();
     await page.locator('#courseCatalogList button').nth(index).click();
     assert.equal(await text('conversationTitle'), scene.title);
     assert.equal(await text('conversationQuestion'), scene.question);

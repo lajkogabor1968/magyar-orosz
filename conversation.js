@@ -158,19 +158,7 @@
     hintShown = true;
     $('conversationAnswer').focus();
   };
-  for (const letter of 'áéíóöőúüű') {
-    const keyButton = document.createElement('button');
-    keyButton.type = 'button';
-    keyButton.lang = 'hu';
-    keyButton.textContent = letter;
-    keyButton.onclick = () => {
-      const input = $('conversationAnswer');
-      input.setRangeText(letter, input.selectionStart, input.selectionEnd, 'end');
-      input.dispatchEvent(new Event('input'));
-      input.focus();
-    };
-    $('conversationAccentKeys').append(keyButton);
-  }
+  window.TanmuhelyPractice.accentKeyboard($('conversationAccentKeys'), $('conversationAnswer'));
   $('conversationForm').onsubmit = event => {
     event.preventDefault();
     if (attempt.phase !== 'write') return;
@@ -193,12 +181,18 @@
       return;
     }
     finalWord = match;
+    window.TanmuhelyRecall.scheduleFirst(active.id);
     const saved = save({ phase: 'done', completed: true, review: attempt.assisted, draft: '' });
     render();
     if (!saved) $('conversationSummary').textContent = 'Обе реплики готовы. В этом браузере не удалось сохранить результат.';
     $('conversationTitle').focus();
   };
   dialog.querySelector('.dialog-close').onclick = () => dialog.close();
+  $('conversationRecallOpen').onclick = () => {
+    const index = scenes.indexOf(active);
+    dialog.close();
+    window.TanmuhelyRecall.open(index, onFinish);
+  };
   $('conversationFinish').onclick = () => {
     const finish = onFinish;
     dialog.close();

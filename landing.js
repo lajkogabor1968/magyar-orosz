@@ -13,7 +13,7 @@
     B1: 'Пройдите собеседование, обсудите условия аренды и запишитесь на приём.',
     B2: 'Обоснуйте выбор между офисом и удалённой работой или предложите решение спора.'
   };
-  let recommendedIndex;
+  let recommendedIndex, recommendRecall = false;
 
   function showApp() {
     const level = selected();
@@ -55,12 +55,20 @@
     }
     if (recommendation) {
       const {index, scene, state} = recommendation;
-      recommendedIndex = index;
-      const unfinished = state.phase === 'reply' || state.phase === 'write';
-      $('homeConversationKind').textContent = state.review ? 'К повторению' : 'Короткая практика';
-      $('homeConversationTitle').textContent = scene.title;
-      $('homeConversationQuestion').textContent = scene.question;
-      $('homeConversationAction').textContent = unfinished ? 'Продолжить диалог' : state.completed ? 'Повторить диалог' : 'Разыграть диалог';
+      const unfinished = state.phase === 'reply' || state.phase === 'write' || (!state.completed && state.assisted);
+      const recall = !unfinished && window.TanmuhelyRecall.recommendation(course.index, window.TanmuhelyConversation.progress());
+      recommendRecall = !!recall;
+      recommendedIndex = recall ? recall.index : index;
+      $('homeConversationTitle').textContent = recall ? recall.scene.title : scene.title;
+      $('homeConversationQuestion').hidden = !!recall;
+      if (recall) {
+        $('homeConversationKind').textContent = recall.kind === 'due' ? 'Повторение на сегодня' : 'Фраза по памяти';
+        $('homeConversationAction').textContent = recall.kind === 'resume' ? 'Продолжить ответ' : 'Составить фразу';
+      } else {
+        $('homeConversationKind').textContent = state.review ? 'К повторению' : 'Короткая практика';
+        $('homeConversationQuestion').textContent = scene.question;
+        $('homeConversationAction').textContent = unfinished ? 'Продолжить диалог' : state.completed ? 'Повторить диалог' : 'Разыграть диалог';
+      }
     }
   }
   function launchConversation(index) {
@@ -69,10 +77,17 @@
   function renderCatalog() {
     const level = selected();
     const course = window.TanuloWorkbook.overview(level);
-    const conversations = level === 'A1' && $('catalogMode').querySelector('input:checked').value === 'scenes';
+    const kind = level === 'A1' ? $('catalogMode').querySelector('input:checked').value : 'lessons';
+    const conversations = kind === 'scenes', listening = kind === 'listening';
     const progress = conversations ? window.TanmuhelyConversation.progress() : null;
-    const items = conversations ? window.TanmuhelyA1Conversations : course.lessons;
-    $('courseCatalogTitle').textContent = (conversations ? 'Диалоги ' : 'Уроки ') + level;
+    const scores = listening ? window.TanmuhelyListening.progress() : null;
+    const items = listening ? window.TanmuhelyListening.items : conversations ? window.TanmuhelyA1Conversations : course.lessons;
+    let currentIndex = conversations ? recommendedIndex : course.index;
+    if (listening) {
+      currentIndex = items.findIndex(item => item.id === window.TanmuhelyA1Conversations[course.index]?.id);
+      if (currentIndex < 0) currentIndex = Math.max(0, items.findIndex(item => scores[item.id]?.best !== item.questions.length));
+    }
+    $('courseCatalogTitle').textContent = (listening ? 'Аудирование ' : conversations ? 'Диалоги ' : 'Уроки ') + level;
     const list = $('courseCatalogList');
     list.replaceChildren();
     for (const [index, item] of items.entries()) {
@@ -85,10 +100,13 @@
       const title = document.createElement('span');
       title.textContent = item.title;
       button.append(number, title);
-      const isCurrent = index === (conversations ? recommendedIndex : course.index);
+      const isCurrent = index === currentIndex;
       if (isCurrent) button.setAttribute('aria-current', 'step');
       let label = '';
-      if (conversations) {
+      if (listening) {
+        const score = scores[item.id];
+        if (score) label = score.listened ? 'На слух: ' + score.best + '/' + item.questions.length : 'С текстом';
+      } else if (conversations) {
         const state = progress[index];
         if (['reply','write'].includes(state.phase)) label = 'Продолжить';
         else if (state.review) label = 'К повторению';
@@ -102,7 +120,10 @@
       }
       button.onclick = () => {
         catalog.close();
-        if (conversations) launchConversation(index);
+        if (listening) {
+          const lessonIndex = window.TanmuhelyA1Conversations.findIndex(scene => scene.id === item.id);
+          window.TanmuhelyListening.open(item.id, () => enterLesson(lessonIndex));
+        } else if (conversations) launchConversation(index);
         else enterLesson(index);
       };
       row.append(button);
@@ -122,8 +143,8 @@
     renderCatalog();
     catalog.showModal();
     const current = $('courseCatalogList').querySelector('[aria-current="step"]');
-    current.focus({preventScroll:true});
-    current.scrollIntoView({block:'nearest'});
+    current?.focus({preventScroll:true});
+    current?.scrollIntoView({block:'nearest'});
   }
   $('catalogMode').addEventListener('change', renderCatalog);
   $('conversationBrowse').onclick = () => {
@@ -133,15 +154,21 @@
   start.addEventListener('click', () => enterLesson());
   picker.addEventListener('click', () => openCatalog());
   catalog.querySelector('.dialog-close').onclick = () => catalog.close();
-  $('homeConversation').onclick = () => launchConversation(recommendedIndex);
-  $('conversationDialog').addEventListener('close', () => {
-    if (!screen.hidden) refreshLanding();
-    const url = new URL(location.href);
-    if (url.searchParams.has('scene')) {
-      url.searchParams.delete('scene');
-      history.replaceState(history.state, '', url);
-    }
-  });
+  $('homeConversation').onclick = () => {
+    const index = recommendedIndex;
+    if (recommendRecall) window.TanmuhelyRecall.open(index, () => enterLesson(index));
+    else launchConversation(index);
+  };
+  for (const [id,param] of [['conversationDialog','scene'],['a1RecallDialog','recall'],['a1ListeningDialog','listen']]) {
+    $(id).addEventListener('close', () => {
+      if (!screen.hidden) refreshLanding();
+      const url = new URL(location.href);
+      if (url.searchParams.has(param)) {
+        url.searchParams.delete(param);
+        history.replaceState(history.state, '', url);
+      }
+    });
+  }
   menu.addEventListener('change', refreshLanding);
   const home = document.createElement('button');
   home.type = 'button';
@@ -163,10 +190,16 @@
   const params = new URLSearchParams(location.search);
   if (location.hash === '#tanulas' || params.get('open') === 'app' || params.get('review') === '1') showApp();
   document.addEventListener('DOMContentLoaded', () => {
-    const index = window.TanmuhelyA1Conversations.findIndex(scene => scene.id === params.get('scene'));
-    if (!screen.hidden && index >= 0) {
+    for (const type of ['listen','recall','scene']) {
+      const id = params.get(type);
+      if (!id || screen.hidden) continue;
+      const index = window.TanmuhelyA1Conversations.findIndex(scene => scene.id === id);
+      if (index < 0) continue;
       menu.querySelector('input[value="A1"]').checked = true;
-      launchConversation(index);
+      if (type === 'listen') window.TanmuhelyListening.open(id, () => enterLesson(index));
+      else if (type === 'recall') window.TanmuhelyRecall.open(index, () => enterLesson(index));
+      else launchConversation(index);
+      break;
     }
     refreshLanding();
   });

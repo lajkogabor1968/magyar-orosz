@@ -1,6 +1,6 @@
 /* Gábor A1–A2 voice pilot with word, phrase and mini-reading trials.
    Usage: ?voicepilot=1; no effect on standard visitors, data or lesson progress.
-   These are HeyGen-hosted trial WAV URLs; they are not permanent, locally hosted assets.
+   The source trials are hosted WAVs. The eight A1 reading exercises also have local MP3 copies.
    Teacher-approved falling-intonation takes are used for "rádió" and "metró". */
 (() => {
   'use strict';
@@ -62,8 +62,11 @@
       'Mit csináltál tegnap? Tegnap tanultam. És ma? Ma dolgozom.'
     ]
   };
+  const a1Recordings = ['targyak','koszones','csalad','kulcs','ital','napirend','kerdesek','hely'];
   window.TanuloGaborReadingClips = Object.fromEntries(Object.entries(readingKeys).map(([level, texts]) =>
-    [level, texts.map(text => ({ text, url: clips[text], status: 'remote-trial' }))]));
+    [level, texts.map((text, index) => level === 'A1'
+      ? { id: a1Recordings[index], text, url: 'audio/a1-listening/' + a1Recordings[index] + '.mp3', status: 'local-trial' }
+      : { text, url: clips[text], status: 'remote-trial' })]));
   if (!enableWordPilot) return;
   window.TanuloVoicePilotKeys = Object.keys(clips);
   window.TanuloVoicePilotReview = [];
