@@ -60,7 +60,7 @@ runInNewContext(read('ugyintezes-data.js'), context);
 assert.equal(all.length, 26, 'A tananyag kétszeri betöltése nem hoz létre duplikátumot.');
 
 const page = read('ecl.html');
-assert.match(page, /<script src="ecl-data\.js"><\/script><script src="ugyintezes-data\.js"><\/script><script src="ecl\.js"><\/script>/);
+assert.match(page, /<script src="ecl-data\.js"><\/script><script src="ugyintezes-data\.js"><\/script><script src="ecl\.js(?:\?[^"]+)?"><\/script>/);
 assert.match(page, /26 témakör/);
 assert.match(read('index.html'), /href="ecl\.html\?lesson=18"/);
 assert.match(read('index.html'), /href="ecl\.html\?lesson=21"/);

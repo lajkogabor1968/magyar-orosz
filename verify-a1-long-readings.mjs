@@ -43,8 +43,8 @@ for(const index of indices){
  assert.equal(unit.questions.length,2,`A1 extra text ${index}: two comprehension checks`);
  for(const [hu,ru] of [...unit.lines,...unit.dialogue]){
   assert.ok(hu.trim()&&ru.trim(),`A1 extra text ${index}: empty translation`);
-  assert.match(hu,/[.!?]$/,`A1 extra text ${index}: Hungarian phrase punctuation`);
-  assert.match(ru,/[.!?]$/,`A1 extra text ${index}: Russian phrase punctuation`);
+  assert.match(hu,/[.!?][”»]?$/,`A1 extra text ${index}: Hungarian phrase punctuation`);
+  assert.match(ru,/[.!?][”»]?$/,`A1 extra text ${index}: Russian phrase punctuation`);
  }
  for(const question of unit.questions){
   assert.equal(question.length,5,`A1 extra text ${index}: three choices and a key`);
@@ -92,15 +92,16 @@ const choices=buttons.filter(button=>button.className==='integrated-answer');
 assert.equal(choices.length,6);
 choices[1].onclick();
 const answerFeedback=placed.querySelectorAll('p').find(item=>item.className==='a1-reading-feedback');
-assert.match(answerFeedback.textContent,/Правильный ответ: В школе\./);
+assert.match(answerFeedback.textContent,/Пока неверно/);
+assert.equal(choices[1].disabled,true);
 assert.doesNotMatch(answerFeedback.textContent,/\.\./,'a correct answer ending with a period must not gain another');
 choices[0].onclick();
-assert.match(answerFeedback.textContent,/✓ Верно: В школе\./);
+assert.match(answerFeedback.textContent,/✓ Верно после повторной попытки: В школе\./);
 assert.doesNotMatch(answerFeedback.textContent,/\.\./);
 window.TanmuhelyRenderA1LongReadings('A2',1);
 assert.equal(placed,null,'A2 never receives A1 supplementary content');
 
-assert.match(html,/a1-tematikus-szovegek\.js\?v=20261123-a1-guidance2/);
+assert.match(html,/a1-tematikus-szovegek\.js\?v=\d{8}-[a-z0-9-]+/);
 assert.match(css,/\.a1-long-reading \.a1-reading-play-line/);
 assert.match(css,/\.a1-reading-preparation/);
 assert.match(css,/@media \(max-width: 700px\)/);

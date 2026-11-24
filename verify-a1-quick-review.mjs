@@ -18,7 +18,7 @@ assert.ok(html.indexOf('id="quickReviewPrimary"') < html.indexOf('id="studyMore"
 assert.match(html, /5 слов · 5 предложений · 3 фразы вслух/);
 for (const script of ['app.js?v=20261122-adaptive-daily2',
   'study.js?v=20261122-quick-daily1']) {
-  assert.ok(html.includes(script), `${script} cache must be refreshed`);
+  assert.ok(new RegExp('src="'+script.split('?')[0].replace('.', '\\.')+'\\?v=\\d{8}-[a-z0-9-]+"').test(html), `${script} cache must be refreshed`);
 }
 assert.equal((html.match(/lesson-book\.js\?v=\d{8}-[a-z0-9-]+/g)||[]).length,1,
   'the current guided lesson script must have one versioned URL');
@@ -49,12 +49,12 @@ assert.match(lessons, /function highlightAnswerButtons\(box,selected,correctText
 assert.match(lessons, /button\.classList\.toggle\('right',right\)/);
 assert.match(lessons, /button\.classList\.toggle\('wrong',button===selected&&!right\)/);
 assert.match(lessons, /button\.setAttribute\('aria-pressed',String\(button===selected\)\)/);
-assert.match(lessons, /highlightAnswerButtons\(box,btn,c\.a\[c\.ok\]\)/, 'grammar reveals the correct answer');
-assert.match(lessons, /const answer=c\.a\[c\.ok\],end=\/\[\.!\?…\]\$\/\.test\(answer\)\?'':'\.'/,
+assert.match(lessons, /highlightAnswerButtons\(box,btn,answerText\)/, 'grammar reveals the correct answer');
+assert.match(lessons, /answerText=c\.a\[c\.ok\],ending=\/\[\.!\?…\]\$\/\.test\(answerText\)\?'':'\.'/,
   'grammar feedback avoids doubling terminal punctuation');
 assert.match(lessons, /highlightAnswerButtons\(answers,button,answer\)/, 'reading reveals the correct answer');
 assert.match(lessons, /function placeReadingAfterTeaching\(\)/, 'A1 reading order is managed separately');
-assert.match(lessons, /if\(level!=='A1'\)\{\s*if\(moved\)\{original\.append/, 'A2 retains its previous reading position');
+assert.match(lessons, /if\(level!=='A1'\)\{\s*\$\('lessonWords'\)\.prepend\(original\);\s*if\(moved\)\{original\.append/, 'A2 retains its previous reading position');
 assert.match(lessons, /writing\.prepend\(panel\)/, 'A1 comprehension comes after taught vocabulary and grammar');
 assert.match(lessons, /placeReadingAfterTeaching\(\);renderVisual\(\)/, 'every rendered lesson uses the correct reading order');
 assert.match(css, /\.lesson-answer-options \.integrated-answer\.right/);

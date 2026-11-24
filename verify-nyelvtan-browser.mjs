@@ -167,7 +167,7 @@ try {
     'A szólista induláskor legyen elrejtve.');
   assert.match(await page.locator('#landingTitle').textContent(), /Венгерский с нуля/);
   await page.locator('#landingStart').click();
-  assert.ok(await page.locator('#lessonsPrimary').isVisible(), 'Az Indítás után a vezetett leckék legyenek elérhetők.');
+  assert.ok(await page.locator('#integratedLessonView').isVisible(), 'Az Indítás után a vezetett leckék legyenek elérhetők.');
   await page.locator('.landing-back').click();
   assert.ok(await page.locator('#landingScreen').isVisible(), 'Vissza lehessen lépni a kezdőlapra.');
   assert.equal(errors.length, 0, `Böngészőhibák: ${errors.join('; ')}`);

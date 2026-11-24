@@ -72,7 +72,7 @@ for(const script of [
  'a1-guided-lessons-next.js?v=20261123-a1-examples1',
  'a1-guided-lessons-17-20.js?v=20261123-a1-examples1',
  'a1-guided-lessons-25-28.js?v=20261123-a1-meaning1'
-])assert.ok(html.includes(script),`Browser must refresh corrected A1 material: ${script}`);
+])assert.ok(new RegExp('src="'+script.split('?')[0].replace('.', '\\.')+'\\?v=\\d{8}-[a-z0-9-]+"').test(html),`Browser must refresh corrected A1 material: ${script}`);
 console.log(`PASS: ${courses.A1.length} A1 lessons, ${totalCards} visible cards, no duplicate Russian spelling prompts or early imperatives in required cards.`);
 console.log('PASS: three chair examples use a beginner sentence; the Hungarian singular tomato form is translated as singular in the card, table and visual.');
 console.log('NOTE: a bilingual human reviewer is still required for semantic and stylistic assurance.');

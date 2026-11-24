@@ -64,7 +64,7 @@ for (const [offset, expected] of [[2, numberSpellings.slice(0, 10)], [3, numberS
   assert.deepEqual(Array.from(rows, row => row.hu).slice(0, 10), expected,
     `A ${offset + 9}. lecke kártyái nem a számokkal, helyes sorrendben kezdődnek.`);
 }
-assert.match(book, /render\(\)\{\$\('integratedAdvanceAdvice'\)\.hidden=true;note\(''\)/,
+assert.match(book, /render\(\)\{(?:window\.TanuloVoiceCompareReset\?\.\(\);)?\$\('integratedAdvanceAdvice'\)\.hidden=true;note\(''\)/,
   'Leckeváltás után az előző lecke visszajelzését törölni kell.');
 assert.match(book, /const answer=reading\.options\[reading\.answer\];/,
   'Az olvasmány-visszajelzésnek egyetlen záró írásjelet szabad hozzáadnia.');
