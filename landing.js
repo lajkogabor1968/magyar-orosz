@@ -14,6 +14,13 @@
     B2: 'Обоснуйте выбор между офисом и удалённой работой или предложите решение спора.'
   };
   let recommendedIndex, recommendRecall = false;
+  const invite = $('homeConversation');
+  const description = document.createElement('span');
+  description.style.cssText = 'display:block;line-height:1.45;font-size:.95rem;font-weight:500';
+  $('homeConversationAction').before(description);
+  const layout = document.createElement('style');
+  layout.textContent = '#homeConversation:not([hidden]){align-self:start;display:flex;flex-direction:column;align-items:flex-start;gap:.65rem;padding:1.25rem} #homeConversation .conversation-invite-action{margin-top:0;padding:.65rem .9rem;background:#164b40;color:white;border-radius:.7rem} #homeConversationQuestion{max-width:100%}';
+  document.head.append(layout);
 
   function showApp() {
     const level = selected();
@@ -62,15 +69,31 @@
       $('homeConversationTitle').textContent = recall ? recall.scene.title : scene.title;
       $('homeConversationQuestion').hidden = !!recall;
       if (recall) {
+        description.textContent = 'Вспомните и напишите венгерскую фразу без образца.';
         $('homeConversationKind').textContent = recall.kind === 'due' ? 'Повторение на сегодня' : 'Фраза по памяти';
         $('homeConversationAction').textContent = recall.kind === 'resume' ? 'Продолжить ответ' : 'Составить фразу';
       } else {
         $('homeConversationKind').textContent = state.review ? 'К повторению' : 'Короткая практика';
         $('homeConversationQuestion').textContent = scene.question;
+        description.textContent = state.phase === 'write' ? 'Дополните венгерскую фразу и проверьте ответ.' : scene.goal + ' Выберите ответ, затем дополните фразу.';
         $('homeConversationAction').textContent = unfinished ? 'Продолжить диалог' : state.completed ? 'Повторить диалог' : 'Разыграть диалог';
       }
     }
   }
+  const listenButton = document.createElement('button');
+  listenButton.type = 'button';
+  listenButton.className = 'practice-secondary';
+  listenButton.textContent = '🔊 Прослушать вопрос';
+  $('conversationQuestion').after(listenButton);
+  const audioStatus = document.createElement('p');
+  audioStatus.setAttribute('role','status');
+  listenButton.after(audioStatus);
+  listenButton.onclick = () => {
+    audioStatus.textContent = '';
+    const utterance = {text:$('conversationQuestion').textContent,lang:'hu-HU',rate:1,onerror:()=>{audioStatus.textContent='Не удалось воспроизвести звук.';}};
+    if (!window.TanuloTTS?.speak(utterance)) audioStatus.textContent = 'Звук недоступен на этом устройстве.';
+  };
+  $('conversationDialog').addEventListener('close', () => { window.TanuloTTS?.cancel(); audioStatus.textContent = ''; });
   function launchConversation(index) {
     window.TanmuhelyConversation.open(index, () => enterLesson(index));
   }
