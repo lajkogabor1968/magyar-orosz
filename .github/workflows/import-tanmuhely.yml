@@ -1,0 +1,33 @@
+name: Import Tanműhely history
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/import-tanmuhely.yml']
+permissions:
+  contents: write
+jobs:
+  import:
+    if: github.repository == 'lajkogabor1968/magyar-orosz'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Import and verify both source branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --bare https://github.com/lajkogabor1968/abece-kaland.git "$RUNNER_TEMP/source.git"
+          src="$RUNNER_TEMP/source.git"
+          test "$(git --git-dir="$src" rev-parse main)" = baca71df606d8ff8c42ea82a09e979ef101925a7
+          test "$(git --git-dir="$src" rev-parse a1-writing-feedback-20261123)" = 61ea0206f6d04dda54e7017af67d1f7141f39123
+          git --git-dir="$src" branch --list
+          (cd "$src" && FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --prune-empty --subdirectory-filter magyar-orosz -- refs/heads/main refs/heads/a1-writing-feedback-20261123 > "$RUNNER_TEMP/filter.log")
+          git fetch "$src" refs/heads/main:refs/heads/import-main refs/heads/a1-writing-feedback-20261123:refs/heads/import-a1
+          test "$(git rev-parse 'import-main^{tree}')" = 1fdc79eed3b5dbae00c3f1572fd31180ddb7e030
+          test "$(git rev-parse 'import-a1^{tree}')" = 1e9fe2fe644018a6be2dea62fa16e06dd455ad98
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          tip=$(git commit-tree 'import-main^{tree}' -p import-main -p HEAD -m 'Import Magyar–orosz Tanműhely and preserve project history')
+          git push --atomic origin "$tip:refs/heads/main" import-a1:refs/heads/a1-writing-feedback-20261123
